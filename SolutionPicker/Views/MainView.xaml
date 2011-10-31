@@ -9,7 +9,8 @@
              xmlns:cmd="clr-namespace:GalaSoft.MvvmLight.Command;assembly=GalaSoft.MvvmLight.Extras.WPF4"
              xmlns:Scanner="clr-namespace:SolutionPicker.Scanner"
              xmlns:Converters="clr-namespace:SolutionPicker.Converters"
-             xmlns:Helper="clr-namespace:SolutionPicker.Helper" mc:Ignorable="d" 
+             xmlns:Helper="clr-namespace:SolutionPicker.Helper" xmlns:Views="clr-namespace:SolutionPicker.Views"
+             mc:Ignorable="d" 
              d:DataContext="{d:DesignInstance ViewModels:MainViewModel}"
              d:DesignHeight="300" d:DesignWidth="300">
   <i:Interaction.Triggers>
@@ -59,19 +60,13 @@
           <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
         
-        <TextBox IsReadOnly="true" Text="{Binding RootPath}" />
-        
-        <TreeView Grid.Row="1" ItemsSource="{Binding RootNodes}" x:Name="_treeview"
+        <TextBox IsReadOnly="true" Text="{Binding RootPath}" Margin="3" />
+
+        <TreeView Grid.Row="1" ItemsSource="{Binding RootNodes}" x:Name="_treeview" Margin="3"
                   Helper:DragDropHelper.IsDragSource="true" Helper:DragDropHelper.DragDropTemplate="{StaticResource ProjectItemDrag}"
                   />
 
-        <DataGrid Grid.Column="1" Grid.Row="1">
-          <DataGrid.Columns>
-            <DataGridTextColumn Header="Name" Binding="{Binding Name}"/>
-            <!--<DataGridTextColumn Header="Assembly" Binding="{Binding }"/>-->
-            <DataGridTextColumn Header="Path" Binding="{Binding Path}"/>
-          </DataGrid.Columns>
-        </DataGrid>
+        <Views:SolutionView Grid.Column="1" Grid.Row="1" Margin="3" DataContext="{Binding Solution}" />
 
       </Grid>
     </extToolkit:BusyIndicator>

@@ -11,6 +11,7 @@ namespace SolutionPicker.ViewModels {
         private string _rootPath = @"d:\dev\xtplus\main\main";
         private readonly ICommand _onLoadedCommand;
         private IList<DirectoryNode> _rootNodes;
+        private SolutionViewModel _solution = new SolutionViewModel();
 
         public MainViewModel() {
             _onLoadedCommand = new RelayCommand(OnLoaded);
@@ -74,6 +75,16 @@ namespace SolutionPicker.ViewModels {
                 if (_rootNodes != value) {
                     _rootNodes = value;
                     RaisePropertyChanged(() => RootNodes);
+                }
+            }
+        }
+
+        public SolutionViewModel Solution {
+            get { return _solution; }
+            set {
+                if (_solution != value) {
+                    _solution = value;
+                    RaisePropertyChanged(() => Solution);
                 }
             }
         }

@@ -1,0 +1,38 @@
+﻿<UserControl x:Class="SolutionPicker.Views.SolutionView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" 
+             xmlns:Helper="clr-namespace:SolutionPicker.Helper"
+             xmlns:ViewModels="clr-namespace:SolutionPicker.ViewModels"
+             d:DataContext="{d:DesignInstance ViewModels:SolutionViewModel}"
+             d:DesignHeight="300" d:DesignWidth="300">
+    <Grid>
+    <Grid.RowDefinitions>
+      <RowDefinition />
+      <RowDefinition />
+    </Grid.RowDefinitions>
+      
+      <ListView ItemsSource="{Binding Projects}" Helper:DragDropHelper.IsDropTarget="True" Helper:DragDropHelper.DropCommand="{Binding DropCommand}">
+      <ListView.View>
+        <GridView d:DataContext="{d:DesignInstance ViewModels:Project}">
+          <GridViewColumn DisplayMemberBinding="{Binding Name}" Header="Name"/>
+          <GridViewColumn DisplayMemberBinding="{Binding AssemblyName}" Header="Assembly"/>
+          <GridViewColumn DisplayMemberBinding="{Binding Filepath}" Header="Path"/>
+        </GridView>
+      </ListView.View>
+    </ListView>
+
+    <ListView Grid.Row="1" ItemsSource="{Binding ReferencedProjects}" Helper:DragDropHelper.IsDropTarget="True" Helper:DragDropHelper.DropCommand="{Binding DropCommand}">
+      <ListView.View>
+        <GridView d:DataContext="{d:DesignInstance ViewModels:Project}">
+          <GridViewColumn DisplayMemberBinding="{Binding Name}" Header="Name"/>
+          <GridViewColumn DisplayMemberBinding="{Binding AssemblyName}" Header="Assembly"/>
+          <GridViewColumn DisplayMemberBinding="{Binding Filepath}" Header="Path"/>
+        </GridView>
+      </ListView.View>
+    </ListView>
+
+  </Grid>
+</UserControl>

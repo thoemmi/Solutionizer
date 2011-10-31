@@ -69,6 +69,17 @@ namespace SolutionPicker.Helper {
             DependencyProperty.RegisterAttached("DragDropTemplate", typeof (DataTemplate), typeof (DragDropHelper),
                                                 new UIPropertyMetadata(null));
 
+        public static ICommand GetDropCommand(DependencyObject obj) {
+            return (ICommand) obj.GetValue(DropCommandProperty);
+        }
+
+        public static void SetDropCommand(DependencyObject obj, ICommand value) {
+            obj.SetValue(DropCommandProperty, value);
+        }
+        
+        public static readonly DependencyProperty DropCommandProperty =
+            DependencyProperty.RegisterAttached("DropCommand", typeof (ICommand), typeof (DragDropHelper), new UIPropertyMetadata(null));
+
         private static void IsDragSourceChanged(DependencyObject obj, DependencyPropertyChangedEventArgs e) {
             var dragSource = obj as ItemsControl;
             if (dragSource != null) {
@@ -197,7 +208,13 @@ namespace SolutionPicker.Helper {
                 if (indexRemoved != -1 && _sourceItemsControl == _targetItemsControl && indexRemoved < _insertionIndex) {
                     _insertionIndex--;
                 }
-                Utilities.InsertItemInItemsControl(_targetItemsControl, draggedItem, _insertionIndex);
+
+                var dropCommand = GetDropCommand(_targetItemsControl);
+                if (dropCommand != null) {
+                    dropCommand.Execute(draggedItem);
+                } else {
+                    Utilities.InsertItemInItemsControl(_targetItemsControl, draggedItem, _insertionIndex);
+                }
 
                 RemoveDraggedAdorner();
                 RemoveInsertionAdorner();
@@ -226,6 +243,13 @@ namespace SolutionPicker.Helper {
         private void DecideDropTarget(DragEventArgs e) {
             var targetItemsControlCount = _targetItemsControl.Items.Count;
             var draggedItem = e.Data.GetData(_format.Name);
+
+            var dropCommand = GetDropCommand(_targetItemsControl);
+            if (dropCommand != null) {
+                if (dropCommand.CanExecute(draggedItem)) {
+                    return;
+                }
+            }
 
             if (IsDropDataTypeAllowed(draggedItem)) {
                 if (targetItemsControlCount > 0) {
@@ -348,6 +372,7 @@ namespace SolutionPicker.Helper {
                 _insertionAdorner = null;
             }
         }
+
         public static class Utilities {
             // Finds the orientation of the panel of the ItemsControl that contains the itemContainer passed as a parameter.
             // The orientation is needed to figure out where to draw the adorner that indicates where the item will be dropped.

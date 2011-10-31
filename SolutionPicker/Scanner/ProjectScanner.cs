@@ -44,7 +44,7 @@ namespace SolutionPicker.Scanner {
             return
                 Directory.EnumerateFiles(path, "*.csproj", SearchOption.TopDirectoryOnly)
                     .Concat(Directory.EnumerateFiles(path, "*.vbproj", SearchOption.TopDirectoryOnly))
-                    .Concat(Directory.EnumerateFiles(path, "*.vcproj", SearchOption.TopDirectoryOnly))
+                    //.Concat(Directory.EnumerateFiles(path, "*.vcproj", SearchOption.TopDirectoryOnly))
                     .Select(CreateFileNode)
                     .ToList();
         }
