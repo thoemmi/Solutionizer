@@ -28,7 +28,7 @@ namespace SolutionPicker.ViewModels {
             var guid = Guid.Parse(xmlDocument.GetElementsByTagName("ProjectGuid")[0].FirstChild.Value);
             var directoryName = Path.GetDirectoryName(filename);
             foreach (XmlNode xmlNode in xmlDocument.GetElementsByTagName("ProjectReference")) {
-                projectReferences.Add(Path.GetFullPath(Path.Combine(directoryName, xmlNode.Attributes["Include"].Value).ToLowerInvariant()));
+                projectReferences.Add(Path.GetFullPath(Path.Combine(directoryName, xmlNode.Attributes["Include"].Value)));
             }
             foreach (XmlNode xmlNode2 in xmlDocument.GetElementsByTagName("Reference")) {
                 var include = xmlNode2.Attributes["Include"].Value;
