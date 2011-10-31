@@ -56,17 +56,20 @@
           <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-          <ColumnDefinition Width="auto"/>
           <ColumnDefinition Width="*"/>
+          <ColumnDefinition Width="auto"/>
+          <ColumnDefinition Width="2*"/>
         </Grid.ColumnDefinitions>
         
-        <TextBox IsReadOnly="true" Text="{Binding RootPath}" Margin="3" />
+        <TextBox IsReadOnly="true" Text="{Binding RootPath}" Margin="3 3 0 3" />
 
-        <TreeView Grid.Row="1" ItemsSource="{Binding RootNodes}" x:Name="_treeview" Margin="3"
+        <TreeView Grid.Row="1" ItemsSource="{Binding RootNodes}" x:Name="_treeview" Margin="3 3 0 3"
                   Helper:DragDropHelper.IsDragSource="true" Helper:DragDropHelper.DragDropTemplate="{StaticResource ProjectItemDrag}"
                   />
 
-        <Views:SolutionView Grid.Column="1" Grid.Row="1" Margin="3" DataContext="{Binding Solution}" />
+        <GridSplitter Grid.Column="1" Grid.RowSpan="2" VerticalAlignment="Stretch" HorizontalAlignment="Center" ShowsPreview="true" Width="6"/>
+
+        <Views:SolutionView Grid.Column="2" Grid.Row="1" Margin="0 3 3 3" DataContext="{Binding Solution}" />
 
       </Grid>
     </extToolkit:BusyIndicator>
