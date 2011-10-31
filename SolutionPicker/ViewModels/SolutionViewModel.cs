@@ -1,4 +1,5 @@
-﻿using System.Collections.ObjectModel;
+﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Windows.Input;
 using GalaSoft.MvvmLight.Command;
 using SolutionPicker.Scanner;
@@ -8,6 +9,8 @@ namespace SolutionPicker.ViewModels {
         private readonly ObservableCollection<Project> _projects = new ObservableCollection<Project>();
         private readonly ObservableCollection<Project> _referencedProjects = new ObservableCollection<Project>();
         private readonly ICommand _dropCommand;
+
+        private readonly Dictionary<string,Project> _knownProjectsByPath = new Dictionary<string, Project>();
 
         private bool _isSccBound;
 
@@ -23,12 +26,29 @@ namespace SolutionPicker.ViewModels {
         public void AddProject(Project project) {
             _isSccBound |= project.IsSccBound;
 
+            if (!_knownProjectsByPath.ContainsKey(project.Filepath)) {
+                _knownProjectsByPath.Add(project.Filepath, project);
+            }
+
             if (_projects.Contains(project)) {
                 return;
             }
             _projects.Add(project);
             if (_referencedProjects.Contains(project)) {
                 _referencedProjects.Remove(project);
+            }
+            AddReferencedProjects(project);
+        }
+
+        private void AddReferencedProjects(Project project) {
+            foreach (var projectReference in project.ProjectReferences) {
+                Project referencedProject;
+                if (!_knownProjectsByPath.TryGetValue(projectReference, out referencedProject)) {
+                    referencedProject = Project.Load(projectReference);
+                }
+                if (!_referencedProjects.Contains(referencedProject)) {
+                    _referencedProjects.Add(referencedProject);
+                }
             }
         }
 
