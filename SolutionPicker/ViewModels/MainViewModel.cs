@@ -24,14 +24,13 @@ namespace SolutionPicker.ViewModels {
             worker.DoWork += (o, ea) => {
                 var scanner = new ProjectScanner();
                 ea.Result = new[] {
-                    scanner.Scan(RootPath, n => BusyMessage = n + " files found")
+                    scanner.Scan(RootPath)
                 };
             };
             worker.RunWorkerCompleted += (o, ea) => {
                 IsBusy = false;
                 RootNodes = (IList<DirectoryNode>) ea.Result;
             };
-            IsBusy = true;
             worker.RunWorkerAsync();
         }
 

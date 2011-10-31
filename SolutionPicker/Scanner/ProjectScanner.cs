@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace SolutionPicker.Scanner {
     public class ProjectScanner {
-        public DirectoryNode Scan(string path, Action<int> numberFilesFound) {
+        public DirectoryNode Scan(string path) {
             return CreateDirectoryNode(path);
         }
 
