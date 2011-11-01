@@ -60,14 +60,28 @@
           <ColumnDefinition Width="auto"/>
           <ColumnDefinition Width="2*"/>
         </Grid.ColumnDefinitions>
-        
-        <TextBox IsReadOnly="true" Text="{Binding RootPath}" Margin="3 3 0 3" />
 
-        <TreeView Grid.Row="1" ItemsSource="{Binding RootNodes}" x:Name="_treeview" Margin="3 3 0 3"
+        <Grid Margin="3 3 0 3">
+          <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="auto"/>
+          </Grid.ColumnDefinitions>
+          <TextBox IsReadOnly="true" Text="{Binding RootPath}"  />
+          <Button Grid.Column="1" Command="{Binding SelectRootPathCommand}" Margin="3 0 0 0">
+            <Image Height="16" Width="16" Source="{Converters:Shell32Icon FileName='shell32.dll',IconIndex=3}" />
+          </Button>
+        </Grid>
+
+        <TreeView Grid.Row="1" ItemsSource="{Binding RootNodes}" Margin="3 3 0 3"
                   Helper:DragDropHelper.IsDragSource="true" Helper:DragDropHelper.DragDropTemplate="{StaticResource ProjectItemDrag}"
                   />
 
         <GridSplitter Grid.Column="1" Grid.RowSpan="2" VerticalAlignment="Stretch" HorizontalAlignment="Center" ShowsPreview="true" Width="6"/>
+        
+        <WrapPanel Grid.Column="2" Orientation="Horizontal" HorizontalAlignment="Right">
+          <Button Content="Open"/>
+          <Button Content="Save"/>
+        </WrapPanel>
 
         <Views:SolutionView Grid.Column="2" Grid.Row="1" Margin="0 3 3 3" DataContext="{Binding Solution}" />
 

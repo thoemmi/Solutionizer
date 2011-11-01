@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Windows.Input;
 using GalaSoft.MvvmLight.Command;
@@ -10,11 +11,33 @@ namespace SolutionPicker.ViewModels {
         private string _busyMessage;
         private string _rootPath = @"d:\dev\xtplus\main\main";
         private readonly ICommand _onLoadedCommand;
+        private readonly ICommand _selectRootPathCommand;
         private IList<DirectoryNode> _rootNodes;
         private SolutionViewModel _solution = new SolutionViewModel();
 
         public MainViewModel() {
             _onLoadedCommand = new RelayCommand(OnLoaded);
+            _selectRootPathCommand = new RelayCommand(OnSelectRootPath);
+        }
+
+        private void OnSelectRootPath() {
+            var dlg = new Ookii.Dialogs.Wpf.VistaFolderBrowserDialog {
+                SelectedPath = RootPath
+            };
+            if (dlg.ShowDialog(App.Current.MainWindow) == true) {
+                RootPath = dlg.SelectedPath;
+                OnLoaded();
+            }
+
+
+            //using (var dlg = new FolderBrowserDialog()) {
+            //    //dlg.RootFolder = Environment.SpecialFolder.Personal;
+            //    dlg.SelectedPath = RootPath;
+            //    if (dlg.ShowDialog() == DialogResult.OK) {
+            //        RootPath = dlg.SelectedPath;
+            //        OnLoaded();
+            //    }
+            //}
         }
 
         private void OnLoaded() {
@@ -36,6 +59,10 @@ namespace SolutionPicker.ViewModels {
 
         public ICommand OnLoadedCommand {
             get { return _onLoadedCommand; }
+        }
+
+        public ICommand SelectRootPathCommand {
+            get { return _selectRootPathCommand; }
         }
 
         public bool IsBusy {
