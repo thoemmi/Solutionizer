@@ -78,9 +78,9 @@
 
         <GridSplitter Grid.Column="1" Grid.RowSpan="2" VerticalAlignment="Stretch" HorizontalAlignment="Center" ShowsPreview="true" Width="6" Background="Transparent"/>
         
-        <WrapPanel Grid.Column="2" Orientation="Horizontal" HorizontalAlignment="Right">
-          <Button Content="Open"/>
-          <Button Content="Save"/>
+        <WrapPanel Grid.Column="2" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0 3 3 3">
+          <Button Content="Open" Margin="3 0 0 0"/>
+          <Button Content="Save" Margin="3 0 0 0"/>
         </WrapPanel>
 
         <Views:SolutionView Grid.Column="2" Grid.Row="1" Margin="0 3 3 3" DataContext="{Binding Solution}" />
