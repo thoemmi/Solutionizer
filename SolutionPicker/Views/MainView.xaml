@@ -76,7 +76,7 @@
                   Helper:DragDropHelper.IsDragSource="true" Helper:DragDropHelper.DragDropTemplate="{StaticResource ProjectItemDrag}"
                   />
 
-        <GridSplitter Grid.Column="1" Grid.RowSpan="2" VerticalAlignment="Stretch" HorizontalAlignment="Center" ShowsPreview="true" Width="6"/>
+        <GridSplitter Grid.Column="1" Grid.RowSpan="2" VerticalAlignment="Stretch" HorizontalAlignment="Center" ShowsPreview="true" Width="6" Background="Transparent"/>
         
         <WrapPanel Grid.Column="2" Orientation="Horizontal" HorizontalAlignment="Right">
           <Button Content="Open"/>

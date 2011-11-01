@@ -36,7 +36,7 @@
       </ListView.View>
     </ListView>
 
-    <GridSplitter Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Stretch" ShowsPreview="true" Height="6"/>
+    <GridSplitter Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Stretch" ShowsPreview="true" Height="6" Background="Transparent"/>
 
     <ListView Grid.Row="2" ItemsSource="{Binding ReferencedProjects}" Helper:DragDropHelper.IsDropTarget="True" Helper:DragDropHelper.DropCommand="{Binding DropCommand}">
       <ListView.View>
