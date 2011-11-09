@@ -16,11 +16,11 @@ namespace Solutionizer.ViewModels {
         private bool _isSccBound;
 
         public SolutionViewModel() {
-            _dropCommand = new RelayCommand<FileNode>(OnDrop);
+            _dropCommand = new RelayCommand<object>(OnDrop, obj => obj is FileNode);
         }
 
-        private void OnDrop(FileNode node) {
-            var project = Project.Load(node.Path);
+        private void OnDrop(object node) {
+            var project = Project.Load(((FileNode)node).Path);
             AddProject(project);
         }
 

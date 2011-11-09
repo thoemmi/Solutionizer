@@ -123,11 +123,26 @@ namespace Solutionizer.Helper {
             _topWindow = Window.GetWindow(_sourceItemsControl);
             _initialMousePosition = e.GetPosition(_topWindow);
 
-            _sourceItemContainer = visual.TryFindParent<FrameworkElement>();
+            
+            //_sourceItemContainer = FindAnchestor<TreeViewItem>((DependencyObject) e.OriginalSource);
+            _sourceItemContainer = visual.TryFindParent<TreeViewItem>();
             //_sourceItemContainer = _sourceItemsControl.ContainerFromElement(visual) as FrameworkElement;
             if (_sourceItemContainer != null) {
                 _draggedData = _sourceItemContainer.DataContext;
             }
+        }
+
+        // Helper to search up the VisualTree
+        private static T FindAnchestor<T>(DependencyObject current)
+            where T : DependencyObject {
+            do {
+                if (current is T) {
+                    return (T)current;
+                }
+                current = VisualTreeHelper.GetParent(current);
+            }
+            while (current != null);
+            return null;
         }
 
         // Drag = mouse down + move by a certain amount
@@ -146,7 +161,7 @@ namespace Solutionizer.Helper {
                     _topWindow.DragOver += TopWindow_DragOver;
                     _topWindow.DragLeave += TopWindow_DragLeave;
 
-                    var effects = DragDrop.DoDragDrop((DependencyObject) sender, data, DragDropEffects.Move);
+                    var effects = DragDrop.DoDragDrop((DependencyObject) sender, data, DragDropEffects.Copy);
 
                     // Without this call, there would be a bug in the following scenario: Click on a data item, and drag
                     // the mouse very fast outside of the window. When doing this really fast, for some reason I don't get 
