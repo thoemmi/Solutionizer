@@ -24,6 +24,7 @@
       <RowDefinition />
       <RowDefinition Height="auto" />
       <RowDefinition />
+      <RowDefinition Height="auto"/>
     </Grid.RowDefinitions>
 
     <ListView 
@@ -54,5 +55,11 @@
       </ListView.View>
     </ListView>
 
+        <StackPanel Grid.Row="3" Orientation="Horizontal">
+            <TextBlock Text="Projects: "/>
+            <TextBlock Text="{Binding Projects.Count}"/>
+            <TextBlock Text=" - References: "/>
+            <TextBlock Text="{Binding ReferencedProjects.Count}"/>
+        </StackPanel>
   </Grid>
 </UserControl>
