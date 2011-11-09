@@ -29,13 +29,15 @@
 
     <ListView 
       ItemsSource="{Binding Projects}" 
+        Helper:GridViewSort.AutoSort="true"
+        Helper:GridViewSort.ShowSortGlyph="true"
       Helper:DragDropHelper.IsDropTarget="True" Helper:DragDropHelper.DropCommand="{Binding DropCommand}" 
       Foreground="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}">
       <ListView.View>
         <GridView d:DataContext="{d:DesignInstance ViewModels:Project}">
-          <GridViewColumn Header="Name" CellTemplate="{StaticResource NameWithImage}"/>
-          <GridViewColumn Header="Assembly" DisplayMemberBinding="{Binding AssemblyName}"/>
-          <GridViewColumn Header="Path" DisplayMemberBinding="{Binding Filepath}"/>
+          <GridViewColumn Header="Name" CellTemplate="{StaticResource NameWithImage}" Helper:GridViewSort.PropertyName="Name"/>
+          <GridViewColumn Header="Assembly" DisplayMemberBinding="{Binding AssemblyName}" Helper:GridViewSort.PropertyName="AssemblyName"/>
+          <GridViewColumn Header="Path" DisplayMemberBinding="{Binding Filepath}" Helper:GridViewSort.PropertyName="Path"/>
         </GridView>
       </ListView.View>
     </ListView>
@@ -45,21 +47,23 @@
     <ListView 
       Grid.Row="2" 
       ItemsSource="{Binding ReferencedProjects}" 
+        Helper:GridViewSort.AutoSort="true"
+        Helper:GridViewSort.ShowSortGlyph="true"
       Foreground="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}">
       <ListView.View>
         <GridView d:DataContext="{d:DesignInstance ViewModels:Project}">
-          <GridViewColumn Header="Name" CellTemplate="{StaticResource NameWithImage}"/>
-          <GridViewColumn Header="Assembly" DisplayMemberBinding="{Binding AssemblyName}"/>
-          <GridViewColumn Header="Path" DisplayMemberBinding="{Binding Filepath}"/>
+          <GridViewColumn Header="Name" CellTemplate="{StaticResource NameWithImage}" Helper:GridViewSort.PropertyName="Name"/>
+          <GridViewColumn Header="Assembly" DisplayMemberBinding="{Binding AssemblyName}" Helper:GridViewSort.PropertyName="AssemblyName"/>
+          <GridViewColumn Header="Path" DisplayMemberBinding="{Binding Filepath}" Helper:GridViewSort.PropertyName="Path"/>
         </GridView>
       </ListView.View>
     </ListView>
 
-        <StackPanel Grid.Row="3" Orientation="Horizontal">
-            <TextBlock Text="Projects: "/>
-            <TextBlock Text="{Binding Projects.Count}"/>
-            <TextBlock Text=" - References: "/>
-            <TextBlock Text="{Binding ReferencedProjects.Count}"/>
-        </StackPanel>
+    <StackPanel Grid.Row="3" Orientation="Horizontal">
+      <TextBlock Text="Projects: "/>
+      <TextBlock Text="{Binding Projects.Count}"/>
+      <TextBlock Text=" - References: "/>
+      <TextBlock Text="{Binding ReferencedProjects.Count}"/>
+    </StackPanel>
   </Grid>
 </UserControl>

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
@@ -26,6 +27,9 @@ namespace Solutionizer.Scanner {
                 subfolders.Remove(directoryNode);
                 files.Insert(0, directoryNode.Files[0]);
             }
+
+            subfolders.Sort((d1, d2) => String.Compare(d1.Name, d2.Name, StringComparison.InvariantCultureIgnoreCase));
+            files.Sort((f1, f2) => String.Compare(f1.Name, f2.Name, StringComparison.InvariantCultureIgnoreCase));
 
             if (files.Count > 0 || subfolders.Count > 0) {
                 return new DirectoryNode {
