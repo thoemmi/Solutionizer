@@ -79,12 +79,16 @@
     <Compile Include="Helper\Icons.cs" />
     <Compile Include="Helper\InsertionAdorner.cs" />
     <Compile Include="ViewModels\Project.cs" />
+    <Compile Include="ViewModels\ProjectShelfViewModel.cs" />
     <Compile Include="ViewModels\SolutionViewModel.cs" />
     <Compile Include="Scanner\ProjectScanner.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="ViewModels\ViewModelBase.cs" />
     <Compile Include="Views\MainView.xaml.cs">
       <DependentUpon>MainView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ProjectShelfView.xaml.cs">
+      <DependentUpon>ProjectShelfView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\SolutionView.xaml.cs">
       <DependentUpon>SolutionView.xaml</DependentUpon>
@@ -102,6 +106,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="Views\MainView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ProjectShelfView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

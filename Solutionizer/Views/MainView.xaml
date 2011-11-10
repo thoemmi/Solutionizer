@@ -7,9 +7,8 @@
              xmlns:ViewModels="clr-namespace:Solutionizer.ViewModels"
              xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
              xmlns:cmd="clr-namespace:GalaSoft.MvvmLight.Command;assembly=GalaSoft.MvvmLight.Extras.WPF4"
-             xmlns:Scanner="clr-namespace:Solutionizer.Scanner"
              xmlns:Converters="clr-namespace:Solutionizer.Converters"
-             xmlns:Helper="clr-namespace:Solutionizer.Helper" xmlns:Views="clr-namespace:Solutionizer.Views"
+             xmlns:Views="clr-namespace:Solutionizer.Views"
              mc:Ignorable="d" 
              d:DataContext="{d:DesignInstance ViewModels:MainViewModel}"
              d:DesignHeight="300" d:DesignWidth="300">
@@ -20,33 +19,6 @@
   </i:Interaction.Triggers>
   <Grid>
     <Grid.Resources>
-      <Converters:FilePathToImageSourceConverter x:Key="FilePathToImageSource"/>
-
-      <HierarchicalDataTemplate DataType="{x:Type Scanner:DirectoryNode}" ItemsSource ="{Binding Children}">
-        <StackPanel Orientation="Horizontal" Margin="1">
-          <Image Height="16" Width="16" x:Name="nodeImg" Source="{Converters:Shell32Icon FileName='shell32.dll',IconIndex=3}" Margin="0 0 4 0" />
-          <TextBlock Text="{Binding Name}" />
-        </StackPanel>
-        <HierarchicalDataTemplate.Triggers>
-          <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=TreeViewItem}, Path=IsExpanded}" Value="True">
-            <Setter TargetName="nodeImg" Property="Source" Value="{Converters:Shell32Icon FileName='shell32.dll',IconIndex=4}"/>
-          </DataTrigger>
-        </HierarchicalDataTemplate.Triggers>
-      </HierarchicalDataTemplate>
-      
-      <DataTemplate DataType="{x:Type Scanner:FileNode}">
-        <StackPanel Orientation="Horizontal" Margin="1">
-          <Image Height="16" Width="16" Source="{Binding Path=Path, Converter={StaticResource FilePathToImageSource}}" Margin="0 0 4 0"/>
-          <TextBlock Text="{Binding Name}" />
-        </StackPanel>
-      </DataTemplate>
-
-      <DataTemplate x:Key="ProjectItemDrag">
-        <StackPanel Orientation="Horizontal">
-          <Image Height="16" Width="16" Source="{Binding Path=Path, Converter={StaticResource FilePathToImageSource}}" Margin="0 0 4 0"/>
-          <TextBlock Text="{Binding Name}" />
-        </StackPanel>
-      </DataTemplate>
 
     </Grid.Resources>
     <extToolkit:BusyIndicator IsBusy="{Binding IsBusy}" BusyContent="{Binding BusyMessage}">
@@ -66,17 +38,15 @@
             <ColumnDefinition Width="*" />
             <ColumnDefinition Width="auto"/>
           </Grid.ColumnDefinitions>
-          <TextBox IsReadOnly="true" Text="{Binding RootPath}"  />
+          <TextBox IsReadOnly="true" Text="{Binding ProjectShelf.RootPath}"  />
           <Button Grid.Column="1" Command="{Binding SelectRootPathCommand}" Margin="3 0 0 0">
             <Image Height="16" Width="16" Source="{Converters:Shell32Icon FileName='shell32.dll',IconIndex=3}" />
           </Button>
         </Grid>
 
-        <TreeView Grid.Row="1" ItemsSource="{Binding RootNodes}" Margin="3 3 0 3"
-                  Helper:DragDropHelper.IsDragSource="true" Helper:DragDropHelper.DragDropTemplate="{StaticResource ProjectItemDrag}"
-                  />
+                <Views:ProjectShelfView Grid.Row="1" DataContext="{Binding ProjectShelf}" />
 
-        <GridSplitter Grid.Column="1" Grid.RowSpan="2" VerticalAlignment="Stretch" HorizontalAlignment="Center" ShowsPreview="true" Width="6" Background="Transparent"/>
+                <GridSplitter Grid.Column="1" Grid.RowSpan="2" VerticalAlignment="Stretch" HorizontalAlignment="Center" ShowsPreview="true" Width="6" Background="Transparent"/>
         
         <WrapPanel Grid.Column="2" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0 3 3 3">
           <Button Content="Launch" Command="{Binding LaunchCommand}" Margin="3 0 0 0"/>

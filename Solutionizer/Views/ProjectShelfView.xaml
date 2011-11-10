@@ -1,0 +1,49 @@
+﻿<UserControl x:Class="Solutionizer.Views.ProjectShelfView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:ViewModels="clr-namespace:Solutionizer.ViewModels" xmlns:Helper="clr-namespace:Solutionizer.Helper"
+             xmlns:Scanner="clr-namespace:Solutionizer.Scanner"
+             xmlns:Converters="clr-namespace:Solutionizer.Converters" mc:Ignorable="d" 
+             d:DataContext="{d:DesignInstance ViewModels:ProjectShelfViewModel}"
+             d:DesignHeight="300" d:DesignWidth="300">
+    <UserControl.Resources>
+        <Converters:FilePathToImageSourceConverter x:Key="FilePathToImageSource"/>
+
+        <HierarchicalDataTemplate DataType="{x:Type Scanner:DirectoryNode}" ItemsSource ="{Binding Children}">
+            <StackPanel Orientation="Horizontal" Margin="1">
+                <Image Height="16" Width="16" x:Name="nodeImg" Source="{Converters:Shell32Icon FileName='shell32.dll',IconIndex=3}" Margin="0 0 4 0" />
+                <TextBlock Text="{Binding Name}" />
+            </StackPanel>
+            <HierarchicalDataTemplate.Triggers>
+                <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=TreeViewItem}, Path=IsExpanded}" Value="True">
+                    <Setter TargetName="nodeImg" Property="Source" Value="{Converters:Shell32Icon FileName='shell32.dll',IconIndex=4}"/>
+                </DataTrigger>
+            </HierarchicalDataTemplate.Triggers>
+        </HierarchicalDataTemplate>
+
+        <DataTemplate DataType="{x:Type Scanner:FileNode}">
+            <StackPanel Orientation="Horizontal" Margin="1">
+                <Image Height="16" Width="16" Source="{Binding Path=Path, Converter={StaticResource FilePathToImageSource}}" Margin="0 0 4 0"/>
+                <TextBlock Text="{Binding Name}" />
+            </StackPanel>
+        </DataTemplate>
+
+        <DataTemplate x:Key="ProjectItemDrag">
+            <StackPanel Orientation="Horizontal">
+                <Image Height="16" Width="16" Source="{Binding Path=Path, Converter={StaticResource FilePathToImageSource}}" Margin="0 0 4 0"/>
+                <TextBlock Text="{Binding Name}" />
+            </StackPanel>
+        </DataTemplate>
+
+    </UserControl.Resources>
+    <Grid>
+        <TreeView 
+            ItemsSource="{Binding RootNodes}" Margin="3 3 0 3"
+            Helper:DragDropHelper.IsDragSource="true" 
+            Helper:DragDropHelper.DragDropTemplate="{StaticResource ProjectItemDrag}"
+            />
+
+    </Grid>
+</UserControl>
