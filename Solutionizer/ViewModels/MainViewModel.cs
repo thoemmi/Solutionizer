@@ -1,4 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.IO;
+using System.Linq;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Windows;
 using System.Windows.Input;
@@ -15,10 +18,14 @@ namespace Solutionizer.ViewModels {
         private readonly ICommand _selectRootPathCommand;
         private IList<DirectoryNode> _rootNodes;
         private SolutionViewModel _solution = new SolutionViewModel();
+        private readonly ICommand _launchCommand;
+        private readonly ICommand _saveCommand;
 
         public MainViewModel() {
-            _onLoadedCommand = new RelayCommand(OnLoaded);
+            _onLoadedCommand = new RelayCommand(RefreshFileTree);
             _selectRootPathCommand = new RelayCommand(OnSelectRootPath);
+            _launchCommand = new RelayCommand(OnLaunch, () => _solution.Projects.Any());
+            _saveCommand = new RelayCommand(OnSave, () => _solution.Projects.Any());
         }
 
         private void OnSelectRootPath() {
@@ -27,20 +34,11 @@ namespace Solutionizer.ViewModels {
             };
             if (dlg.ShowDialog(Application.Current.MainWindow) == true) {
                 RootPath = dlg.SelectedPath;
-                OnLoaded();
+                RefreshFileTree();
             }
-
-            //using (var dlg = new FolderBrowserDialog()) {
-            //    //dlg.RootFolder = Environment.SpecialFolder.Personal;
-            //    dlg.SelectedPath = RootPath;
-            //    if (dlg.ShowDialog() == DialogResult.OK) {
-            //        RootPath = dlg.SelectedPath;
-            //        OnLoaded();
-            //    }
-            //}
         }
 
-        private void OnLoaded() {
+        private void RefreshFileTree() {
             IsBusy = true;
 
             var worker = new BackgroundWorker();
@@ -57,12 +55,36 @@ namespace Solutionizer.ViewModels {
             worker.RunWorkerAsync();
         }
 
+        private void OnLaunch() {
+            var newFilename = Path.Combine(Path.GetTempPath(), DateTime.Now.ToString("yyyy-MM-dd_HHmmss")) + ".sln";
+            // TODO save solution
+            System.Diagnostics.Process.Start(newFilename);
+            Application.Current.MainWindow.WindowState = WindowState.Minimized;
+        }
+
+        private void OnSave() {
+            var dlg = new VistaSaveFileDialog {
+                Filter = "Solution File (*.sln)|*.sln"
+            };
+            if (dlg.ShowDialog() == true) {
+                // TODO save solution
+            }
+        }
+
         public ICommand OnLoadedCommand {
             get { return _onLoadedCommand; }
         }
 
         public ICommand SelectRootPathCommand {
             get { return _selectRootPathCommand; }
+        }
+
+        public ICommand LaunchCommand {
+            get { return _launchCommand; }
+        }
+
+        public ICommand SaveCommand {
+            get { return _saveCommand; }
         }
 
         public bool IsBusy {
