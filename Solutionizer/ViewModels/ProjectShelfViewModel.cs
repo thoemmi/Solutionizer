@@ -55,7 +55,7 @@ namespace Solutionizer.ViewModels {
             }
 
             if (_hideRootNode) {
-                RootNodes = _rootNode.Subdirectories.Cast<object>().Concat(_rootNode.Files).ToList();
+                RootNodes = root.Subdirectories.Cast<object>().Concat(root.Files).ToList();
             }else {
                 RootNodes = new[] { root };
             }
