@@ -44,6 +44,8 @@
             <RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
         <TreeView 
+            VirtualizingStackPanel.IsVirtualizing="True"
+            VirtualizingStackPanel.VirtualizationMode="Recycling"
             ItemsSource="{Binding RootNodes}" Margin="3 3 0 3"
             Helper:DragDropHelper.IsDragSource="true" 
             Helper:DragDropHelper.DragDropTemplate="{StaticResource ProjectItemDrag}"
