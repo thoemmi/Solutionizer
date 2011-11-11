@@ -6,7 +6,9 @@ using System.Linq;
 namespace Solutionizer.Scanner {
     public class ProjectScanner {
         public DirectoryNode Scan(string path) {
-            return CreateDirectoryNode(path);
+            var node = CreateDirectoryNode(path);
+            node.Name = path;
+            return node;
         }
 
         private List<DirectoryNode> GetDirectoryNodes(string path) {
