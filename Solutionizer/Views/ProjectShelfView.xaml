@@ -50,7 +50,7 @@
             />
         <StackPanel Grid.Row="1" Orientation="Horizontal">
             <ToggleButton IsChecked="{Binding IsFlatMode}" ToolTip="Toggle between flat and hierarchical display">F</ToggleButton>
-            <ToggleButton IsChecked="{Binding HideRootNode}" ToolTip="Toggle between flat and hierarchical display">H</ToggleButton>
+            <ToggleButton IsChecked="{Binding HideRootNode}" ToolTip="Hide the root node">H</ToggleButton>
         </StackPanel>
     </Grid>
 </UserControl>
