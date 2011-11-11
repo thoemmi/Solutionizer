@@ -39,11 +39,17 @@
 
     </UserControl.Resources>
     <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="auto"/>
+        </Grid.RowDefinitions>
         <TreeView 
             ItemsSource="{Binding RootNodes}" Margin="3 3 0 3"
             Helper:DragDropHelper.IsDragSource="true" 
             Helper:DragDropHelper.DragDropTemplate="{StaticResource ProjectItemDrag}"
             />
-
+        <StackPanel Grid.Row="1" Orientation="Horizontal">
+            <ToggleButton IsChecked="{Binding IsFlatMode}" ToolTip="Toggle between flat and hierarchical display">F</ToggleButton>
+        </StackPanel>
     </Grid>
 </UserControl>

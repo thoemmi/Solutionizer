@@ -73,6 +73,7 @@
     <Compile Include="Converters\FilePathToImageSourceConverter.cs" />
     <Compile Include="Converters\Shell32IconExtension.cs" />
     <Compile Include="Extensions\DependencyObjectExtensions.cs" />
+    <Compile Include="Extensions\EnumerableExtensions.cs" />
     <Compile Include="Helper\DragDropHelper.cs" />
     <Compile Include="Helper\DraggedAdorner.cs" />
     <Compile Include="Helper\GridViewSort.cs" />

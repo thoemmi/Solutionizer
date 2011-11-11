@@ -28,22 +28,23 @@ namespace Solutionizer.Scanner {
                 files.Insert(0, directoryNode.Files[0]);
             }
 
+            if (files.Count == 0 && subfolders.Count == 0) {
+                // we're not interested in empty directories
+                return null;
+            }
+
             subfolders.Sort((d1, d2) => String.Compare(d1.Name, d2.Name, StringComparison.InvariantCultureIgnoreCase));
             files.Sort((f1, f2) => String.Compare(f1.Name, f2.Name, StringComparison.InvariantCultureIgnoreCase));
 
-            if (files.Count > 0 || subfolders.Count > 0) {
-                return new DirectoryNode {
-                    Name = Path.GetFileName(folderpath),
-                    Path = folderpath,
-                    Subdirectories = subfolders,
-                    Files = files,
-                };
-            } else {
-                return null;
-            }
+            return new DirectoryNode {
+                Name = Path.GetFileName(folderpath),
+                Path = folderpath,
+                Subdirectories = subfolders,
+                Files = files,
+            };
         }
 
-        private List<FileNode> GetFileNodes(string path) {
+        private static List<FileNode> GetFileNodes(string path) {
             return
                 Directory.EnumerateFiles(path, "*.csproj", SearchOption.TopDirectoryOnly)
                     .Concat(Directory.EnumerateFiles(path, "*.vbproj", SearchOption.TopDirectoryOnly))
@@ -52,7 +53,7 @@ namespace Solutionizer.Scanner {
                     .ToList();
         }
 
-        private FileNode CreateFileNode(string filepath) {
+        private static FileNode CreateFileNode(string filepath) {
             return new FileNode {
                 Name = Path.GetFileNameWithoutExtension(filepath),
                 Path = filepath
