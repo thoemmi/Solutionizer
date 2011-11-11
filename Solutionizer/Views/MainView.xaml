@@ -17,6 +17,12 @@
         UseLayoutRounding="True"
         SnapsToDevicePixels="true"        
         Title="Solutionizer" Height="350" Width="525">
+    <Window.Resources>
+        <Converters:BusyToProgressStateConverter x:Key="BusyToProgressStateConverter"/>
+    </Window.Resources>
+    <Window.TaskbarItemInfo>
+        <TaskbarItemInfo ProgressState="{Binding IsBusy, Converter={StaticResource BusyToProgressStateConverter}}" />
+    </Window.TaskbarItemInfo>
   <i:Interaction.Triggers>
     <i:EventTrigger EventName="Loaded">
       <cmd:EventToCommand Command="{Binding OnLoadedCommand, Mode=OneWay}" />

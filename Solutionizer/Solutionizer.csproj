@@ -70,6 +70,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Converters\BusyToProgressStateConverter.cs" />
     <Compile Include="Converters\FilePathToImageSourceConverter.cs" />
     <Compile Include="Converters\Shell32IconExtension.cs" />
     <Compile Include="Extensions\DependencyObjectExtensions.cs" />
