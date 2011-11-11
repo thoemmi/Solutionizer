@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections;
+using System.ComponentModel;
 using System.Linq;
 using Solutionizer.Extensions;
-using System.Collections.Generic;
-using System.ComponentModel;
 using Solutionizer.Scanner;
 
 namespace Solutionizer.ViewModels {
@@ -13,6 +12,7 @@ namespace Solutionizer.ViewModels {
         private DirectoryNode _rootNode;
         private IList _rootNodes;
         private bool _isFlatMode;
+        private bool _hideRootNode;
 
         public ProjectShelfViewModel(MainViewModel mainViewModel) {
             _mainViewModel = mainViewModel;
@@ -28,7 +28,7 @@ namespace Solutionizer.ViewModels {
             };
             worker.RunWorkerCompleted += (o, ea) => {
                 _mainViewModel.IsBusy = false;
-                _rootNode = (DirectoryNode)ea.Result;
+                _rootNode = (DirectoryNode) ea.Result;
                 TransformNodes();
             };
             worker.RunWorkerAsync();
@@ -40,17 +40,24 @@ namespace Solutionizer.ViewModels {
                 return;
             }
 
+            DirectoryNode root;
             if (_isFlatMode) {
-                var root = new DirectoryNode {
+                root = new DirectoryNode {
                     Name = _rootNode.Name,
                     Path = _rootNode.Path,
-                    Files = new[] { _rootNode }.Flatten(d => d.Files, d => d.Subdirectories).ToList()
+                    Files = new[] {
+                        _rootNode
+                    }.Flatten(d => d.Files, d => d.Subdirectories).ToList()
                 };
                 root.Files.Sort((f1, f2) => String.Compare(f1.Name, f2.Name, StringComparison.InvariantCultureIgnoreCase));
-
-                RootNodes = new[] { root };
             } else {
-                RootNodes = new[] { _rootNode };
+                root = _rootNode;
+            }
+
+            if (_hideRootNode) {
+                RootNodes = _rootNode.Subdirectories.Cast<object>().Concat(_rootNode.Files).ToList();
+            }else {
+                RootNodes = new[] { root };
             }
         }
 
@@ -82,6 +89,17 @@ namespace Solutionizer.ViewModels {
                     _isFlatMode = value;
                     TransformNodes();
                     RaisePropertyChanged(() => IsFlatMode);
+                }
+            }
+        }
+
+        public bool HideRootNode {
+            get { return _hideRootNode; }
+            set {
+                if (_hideRootNode != value) {
+                    _hideRootNode = value;
+                    TransformNodes();
+                    RaisePropertyChanged(() => HideRootNode);
                 }
             }
         }
