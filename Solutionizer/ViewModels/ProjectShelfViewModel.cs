@@ -2,6 +2,7 @@
 using System.Collections;
 using System.ComponentModel;
 using System.Linq;
+using GalaSoft.MvvmLight;
 using Solutionizer.Extensions;
 using Solutionizer.Scanner;
 
