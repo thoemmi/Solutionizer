@@ -13,7 +13,6 @@ namespace Solutionizer.Tests {
 
             Assert.AreEqual("CsTestProject1", project.Name);
             Assert.AreEqual("CsTestProject1", project.AssemblyName);
-            Assert.IsFalse(project.IsSccBound);
             Assert.IsEmpty(project.ProjectReferences);
         }
 
@@ -25,7 +24,6 @@ namespace Solutionizer.Tests {
 
             Assert.AreEqual("CsTestProject2", project.Name);
             Assert.AreEqual("CsTestProject2", project.AssemblyName);
-            Assert.IsFalse(project.IsSccBound);
             Assert.AreEqual(1, project.ProjectReferences.Count);
             Assert.AreEqual(1, project.ProjectReferences.Count);
             Assert.AreEqual(Path.Combine(_testDataPath, "CsTestProject1.csproj"), project.ProjectReferences[0]);
