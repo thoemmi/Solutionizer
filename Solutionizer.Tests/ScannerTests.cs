@@ -4,7 +4,7 @@ using Solutionizer.Scanner;
 
 namespace Solutionizer.Tests {
     [TestFixture]
-    public class ScannerTest : ProjectTestBase {
+    public class ScannerTests : ProjectTestBase {
         [Test]
         public void CanScanEmptyDirectory() {
             var root = ProjectScanner.Scan(_testDataPath);
