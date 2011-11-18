@@ -41,6 +41,17 @@ namespace Solutionizer.Tests {
         }
 
         [Test]
+        public void CanReadProjectInRoot() {
+            CopyTestDataToPath("CsTestProject1.csproj", _testDataPath);
+
+            var scanner = new ProjectScanner();
+            var root = scanner.Scan(_testDataPath);
+
+            Assert.AreEqual("CsTestProject1", root.Files[0].Name);
+            Assert.AreEqual(Path.Combine(_testDataPath, "CsTestProject1.csproj"), root.Files[0].Path);
+        }
+
+        [Test]
         public void CanScanTwoProjectsInSubdirectories() {
             CopyTestDataToPath("CsTestProject1.csproj", Path.Combine(_testDataPath, "p1"));
             CopyTestDataToPath("CsTestProject2.csproj", Path.Combine(_testDataPath, "p2"));
@@ -51,6 +62,17 @@ namespace Solutionizer.Tests {
             Assert.AreEqual(_testDataPath, root.Name);
             Assert.AreEqual(2, root.Subdirectories.Count);
             Assert.IsEmpty(root.Files);
+        }
+
+        [Test]
+        public void CanReadProjectInSubdirectory() {
+            CopyTestDataToPath("CsTestProject1.csproj", Path.Combine(_testDataPath, "dir"));
+
+            var scanner = new ProjectScanner();
+            var root = scanner.Scan(_testDataPath);
+
+            Assert.AreEqual("CsTestProject1", root.Subdirectories[0].Files[0].Name);
+            Assert.AreEqual(Path.Combine(_testDataPath, "dir", "CsTestProject1.csproj"), root.Subdirectories[0].Files[0].Path);
         }
     }
 }
