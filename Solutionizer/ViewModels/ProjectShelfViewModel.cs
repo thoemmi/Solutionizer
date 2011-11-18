@@ -24,8 +24,7 @@ namespace Solutionizer.ViewModels {
 
             var worker = new BackgroundWorker();
             worker.DoWork += (o, ea) => {
-                var scanner = new ProjectScanner();
-                ea.Result = scanner.Scan(RootPath);
+                ea.Result = ProjectScanner.Scan(RootPath);
             };
             worker.RunWorkerCompleted += (o, ea) => {
                 _mainViewModel.IsBusy = false;

@@ -4,8 +4,8 @@ using System.IO;
 using System.Linq;
 
 namespace Solutionizer.Scanner {
-    public class ProjectScanner {
-        public DirectoryNode Scan(string path) {
+    public static class ProjectScanner {
+        public static DirectoryNode Scan(string path) {
             var node = CreateDirectoryNode(path);
             if (node == null) {
                 node = new DirectoryNode {
@@ -16,7 +16,7 @@ namespace Solutionizer.Scanner {
             return node;
         }
 
-        private List<DirectoryNode> GetDirectoryNodes(string path) {
+        private static List<DirectoryNode> GetDirectoryNodes(string path) {
             return
                 Directory.EnumerateDirectories(path)
                     .Select(CreateDirectoryNode)
@@ -24,7 +24,7 @@ namespace Solutionizer.Scanner {
                     .ToList();
         }
 
-        private DirectoryNode CreateDirectoryNode(string folderpath) {
+        private static DirectoryNode CreateDirectoryNode(string folderpath) {
             var files = GetFileNodes(folderpath);
             var subfolders = GetDirectoryNodes(folderpath);
 
