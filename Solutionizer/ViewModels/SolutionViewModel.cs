@@ -89,7 +89,7 @@ namespace Solutionizer.ViewModels {
                 WriteHeader(streamWriter);
 
                 foreach (var project in _referencedProjects.Concat(_projects)) {
-                    streamWriter.WriteLine("Project(\"{0}\") = \"{1}\", \"{2}\", \"{3}\"", project.ProjectTypeGuids.Last(), project.Name, project.Filepath, project.Guid);
+                    streamWriter.WriteLine("Project(\"{0}\") = \"{1}\", \"{2}\", \"{3}\"", "{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}", project.Name, project.Filepath, project.Guid);
                     streamWriter.WriteLine("EndProject");
                 }
 

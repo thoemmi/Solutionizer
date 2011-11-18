@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Xml;
 
 namespace Solutionizer.ViewModels {
@@ -14,7 +13,6 @@ namespace Solutionizer.ViewModels {
         private bool _isSccBound;
         private List<string> _projectReferences;
         private List<string> _assemblyReferences;
-        private List<Guid> _projectTypeGuids;
 
         public static Project Load(string filename) {
             var projectReferences = new List<string>();
@@ -28,7 +26,6 @@ namespace Solutionizer.ViewModels {
 
             var assemblyName = xmlDocument.GetElementsByTagName("AssemblyName")[0].FirstChild.Value;
             var guid = Guid.Parse(xmlDocument.GetElementsByTagName("ProjectGuid")[0].FirstChild.Value);
-            var projectTypeGuids = xmlDocument.GetElementsByTagName("ProjectTypeGuids")[0].FirstChild.Value.Split(';').Select(Guid.Parse).ToList();
             var directoryName = Path.GetDirectoryName(filename);
             foreach (XmlNode xmlNode in xmlDocument.GetElementsByTagName("ProjectReference")) {
                 projectReferences.Add(Path.GetFullPath(Path.Combine(directoryName, xmlNode.Attributes["Include"].Value)));
@@ -59,7 +56,6 @@ namespace Solutionizer.ViewModels {
                 _name = Path.GetFileNameWithoutExtension(filename),
                 _assemblyName = assemblyName,
                 _guid = guid,
-                _projectTypeGuids = projectTypeGuids,
                 _targetFilePath = targetFilePath,
                 _isSccBound = isSccBound,
                 _projectReferences = projectReferences,
@@ -86,10 +82,6 @@ namespace Solutionizer.ViewModels {
 
         public Guid Guid {
             get { return _guid; }
-        }
-
-        public List<Guid> ProjectTypeGuids {
-            get { return _projectTypeGuids; }
         }
 
         public bool IsSccBound {
