@@ -1,6 +1,9 @@
 ﻿using System;
+using System.Linq;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
+using System.Text;
 using System.Windows.Input;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
@@ -78,6 +81,48 @@ namespace Solutionizer.ViewModels {
 
         public ICommand DropCommand {
             get { return _dropCommand; }
+        }
+
+        public bool Save(string filename) {
+            //var solutionName = Path.GetFileName(filename);
+            using (var streamWriter = File.CreateText(filename)) {
+                WriteHeader(streamWriter);
+
+                foreach (var project in _referencedProjects.Concat(_projects)) {
+                    streamWriter.WriteLine("Project(\"{0}\") = \"{1}\", \"{2}\", \"{3}\"", project.ProjectTypeGuids.Last(), project.Name, project.Filepath, project.Guid);
+                    streamWriter.WriteLine("EndProject");
+                }
+
+                streamWriter.WriteLine("Global");
+                WriteSolutionConfigurationPlatforms(streamWriter);
+                WriteProjectConfigurationPlatforms(streamWriter);
+                WriteSolutionProperties(streamWriter);
+                streamWriter.WriteLine("EndGlobal");
+            }
+
+            return true;
+        }
+
+        private void WriteSolutionConfigurationPlatforms(StreamWriter streamWriter) {
+            streamWriter.WriteLine("\tGlobalSection(SolutionConfigurationPlatforms) = preSolution");
+            streamWriter.WriteLine("\tEndGlobalSection");
+        }
+
+        private void WriteProjectConfigurationPlatforms(StreamWriter streamWriter) {
+            streamWriter.WriteLine("\tGlobalSection(ProjectConfigurationPlatforms) = postSolution");
+            streamWriter.WriteLine("\tEndGlobalSection");
+        }
+
+        private void WriteSolutionProperties(StreamWriter streamWriter) {
+            streamWriter.WriteLine("\tGlobalSection(SolutionProperties) = preSolution");
+            streamWriter.WriteLine("\t\tHideSolutionNode = FALSE");
+            streamWriter.WriteLine("\tEndGlobalSection");
+        }
+
+        private void WriteHeader(StreamWriter stream) {
+            stream.WriteLine();
+            stream.WriteLine("Microsoft Visual Studio Solution File, Format Version 11.00");
+            stream.WriteLine("# Visual Studio 2010");
         }
     }
 }
