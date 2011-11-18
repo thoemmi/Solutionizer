@@ -6,7 +6,7 @@ namespace Solutionizer.Tests {
     [TestFixture]
     public class ProjectTests : ProjectTestBase {
         [Test]
-        public void CanReadProjectFileWithoutReferencedProjects() {
+        public void CanReadProjectFileWithoutProjectReferences() {
             CopyTestDataToPath("CsTestProject1.csproj", _testDataPath);
 
             var project = Project.Load(Path.Combine(_testDataPath, "CsTestProject1.csproj"));
@@ -15,6 +15,20 @@ namespace Solutionizer.Tests {
             Assert.AreEqual("CsTestProject1", project.AssemblyName);
             Assert.IsFalse(project.IsSccBound);
             Assert.IsEmpty(project.ProjectReferences);
+        }
+
+        [Test]
+        public void CanReadProjectFileWithProjectReferences() {
+            CopyTestDataToPath("CsTestProject2.csproj", _testDataPath);
+
+            var project = Project.Load(Path.Combine(_testDataPath, "CsTestProject2.csproj"));
+
+            Assert.AreEqual("CsTestProject2", project.Name);
+            Assert.AreEqual("CsTestProject2", project.AssemblyName);
+            Assert.IsFalse(project.IsSccBound);
+            Assert.AreEqual(1, project.ProjectReferences.Count);
+            Assert.AreEqual(1, project.ProjectReferences.Count);
+            Assert.AreEqual(Path.Combine(_testDataPath, "CsTestProject1.csproj"), project.ProjectReferences[0]);
         }
     }
 }

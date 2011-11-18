@@ -34,6 +34,12 @@
     <Reference Include="System" />
     <Reference Include="System.Core" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="CsTestProject1.csproj">
+      <Project>{717b4b8e-714c-4a52-a61b-f5bc4e655131}</Project>
+      <Name>CsTestProject1</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
