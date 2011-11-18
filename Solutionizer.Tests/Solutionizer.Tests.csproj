@@ -58,7 +58,7 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="TestData\CsTestProject1.csproj" />
-    <Content Include="TestData\CsTestProject2.csproj" />
+    <EmbeddedResource Include="TestData\CsTestProject2.csproj" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Solutionizer\Solutionizer.csproj">
