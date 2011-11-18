@@ -7,6 +7,11 @@ namespace Solutionizer.Scanner {
     public class ProjectScanner {
         public DirectoryNode Scan(string path) {
             var node = CreateDirectoryNode(path);
+            if (node == null) {
+                node = new DirectoryNode {
+                    Path = path
+                };
+            }
             node.Name = path;
             return node;
         }
