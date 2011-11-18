@@ -4,11 +4,12 @@ using NUnit.Framework;
 
 namespace Solutionizer.Tests {
     public class ProjectTestBase {
+        private static readonly Random _random = new Randomizer(Environment.TickCount);
         protected string _testDataPath;
 
         [SetUp]
         public void SetUp() {
-            _testDataPath = Path.Combine(Path.GetTempPath(), "Solutionizer-" + DateTime.Now.ToString("o").Replace(':', '-'));
+            _testDataPath = Path.Combine(Path.GetTempPath(), "SolutionizerTest-" + DateTime.Now.ToString("o").Replace(':', '-') + "-" + _random.Next());
             Directory.CreateDirectory(_testDataPath);
         } 
 
