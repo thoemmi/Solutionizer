@@ -21,20 +21,25 @@
     </Grid.Resources>
       
     <Grid.RowDefinitions>
+      <RowDefinition Height="auto" />
       <RowDefinition />
+      <RowDefinition Height="auto" />
       <RowDefinition Height="auto" />
       <RowDefinition />
       <RowDefinition Height="auto"/>
     </Grid.RowDefinitions>
 
+    <TextBlock Margin="0 2">Selected projects:</TextBlock>
+        
     <ListView 
+      Grid.Row="1"
       ItemsSource="{Binding Projects}" 
-        Helper:GridViewSort.AutoSort="true"
-        Helper:GridViewSort.ShowSortGlyph="true"
+      Helper:GridViewSort.AutoSort="true"
+      Helper:GridViewSort.ShowSortGlyph="true"
       Helper:DragDropHelper.IsDropTarget="True" Helper:DragDropHelper.DropCommand="{Binding DropCommand}" 
       Foreground="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}">
       <ListView.View>
-        <GridView d:DataContext="{d:DesignInstance ViewModels:Project}">
+        <GridView>
           <GridViewColumn Header="Name" CellTemplate="{StaticResource NameWithImage}" Helper:GridViewSort.PropertyName="Name"/>
           <GridViewColumn Header="Assembly" DisplayMemberBinding="{Binding AssemblyName}" Helper:GridViewSort.PropertyName="AssemblyName"/>
           <GridViewColumn Header="Path" DisplayMemberBinding="{Binding Filepath}" Helper:GridViewSort.PropertyName="Path"/>
@@ -42,16 +47,18 @@
       </ListView.View>
     </ListView>
 
-    <GridSplitter Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Stretch" ShowsPreview="true" Height="6" Background="Transparent"/>
+    <GridSplitter Grid.Row="2" VerticalAlignment="Center" HorizontalAlignment="Stretch" ShowsPreview="true" Height="6" Background="Transparent"/>
 
+    <TextBlock Margin="0 2" Grid.Row="3">Referenced projects:</TextBlock>
+        
     <ListView 
-      Grid.Row="2" 
+      Grid.Row="4" 
       ItemsSource="{Binding ReferencedProjects}" 
         Helper:GridViewSort.AutoSort="true"
         Helper:GridViewSort.ShowSortGlyph="true"
       Foreground="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}">
       <ListView.View>
-        <GridView d:DataContext="{d:DesignInstance ViewModels:Project}">
+        <GridView>
           <GridViewColumn Header="Name" CellTemplate="{StaticResource NameWithImage}" Helper:GridViewSort.PropertyName="Name"/>
           <GridViewColumn Header="Assembly" DisplayMemberBinding="{Binding AssemblyName}" Helper:GridViewSort.PropertyName="AssemblyName"/>
           <GridViewColumn Header="Path" DisplayMemberBinding="{Binding Filepath}" Helper:GridViewSort.PropertyName="Path"/>
@@ -59,7 +66,7 @@
       </ListView.View>
     </ListView>
 
-    <StackPanel Grid.Row="3" Orientation="Horizontal">
+    <StackPanel Grid.Row="5" Orientation="Horizontal">
       <TextBlock Text="Projects: "/>
       <TextBlock Text="{Binding Projects.Count}"/>
       <TextBlock Text=" - References: "/>
