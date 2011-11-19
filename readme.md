@@ -9,6 +9,7 @@ projects to create a solution file. This solution can be saved or launched direc
 - TFS support
 - Metro theme
 - Tooltips
+- Folder history
 - Settings
   - Persistence
   - UI
@@ -17,3 +18,4 @@ projects to create a solution file. This solution can be saved or launched direc
   - user
 - Drag'n'drop within solution
 - Caching of project files
+- Installer
