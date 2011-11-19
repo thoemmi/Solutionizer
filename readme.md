@@ -6,6 +6,7 @@ projects to create a solution file. This solution can be saved or launched direc
 
 ## TODO
 
+- TFS support
 - Metro theme
 - Tooltips
 - Settings
@@ -15,3 +16,4 @@ projects to create a solution file. This solution can be saved or launched direc
 - Solution folders
   - user
 - Drag'n'drop within solution
+- Caching of project files
