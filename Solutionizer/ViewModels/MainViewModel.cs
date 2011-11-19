@@ -6,6 +6,7 @@ using System.Windows.Input;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using Ookii.Dialogs.Wpf;
+using Solutionizer.Commands;
 
 namespace Solutionizer.ViewModels {
     public class MainViewModel : ViewModelBase {
@@ -41,7 +42,7 @@ namespace Solutionizer.ViewModels {
 
         private void OnLaunch() {
             var newFilename = Path.Combine(Path.GetTempPath(), DateTime.Now.ToString("yyyy-MM-dd_HHmmss")) + ".sln";
-            // TODO save solution
+            new SaveSolutionCommand(newFilename, _solution).Execute();
             System.Diagnostics.Process.Start(newFilename);
             Application.Current.MainWindow.WindowState = WindowState.Minimized;
         }
@@ -51,7 +52,7 @@ namespace Solutionizer.ViewModels {
                 Filter = "Solution File (*.sln)|*.sln"
             };
             if (dlg.ShowDialog() == true) {
-                // TODO save solution
+                new SaveSolutionCommand(dlg.FileName, _solution).Execute();
             }
         }
         
