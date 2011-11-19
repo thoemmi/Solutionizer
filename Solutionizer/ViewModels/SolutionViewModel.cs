@@ -89,15 +89,25 @@ namespace Solutionizer.ViewModels {
             using (var streamWriter = File.CreateText(filename)) {
                 WriteHeader(streamWriter);
 
-                foreach (var project in _referencedProjects.Concat(_projects)) {
+                foreach (var project in _projects) {
                     streamWriter.WriteLine("Project(\"{0}\") = \"{1}\", \"{2}\", \"{3}\"", "{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}", project.Name, GetRelativePath(filename, project.Filepath), project.Guid.ToString("B").ToUpperInvariant());
                     streamWriter.WriteLine("EndProject");
                 }
+
+                foreach (var project in _referencedProjects) {
+                    streamWriter.WriteLine("Project(\"{0}\") = \"{1}\", \"{2}\", \"{3}\"", "{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}", project.Name, GetRelativePath(filename, project.Filepath), project.Guid.ToString("B").ToUpperInvariant());
+                    streamWriter.WriteLine("EndProject");
+                }
+
+                // write solution folder for referenced projects
+                streamWriter.WriteLine("Project(\"{0}\") = \"{1}\", \"{2}\", \"{3}\"", "{2150E333-8FDC-42A3-9474-1A3956D46DE8}", "References", "References", "{95374152-F021-4ABB-B317-74A183A89F00}");
+                streamWriter.WriteLine("EndProject");
 
                 streamWriter.WriteLine("Global");
                 WriteSolutionConfigurationPlatforms(streamWriter);
                 WriteProjectConfigurationPlatforms(streamWriter);
                 WriteSolutionProperties(streamWriter);
+                WriteNestedProjects(streamWriter);
                 streamWriter.WriteLine("EndGlobal");
             }
 
@@ -124,6 +134,14 @@ namespace Solutionizer.ViewModels {
             //stream.WriteLine();
             stream.WriteLine("Microsoft Visual Studio Solution File, Format Version 11.00");
             stream.WriteLine("# Visual Studio 2010");
+        }
+
+        private void WriteNestedProjects(TextWriter streamWriter) {
+            streamWriter.WriteLine("\tGlobalSection(NestedProjects) = preSolution");
+            foreach (var referencedProject in _referencedProjects) {
+                streamWriter.WriteLine("\t\t{0} = {1}", referencedProject.Guid.ToString("B").ToUpperInvariant(), "{95374152-F021-4ABB-B317-74A183A89F00}");
+            }
+            streamWriter.WriteLine("\tEndGlobalSection");
         }
 
         public static string GetRelativePath(string fromPath, string toPath) {
