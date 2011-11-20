@@ -92,6 +92,7 @@
     <Compile Include="ViewModels\SolutionViewModel.cs" />
     <Compile Include="Scanner\ProjectScanner.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
+    <Compile Include="ViewModels\SortedObservableCollection.cs" />
     <Compile Include="Views\MainView.xaml.cs">
       <DependentUpon>MainView.xaml</DependentUpon>
     </Compile>

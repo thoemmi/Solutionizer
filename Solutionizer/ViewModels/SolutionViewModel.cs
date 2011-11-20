@@ -1,6 +1,7 @@
 ﻿using System;
-using System.Linq;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Windows.Input;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
@@ -82,16 +83,20 @@ namespace Solutionizer.ViewModels {
         }
 
         private void AddReferencedProjects(Project project, int depth) {
-            var referenceFolder = new Lazy<SolutionFolder>(GetOrCreateReferenceFolder);
+            var referenceFolder = GetOrCreateReferenceFolder();
 
             foreach (var projectReference in project.ProjectReferences) {
                 var referencedProject = Project.Load(projectReference);
 
-                if (_solutionFolder.Items.OfType<SolutionProject>().Any(p => p.Guid == referencedProject.Guid) || (referenceFolder.IsValueCreated && referenceFolder.Value.Items.Any(p => p.Guid == referencedProject.Guid))) {
+                if (_solutionFolder.ContainsProject(referencedProject)) {
                     continue;
                 }
 
-                referenceFolder.Value.AddProject(referencedProject);
+                if (referenceFolder.ContainsProject(referencedProject)) {
+                    continue;
+                }
+
+                referenceFolder.AddProject(referencedProject);
 
                 if (depth > 0) {
                     AddReferencedProjects(referencedProject, depth - 1);
@@ -120,19 +125,37 @@ namespace Solutionizer.ViewModels {
 
     public abstract class SolutionItem : ViewModelBase {
         private string _name;
+
         public string Name {
             get { return _name; }
-            set { if (_name != value) {
-                _name = value;
-                RaisePropertyChanged(() => Name);
-            } }
+            set {
+                if (_name != value) {
+                    _name = value;
+                    RaisePropertyChanged(() => Name);
+                }
+            }
         }
 
         public Guid Guid { get; set; }
     }
 
+    public class SolutionItemComparer : IComparer<SolutionItem> {
+        public int Compare(SolutionItem x, SolutionItem y) {
+            var xIsFolder = x is SolutionFolder;
+            var yIsFolder = y is SolutionFolder;
+            if (xIsFolder && !yIsFolder) {
+                return -1;
+            }
+            if (!xIsFolder && yIsFolder) {
+                return +1;
+            }
+            return StringComparer.InvariantCultureIgnoreCase.Compare(x.Name, y.Name);
+        }
+    }
+
     public class SolutionFolder : SolutionItem {
-        private readonly ObservableCollection<SolutionItem> _items = new ObservableCollection<SolutionItem>();
+        private readonly SortedObservableCollection<SolutionItem> _items =
+            new SortedObservableCollection<SolutionItem>(new SolutionItemComparer());
 
         public ObservableCollection<SolutionItem> Items {
             get { return _items; }
