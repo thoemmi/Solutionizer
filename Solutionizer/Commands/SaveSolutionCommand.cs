@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Linq;
 using System.IO;
 using System.Runtime.InteropServices;
 using System.Text;
+using Solutionizer.Extensions;
 using Solutionizer.ViewModels;
 
 namespace Solutionizer.Commands {
@@ -15,33 +17,31 @@ namespace Solutionizer.Commands {
         }
 
         public void Execute() {
-            //var solutionName = Path.GetFileName(filename);
             using (var streamWriter = File.CreateText(_solutionFileName)) {
                 WriteHeader(streamWriter);
 
-                foreach (var project in _solution.Projects) {
+                var projects = _solution.SolutionFolder.Items.Flatten<SolutionItem, SolutionProject, SolutionFolder>(p => p.Items);
+
+                foreach (var project in projects) {
                     streamWriter.WriteLine("Project(\"{0}\") = \"{1}\", \"{2}\", \"{3}\"", "{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}",
-                                           project.Name, GetRelativePath(_solutionFileName, project.Filepath),
+                                           project.Name, GetRelativePath(_solutionFileName, project.Project.Filepath),
                                            project.Guid.ToString("B").ToUpperInvariant());
                     streamWriter.WriteLine("EndProject");
                 }
 
-                foreach (var project in _solution.ReferencedProjects) {
-                    streamWriter.WriteLine("Project(\"{0}\") = \"{1}\", \"{2}\", \"{3}\"", "{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}",
-                                           project.Name, GetRelativePath(_solutionFileName, project.Filepath),
-                                           project.Guid.ToString("B").ToUpperInvariant());
+                var folders = _solution.SolutionFolder.Items.Flatten<SolutionItem, SolutionFolder, SolutionFolder>(p => p.Items);
+                foreach (var folder in folders) {
+                    streamWriter.WriteLine("Project(\"{0}\") = \"{1}\", \"{2}\", \"{3}\"", "{2150E333-8FDC-42A3-9474-1A3956D46DE8}",
+                                           folder.Name, folder.Name, folder.Guid.ToString("B").ToUpperInvariant());
                     streamWriter.WriteLine("EndProject");
                 }
-
-                // write solution folder for referenced projects
-                streamWriter.WriteLine("Project(\"{0}\") = \"{1}\", \"{2}\", \"{3}\"", "{2150E333-8FDC-42A3-9474-1A3956D46DE8}",
-                                       "References", "References", "{95374152-F021-4ABB-B317-74A183A89F00}");
-                streamWriter.WriteLine("EndProject");
 
                 streamWriter.WriteLine("Global");
                 WriteSolutionProperties(streamWriter);
                 WriteNestedProjects(streamWriter);
                 streamWriter.WriteLine("EndGlobal");
+
+                _solution.IsDirty = false;
             }
         }
 
@@ -58,10 +58,17 @@ namespace Solutionizer.Commands {
         }
 
         private void WriteNestedProjects(TextWriter streamWriter) {
+            var folders = _solution.SolutionFolder.Items.Flatten<SolutionItem, SolutionFolder, SolutionFolder>(p => p.Items).ToList();
+            if (folders.Count == 0) {
+                return;
+            }
+
             streamWriter.WriteLine("\tGlobalSection(NestedProjects) = preSolution");
-            foreach (var referencedProject in _solution.ReferencedProjects) {
-                streamWriter.WriteLine("\t\t{0} = {1}", referencedProject.Guid.ToString("B").ToUpperInvariant(),
-                                       "{95374152-F021-4ABB-B317-74A183A89F00}");
+            foreach (var folder in folders) {
+                foreach (var project in folder.Items.OfType<SolutionProject>()) {
+                    streamWriter.WriteLine("\t\t{0} = {1}", project.Guid.ToString("B").ToUpperInvariant(),
+                                           folder.Guid.ToString("B").ToUpperInvariant());
+                }
             }
             streamWriter.WriteLine("\tEndGlobalSection");
         }

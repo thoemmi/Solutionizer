@@ -14,7 +14,18 @@ namespace Solutionizer.ViewModels {
         private List<string> _projectReferences;
         private List<string> _assemblyReferences;
 
+        private static readonly Dictionary<string, Project> _knownProjectsByPath = new Dictionary<string, Project>(StringComparer.InvariantCultureIgnoreCase);
+
         public static Project Load(string filename) {
+            Project project;
+            if (!_knownProjectsByPath.TryGetValue(filename, out project)) {
+                project = LoadInternal(filename);
+                _knownProjectsByPath.Add(filename, project);
+            }
+            return project;
+        }
+
+        public static Project LoadInternal(string filename) {
             var projectReferences = new List<string>();
             var assemblyReferences = new List<string>();
 

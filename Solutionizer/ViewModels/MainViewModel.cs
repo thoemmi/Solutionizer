@@ -23,8 +23,8 @@ namespace Solutionizer.ViewModels {
             _projectShelfViewModel = new ProjectShelfViewModel(this);
             _onLoadedCommand = new RelayCommand(OnLoaded);
             _selectRootPathCommand = new RelayCommand(OnSelectRootPath);
-            _launchCommand = new RelayCommand(OnLaunch, () => _solution.Projects.Any());
-            _saveCommand = new RelayCommand(OnSave, () => _solution.Projects.Any());
+            _launchCommand = new RelayCommand(OnLaunch, () => _solution.SolutionHasItems);
+            _saveCommand = new RelayCommand(OnSave, () => _solution.SolutionHasItems);
         }
 
         private void OnSelectRootPath() {

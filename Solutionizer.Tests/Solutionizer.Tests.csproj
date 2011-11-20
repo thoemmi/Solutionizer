@@ -60,7 +60,9 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="TestData\CsTestProject1.csproj" />
+    <EmbeddedResource Include="TestData\CsTestProject1.csproj">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="TestData\CsTestProject2.csproj" />
   </ItemGroup>
   <ItemGroup>
