@@ -104,6 +104,9 @@ namespace Solutionizer.ViewModels {
                     _isFlatMode = value;
                     TransformNodes();
                     RaisePropertyChanged(() => IsFlatMode);
+
+                    // HACK: this call is necessary because RelayCommand.CanExecuteChanged does not rely on CommandProcessor in V4beta1
+                    // See http://mvvmlight.codeplex.com/workitem/7546
                     _toggleHideRootNodeCommand.RaiseCanExecuteChanged();
                 }
             }
