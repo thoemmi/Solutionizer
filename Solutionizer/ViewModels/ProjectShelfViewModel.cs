@@ -4,7 +4,6 @@ using System.ComponentModel;
 using System.Linq;
 using System.Windows.Input;
 using GalaSoft.MvvmLight;
-using GalaSoft.MvvmLight.Command;
 using Solutionizer.Extensions;
 using Solutionizer.Scanner;
 
@@ -17,13 +16,13 @@ namespace Solutionizer.ViewModels {
         private bool _isFlatMode;
         private bool _hideRootNode;
         private readonly ICommand _toggleFlatModeCommand;
-        private readonly RelayCommand _toggleHideRootNodeCommand;
+        private readonly ICommand _toggleHideRootNodeCommand;
 
         public ProjectShelfViewModel(MainViewModel mainViewModel) {
             _mainViewModel = mainViewModel;
 
-            _toggleFlatModeCommand = new RelayCommand(() => IsFlatMode = !IsFlatMode);
-            _toggleHideRootNodeCommand = new RelayCommand(() => HideRootNode = !HideRootNode, () => !IsFlatMode);
+            _toggleFlatModeCommand = new FixedRelayCommand(() => IsFlatMode = !IsFlatMode);
+            _toggleHideRootNodeCommand = new FixedRelayCommand(() => HideRootNode = !HideRootNode, () => !IsFlatMode);
         }
 
         private void RefreshFileTree() {
@@ -104,10 +103,6 @@ namespace Solutionizer.ViewModels {
                     _isFlatMode = value;
                     TransformNodes();
                     RaisePropertyChanged(() => IsFlatMode);
-
-                    // HACK: this call is necessary because RelayCommand.CanExecuteChanged does not rely on CommandProcessor in V4beta1
-                    // See http://mvvmlight.codeplex.com/workitem/7546
-                    _toggleHideRootNodeCommand.RaiseCanExecuteChanged();
                 }
             }
         }

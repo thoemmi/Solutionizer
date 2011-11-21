@@ -88,6 +88,8 @@
     <Compile Include="Helper\GridViewSort.cs" />
     <Compile Include="Helper\Icons.cs" />
     <Compile Include="Helper\InsertionAdorner.cs" />
+    <Compile Include="ViewModels\FixedRelayCommand.cs" />
+    <Compile Include="ViewModels\FixedRelayCommandGeneric.cs" />
     <Compile Include="ViewModels\Project.cs" />
     <Compile Include="ViewModels\ProjectShelfViewModel.cs" />
     <Compile Include="ViewModels\SolutionViewModel.cs" />

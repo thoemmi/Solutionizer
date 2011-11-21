@@ -1,10 +1,8 @@
 ﻿using System;
 using System.IO;
-using System.Linq;
 using System.Windows;
 using System.Windows.Input;
 using GalaSoft.MvvmLight;
-using GalaSoft.MvvmLight.Command;
 using Ookii.Dialogs.Wpf;
 using Solutionizer.Commands;
 
@@ -21,10 +19,10 @@ namespace Solutionizer.ViewModels {
 
         public MainViewModel() {
             _projectShelfViewModel = new ProjectShelfViewModel(this);
-            _onLoadedCommand = new RelayCommand(OnLoaded);
-            _selectRootPathCommand = new RelayCommand(OnSelectRootPath);
-            _launchCommand = new RelayCommand(OnLaunch, () => _solution.SolutionHasItems);
-            _saveCommand = new RelayCommand(OnSave, () => _solution.SolutionHasItems);
+            _onLoadedCommand = new FixedRelayCommand(OnLoaded);
+            _selectRootPathCommand = new FixedRelayCommand(OnSelectRootPath);
+            _launchCommand = new FixedRelayCommand(OnLaunch, () => _solution.SolutionHasItems);
+            _saveCommand = new FixedRelayCommand(OnSave, () => _solution.SolutionHasItems);
         }
 
         private void OnSelectRootPath() {

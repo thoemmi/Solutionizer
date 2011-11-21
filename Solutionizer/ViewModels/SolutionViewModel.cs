@@ -4,7 +4,6 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows.Input;
 using GalaSoft.MvvmLight;
-using GalaSoft.MvvmLight.Command;
 using Solutionizer.Scanner;
 
 namespace Solutionizer.ViewModels {
@@ -17,7 +16,7 @@ namespace Solutionizer.ViewModels {
         private bool _isSccBound;
 
         public SolutionViewModel() {
-            _dropCommand = new RelayCommand<object>(OnDrop, obj => obj is FileNode);
+            _dropCommand = new FixedRelayCommand<object>(OnDrop, obj => obj is FileNode);
             _solutionFolder.Items.CollectionChanged += (sender, args) => {
                 SolutionHasItems = _solutionFolder.Items.Count > 0;
                 IsDirty = true;
