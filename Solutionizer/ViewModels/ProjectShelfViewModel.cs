@@ -2,7 +2,9 @@
 using System.Collections;
 using System.ComponentModel;
 using System.Linq;
+using System.Windows.Input;
 using GalaSoft.MvvmLight;
+using GalaSoft.MvvmLight.Command;
 using Solutionizer.Extensions;
 using Solutionizer.Scanner;
 
@@ -14,9 +16,14 @@ namespace Solutionizer.ViewModels {
         private IList _rootNodes;
         private bool _isFlatMode;
         private bool _hideRootNode;
+        private readonly ICommand _toggleFlatModeCommand;
+        private readonly RelayCommand _toggleHideRootNodeCommand;
 
         public ProjectShelfViewModel(MainViewModel mainViewModel) {
             _mainViewModel = mainViewModel;
+
+            _toggleFlatModeCommand = new RelayCommand(() => IsFlatMode = !IsFlatMode);
+            _toggleHideRootNodeCommand = new RelayCommand(() => HideRootNode = !HideRootNode, () => !IsFlatMode);
         }
 
         private void RefreshFileTree() {
@@ -82,6 +89,14 @@ namespace Solutionizer.ViewModels {
             }
         }
 
+        public ICommand ToggleFlatModeCommand {
+            get { return _toggleFlatModeCommand; }
+        }
+
+        public ICommand ToggleHideRootNodeCommand {
+            get { return _toggleHideRootNodeCommand; }
+        }
+
         public bool IsFlatMode {
             get { return _isFlatMode; }
             set {
@@ -89,6 +104,7 @@ namespace Solutionizer.ViewModels {
                     _isFlatMode = value;
                     TransformNodes();
                     RaisePropertyChanged(() => IsFlatMode);
+                    _toggleHideRootNodeCommand.RaiseCanExecuteChanged();
                 }
             }
         }

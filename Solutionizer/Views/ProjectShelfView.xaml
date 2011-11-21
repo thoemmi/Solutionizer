@@ -51,8 +51,8 @@
             Helper:DragDropHelper.DragDropTemplate="{StaticResource ProjectItemDrag}"
             />
         <StackPanel Grid.Row="1" Orientation="Horizontal">
-            <ToggleButton IsChecked="{Binding IsFlatMode}" ToolTip="Toggle between flat and hierarchical display">F</ToggleButton>
-            <ToggleButton IsChecked="{Binding HideRootNode}" ToolTip="Hide the root node">H</ToggleButton>
+            <ToggleButton Command="{Binding ToggleFlatModeCommand}" IsChecked="{Binding IsFlatMode, Mode=OneWay}" ToolTip="Toggle between flat and hierarchical display">F</ToggleButton>
+            <ToggleButton Command="{Binding ToggleHideRootNodeCommand}" IsChecked="{Binding HideRootNode, Mode=OneWay}" ToolTip="Hide the root node">H</ToggleButton>
         </StackPanel>
     </Grid>
 </UserControl>
