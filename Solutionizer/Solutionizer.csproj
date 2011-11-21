@@ -84,6 +84,7 @@
     <Compile Include="Extensions\EnumerableExtensions.cs" />
     <Compile Include="Helper\DragDropHelper.cs" />
     <Compile Include="Helper\DraggedAdorner.cs" />
+    <Compile Include="Helper\FileSystem.cs" />
     <Compile Include="Helper\GridViewSort.cs" />
     <Compile Include="Helper\Icons.cs" />
     <Compile Include="Helper\InsertionAdorner.cs" />
