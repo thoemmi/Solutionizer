@@ -5,6 +5,7 @@ using System.Windows.Input;
 using GalaSoft.MvvmLight;
 using Ookii.Dialogs.Wpf;
 using Solutionizer.Commands;
+using Solutionizer.Infrastructure;
 
 namespace Solutionizer.ViewModels {
     public class MainViewModel : ViewModelBase {

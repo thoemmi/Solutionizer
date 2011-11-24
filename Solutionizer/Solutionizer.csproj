@@ -88,14 +88,14 @@
     <Compile Include="Helper\GridViewSort.cs" />
     <Compile Include="Helper\Icons.cs" />
     <Compile Include="Helper\InsertionAdorner.cs" />
-    <Compile Include="ViewModels\FixedRelayCommand.cs" />
-    <Compile Include="ViewModels\FixedRelayCommandGeneric.cs" />
+    <Compile Include="Infrastructure\FixedRelayCommand.cs" />
+    <Compile Include="Infrastructure\FixedRelayCommandGeneric.cs" />
     <Compile Include="ViewModels\Project.cs" />
     <Compile Include="ViewModels\ProjectShelfViewModel.cs" />
     <Compile Include="ViewModels\SolutionViewModel.cs" />
     <Compile Include="Scanner\ProjectScanner.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
-    <Compile Include="ViewModels\SortedObservableCollection.cs" />
+    <Compile Include="Infrastructure\SortedObservableCollection.cs" />
     <Compile Include="Views\MainView.xaml.cs">
       <DependentUpon>MainView.xaml</DependentUpon>
     </Compile>

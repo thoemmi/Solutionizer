@@ -6,6 +6,7 @@ using System.Linq;
 using System.Windows.Input;
 using GalaSoft.MvvmLight;
 using Solutionizer.Helper;
+using Solutionizer.Infrastructure;
 using Solutionizer.Scanner;
 using Solutionizer.VisualStudio;
 

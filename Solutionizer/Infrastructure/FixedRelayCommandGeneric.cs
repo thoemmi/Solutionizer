@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Input;
 
-namespace Solutionizer.ViewModels {
+namespace Solutionizer.Infrastructure {
     /// <summary>
     /// A generic command whose sole purpose is to relay its functionality to other
     /// objects by invoking delegates. The default return value for the CanExecute

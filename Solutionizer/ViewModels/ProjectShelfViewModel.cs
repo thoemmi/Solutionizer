@@ -5,6 +5,7 @@ using System.Linq;
 using System.Windows.Input;
 using GalaSoft.MvvmLight;
 using Solutionizer.Extensions;
+using Solutionizer.Infrastructure;
 using Solutionizer.Scanner;
 
 namespace Solutionizer.ViewModels {

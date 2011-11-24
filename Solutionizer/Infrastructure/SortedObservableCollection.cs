@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 
-namespace Solutionizer.ViewModels {
+namespace Solutionizer.Infrastructure {
     public class SortedObservableCollection<T> : ObservableCollection<T> {
         private readonly IComparer<T> _comparer;
 
