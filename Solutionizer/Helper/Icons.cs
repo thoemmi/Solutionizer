@@ -80,6 +80,7 @@ namespace Solutionizer.Helper {
                             icon.Handle,
                             Int32Rect.Empty,
                             BitmapSizeOptions.FromEmptyOptions());
+                        imageSource.Freeze();
                         return imageSource;
                     } finally {
                         icon.Dispose();

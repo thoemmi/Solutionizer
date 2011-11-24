@@ -7,6 +7,7 @@
              xmlns:Helper="clr-namespace:Solutionizer.Helper"
              xmlns:ViewModels="clr-namespace:Solutionizer.ViewModels"
              xmlns:Converters="clr-namespace:Solutionizer.Converters"
+             xmlns:VisualStudio="clr-namespace:Solutionizer.VisualStudio"
              d:DataContext="{d:DesignInstance ViewModels:SolutionViewModel}"
              d:DesignHeight="300" d:DesignWidth="300">
     <Grid>
@@ -19,7 +20,7 @@
         </StackPanel>
       </DataTemplate>
 
-            <HierarchicalDataTemplate DataType="{x:Type ViewModels:SolutionFolder}" ItemsSource ="{Binding Items}">
+            <HierarchicalDataTemplate DataType="{x:Type VisualStudio:SolutionFolder}" ItemsSource ="{Binding Items}">
                 <StackPanel Orientation="Horizontal" Margin="1">
                     <Image Height="16" Width="16" x:Name="nodeImg" Source="{Converters:Shell32Icon FileName='shell32.dll',IconIndex=3}" Margin="0 0 4 0" />
                     <TextBlock Text="{Binding Name}" />
@@ -31,9 +32,9 @@
                 </HierarchicalDataTemplate.Triggers>
             </HierarchicalDataTemplate>
 
-            <DataTemplate DataType="{x:Type ViewModels:SolutionProject}">
+            <DataTemplate DataType="{x:Type VisualStudio:SolutionProject}">
                 <StackPanel Orientation="Horizontal" Margin="1">
-                    <Image Height="16" Width="16" Source="{Binding Path=Project.Filepath, Converter={StaticResource FilePathToImageSource}}" Margin="0 0 4 0"/>
+                    <Image Height="16" Width="16" Source="{Binding Path=Filepath, Converter={StaticResource FilePathToImageSource}}" Margin="0 0 4 0"/>
                     <TextBlock Text="{Binding Name}" />
                 </StackPanel>
             </DataTemplate>
@@ -52,7 +53,7 @@
             VirtualizingStackPanel.IsVirtualizing="True"
             VirtualizingStackPanel.VirtualizationMode="Recycling"
             Helper:DragDropHelper.IsDropTarget="True" Helper:DragDropHelper.DropCommand="{Binding DropCommand}"
-            ItemsSource="{Binding SolutionFolder.Items}" Margin="3 3 0 3"
+            ItemsSource="{Binding SolutionRoot.Items}" Margin="3 3 0 3"
             />
 
   </Grid>

@@ -31,11 +31,13 @@ namespace Solutionizer.ViewModels {
             };
             if (dlg.ShowDialog(Application.Current.MainWindow) == true) {
                 _projectShelfViewModel.RootPath = dlg.SelectedPath;
+                _solution.CreateSolution(dlg.SelectedPath);
             }
         }
 
         private void OnLoaded() {
             _projectShelfViewModel.RootPath = @"d:\dev\xtplus\main\main";
+            _solution.CreateSolution(_projectShelfViewModel.RootPath);
         }
 
         private void OnLaunch() {

@@ -11,7 +11,8 @@ namespace Solutionizer.Helper {
 
             var path = new StringBuilder(260); // MAX_PATH
             if (PathRelativePathTo(path, fromPath, fromAttr, toPath, toAttr) == 0) {
-                throw new ArgumentException("Paths must have a common prefix");
+                //throw new ArgumentException("Paths must have a common prefix");
+                return toPath;
             }
             var relativePath = path.ToString();
             return relativePath.StartsWith(@".\") ? relativePath.Substring(2) : relativePath;

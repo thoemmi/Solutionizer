@@ -109,6 +109,9 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="VisualStudio\SolutionFolder.cs" />
+    <Compile Include="VisualStudio\SolutionItem.cs" />
+    <Compile Include="VisualStudio\SolutionProject.cs" />
     <Page Include="Views\MainView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

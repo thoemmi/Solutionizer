@@ -3,6 +3,7 @@ using System.IO;
 using Solutionizer.Extensions;
 using Solutionizer.Helper;
 using Solutionizer.ViewModels;
+using Solutionizer.VisualStudio;
 
 namespace Solutionizer.Commands {
     public class SaveSolutionCommand {
@@ -18,16 +19,16 @@ namespace Solutionizer.Commands {
             using (var streamWriter = File.CreateText(_solutionFileName)) {
                 WriteHeader(streamWriter);
 
-                var projects = _solution.SolutionFolder.Items.Flatten<SolutionItem, SolutionProject, SolutionFolder>(p => p.Items);
+                var projects = _solution.SolutionRoot.Items.Flatten<SolutionItem, SolutionProject, SolutionFolder>(p => p.Items);
 
                 foreach (var project in projects) {
                     streamWriter.WriteLine("Project(\"{0}\") = \"{1}\", \"{2}\", \"{3}\"", "{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}",
-                                           project.Name, FileSystem.GetRelativePath(_solutionFileName, project.Project.Filepath),
+                                           project.Name, FileSystem.GetRelativePath(_solutionFileName, project.Filepath),
                                            project.Guid.ToString("B").ToUpperInvariant());
                     streamWriter.WriteLine("EndProject");
                 }
 
-                var folders = _solution.SolutionFolder.Items.Flatten<SolutionItem, SolutionFolder, SolutionFolder>(p => p.Items);
+                var folders = _solution.SolutionRoot.Items.Flatten<SolutionItem, SolutionFolder, SolutionFolder>(p => p.Items);
                 foreach (var folder in folders) {
                     streamWriter.WriteLine("Project(\"{0}\") = \"{1}\", \"{2}\", \"{3}\"", "{2150E333-8FDC-42A3-9474-1A3956D46DE8}",
                                            folder.Name, folder.Name, folder.Guid.ToString("B").ToUpperInvariant());
@@ -56,7 +57,7 @@ namespace Solutionizer.Commands {
         }
 
         private void WriteNestedProjects(TextWriter streamWriter) {
-            var folders = _solution.SolutionFolder.Items.Flatten<SolutionItem, SolutionFolder, SolutionFolder>(p => p.Items).ToList();
+            var folders = _solution.SolutionRoot.Items.Flatten<SolutionItem, SolutionFolder, SolutionFolder>(p => p.Items).ToList();
             if (folders.Count == 0) {
                 return;
             }

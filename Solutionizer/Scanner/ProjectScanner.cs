@@ -29,11 +29,11 @@ namespace Solutionizer.Scanner {
             var subfolders = GetDirectoryNodes(folderpath);
 
             // replace subfolders with only a file child with their child
-            var simples = subfolders.Where(s => s.Files.Count == 1 && s.Subdirectories.Count == 0).Reverse().ToArray();
-            foreach (var directoryNode in simples) {
-                subfolders.Remove(directoryNode);
-                files.Insert(0, directoryNode.Files[0]);
-            }
+            //var simples = subfolders.Where(s => s.Files.Count == 1 && s.Subdirectories.Count == 0).Reverse().ToArray();
+            //foreach (var directoryNode in simples) {
+            //    subfolders.Remove(directoryNode);
+            //    files.Insert(0, directoryNode.Files[0]);
+            //}
 
             if (files.Count == 0 && subfolders.Count == 0) {
                 // we're not interested in empty directories

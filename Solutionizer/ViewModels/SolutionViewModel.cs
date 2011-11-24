@@ -1,26 +1,43 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
+using System.Collections.Specialized;
+using System.IO;
 using System.Linq;
 using System.Windows.Input;
 using GalaSoft.MvvmLight;
+using Solutionizer.Helper;
 using Solutionizer.Scanner;
+using Solutionizer.VisualStudio;
 
 namespace Solutionizer.ViewModels {
     public class SolutionViewModel : ViewModelBase {
-        private readonly SolutionFolder _solutionFolder = new SolutionFolder();
+        private SolutionFolder _solutionRoot = new SolutionFolder();
         private readonly ICommand _dropCommand;
         private bool _solutionHasItems;
         private bool _isDirty;
 
         private bool _isSccBound;
+        private string _rootPath;
 
         public SolutionViewModel() {
             _dropCommand = new FixedRelayCommand<object>(OnDrop, obj => obj is FileNode);
-            _solutionFolder.Items.CollectionChanged += (sender, args) => {
-                SolutionHasItems = _solutionFolder.Items.Count > 0;
-                IsDirty = true;
-            };
+        }
+
+        public void CreateSolution(string rootPath) {
+            if (_solutionRoot != null) {
+                _solutionRoot.Items.CollectionChanged -= OnItemsOnCollectionChanged;
+            }
+            _solutionRoot = new SolutionFolder();
+            _solutionRoot.Items.CollectionChanged += OnItemsOnCollectionChanged;
+            _rootPath = rootPath;
+            IsDirty = false;
+            SolutionHasItems = false;
+            RaisePropertyChanged(() => SolutionRoot);
+        }
+
+        private void OnItemsOnCollectionChanged(object sender, NotifyCollectionChangedEventArgs args) {
+            SolutionHasItems = _solutionRoot.Items.Count > 0;
+            IsDirty = true;
         }
 
         private void OnDrop(object node) {
@@ -28,8 +45,8 @@ namespace Solutionizer.ViewModels {
             AddProject(project);
         }
 
-        public SolutionFolder SolutionFolder {
-            get { return _solutionFolder; }
+        public SolutionFolder SolutionRoot {
+            get { return _solutionRoot; }
         }
 
         public bool SolutionHasItems {
@@ -55,13 +72,13 @@ namespace Solutionizer.ViewModels {
         public void AddProject(Project project) {
             _isSccBound |= project.IsSccBound;
 
-            if (_solutionFolder.ContainsProject(project)) {
+            if (_solutionRoot.ContainsProject(project)) {
                 return;
             }
 
-            _solutionFolder.AddProject(project);
+            _solutionRoot.AddProject(project);
 
-            var referenceFolder = _solutionFolder.Items.OfType<SolutionFolder>().SingleOrDefault();
+            var referenceFolder = _solutionRoot.Items.OfType<SolutionFolder>().SingleOrDefault();
             if (referenceFolder != null) {
                 RemoveProject(referenceFolder, project);
             }
@@ -82,29 +99,41 @@ namespace Solutionizer.ViewModels {
         }
 
         private void AddReferencedProjects(Project project, int depth) {
-            var referenceFolder = GetOrCreateReferenceFolder();
-
             foreach (var projectReference in project.ProjectReferences) {
                 var referencedProject = Project.Load(projectReference);
 
-                if (_solutionFolder.ContainsProject(referencedProject)) {
+                if (_solutionRoot.ContainsProject(referencedProject)) {
                     continue;
                 }
 
-                if (referenceFolder.ContainsProject(referencedProject)) {
-                    continue;
-                }
+                var relPath = GetRelativeFolder(referencedProject);
+                var folder = GetSolutionFolder(relPath);
+                if (!folder.ContainsProject(referencedProject)) {
+                    folder.AddProject(referencedProject);
 
-                referenceFolder.AddProject(referencedProject);
-
-                if (depth > 0) {
-                    AddReferencedProjects(referencedProject, depth - 1);
+                    if (depth > 0) {
+                        AddReferencedProjects(referencedProject, depth - 1);
+                    }
                 }
             }
         }
 
+        private string GetRelativeFolder(Project project) {
+            return FileSystem.GetRelativePath(_rootPath, Path.GetDirectoryName(project.Filepath));
+        }
+
+        private SolutionFolder GetSolutionFolder(string path) {
+            var folder = GetOrCreateReferenceFolder();
+            var folderNames = path.Split('\\');
+            folderNames = folderNames.Take(folderNames.Length - 1).ToArray();
+            foreach (var folderName in folderNames) {
+                folder = folder.GetOrCreateSubfolder(folderName);
+            }
+            return folder;
+        }
+
         private SolutionFolder GetOrCreateReferenceFolder() {
-            return _solutionFolder.GetOrCreateSubfolder("References");
+            return _solutionRoot.GetOrCreateSubfolder("_References");
         }
 
         public bool IsSccBound {
@@ -122,22 +151,6 @@ namespace Solutionizer.ViewModels {
         }
     }
 
-    public abstract class SolutionItem : ViewModelBase {
-        private string _name;
-
-        public string Name {
-            get { return _name; }
-            set {
-                if (_name != value) {
-                    _name = value;
-                    RaisePropertyChanged(() => Name);
-                }
-            }
-        }
-
-        public Guid Guid { get; set; }
-    }
-
     public class SolutionItemComparer : IComparer<SolutionItem> {
         public int Compare(SolutionItem x, SolutionItem y) {
             var xIsFolder = x is SolutionFolder;
@@ -150,42 +163,5 @@ namespace Solutionizer.ViewModels {
             }
             return StringComparer.InvariantCultureIgnoreCase.Compare(x.Name, y.Name);
         }
-    }
-
-    public class SolutionFolder : SolutionItem {
-        private readonly SortedObservableCollection<SolutionItem> _items =
-            new SortedObservableCollection<SolutionItem>(new SolutionItemComparer());
-
-        public ObservableCollection<SolutionItem> Items {
-            get { return _items; }
-        }
-
-        public bool ContainsProject(Project project) {
-            return _items.OfType<SolutionProject>().Any(p => p.Guid == project.Guid);
-        }
-
-        public SolutionFolder GetOrCreateSubfolder(string folderName) {
-            var folder = _items.OfType<SolutionFolder>().SingleOrDefault(p => p.Name == folderName);
-            if (folder == null) {
-                folder = new SolutionFolder {
-                    Guid = Guid.NewGuid(),
-                    Name = folderName
-                };
-                _items.Add(folder);
-            }
-            return folder;
-        }
-
-        public void AddProject(Project project) {
-            _items.Add(new SolutionProject {
-                Guid = project.Guid,
-                Name = project.Name,
-                Project = project
-            });
-        }
-    }
-
-    public class SolutionProject : SolutionItem {
-        public Project Project { get; set; }
     }
 }
