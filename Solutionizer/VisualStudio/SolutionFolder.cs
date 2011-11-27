@@ -2,7 +2,7 @@ using System;
 using System.Collections.ObjectModel;
 using System.Linq;
 using Solutionizer.Infrastructure;
-using Solutionizer.ViewModels;
+using Solutionizer.Models;
 
 namespace Solutionizer.VisualStudio {
     public class SolutionFolder : SolutionItem {

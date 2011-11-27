@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Xml;
 
-namespace Solutionizer.ViewModels {
+namespace Solutionizer.Models {
     public class Project {
         private string _filepath;
         private string _name;

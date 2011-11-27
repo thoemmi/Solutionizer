@@ -95,10 +95,10 @@
     <Compile Include="Infrastructure\FixedRelayCommand.cs" />
     <Compile Include="Infrastructure\FixedRelayCommandGeneric.cs" />
     <Compile Include="Infrastructure\ModelAttacher.cs" />
-    <Compile Include="ViewModels\Project.cs" />
-    <Compile Include="ViewModels\SolutionViewModel.cs" />
+    <Compile Include="Models\Project.cs" />
+    <Compile Include="Models\SolutionViewModel.cs" />
     <Compile Include="Scanner\ProjectScanner.cs" />
-    <Compile Include="ViewModels\MainViewModel.cs" />
+    <Compile Include="Models\MainViewModel.cs" />
     <Compile Include="Infrastructure\SortedObservableCollection.cs" />
     <Compile Include="Views\MainView.xaml.cs">
       <DependentUpon>MainView.xaml</DependentUpon>

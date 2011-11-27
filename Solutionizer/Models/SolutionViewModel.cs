@@ -10,7 +10,7 @@ using Solutionizer.Infrastructure;
 using Solutionizer.Scanner;
 using Solutionizer.VisualStudio;
 
-namespace Solutionizer.ViewModels {
+namespace Solutionizer.Models {
     public class SolutionViewModel : ViewModelBase {
         private SolutionFolder _solutionRoot = new SolutionFolder();
         private readonly ICommand _dropCommand;

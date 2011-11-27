@@ -4,16 +4,15 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              mc:Ignorable="d" 
-             xmlns:Helper="clr-namespace:Solutionizer.Helper"
-             xmlns:ViewModels="clr-namespace:Solutionizer.ViewModels"
-             xmlns:Converters="clr-namespace:Solutionizer.Converters"
+             xmlns:Helper="clr-namespace:Solutionizer.Helper" xmlns:Converters="clr-namespace:Solutionizer.Converters"
              xmlns:VisualStudio="clr-namespace:Solutionizer.VisualStudio"
-             d:DataContext="{d:DesignInstance ViewModels:SolutionViewModel}"
+             xmlns:Models="clr-namespace:Solutionizer.Models"
+             d:DataContext="{d:DesignInstance Models:SolutionViewModel}"
              d:DesignHeight="300" d:DesignWidth="300">
     <Grid>
     <Grid.Resources>
       <Converters:FilePathToImageSourceConverter x:Key="FilePathToImageSource"/>
-      <DataTemplate x:Key="NameWithImage" DataType="{x:Type ViewModels:Project}">
+      <DataTemplate x:Key="NameWithImage" DataType="{x:Type Models:Project}">
         <StackPanel Orientation="Horizontal">
           <Image Height="16" Width="16" Source="{Binding Path=Filepath, Converter={StaticResource FilePathToImageSource}}" Margin="0 0 4 0"/>
           <TextBlock Text="{Binding Name}" />

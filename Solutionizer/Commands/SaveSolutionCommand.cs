@@ -2,7 +2,7 @@
 using System.IO;
 using Solutionizer.Extensions;
 using Solutionizer.Helper;
-using Solutionizer.ViewModels;
+using Solutionizer.Models;
 using Solutionizer.VisualStudio;
 
 namespace Solutionizer.Commands {

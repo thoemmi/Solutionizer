@@ -8,7 +8,7 @@ using Ookii.Dialogs.Wpf;
 using Solutionizer.Commands;
 using Solutionizer.Infrastructure;
 
-namespace Solutionizer.ViewModels {
+namespace Solutionizer.Models {
     public class MainViewModel : ViewModelBase {
         private SolutionViewModel _solution = new SolutionViewModel();
         private readonly ICommand _onLoadedCommand;
