@@ -1,16 +1,15 @@
 ﻿using System;
 using System.Collections;
-using System.ComponentModel;
 using System.Linq;
 using System.Windows.Input;
 using GalaSoft.MvvmLight;
+using Solutionizer.Commands;
 using Solutionizer.Extensions;
 using Solutionizer.Infrastructure;
 using Solutionizer.Scanner;
 
 namespace Solutionizer.ViewModels {
     public class ProjectShelfViewModel : ViewModelBase {
-        private readonly MainViewModel _mainViewModel;
         private string _rootPath;
         private DirectoryNode _rootNode;
         private IList _rootNodes;
@@ -19,26 +18,17 @@ namespace Solutionizer.ViewModels {
         private readonly ICommand _toggleFlatModeCommand;
         private readonly ICommand _toggleHideRootNodeCommand;
 
-        public ProjectShelfViewModel(MainViewModel mainViewModel) {
-            _mainViewModel = mainViewModel;
-
+        public ProjectShelfViewModel() {
             _toggleFlatModeCommand = new FixedRelayCommand(() => IsFlatMode = !IsFlatMode);
             _toggleHideRootNodeCommand = new FixedRelayCommand(() => HideRootNode = !HideRootNode, () => !IsFlatMode);
         }
 
         private void RefreshFileTree() {
-            _mainViewModel.IsBusy = true;
 
-            var worker = new BackgroundWorker();
-            worker.DoWork += (o, ea) => {
-                ea.Result = ProjectScanner.Scan(RootPath);
-            };
-            worker.RunWorkerCompleted += (o, ea) => {
-                _mainViewModel.IsBusy = false;
-                _rootNode = (DirectoryNode) ea.Result;
+            CommandExecutor.ExecuteAsync("Scanning projects", () => ProjectScanner.Scan(RootPath), result => {
+                _rootNode = result;
                 TransformNodes();
-            };
-            worker.RunWorkerAsync();
+            });
         }
 
         private void TransformNodes() {

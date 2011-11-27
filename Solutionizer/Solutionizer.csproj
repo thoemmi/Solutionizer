@@ -76,6 +76,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Commands\CommandExecutor.cs" />
     <Compile Include="Commands\SaveSolutionCommand.cs" />
     <Compile Include="Converters\BusyToProgressStateConverter.cs" />
     <Compile Include="Converters\FilePathToImageSourceConverter.cs" />

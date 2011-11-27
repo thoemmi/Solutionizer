@@ -10,7 +10,8 @@
              xmlns:Converters="clr-namespace:Solutionizer.Converters"
              xmlns:Views="clr-namespace:Solutionizer.Views"
              xmlns:Infrastructure="clr-namespace:Solutionizer.Infrastructure"
-             Infrastructure:ModelAttacher.AttachModel="{x:Type ViewModels:MainViewModel}"
+        xmlns:Commands="clr-namespace:Solutionizer.Commands"
+        Infrastructure:ModelAttacher.AttachModel="{x:Type ViewModels:MainViewModel}"
              mc:Ignorable="d" 
              d:DataContext="{d:DesignInstance ViewModels:MainViewModel}"
              d:DesignHeight="300" d:DesignWidth="300"
@@ -21,9 +22,10 @@
         Title="Solutionizer" Height="350" Width="525">
     <Window.Resources>
         <Converters:BusyToProgressStateConverter x:Key="BusyToProgressStateConverter"/>
+        <Commands:CommandExecutor x:Key="commandExecutor"/>
     </Window.Resources>
     <Window.TaskbarItemInfo>
-        <TaskbarItemInfo ProgressState="{Binding IsBusy, Converter={StaticResource BusyToProgressStateConverter}}" />
+        <TaskbarItemInfo ProgressState="{Binding IsBusy, Source={StaticResource commandExecutor}, Converter={StaticResource BusyToProgressStateConverter}}" />
     </Window.TaskbarItemInfo>
   <i:Interaction.Triggers>
     <i:EventTrigger EventName="Loaded">
@@ -34,7 +36,7 @@
     <Grid.Resources>
 
     </Grid.Resources>
-    <extToolkit:BusyIndicator IsBusy="{Binding IsBusy}" BusyContent="{Binding BusyMessage}">
+        <extToolkit:BusyIndicator IsBusy="{Binding IsBusy, Source={StaticResource commandExecutor}}" BusyContent="{Binding BusyMessage, Source={StaticResource commandExecutor}}">
       <Grid>
         <Grid.RowDefinitions>
           <RowDefinition Height="auto"/>

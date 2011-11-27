@@ -9,8 +9,6 @@ using Solutionizer.Infrastructure;
 
 namespace Solutionizer.ViewModels {
     public class MainViewModel : ViewModelBase {
-        private bool _isBusy;
-        private string _busyMessage;
         private SolutionViewModel _solution = new SolutionViewModel();
         private readonly ProjectShelfViewModel _projectShelfViewModel;
         private readonly ICommand _onLoadedCommand;
@@ -19,7 +17,7 @@ namespace Solutionizer.ViewModels {
         private readonly ICommand _saveCommand;
 
         public MainViewModel() {
-            _projectShelfViewModel = new ProjectShelfViewModel(this);
+            _projectShelfViewModel = new ProjectShelfViewModel();
             _onLoadedCommand = new FixedRelayCommand(OnLoaded);
             _selectRootPathCommand = new FixedRelayCommand(OnSelectRootPath);
             _launchCommand = new FixedRelayCommand(OnLaunch, () => _solution.SolutionHasItems);
@@ -71,26 +69,6 @@ namespace Solutionizer.ViewModels {
 
         public ICommand SaveCommand {
             get { return _saveCommand; }
-        }
-
-        public bool IsBusy {
-            get { return _isBusy; }
-            set {
-                if (_isBusy != value) {
-                    _isBusy = value;
-                    RaisePropertyChanged(() => IsBusy);
-                }
-            }
-        }
-
-        public string BusyMessage {
-            get { return _busyMessage; }
-            set {
-                if (_busyMessage != value) {
-                    _busyMessage = value;
-                    RaisePropertyChanged(() => BusyMessage);
-                }
-            }
         }
 
         public ProjectShelfViewModel ProjectShelf {
