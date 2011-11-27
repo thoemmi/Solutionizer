@@ -9,6 +9,8 @@
              xmlns:cmd="clr-namespace:GalaSoft.MvvmLight.Command;assembly=GalaSoft.MvvmLight.Extras.WPF4"
              xmlns:Converters="clr-namespace:Solutionizer.Converters"
              xmlns:Views="clr-namespace:Solutionizer.Views"
+             xmlns:Infrastructure="clr-namespace:Solutionizer.Infrastructure"
+             Infrastructure:ModelAttacher.AttachModel="{x:Type ViewModels:MainViewModel}"
              mc:Ignorable="d" 
              d:DataContext="{d:DesignInstance ViewModels:MainViewModel}"
              d:DesignHeight="300" d:DesignWidth="300"

@@ -1,5 +1,4 @@
 ﻿using System.Windows;
-using Solutionizer.ViewModels;
 
 namespace Solutionizer.Views {
     /// <summary>
@@ -8,7 +7,6 @@ namespace Solutionizer.Views {
     public partial class MainView : Window {
         public MainView() {
             InitializeComponent();
-            DataContext = new MainViewModel();
         }
     }
 }
