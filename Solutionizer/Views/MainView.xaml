@@ -10,7 +10,7 @@
              xmlns:Converters="clr-namespace:Solutionizer.Converters"
              xmlns:Views="clr-namespace:Solutionizer.Views"
              xmlns:Infrastructure="clr-namespace:Solutionizer.Infrastructure"
-        xmlns:Commands="clr-namespace:Solutionizer.Commands"
+        xmlns:Commands="clr-namespace:Solutionizer.Commands" xmlns:Controls="clr-namespace:Solutionizer.Controls"
         Infrastructure:ModelAttacher.AttachModel="{x:Type ViewModels:MainViewModel}"
              mc:Ignorable="d" 
              d:DataContext="{d:DesignInstance ViewModels:MainViewModel}"
@@ -59,7 +59,22 @@
           </Button>
         </Grid>
 
-                <Views:ProjectShelfView Grid.Row="1" DataContext="{Binding ProjectShelf}" />
+        <Grid Grid.Row="1" >
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="auto"/>
+            </Grid.RowDefinitions>
+                    <Controls:FileSystemTreeView 
+                        RootPath="{Binding RootPath}"
+                        HideRootNode="{Binding HideRootNode}"
+                        IsFlatMode="{Binding IsFlatMode}"
+                        />
+                    <StackPanel Grid.Row="1" Orientation="Horizontal">
+                <ToggleButton Command="{Binding ToggleFlatModeCommand}" IsChecked="{Binding IsFlatMode, Mode=OneWay}" ToolTip="Toggle between flat and hierarchical display">F</ToggleButton>
+                <ToggleButton Command="{Binding ToggleHideRootNodeCommand}" IsChecked="{Binding HideRootNode, Mode=OneWay}" ToolTip="Hide the root node">H</ToggleButton>
+            </StackPanel>
+        </Grid>
+
 
                 <GridSplitter Grid.Column="1" Grid.RowSpan="2" VerticalAlignment="Stretch" HorizontalAlignment="Center" ShowsPreview="true" Width="6" Background="Transparent"/>
         

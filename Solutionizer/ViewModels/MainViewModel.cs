@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.IO;
 using System.Windows;
 using System.Windows.Input;
@@ -10,39 +11,44 @@ using Solutionizer.Infrastructure;
 namespace Solutionizer.ViewModels {
     public class MainViewModel : ViewModelBase {
         private SolutionViewModel _solution = new SolutionViewModel();
-        private readonly ProjectShelfViewModel _projectShelfViewModel;
         private readonly ICommand _onLoadedCommand;
         private readonly ICommand _selectRootPathCommand;
         private readonly ICommand _launchCommand;
         private readonly ICommand _saveCommand;
+        private readonly ICommand _toggleFlatModeCommand;
+        private readonly ICommand _toggleHideRootNodeCommand;
+        private bool _isFlatMode;
+        private bool _hideRootNode;
+        private string _rootPath;
 
         public MainViewModel() {
-            _projectShelfViewModel = new ProjectShelfViewModel();
             _onLoadedCommand = new FixedRelayCommand(OnLoaded);
             _selectRootPathCommand = new FixedRelayCommand(OnSelectRootPath);
             _launchCommand = new FixedRelayCommand(OnLaunch, () => _solution.SolutionHasItems);
             _saveCommand = new FixedRelayCommand(OnSave, () => _solution.SolutionHasItems);
+            _toggleFlatModeCommand = new FixedRelayCommand(() => IsFlatMode = !IsFlatMode);
+            _toggleHideRootNodeCommand = new FixedRelayCommand(() => HideRootNode = !HideRootNode, () => !IsFlatMode);
         }
 
         private void OnSelectRootPath() {
             var dlg = new VistaFolderBrowserDialog {
-                SelectedPath = _projectShelfViewModel.RootPath
+                SelectedPath = RootPath
             };
             if (dlg.ShowDialog(Application.Current.MainWindow) == true) {
-                _projectShelfViewModel.RootPath = dlg.SelectedPath;
+                RootPath = dlg.SelectedPath;
                 _solution.CreateSolution(dlg.SelectedPath);
             }
         }
 
         private void OnLoaded() {
-            _projectShelfViewModel.RootPath = @"d:\dev\xtplus\main\main";
-            _solution.CreateSolution(_projectShelfViewModel.RootPath);
+            RootPath = @"d:\dev\xtplus\main\main";
+            _solution.CreateSolution(RootPath);
         }
 
         private void OnLaunch() {
             var newFilename = Path.Combine(Path.GetTempPath(), DateTime.Now.ToString("yyyy-MM-dd_HHmmss")) + ".sln";
             new SaveSolutionCommand(newFilename, _solution).Execute();
-            System.Diagnostics.Process.Start(newFilename);
+            Process.Start(newFilename);
             Application.Current.MainWindow.WindowState = WindowState.Minimized;
         }
 
@@ -54,7 +60,7 @@ namespace Solutionizer.ViewModels {
                 new SaveSolutionCommand(dlg.FileName, _solution).Execute();
             }
         }
-        
+
         public ICommand OnLoadedCommand {
             get { return _onLoadedCommand; }
         }
@@ -71,8 +77,12 @@ namespace Solutionizer.ViewModels {
             get { return _saveCommand; }
         }
 
-        public ProjectShelfViewModel ProjectShelf {
-            get { return _projectShelfViewModel; }
+        public ICommand ToggleFlatModeCommand {
+            get { return _toggleFlatModeCommand; }
+        }
+
+        public ICommand ToggleHideRootNodeCommand {
+            get { return _toggleHideRootNodeCommand; }
         }
 
         public SolutionViewModel Solution {
@@ -81,6 +91,36 @@ namespace Solutionizer.ViewModels {
                 if (_solution != value) {
                     _solution = value;
                     RaisePropertyChanged(() => Solution);
+                }
+            }
+        }
+
+        public bool IsFlatMode {
+            get { return _isFlatMode; }
+            set {
+                if (_isFlatMode != value) {
+                    _isFlatMode = value;
+                    RaisePropertyChanged(() => IsFlatMode);
+                }
+            }
+        }
+
+        public bool HideRootNode {
+            get { return _hideRootNode; }
+            set {
+                if (_hideRootNode != value) {
+                    _hideRootNode = value;
+                    RaisePropertyChanged(() => HideRootNode);
+                }
+            }
+        }
+
+        public string RootPath {
+            get { return _rootPath; }
+            set {
+                if (_rootPath != value) {
+                    _rootPath = value;
+                    RaisePropertyChanged(() => RootPath);
                 }
             }
         }

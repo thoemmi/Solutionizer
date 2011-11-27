@@ -1,13 +1,11 @@
-﻿<UserControl x:Class="Solutionizer.Views.ProjectShelfView"
+﻿<UserControl x:Class="Solutionizer.Controls.FileSystemTreeView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:ViewModels="clr-namespace:Solutionizer.ViewModels" xmlns:Helper="clr-namespace:Solutionizer.Helper"
-             xmlns:Scanner="clr-namespace:Solutionizer.Scanner"
+             xmlns:Helper="clr-namespace:Solutionizer.Helper" xmlns:Scanner="clr-namespace:Solutionizer.Scanner"
              xmlns:Converters="clr-namespace:Solutionizer.Converters" mc:Ignorable="d" 
-             d:DataContext="{d:DesignInstance ViewModels:ProjectShelfViewModel}"
-             d:DesignHeight="300" d:DesignWidth="300">
+             d:DesignHeight="300" d:DesignWidth="300" x:Name="_root">
     <UserControl.Resources>
         <Converters:FilePathToImageSourceConverter x:Key="FilePathToImageSource"/>
 
@@ -38,21 +36,12 @@
         </DataTemplate>
 
     </UserControl.Resources>
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="auto"/>
-        </Grid.RowDefinitions>
-        <TreeView 
+
+    <TreeView 
             VirtualizingStackPanel.IsVirtualizing="True"
             VirtualizingStackPanel.VirtualizationMode="Recycling"
-            ItemsSource="{Binding RootNodes}" Margin="3 3 0 3"
+            ItemsSource="{Binding RootNodes, ElementName=_root}" Margin="3 3 0 3"
             Helper:DragDropHelper.IsDragSource="true" 
             Helper:DragDropHelper.DragDropTemplate="{StaticResource ProjectItemDrag}"
             />
-        <StackPanel Grid.Row="1" Orientation="Horizontal">
-            <ToggleButton Command="{Binding ToggleFlatModeCommand}" IsChecked="{Binding IsFlatMode, Mode=OneWay}" ToolTip="Toggle between flat and hierarchical display">F</ToggleButton>
-            <ToggleButton Command="{Binding ToggleHideRootNodeCommand}" IsChecked="{Binding HideRootNode, Mode=OneWay}" ToolTip="Hide the root node">H</ToggleButton>
-        </StackPanel>
-    </Grid>
 </UserControl>

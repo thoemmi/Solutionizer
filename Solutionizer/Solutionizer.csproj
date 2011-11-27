@@ -78,6 +78,9 @@
     </ApplicationDefinition>
     <Compile Include="Commands\CommandExecutor.cs" />
     <Compile Include="Commands\SaveSolutionCommand.cs" />
+    <Compile Include="Controls\FileSystemTreeView.xaml.cs">
+      <DependentUpon>FileSystemTreeView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Converters\BusyToProgressStateConverter.cs" />
     <Compile Include="Converters\FilePathToImageSourceConverter.cs" />
     <Compile Include="Converters\Shell32IconExtension.cs" />
@@ -93,16 +96,12 @@
     <Compile Include="Infrastructure\FixedRelayCommandGeneric.cs" />
     <Compile Include="Infrastructure\ModelAttacher.cs" />
     <Compile Include="ViewModels\Project.cs" />
-    <Compile Include="ViewModels\ProjectShelfViewModel.cs" />
     <Compile Include="ViewModels\SolutionViewModel.cs" />
     <Compile Include="Scanner\ProjectScanner.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="Infrastructure\SortedObservableCollection.cs" />
     <Compile Include="Views\MainView.xaml.cs">
       <DependentUpon>MainView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\ProjectShelfView.xaml.cs">
-      <DependentUpon>ProjectShelfView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\SolutionView.xaml.cs">
       <DependentUpon>SolutionView.xaml</DependentUpon>
@@ -114,11 +113,11 @@
     <Compile Include="VisualStudio\SolutionFolder.cs" />
     <Compile Include="VisualStudio\SolutionItem.cs" />
     <Compile Include="VisualStudio\SolutionProject.cs" />
-    <Page Include="Views\MainView.xaml">
+    <Page Include="Controls\FileSystemTreeView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\ProjectShelfView.xaml">
+    <Page Include="Views\MainView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
