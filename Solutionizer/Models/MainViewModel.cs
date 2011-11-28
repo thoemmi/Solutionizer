@@ -10,6 +10,7 @@ using Solutionizer.Infrastructure;
 
 namespace Solutionizer.Models {
     public class MainViewModel : ViewModelBase {
+        private readonly Settings _settings = new Settings();
         private SolutionViewModel _solution = new SolutionViewModel();
         private readonly ICommand _onLoadedCommand;
         private readonly ICommand _selectRootPathCommand;
@@ -17,32 +18,29 @@ namespace Solutionizer.Models {
         private readonly ICommand _saveCommand;
         private readonly ICommand _toggleFlatModeCommand;
         private readonly ICommand _toggleHideRootNodeCommand;
-        private bool _isFlatMode;
-        private bool _hideRootNode;
-        private string _rootPath;
 
         public MainViewModel() {
             _onLoadedCommand = new FixedRelayCommand(OnLoaded);
             _selectRootPathCommand = new FixedRelayCommand(OnSelectRootPath);
             _launchCommand = new FixedRelayCommand(OnLaunch, () => _solution.SolutionHasItems);
             _saveCommand = new FixedRelayCommand(OnSave, () => _solution.SolutionHasItems);
-            _toggleFlatModeCommand = new FixedRelayCommand(() => IsFlatMode = !IsFlatMode);
-            _toggleHideRootNodeCommand = new FixedRelayCommand(() => HideRootNode = !HideRootNode, () => !IsFlatMode);
+            _toggleFlatModeCommand = new FixedRelayCommand(() => _settings.IsFlatMode = !_settings.IsFlatMode);
+            _toggleHideRootNodeCommand = new FixedRelayCommand(() => _settings.HideRootNode = !_settings.HideRootNode, () => !_settings.IsFlatMode);
         }
 
         private void OnSelectRootPath() {
             var dlg = new VistaFolderBrowserDialog {
-                SelectedPath = RootPath
+                SelectedPath = _settings.RootPath
             };
             if (dlg.ShowDialog(Application.Current.MainWindow) == true) {
-                RootPath = dlg.SelectedPath;
+                _settings.RootPath = dlg.SelectedPath;
                 _solution.CreateSolution(dlg.SelectedPath);
             }
         }
 
         private void OnLoaded() {
-            RootPath = @"d:\dev\xtplus\main\main";
-            _solution.CreateSolution(RootPath);
+            _settings.RootPath = @"d:\dev\xtplus\main\main";
+            _solution.CreateSolution(_settings.RootPath);
         }
 
         private void OnLaunch() {
@@ -85,42 +83,16 @@ namespace Solutionizer.Models {
             get { return _toggleHideRootNodeCommand; }
         }
 
+        public Settings Settings {
+            get { return _settings; }
+        }
+
         public SolutionViewModel Solution {
             get { return _solution; }
             set {
                 if (_solution != value) {
                     _solution = value;
                     RaisePropertyChanged(() => Solution);
-                }
-            }
-        }
-
-        public bool IsFlatMode {
-            get { return _isFlatMode; }
-            set {
-                if (_isFlatMode != value) {
-                    _isFlatMode = value;
-                    RaisePropertyChanged(() => IsFlatMode);
-                }
-            }
-        }
-
-        public bool HideRootNode {
-            get { return _hideRootNode; }
-            set {
-                if (_hideRootNode != value) {
-                    _hideRootNode = value;
-                    RaisePropertyChanged(() => HideRootNode);
-                }
-            }
-        }
-
-        public string RootPath {
-            get { return _rootPath; }
-            set {
-                if (_rootPath != value) {
-                    _rootPath = value;
-                    RaisePropertyChanged(() => RootPath);
                 }
             }
         }
