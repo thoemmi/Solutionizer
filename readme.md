@@ -12,7 +12,7 @@ projects to create a solution file. This solution can be saved or launched direc
 - Metro theme
 - Tooltips
 - Settings
-  - Persistence
+  - <strike>Persistence</strike>
   - UI
 - Separation of ViewModel for solution from the actual solution class
 - Installer

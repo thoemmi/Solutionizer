@@ -10,9 +10,10 @@ using Solutionizer.Infrastructure;
 
 namespace Solutionizer.Models {
     public class MainViewModel : ViewModelBase {
-        private readonly Settings _settings = new Settings();
+        private readonly Settings _settings = Settings.LoadSettings();
         private SolutionViewModel _solution = new SolutionViewModel();
         private readonly ICommand _onLoadedCommand;
+        private readonly ICommand _onClosingCommand;
         private readonly ICommand _selectRootPathCommand;
         private readonly ICommand _launchCommand;
         private readonly ICommand _saveCommand;
@@ -21,6 +22,7 @@ namespace Solutionizer.Models {
 
         public MainViewModel() {
             _onLoadedCommand = new FixedRelayCommand(OnLoaded);
+            _onClosingCommand = new FixedRelayCommand(OnClosing);
             _selectRootPathCommand = new FixedRelayCommand(OnSelectRootPath);
             _launchCommand = new FixedRelayCommand(OnLaunch, () => _solution.SolutionHasItems);
             _saveCommand = new FixedRelayCommand(OnSave, () => _solution.SolutionHasItems);
@@ -43,6 +45,10 @@ namespace Solutionizer.Models {
             _solution.CreateSolution(_settings.RootPath);
         }
 
+        private void OnClosing() {
+            _settings.Save();
+        }
+
         private void OnLaunch() {
             var newFilename = Path.Combine(Path.GetTempPath(), DateTime.Now.ToString("yyyy-MM-dd_HHmmss")) + ".sln";
             new SaveSolutionCommand(newFilename, _solution).Execute();
@@ -61,6 +67,10 @@ namespace Solutionizer.Models {
 
         public ICommand OnLoadedCommand {
             get { return _onLoadedCommand; }
+        }
+
+        public ICommand OnClosingCommand {
+            get { return _onClosingCommand; }
         }
 
         public ICommand SelectRootPathCommand {
