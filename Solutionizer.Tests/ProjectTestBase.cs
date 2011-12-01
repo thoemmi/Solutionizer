@@ -10,7 +10,15 @@ namespace Solutionizer.Tests {
         [SetUp]
         public void SetUp() {
             _testDataPath = Path.Combine(Path.GetTempPath(), "SolutionizerTest-" + DateTime.Now.ToString("o").Replace(':', '-') + "-" + _random.Next());
+            //_testDataPath = @"C:\Users\tsfreude\Documents\Visual Studio 2010\Projects\Solutionizer\tmp";
             Directory.CreateDirectory(_testDataPath);
+            //foreach (var directory in Directory.GetDirectories(_testDataPath)) {
+            //    Directory.Delete(directory, true);
+            //}
+            //foreach (var file in Directory.GetFiles(_testDataPath)) {
+            //    File.Delete(file);
+            //}
+            //Directory.Delete(_testDataPath, true);
         } 
 
         [TearDown]
