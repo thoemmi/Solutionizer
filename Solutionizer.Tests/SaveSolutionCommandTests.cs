@@ -8,7 +8,7 @@ using Solutionizer.VisualStudio;
 
 namespace Solutionizer.Tests {
     [TestFixture]
-    public class SaveSolutionCommmandTests : ProjectTestBase {
+    public class SaveSolutionCommandTests : ProjectTestBase {
         [Test]
         public void CanAddSaveSolution() {
             CopyTestDataToPath("CsTestProject1.csproj", _testDataPath);
