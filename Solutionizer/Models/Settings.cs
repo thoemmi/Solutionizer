@@ -7,17 +7,17 @@ using GalaSoft.MvvmLight;
 
 namespace Solutionizer.Models {
     public class Settings : ViewModelBase {
+        private static readonly string _settingsPath;
+        private bool _scanOnStartup = true;
         private bool _isFlatMode;
         private bool _hideRootNode;
         private string _rootPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "Visual Studio 2010", "Projects");
         private bool _isDirty;
 
-        private static readonly string _settingsPath;
-
         static Settings() {
             _settingsPath = Path.Combine(
                 Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
-                Assembly.GetEntryAssembly().GetName().Name, 
+                Assembly.GetEntryAssembly().GetName().Name,
                 "settings.xml");
         }
 
@@ -44,7 +44,7 @@ namespace Solutionizer.Models {
                 Directory.CreateDirectory(path);
             }
 
-            using (var stream = XmlWriter.Create(_settingsPath, new XmlWriterSettings { Indent = true, NewLineOnAttributes = true })) {
+            using (var stream = XmlWriter.Create(_settingsPath, new XmlWriterSettings {Indent = true, NewLineOnAttributes = true})) {
                 XamlWriter.Save(this, stream);
             }
 
@@ -86,10 +86,22 @@ namespace Solutionizer.Models {
 
         public bool IsDirty {
             get { return _isDirty; }
-            private set { if (_isDirty != value) {
-                _isDirty = value;
-                RaisePropertyChanged(() => IsDirty);
-            } }
+            private set {
+                if (_isDirty != value) {
+                    _isDirty = value;
+                    RaisePropertyChanged(() => IsDirty);
+                }
+            }
+        }
+
+        public bool ScanOnStartup {
+            get { return _scanOnStartup; }
+            set {
+                if (_scanOnStartup != value) {
+                    _scanOnStartup = value;
+                    RaisePropertyChanged(() => ScanOnStartup);
+                }
+            }
         }
     }
 }

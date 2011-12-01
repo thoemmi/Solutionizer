@@ -70,6 +70,7 @@
                         <RowDefinition Height="auto" />
                     </Grid.RowDefinitions>
                     <Controls:FileSystemTreeView 
+                        ScanOnStartup="{Binding Settings.ScanOnStartup}"
                         HideRootNode="{Binding Settings.HideRootNode}" 
                         IsFlatMode="{Binding Settings.IsFlatMode}" 
                         RootPath="{Binding Settings.RootPath}" />
@@ -78,7 +79,6 @@
                         <ToggleButton Command="{Binding ToggleHideRootNodeCommand}" IsChecked="{Binding Settings.HideRootNode, Mode=OneWay}" ToolTip="Hide the root node">H</ToggleButton>
                     </StackPanel>
                 </Grid>
-
 
                 <GridSplitter Grid.Column="1" Grid.RowSpan="2" Width="6" Background="Transparent" HorizontalAlignment="Center" ShowsPreview="true" VerticalAlignment="Stretch" />
 

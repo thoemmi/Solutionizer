@@ -16,7 +16,11 @@ namespace Solutionizer.Controls {
 
         public FileSystemTreeView() {
             InitializeComponent();
-            Loaded += (sender, args) => RefreshFileTree();
+            Loaded += (sender, args) => {
+                if (ScanOnStartup) {
+                    RefreshFileTree();
+                }
+            };
         }
 
         public static readonly DependencyProperty RootPathProperty =
@@ -61,6 +65,14 @@ namespace Solutionizer.Controls {
         public IList RootNodes {
             get { return (IList) GetValue(RootNodesProperty); }
             set { SetValue(RootNodesProperty, value); }
+        }
+
+        public static readonly DependencyProperty ScanOnStartupProperty =
+            DependencyProperty.Register("ScanOnStartup", typeof (bool), typeof (FileSystemTreeView), new PropertyMetadata(default(bool)));
+
+        public bool ScanOnStartup {
+            get { return (bool) GetValue(ScanOnStartupProperty); }
+            set { SetValue(ScanOnStartupProperty, value); }
         }
 
         private void RefreshFileTree() {
