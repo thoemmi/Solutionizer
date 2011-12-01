@@ -64,7 +64,7 @@ namespace Solutionizer.Commands {
 
             streamWriter.WriteLine("\tGlobalSection(NestedProjects) = preSolution");
             foreach (var folder in folders) {
-                foreach (var project in folder.Items.OfType<SolutionProject>()) {
+                foreach (var project in folder.Items) {
                     streamWriter.WriteLine("\t\t{0} = {1}", project.Guid.ToString("B").ToUpperInvariant(),
                                            folder.Guid.ToString("B").ToUpperInvariant());
                 }

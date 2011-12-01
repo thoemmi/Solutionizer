@@ -49,8 +49,8 @@ namespace Solutionizer.Tests {
 
         [Test]
         public void CanAddSaveSolutionWithNestedProjectReferences() {
-            CopyTestDataToPath("CsTestProject1.csproj", Path.Combine(_testDataPath, "p1"));
-            CopyTestDataToPath("CsTestProject2.csproj", Path.Combine(_testDataPath, "p2"));
+            CopyTestDataToPath("CsTestProject1.csproj", Path.Combine(_testDataPath, "sub", "p1"));
+            CopyTestDataToPath("CsTestProject2.csproj", Path.Combine(_testDataPath, "sub", "p2"));
             CopyTestDataToPath("CsTestProject3.csproj", Path.Combine(_testDataPath, "p3", "sub"));
             var project = Project.Load(Path.Combine(_testDataPath, "p3", "sub", "CsTestProject3.csproj"));
 
@@ -59,7 +59,9 @@ namespace Solutionizer.Tests {
             solution.AddProject(project);
 
             // we need to change the Guid of the reference folder
-            solution.SolutionRoot.Items.OfType<SolutionFolder>().First().Guid = new Guid("{95374152-F021-4ABB-B317-74A183A89F00}");
+            var refFolder = solution.SolutionRoot.Items.OfType<SolutionFolder>().First();
+            refFolder.Guid = new Guid("{95374152-F021-4ABB-B317-74A183A89F00}");
+            refFolder.Items.OfType<SolutionFolder>().First().Guid = new Guid("{CE1BA3BF-4957-4CBC-9D45-3DC68106B311}");
 
             var targetPath = Path.Combine(_testDataPath, "test.sln");
 

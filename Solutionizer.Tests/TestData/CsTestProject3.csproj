@@ -35,7 +35,7 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\p2\CsTestProject2.csproj">
+    <ProjectReference Include="..\..\sub\p2\CsTestProject2.csproj">
       <Project>{5CC52991-689A-476E-B9F6-3448C3E598F6}</Project>
       <Name>CsTestProject2</Name>
     </ProjectReference>
