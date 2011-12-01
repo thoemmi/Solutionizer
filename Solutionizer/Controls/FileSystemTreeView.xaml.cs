@@ -16,6 +16,7 @@ namespace Solutionizer.Controls {
 
         public FileSystemTreeView() {
             InitializeComponent();
+            Loaded += (sender, args) => RefreshFileTree();
         }
 
         public static readonly DependencyProperty RootPathProperty =

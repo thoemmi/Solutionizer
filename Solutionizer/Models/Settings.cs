@@ -9,7 +9,7 @@ namespace Solutionizer.Models {
     public class Settings : ViewModelBase {
         private bool _isFlatMode;
         private bool _hideRootNode;
-        private string _rootPath = @"d:\dev\xtplus\main\main";
+        private string _rootPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "Visual Studio 2010", "Projects");
         private bool _isDirty;
 
         private static readonly string _settingsPath;

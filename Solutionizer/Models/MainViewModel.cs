@@ -41,7 +41,6 @@ namespace Solutionizer.Models {
         }
 
         private void OnLoaded() {
-            _settings.RootPath = @"d:\dev\xtplus\main\main";
             _solution.CreateSolution(_settings.RootPath);
         }
 
