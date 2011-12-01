@@ -6,6 +6,10 @@ using System.Linq;
 namespace Solutionizer.Scanner {
     public static class ProjectScanner {
         public static DirectoryNode Scan(string path) {
+            if (!Directory.Exists(path)) {
+                return null;
+            }
+
             var node = CreateDirectoryNode(path);
             if (node == null) {
                 node = new DirectoryNode {
