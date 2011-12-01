@@ -77,7 +77,7 @@ namespace Solutionizer.Controls {
 
         private void RefreshFileTree() {
             var rootPath = RootPath;
-            CommandExecutor.ExecuteAsync("Scanning projects", () => ProjectScanner.Scan(rootPath), result => {
+            CommandExecutor.ExecuteAsync("Scanning projects", () => ProjectScanner.Scan(rootPath, true), result => {
                 _rootNode = result;
                 TransformNodes();
             });

@@ -5,12 +5,12 @@ using System.Linq;
 
 namespace Solutionizer.Scanner {
     public static class ProjectScanner {
-        public static DirectoryNode Scan(string path) {
+        public static DirectoryNode Scan(string path, bool simplify) {
             if (!Directory.Exists(path)) {
                 return null;
             }
 
-            var node = CreateDirectoryNode(path);
+            var node = CreateDirectoryNode(path, simplify);
             if (node == null) {
                 node = new DirectoryNode {
                     Path = path
@@ -20,24 +20,26 @@ namespace Solutionizer.Scanner {
             return node;
         }
 
-        private static List<DirectoryNode> GetDirectoryNodes(string path) {
+        private static List<DirectoryNode> GetDirectoryNodes(string path, bool simplify) {
             return
                 Directory.EnumerateDirectories(path)
-                    .Select(CreateDirectoryNode)
+                    .Select(p => CreateDirectoryNode(p, simplify))
                     .Where(x => x != null)
                     .ToList();
         }
 
-        private static DirectoryNode CreateDirectoryNode(string folderpath) {
+        private static DirectoryNode CreateDirectoryNode(string folderpath, bool simplify) {
             var files = GetFileNodes(folderpath);
-            var subfolders = GetDirectoryNodes(folderpath);
+            var subfolders = GetDirectoryNodes(folderpath, simplify);
 
             // replace subfolders with only a file child with their child
-            //var simples = subfolders.Where(s => s.Files.Count == 1 && s.Subdirectories.Count == 0).Reverse().ToArray();
-            //foreach (var directoryNode in simples) {
-            //    subfolders.Remove(directoryNode);
-            //    files.Insert(0, directoryNode.Files[0]);
-            //}
+            if (simplify) {
+                var simples = subfolders.Where(s => s.Files.Count == 1 && s.Subdirectories.Count == 0).Reverse().ToArray();
+                foreach (var directoryNode in simples) {
+                    subfolders.Remove(directoryNode);
+                    files.Insert(0, directoryNode.Files[0]);
+                }
+            }
 
             if (files.Count == 0 && subfolders.Count == 0) {
                 // we're not interested in empty directories
