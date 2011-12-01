@@ -14,6 +14,7 @@ namespace Solutionizer.Models {
     public class SolutionViewModel : ViewModelBase {
         private SolutionFolder _solutionRoot = new SolutionFolder();
         private readonly ICommand _dropCommand;
+        private readonly ICommand _removeSolutionItemCommand;
         private bool _solutionHasItems;
         private bool _isDirty;
 
@@ -22,6 +23,18 @@ namespace Solutionizer.Models {
 
         public SolutionViewModel() {
             _dropCommand = new FixedRelayCommand<object>(OnDrop, obj => obj is FileNode);
+            _removeSolutionItemCommand = new FixedRelayCommand<SolutionItem>(OnRemoveSolutionItem);
+        }
+
+        private void OnRemoveSolutionItem(SolutionItem item) {
+            RemoveRecursively(item, _solutionRoot);
+        }
+
+        private static void RemoveRecursively(SolutionItem item, SolutionFolder folder) {
+            folder.Items.Remove(item);
+            foreach (var subfolder in folder.Items.OfType<SolutionFolder>()) {
+                RemoveRecursively(item, subfolder);
+            }
         }
 
         public void CreateSolution(string rootPath) {
@@ -149,6 +162,10 @@ namespace Solutionizer.Models {
 
         public ICommand DropCommand {
             get { return _dropCommand; }
+        }
+
+        public ICommand RemoveSolutionItemCommand {
+            get { return _removeSolutionItemCommand; }
         }
     }
 
