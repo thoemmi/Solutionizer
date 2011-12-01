@@ -28,9 +28,9 @@ namespace Solutionizer.Tests {
 
         [Test]
         public void CanAddSaveSolutionWithProjectReferences() {
-            CopyTestDataToPath("CsTestProject1.csproj", _testDataPath);
-            CopyTestDataToPath("CsTestProject2.csproj", _testDataPath);
-            var project = Project.Load(Path.Combine(_testDataPath, "CsTestProject2.csproj"));
+            CopyTestDataToPath("CsTestProject1.csproj", _testDataPath + @"\p1");
+            CopyTestDataToPath("CsTestProject2.csproj", _testDataPath + @"\p2");
+            var project = Project.Load(Path.Combine(_testDataPath + @"\p2", "CsTestProject2.csproj"));
 
             var solution = new SolutionViewModel();
             solution.CreateSolution(_testDataPath);

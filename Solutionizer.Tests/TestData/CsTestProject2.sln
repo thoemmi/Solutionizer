@@ -1,8 +1,8 @@
 ﻿Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CsTestProject2", "CsTestProject2.csproj", "{5CC52991-689A-476E-B9F6-3448C3E598F6}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CsTestProject2", "p2\CsTestProject2.csproj", "{5CC52991-689A-476E-B9F6-3448C3E598F6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CsTestProject1", "CsTestProject1.csproj", "{717B4B8E-714C-4A52-A61B-F5BC4E655131}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CsTestProject1", "p1\CsTestProject1.csproj", "{717B4B8E-714C-4A52-A61B-F5BC4E655131}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "_References", "_References", "{95374152-F021-4ABB-B317-74A183A89F00}"
 EndProject
