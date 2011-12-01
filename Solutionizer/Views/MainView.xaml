@@ -69,7 +69,10 @@
                         <RowDefinition Height="*" />
                         <RowDefinition Height="auto" />
                     </Grid.RowDefinitions>
-                    <Controls:FileSystemTreeView HideRootNode="{Binding Settings.HideRootNode}" IsFlatMode="{Binding Settings.IsFlatMode}" RootPath="{Binding Settings.RootPath}" />
+                    <Controls:FileSystemTreeView 
+                        HideRootNode="{Binding Settings.HideRootNode}" 
+                        IsFlatMode="{Binding Settings.IsFlatMode}" 
+                        RootPath="{Binding Settings.RootPath}" />
                     <StackPanel Grid.Row="1" Orientation="Horizontal">
                         <ToggleButton Command="{Binding ToggleFlatModeCommand}" IsChecked="{Binding Settings.IsFlatMode, Mode=OneWay}" ToolTip="Toggle between flat and hierarchical display">F</ToggleButton>
                         <ToggleButton Command="{Binding ToggleHideRootNodeCommand}" IsChecked="{Binding Settings.HideRootNode, Mode=OneWay}" ToolTip="Hide the root node">H</ToggleButton>
