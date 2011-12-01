@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using System.IO;
+using System.Text;
 using Solutionizer.Extensions;
 using Solutionizer.Helper;
 using Solutionizer.Models;
@@ -16,7 +17,7 @@ namespace Solutionizer.Commands {
         }
 
         public void Execute() {
-            using (var streamWriter = File.CreateText(_solutionFileName)) {
+            using (var streamWriter = new StreamWriter(_solutionFileName, false, Encoding.UTF8)) {
                 WriteHeader(streamWriter);
 
                 var projects = _solution.SolutionRoot.Items.Flatten<SolutionItem, SolutionProject, SolutionFolder>(p => p.Items);
@@ -51,7 +52,7 @@ namespace Solutionizer.Commands {
         }
 
         private void WriteHeader(TextWriter stream) {
-            //stream.WriteLine();
+            stream.WriteLine();
             stream.WriteLine("Microsoft Visual Studio Solution File, Format Version 11.00");
             stream.WriteLine("# Visual Studio 2010");
         }
