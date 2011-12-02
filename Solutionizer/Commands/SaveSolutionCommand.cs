@@ -17,60 +17,60 @@ namespace Solutionizer.Commands {
         }
 
         public void Execute() {
-            using (var streamWriter = new StreamWriter(_solutionFileName, false, Encoding.UTF8)) {
-                WriteHeader(streamWriter);
+            using (var writer = new StreamWriter(_solutionFileName, false, Encoding.UTF8)) {
+                WriteHeader(writer);
 
                 var projects = _solution.SolutionRoot.Items.Flatten<SolutionItem, SolutionProject, SolutionFolder>(p => p.Items);
 
                 foreach (var project in projects) {
-                    streamWriter.WriteLine("Project(\"{0}\") = \"{1}\", \"{2}\", \"{3}\"", "{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}",
+                    writer.WriteLine("Project(\"{0}\") = \"{1}\", \"{2}\", \"{3}\"", "{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}",
                                            project.Name, FileSystem.GetRelativePath(_solutionFileName, project.Filepath),
                                            project.Guid.ToString("B").ToUpperInvariant());
-                    streamWriter.WriteLine("EndProject");
+                    writer.WriteLine("EndProject");
                 }
 
                 var folders = _solution.SolutionRoot.Items.Flatten<SolutionItem, SolutionFolder, SolutionFolder>(p => p.Items);
                 foreach (var folder in folders) {
-                    streamWriter.WriteLine("Project(\"{0}\") = \"{1}\", \"{2}\", \"{3}\"", "{2150E333-8FDC-42A3-9474-1A3956D46DE8}",
+                    writer.WriteLine("Project(\"{0}\") = \"{1}\", \"{2}\", \"{3}\"", "{2150E333-8FDC-42A3-9474-1A3956D46DE8}",
                                            folder.Name, folder.Name, folder.Guid.ToString("B").ToUpperInvariant());
-                    streamWriter.WriteLine("EndProject");
+                    writer.WriteLine("EndProject");
                 }
 
-                streamWriter.WriteLine("Global");
-                WriteSolutionProperties(streamWriter);
-                WriteNestedProjects(streamWriter);
-                streamWriter.WriteLine("EndGlobal");
+                writer.WriteLine("Global");
+                WriteSolutionProperties(writer);
+                WriteNestedProjects(writer);
+                writer.WriteLine("EndGlobal");
 
                 _solution.IsDirty = false;
             }
         }
 
-        private void WriteSolutionProperties(TextWriter streamWriter) {
-            streamWriter.WriteLine("\tGlobalSection(SolutionProperties) = preSolution");
-            streamWriter.WriteLine("\t\tHideSolutionNode = FALSE");
-            streamWriter.WriteLine("\tEndGlobalSection");
+        private void WriteSolutionProperties(TextWriter writer) {
+            writer.WriteLine("\tGlobalSection(SolutionProperties) = preSolution");
+            writer.WriteLine("\t\tHideSolutionNode = FALSE");
+            writer.WriteLine("\tEndGlobalSection");
         }
 
-        private void WriteHeader(TextWriter stream) {
-            stream.WriteLine();
-            stream.WriteLine("Microsoft Visual Studio Solution File, Format Version 11.00");
-            stream.WriteLine("# Visual Studio 2010");
+        private void WriteHeader(TextWriter writer) {
+            writer.WriteLine();
+            writer.WriteLine("Microsoft Visual Studio Solution File, Format Version 11.00");
+            writer.WriteLine("# Visual Studio 2010");
         }
 
-        private void WriteNestedProjects(TextWriter streamWriter) {
+        private void WriteNestedProjects(TextWriter writer) {
             var folders = _solution.SolutionRoot.Items.Flatten<SolutionItem, SolutionFolder, SolutionFolder>(p => p.Items).ToList();
             if (folders.Count == 0) {
                 return;
             }
 
-            streamWriter.WriteLine("\tGlobalSection(NestedProjects) = preSolution");
+            writer.WriteLine("\tGlobalSection(NestedProjects) = preSolution");
             foreach (var folder in folders) {
                 foreach (var project in folder.Items) {
-                    streamWriter.WriteLine("\t\t{0} = {1}", project.Guid.ToString("B").ToUpperInvariant(),
+                    writer.WriteLine("\t\t{0} = {1}", project.Guid.ToString("B").ToUpperInvariant(),
                                            folder.Guid.ToString("B").ToUpperInvariant());
                 }
             }
-            streamWriter.WriteLine("\tEndGlobalSection");
+            writer.WriteLine("\tEndGlobalSection");
         }
     }
 }
