@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using NUnit.Framework;
+using Solutionizer.Models;
 
 namespace Solutionizer.Tests {
     public class ProjectTestBase {
@@ -9,21 +10,15 @@ namespace Solutionizer.Tests {
 
         [SetUp]
         public void SetUp() {
-            //_testDataPath = Path.Combine(Path.GetTempPath(), "SolutionizerTest-" + DateTime.Now.ToString("o").Replace(':', '-') + "-" + _random.Next());
-            _testDataPath = @"C:\Users\tsfreude\Documents\Visual Studio 2010\Projects\Solutionizer\tmp";
+            Settings.Instance = new Settings();
+
+            _testDataPath = Path.Combine(Path.GetTempPath(), "SolutionizerTest-" + DateTime.Now.ToString("o").Replace(':', '-') + "-" + _random.Next());
             Directory.CreateDirectory(_testDataPath);
-            foreach (var directory in Directory.GetDirectories(_testDataPath)) {
-                Directory.Delete(directory, true);
-            }
-            foreach (var file in Directory.GetFiles(_testDataPath)) {
-                File.Delete(file);
-            }
-            Directory.Delete(_testDataPath, true);
         } 
 
         [TearDown]
         public void TearDown() {
-            //Directory.Delete(_testDataPath, true);
+            Directory.Delete(_testDataPath, true);
         }
 
         protected void CopyTestDataToPath(string resource, string path) {

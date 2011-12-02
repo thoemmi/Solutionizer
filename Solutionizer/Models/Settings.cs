@@ -7,32 +7,44 @@ using GalaSoft.MvvmLight;
 
 namespace Solutionizer.Models {
     public class Settings : ViewModelBase {
-        private static readonly string _settingsPath;
+        private static Settings _instance;
         private bool _scanOnStartup = true;
         private bool _isFlatMode;
         private bool _hideRootNode;
         private bool _isDirty;
         private WindowSettings _windowSettings;
-        private string _rootPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "Visual Studio 2010", "Projects");
+        private bool _includeReferencedProjects = true;
+        private int _referenceTreeDepth = 6;
 
-        static Settings() {
-            _settingsPath = Path.Combine(
-                Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
-                Assembly.GetEntryAssembly().GetName().Name,
-                "settings.xml");
+        private string _rootPath = Path.Combine(
+            Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
+            "Visual Studio 2010",
+            "Projects");
+
+        private static string SettingsPath {
+            get {
+                return Path.Combine(
+                    Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+                    Assembly.GetEntryAssembly().GetName().Name,
+                    "settings.xml");
+            }
         }
 
-        public static Settings LoadSettings() {
-            Settings settings;
-            if (File.Exists(_settingsPath)) {
-                using (var stream = File.OpenRead(_settingsPath)) {
-                    settings = (Settings) XamlReader.Load(stream);
+        public static Settings Instance {
+            set { _instance = value; }
+            get {
+                if (_instance == null) {
+                    if (File.Exists(SettingsPath)) {
+                        using (var stream = File.OpenRead(SettingsPath)) {
+                            _instance = (Settings) XamlReader.Load(stream);
+                        }
+                    } else {
+                        _instance = new Settings();
+                    }
+                    _instance.IsDirty = false;
                 }
-            } else {
-                settings = new Settings();
+                return _instance;
             }
-            settings.IsDirty = false;
-            return settings;
         }
 
         public void Save() {
@@ -40,12 +52,14 @@ namespace Solutionizer.Models {
                 return;
             }
 
-            var path = Path.GetDirectoryName(_settingsPath);
+            var path = Path.GetDirectoryName(SettingsPath);
             if (!Directory.Exists(path)) {
                 Directory.CreateDirectory(path);
             }
 
-            using (var stream = XmlWriter.Create(_settingsPath, new XmlWriterSettings {Indent = true, NewLineOnAttributes = true})) {
+            using (var stream = XmlWriter.Create(SettingsPath, new XmlWriterSettings {
+                Indent = true, NewLineOnAttributes = true
+            })) {
                 XamlWriter.Save(this, stream);
             }
 
@@ -112,6 +126,28 @@ namespace Solutionizer.Models {
                 if (_windowSettings != value) {
                     _windowSettings = value;
                     RaisePropertyChanged(() => WindowSettings);
+                    IsDirty = true;
+                }
+            }
+        }
+
+        public bool IncludeReferencedProjects {
+            get { return _includeReferencedProjects; }
+            set {
+                if (_includeReferencedProjects != value) {
+                    _includeReferencedProjects = value;
+                    RaisePropertyChanged(() => IncludeReferencedProjects);
+                    IsDirty = true;
+                }
+            }
+        }
+
+        public int ReferenceTreeDepth {
+            get { return _referenceTreeDepth; }
+            set {
+                if (_referenceTreeDepth != value) {
+                    _referenceTreeDepth = value;
+                    RaisePropertyChanged(() => ReferenceTreeDepth);
                     IsDirty = true;
                 }
             }

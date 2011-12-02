@@ -97,7 +97,9 @@ namespace Solutionizer.Models {
                 RemoveProject(referenceFolder, project);
             }
 
-            AddReferencedProjects(project, 6);
+            if (Settings.Instance.IncludeReferencedProjects) {
+                AddReferencedProjects(project, Settings.Instance.ReferenceTreeDepth);
+            }
         }
 
         private static void RemoveProject(SolutionFolder solutionFolder, Project project) {

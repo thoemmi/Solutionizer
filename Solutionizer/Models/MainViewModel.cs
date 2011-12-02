@@ -10,7 +10,7 @@ using Solutionizer.Infrastructure;
 
 namespace Solutionizer.Models {
     public class MainViewModel : ViewModelBase {
-        private readonly Settings _settings = Settings.LoadSettings();
+        private readonly Settings _settings = Settings.Instance;
         private SolutionViewModel _solution = new SolutionViewModel();
         private readonly ICommand _onLoadedCommand;
         private readonly ICommand _onClosedCommand;
