@@ -81,6 +81,10 @@ namespace Solutionizer.Scanner {
         public string Name { get; set; }
         public string Path { get; set; }
 
+        public int ProjectCount {
+            get { return _subdirectories.Sum(folder => folder.ProjectCount) + _files.Count; }
+        }
+
         public List<DirectoryNode> Subdirectories {
             get { return _subdirectories; }
             set { _subdirectories = value; }

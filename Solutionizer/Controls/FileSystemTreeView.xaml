@@ -12,7 +12,10 @@
         <HierarchicalDataTemplate DataType="{x:Type Scanner:DirectoryNode}" ItemsSource ="{Binding Children}">
             <StackPanel Orientation="Horizontal" Margin="1">
                 <Image Height="16" Width="16" x:Name="nodeImg" Source="{Converters:Shell32Icon FileName='shell32.dll',IconIndex=3}" Margin="0 0 4 0" />
-                <TextBlock Text="{Binding Name}" />
+                <TextBlock>
+                    <Run Text="{Binding Name, Mode=OneTime}"/>
+                    <!--<Run Foreground="blue" Text="("/><Run Foreground="blue" Text="{Binding ProjectCount, Mode=OneTime}"/><Run Foreground="blue" Text=")"/>-->
+                </TextBlock>
             </StackPanel>
             <HierarchicalDataTemplate.Triggers>
                 <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=TreeViewItem}, Path=IsExpanded}" Value="True">
