@@ -13,7 +13,7 @@ namespace Solutionizer.Models {
         private readonly Settings _settings = Settings.LoadSettings();
         private SolutionViewModel _solution = new SolutionViewModel();
         private readonly ICommand _onLoadedCommand;
-        private readonly ICommand _onClosingCommand;
+        private readonly ICommand _onClosedCommand;
         private readonly ICommand _selectRootPathCommand;
         private readonly ICommand _launchCommand;
         private readonly ICommand _saveCommand;
@@ -22,7 +22,7 @@ namespace Solutionizer.Models {
 
         public MainViewModel() {
             _onLoadedCommand = new FixedRelayCommand(OnLoaded);
-            _onClosingCommand = new FixedRelayCommand(OnClosing);
+            _onClosedCommand = new FixedRelayCommand(OnClosed);
             _selectRootPathCommand = new FixedRelayCommand(OnSelectRootPath);
             _launchCommand = new FixedRelayCommand(OnLaunch, () => _solution.SolutionHasItems);
             _saveCommand = new FixedRelayCommand(OnSave, () => _solution.SolutionHasItems);
@@ -44,7 +44,7 @@ namespace Solutionizer.Models {
             _solution.CreateSolution(_settings.RootPath);
         }
 
-        private void OnClosing() {
+        private void OnClosed() {
             _settings.Save();
         }
 
@@ -68,8 +68,8 @@ namespace Solutionizer.Models {
             get { return _onLoadedCommand; }
         }
 
-        public ICommand OnClosingCommand {
-            get { return _onClosingCommand; }
+        public ICommand OnClosedCommand {
+            get { return _onClosedCommand; }
         }
 
         public ICommand SelectRootPathCommand {

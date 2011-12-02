@@ -11,8 +11,9 @@ namespace Solutionizer.Models {
         private bool _scanOnStartup = true;
         private bool _isFlatMode;
         private bool _hideRootNode;
-        private string _rootPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "Visual Studio 2010", "Projects");
         private bool _isDirty;
+        private WindowSettings _windowSettings;
+        private string _rootPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "Visual Studio 2010", "Projects");
 
         static Settings() {
             _settingsPath = Path.Combine(
@@ -100,8 +101,28 @@ namespace Solutionizer.Models {
                 if (_scanOnStartup != value) {
                     _scanOnStartup = value;
                     RaisePropertyChanged(() => ScanOnStartup);
+                    IsDirty = true;
                 }
             }
         }
+
+        public WindowSettings WindowSettings {
+            get { return _windowSettings; }
+            set {
+                if (_windowSettings != value) {
+                    _windowSettings = value;
+                    RaisePropertyChanged(() => WindowSettings);
+                    IsDirty = true;
+                }
+            }
+        }
+    }
+
+    public class WindowSettings {
+        public double Top { get; set; }
+        public double Left { get; set; }
+        public double Width { get; set; }
+        public double Height { get; set; }
+        public bool Maximized { get; set; }
     }
 }

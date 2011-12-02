@@ -15,12 +15,12 @@
     xmlns:Views="clr-namespace:Solutionizer.Views" 
     TextOptions.TextFormattingMode="Display" 
     TextOptions.TextHintingMode="Fixed" 
-    Height="350" Width="525" 
     SnapsToDevicePixels="true" 
     Title="Solutionizer" 
     UseLayoutRounding="True" 
     Infrastructure:ModelAttacher.AttachModel="{x:Type Models:MainViewModel}" 
     mc:Ignorable="d" d:DataContext="{d:DesignInstance Models:MainViewModel}" 
+    Infrastructure:WindowStatePersistence.Settings="{Binding Settings}"    
     d:DesignHeight="300" d:DesignWidth="300">
     <Window.Resources>
         <Converters:BusyToProgressStateConverter x:Key="BusyToProgressStateConverter" />
@@ -33,8 +33,8 @@
         <i:EventTrigger EventName="Loaded">
             <cmd:EventToCommand Command="{Binding OnLoadedCommand, Mode=OneWay}" />
         </i:EventTrigger>
-        <i:EventTrigger EventName="Closing">
-            <cmd:EventToCommand Command="{Binding OnClosingCommand, Mode=OneWay}" />
+        <i:EventTrigger EventName="Closed">
+            <cmd:EventToCommand Command="{Binding OnClosedCommand, Mode=OneWay}" />
         </i:EventTrigger>
     </i:Interaction.Triggers>
     <Grid>
