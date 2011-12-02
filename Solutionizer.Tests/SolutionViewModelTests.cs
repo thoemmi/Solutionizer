@@ -11,8 +11,7 @@ namespace Solutionizer.Tests {
             CopyTestDataToPath("CsTestProject1.csproj", _testDataPath);
             var project = Project.Load(Path.Combine(_testDataPath, "CsTestProject1.csproj"));
 
-            var sut = new SolutionViewModel();
-            sut.CreateSolution(_testDataPath);
+            var sut = new SolutionViewModel(_testDataPath);
             sut.AddProject(project);
 
             Assert.AreEqual(1, sut.SolutionRoot.Items.Count);
@@ -26,8 +25,7 @@ namespace Solutionizer.Tests {
             CopyTestDataToPath("CsTestProject2.csproj", Path.Combine(_testDataPath, "p2"));
             var project = Project.Load(Path.Combine(_testDataPath, "p2", "CsTestProject2.csproj"));
 
-            var sut = new SolutionViewModel();
-            sut.CreateSolution(_testDataPath);
+            var sut = new SolutionViewModel(_testDataPath);
             sut.AddProject(project);
 
             Assert.AreEqual(2, sut.SolutionRoot.Items.Count);

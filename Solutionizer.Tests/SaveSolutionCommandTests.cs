@@ -14,8 +14,7 @@ namespace Solutionizer.Tests {
             CopyTestDataToPath("CsTestProject1.csproj", _testDataPath);
             var project = Project.Load(Path.Combine(_testDataPath, "CsTestProject1.csproj"));
 
-            var solution = new SolutionViewModel();
-            solution.CreateSolution(_testDataPath);
+            var solution = new SolutionViewModel(_testDataPath);
             solution.AddProject(project);
 
             var targetPath = Path.Combine(_testDataPath, "test.sln");
@@ -32,8 +31,7 @@ namespace Solutionizer.Tests {
             CopyTestDataToPath("CsTestProject2.csproj", Path.Combine(_testDataPath, "p2"));
             var project = Project.Load(Path.Combine(_testDataPath, "p2", "CsTestProject2.csproj"));
 
-            var solution = new SolutionViewModel();
-            solution.CreateSolution(_testDataPath);
+            var solution = new SolutionViewModel(_testDataPath);
             solution.AddProject(project);
 
             // we need to change the Guid of the reference folder
@@ -54,8 +52,7 @@ namespace Solutionizer.Tests {
             CopyTestDataToPath("CsTestProject3.csproj", Path.Combine(_testDataPath, "p3", "sub"));
             var project = Project.Load(Path.Combine(_testDataPath, "p3", "sub", "CsTestProject3.csproj"));
 
-            var solution = new SolutionViewModel();
-            solution.CreateSolution(_testDataPath);
+            var solution = new SolutionViewModel(_testDataPath);
             solution.AddProject(project);
 
             // we need to change the Guid of the reference folder

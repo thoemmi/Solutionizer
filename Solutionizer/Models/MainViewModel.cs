@@ -11,12 +11,13 @@ using Solutionizer.Infrastructure;
 namespace Solutionizer.Models {
     public class MainViewModel : ViewModelBase {
         private readonly Settings _settings = Settings.Instance;
-        private SolutionViewModel _solution = new SolutionViewModel();
+        private SolutionViewModel _solution = new SolutionViewModel(Settings.Instance.RootPath);
         private readonly ICommand _onLoadedCommand;
         private readonly ICommand _onClosedCommand;
         private readonly ICommand _selectRootPathCommand;
         private readonly ICommand _launchCommand;
         private readonly ICommand _saveCommand;
+        private readonly ICommand _newSolutionCommand;
         private readonly ICommand _toggleFlatModeCommand;
         private readonly ICommand _toggleHideRootNodeCommand;
 
@@ -24,8 +25,9 @@ namespace Solutionizer.Models {
             _onLoadedCommand = new FixedRelayCommand(OnLoaded);
             _onClosedCommand = new FixedRelayCommand(OnClosed);
             _selectRootPathCommand = new FixedRelayCommand(OnSelectRootPath);
-            _launchCommand = new FixedRelayCommand(OnLaunch, () => _solution.SolutionHasItems);
-            _saveCommand = new FixedRelayCommand(OnSave, () => _solution.SolutionHasItems);
+            _launchCommand = new FixedRelayCommand(OnLaunch, () => Solution.SolutionHasItems);
+            _saveCommand = new FixedRelayCommand(OnSave, () => Solution.SolutionHasItems);
+            _newSolutionCommand = new FixedRelayCommand(() => Solution = new SolutionViewModel(_settings.RootPath));
             _toggleFlatModeCommand = new FixedRelayCommand(() => _settings.IsFlatMode = !_settings.IsFlatMode);
             _toggleHideRootNodeCommand = new FixedRelayCommand(() => _settings.HideRootNode = !_settings.HideRootNode, () => !_settings.IsFlatMode);
         }
@@ -36,12 +38,11 @@ namespace Solutionizer.Models {
             };
             if (dlg.ShowDialog(Application.Current.MainWindow) == true) {
                 _settings.RootPath = dlg.SelectedPath;
-                _solution.CreateSolution(dlg.SelectedPath);
+                Solution = new SolutionViewModel(dlg.SelectedPath);
             }
         }
 
         private void OnLoaded() {
-            _solution.CreateSolution(_settings.RootPath);
         }
 
         private void OnClosed() {
@@ -50,7 +51,7 @@ namespace Solutionizer.Models {
 
         private void OnLaunch() {
             var newFilename = Path.Combine(Path.GetTempPath(), DateTime.Now.ToString("yyyy-MM-dd_HHmmss")) + ".sln";
-            new SaveSolutionCommand(newFilename, _solution).Execute();
+            new SaveSolutionCommand(newFilename, Solution).Execute();
             Process.Start(newFilename);
             Application.Current.MainWindow.WindowState = WindowState.Minimized;
         }
@@ -60,7 +61,7 @@ namespace Solutionizer.Models {
                 Filter = "Solution File (*.sln)|*.sln"
             };
             if (dlg.ShowDialog() == true) {
-                new SaveSolutionCommand(dlg.FileName, _solution).Execute();
+                new SaveSolutionCommand(dlg.FileName, Solution).Execute();
             }
         }
 
@@ -82,6 +83,10 @@ namespace Solutionizer.Models {
 
         public ICommand SaveCommand {
             get { return _saveCommand; }
+        }
+
+        public ICommand NewSolutionCommand {
+            get { return _newSolutionCommand; }
         }
 
         public ICommand ToggleFlatModeCommand {

@@ -12,18 +12,22 @@ using Solutionizer.VisualStudio;
 
 namespace Solutionizer.Models {
     public class SolutionViewModel : ViewModelBase {
-        private SolutionFolder _solutionRoot = new SolutionFolder();
+        private readonly SolutionFolder _solutionRoot = new SolutionFolder();
         private readonly ICommand _dropCommand;
         private readonly ICommand _removeSolutionItemCommand;
         private bool _solutionHasItems;
         private bool _isDirty;
-
         private bool _isSccBound;
-        private string _rootPath;
+        private readonly string _rootPath;
+
+        public SolutionViewModel(string rootPath) : this() {
+            _rootPath = rootPath;
+        }
 
         public SolutionViewModel() {
             _dropCommand = new FixedRelayCommand<object>(OnDrop, obj => obj is FileNode);
             _removeSolutionItemCommand = new FixedRelayCommand<SolutionItem>(OnRemoveSolutionItem);
+            _solutionRoot.Items.CollectionChanged += OnItemsOnCollectionChanged;
         }
 
         private void OnRemoveSolutionItem(SolutionItem item) {
@@ -35,18 +39,6 @@ namespace Solutionizer.Models {
             foreach (var subfolder in folder.Items.OfType<SolutionFolder>()) {
                 RemoveRecursively(item, subfolder);
             }
-        }
-
-        public void CreateSolution(string rootPath) {
-            if (_solutionRoot != null) {
-                _solutionRoot.Items.CollectionChanged -= OnItemsOnCollectionChanged;
-            }
-            _solutionRoot = new SolutionFolder();
-            _solutionRoot.Items.CollectionChanged += OnItemsOnCollectionChanged;
-            _rootPath = rootPath;
-            IsDirty = false;
-            SolutionHasItems = false;
-            RaisePropertyChanged(() => SolutionRoot);
         }
 
         private void OnItemsOnCollectionChanged(object sender, NotifyCollectionChangedEventArgs args) {

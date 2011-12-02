@@ -83,6 +83,7 @@
                 <GridSplitter Grid.Column="1" Grid.RowSpan="2" Width="6" Background="Transparent" HorizontalAlignment="Center" ShowsPreview="true" VerticalAlignment="Stretch" />
 
                 <WrapPanel Grid.Column="2" Margin="0 3 3 3" HorizontalAlignment="Right" Orientation="Horizontal">
+                    <Button Margin="3 0 0 0" Command="{Binding NewSolutionCommand}" Content="New" />
                     <Button Margin="3 0 0 0" Command="{Binding LaunchCommand}" Content="Launch" />
                     <Button Margin="3 0 0 0" Command="{Binding SaveCommand}" Content="Save" />
                 </WrapPanel>
