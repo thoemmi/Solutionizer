@@ -154,6 +154,10 @@ namespace Solutionizer.Models {
             }
         }
 
+        public string RootPath {
+            get { return _rootPath; }
+        }
+
         public ICommand DropCommand {
             get { return _dropCommand; }
         }

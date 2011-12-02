@@ -15,6 +15,7 @@ namespace Solutionizer.Models {
         private WindowSettings _windowSettings;
         private bool _includeReferencedProjects = true;
         private int _referenceTreeDepth = 6;
+        private Uri _tfsName;
 
         private string _rootPath = Path.Combine(
             Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
@@ -148,6 +149,17 @@ namespace Solutionizer.Models {
                 if (_referenceTreeDepth != value) {
                     _referenceTreeDepth = value;
                     RaisePropertyChanged(() => ReferenceTreeDepth);
+                    IsDirty = true;
+                }
+            }
+        }
+
+        public Uri TFSName {
+            get { return _tfsName; }
+            set {
+                if (_tfsName != value) {
+                    _tfsName = value;
+                    RaisePropertyChanged(() => TFSName);
                     IsDirty = true;
                 }
             }
