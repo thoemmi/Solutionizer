@@ -58,7 +58,9 @@ namespace Solutionizer.Models {
 
         private void OnSave() {
             var dlg = new VistaSaveFileDialog {
-                Filter = "Solution File (*.sln)|*.sln"
+                Filter = "Solution File (*.sln)|*.sln",
+                AddExtension = true,
+                DefaultExt = ".sln"
             };
             if (dlg.ShowDialog() == true) {
                 new SaveSolutionCommand(dlg.FileName, Solution).Execute();
