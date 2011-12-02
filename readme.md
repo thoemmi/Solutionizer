@@ -14,7 +14,7 @@ projects to create a solution file. This solution can be saved or launched direc
 - Settings
   - <strike>Persistence</strike>
   - UI
-  - <strike>Saving and restoring of window size/position<strike>
+  - <strike>Saving and restoring of window size/position</strike>
 - Separation of ViewModel for solution from the actual solution class
 - Installer
 - <strike>Removing of projects from the solution</strike>
