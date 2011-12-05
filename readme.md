@@ -6,9 +6,9 @@ projects to create a solution file. This solution can be saved or launched direc
 
 ## TODO
 
-### v0.9
+### v0.1
 
-- TFS support
+- <strike>TFS support</strike>
 - Metro theme
 - Tooltips
 - Settings
@@ -26,3 +26,4 @@ projects to create a solution file. This solution can be saved or launched direc
 - Solution folders
   - user defined
   - drag'n'drop
+- add option to add referened projects as "unloaded"
