@@ -13,7 +13,6 @@ namespace Solutionizer.Helper {
             tfsFolder = null;
             if (tfsName == null) {
                 using (var dlg = new TeamProjectPicker(TeamProjectPickerMode.NoProject, false)) {
-                    dlg.HelpTopic = "ghs gvsha";
                     dlg.AcceptButtonText = "Select";
                     if (dlg.ShowDialog() != DialogResult.OK) {
                         return false;
