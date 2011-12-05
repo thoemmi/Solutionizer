@@ -38,9 +38,9 @@ namespace Solutionizer.Commands {
                 }
 
                 writer.WriteLine("Global");
+                WriteTfsInformation(writer);
                 WriteSolutionProperties(writer);
                 WriteNestedProjects(writer);
-                WriteTfsInformation(writer);
                 writer.WriteLine("EndGlobal");
 
                 _solution.IsDirty = false;
@@ -88,15 +88,15 @@ namespace Solutionizer.Commands {
 
             var projects = _solution.SolutionRoot.Items.Flatten<SolutionItem, SolutionProject, SolutionFolder>(p => p.Items).ToList();
             writer.WriteLine("\tGlobalSection({0}) = preSolution", "TeamFoundationVersionControl");
-            writer.Write("\t\tSccNumberOfProjects = {0}", projects.Count);
-            writer.Write("\t\tSccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}");
-            writer.Write("\t\tSccTeamFoundationServer = " + tfsName);
+            writer.WriteLine("\t\tSccNumberOfProjects = {0}", projects.Count);
+            writer.WriteLine("\t\tSccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}");
+            writer.WriteLine("\t\tSccTeamFoundationServer = " + tfsName);
             var n = 0;
             foreach (var project in projects) {
                 WriteTeamFoundationProject(writer, n, project, tfsFolder, tfsName.ToString());
                 ++n;
             }
-            writer.Write("\tEndGlobalSection");
+            writer.WriteLine("\tEndGlobalSection");
         }
 
         private void WriteTeamFoundationProject(TextWriter w, int n, SolutionProject project, string tfsFolder, string tfsName) {
@@ -107,7 +107,7 @@ namespace Solutionizer.Commands {
             if (string.IsNullOrEmpty(str2)) {
                 return;
             }
-            w.WriteLine("\t\tSccProjectUniqueName{0} = {1}", n, FileSystem.GetRelativePath(_solutionFileName, project.Filepath));
+            w.WriteLine("\t\tSccProjectUniqueName{0} = {1}", n, FileSystem.GetRelativePath(_solutionFileName, project.Filepath).Replace("\\", "\\\\"));
             w.WriteLine("\t\tSccProjectTopLevelParentUniqueName{0} = {1}", n, Path.GetFileName(_solutionFileName));
             w.WriteLine("\t\tSccProjectName{0} = {1}", n, str2);
             w.WriteLine("\t\tSccAuxPath{0} = {1}", n, tfsName);
