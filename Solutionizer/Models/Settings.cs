@@ -16,6 +16,7 @@ namespace Solutionizer.Models {
         private bool _includeReferencedProjects = true;
         private int _referenceTreeDepth = 6;
         private Uri _tfsName;
+        private VisualStudioVersion _visualStudioVersion = VisualStudioVersion.Vs2010;
 
         private string _rootPath = Path.Combine(
             Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
@@ -164,6 +165,17 @@ namespace Solutionizer.Models {
                 }
             }
         }
+
+        public VisualStudioVersion VisualStudioVersion {
+            get { return _visualStudioVersion; }
+            set {
+                if (_visualStudioVersion != value) {
+                    _visualStudioVersion = value;
+                    RaisePropertyChanged(() => VisualStudioVersion);
+                    IsDirty = true;
+                }
+            }
+        }
     }
 
     public class WindowSettings {
@@ -172,5 +184,10 @@ namespace Solutionizer.Models {
         public double Width { get; set; }
         public double Height { get; set; }
         public bool Maximized { get; set; }
+    }
+
+    public enum VisualStudioVersion {
+        Vs2010,
+        Vs2011
     }
 }
