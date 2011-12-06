@@ -10,10 +10,12 @@ using Solutionizer.VisualStudio;
 namespace Solutionizer.Commands {
     public class SaveSolutionCommand {
         private readonly string _solutionFileName;
+        private readonly VisualStudioVersion _visualStudioVersion;
         private readonly SolutionViewModel _solution;
 
-        public SaveSolutionCommand(string solutionFileName, SolutionViewModel solution) {
+        public SaveSolutionCommand(string solutionFileName, VisualStudioVersion visualStudioVersion, SolutionViewModel solution) {
             _solutionFileName = solutionFileName;
+            _visualStudioVersion = visualStudioVersion;
             _solution = solution;
         }
 
@@ -55,8 +57,18 @@ namespace Solutionizer.Commands {
 
         private void WriteHeader(TextWriter writer) {
             writer.WriteLine();
-            writer.WriteLine("Microsoft Visual Studio Solution File, Format Version 11.00");
-            writer.WriteLine("# Visual Studio 2010");
+            switch (_visualStudioVersion) {
+                case VisualStudioVersion.Vs2010:
+                    writer.WriteLine("Microsoft Visual Studio Solution File, Format Version 11.00");
+                    writer.WriteLine("# Visual Studio 2010");
+                    break;
+                case VisualStudioVersion.Vs2011:
+                    writer.WriteLine("Microsoft Visual Studio Solution File, Format Version 12.00");
+                    writer.WriteLine("# Visual Studio 11");
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
         }
 
         private void WriteNestedProjects(TextWriter writer) {
