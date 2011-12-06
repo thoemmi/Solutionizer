@@ -12,7 +12,7 @@
     xmlns:Infrastructure="clr-namespace:Solutionizer.Infrastructure" 
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
     xmlns:Models="clr-namespace:Solutionizer.Models" 
-    xmlns:Views="clr-namespace:Solutionizer.Views" 
+    xmlns:Views="clr-namespace:Solutionizer.Views" xmlns:System="clr-namespace:System;assembly=mscorlib"
     TextOptions.TextFormattingMode="Display" 
     TextOptions.TextHintingMode="Fixed" 
     SnapsToDevicePixels="true" 
@@ -83,6 +83,25 @@
                 <GridSplitter Grid.Column="1" Grid.RowSpan="2" Width="6" Background="Transparent" HorizontalAlignment="Center" ShowsPreview="true" VerticalAlignment="Stretch" />
 
                 <WrapPanel Grid.Column="2" Margin="0 3 3 3" HorizontalAlignment="Right" Orientation="Horizontal">
+                    <WrapPanel.Resources>
+                        <ObjectDataProvider MethodName="GetValues" ObjectType="{x:Type System:Enum}" x:Key="PossibleValues">
+                            <ObjectDataProvider.MethodParameters>
+                                <x:Type TypeName="Models:VisualStudioVersion" />
+                            </ObjectDataProvider.MethodParameters>
+                        </ObjectDataProvider>
+                        <DataTemplate DataType="{x:Type Models:VisualStudioVersion}">
+                            <TextBlock Text="{Binding}" x:Name="PART_Text" />
+                            <DataTemplate.Triggers>
+                                <DataTrigger Binding="{Binding}" Value="Vs2010">
+                                    <Setter TargetName="PART_Text" Property="Text" Value="Visual Studio 2010" />
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding}" Value="Vs2011">
+                                    <Setter TargetName="PART_Text" Property="Text" Value="Visual Studio 2011" />
+                                </DataTrigger>
+                            </DataTemplate.Triggers>
+                        </DataTemplate>
+                    </WrapPanel.Resources>
+                    <ComboBox ItemsSource="{Binding Source={StaticResource PossibleValues}}" SelectedValue="{Binding Settings.VisualStudioVersion}"/>
                     <Button Margin="3 0 0 0" Command="{Binding NewSolutionCommand}" Content="New" />
                     <Button Margin="3 0 0 0" Command="{Binding LaunchCommand}" Content="Launch" />
                     <Button Margin="3 0 0 0" Command="{Binding SaveCommand}" Content="Save" />
