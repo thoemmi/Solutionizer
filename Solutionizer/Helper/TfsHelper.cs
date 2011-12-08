@@ -37,12 +37,12 @@ namespace Solutionizer.Helper {
             try {
                 var projectCollection = TfsTeamProjectCollectionFactory.GetTeamProjectCollection(tfsName, fallbackCredentialsProvider);
                 var versionControlServer = projectCollection.GetService<VersionControlServer>();
-                workspaceArray = versionControlServer.QueryWorkspaces(null, versionControlServer.AuthenticatedUser, Environment.MachineName);
-            } catch (TeamFoundationServerUnauthorizedException ex) {
+                workspaceArray = versionControlServer.QueryWorkspaces(null, versionControlServer.AuthorizedUser, Environment.MachineName);
+            } catch (TeamFoundationServerUnauthorizedException) {
                 fallbackCredentialsProvider.GetCredentials(tfsName, null);
                 var projectCollection = TfsTeamProjectCollectionFactory.GetTeamProjectCollection(tfsName, fallbackCredentialsProvider);
                 var versionControlServer = projectCollection.GetService<VersionControlServer>();
-                workspaceArray = versionControlServer.QueryWorkspaces(null, versionControlServer.AuthenticatedUser, Environment.MachineName);
+                workspaceArray = versionControlServer.QueryWorkspaces(null, versionControlServer.AuthorizedUser, Environment.MachineName);
             }
 
             if (workspaceArray.Length == 0) {
