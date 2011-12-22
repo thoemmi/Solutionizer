@@ -41,10 +41,12 @@
     </UserControl.Resources>
 
     <TreeView 
-            VirtualizingStackPanel.IsVirtualizing="True"
-            VirtualizingStackPanel.VirtualizationMode="Recycling"
-            ItemsSource="{Binding RootNodes, ElementName=_root}" Margin="3 3 0 3"
-            Helper:DragDropHelper.IsDragSource="true" 
-            Helper:DragDropHelper.DragDropTemplate="{StaticResource ProjectItemDrag}"
-            />
+        BorderThickness="0"
+        VirtualizingStackPanel.IsVirtualizing="True"
+        VirtualizingStackPanel.VirtualizationMode="Recycling"
+        ScrollViewer.CanContentScroll="true"
+        ItemsSource="{Binding RootNodes, ElementName=_root}" Margin="0" Padding="0"
+        Helper:DragDropHelper.IsDragSource="true" 
+        Helper:DragDropHelper.DragDropTemplate="{StaticResource ProjectItemDrag}"
+        />
 </UserControl>
