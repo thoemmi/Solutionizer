@@ -83,7 +83,7 @@
     </ApplicationDefinition>
     <Compile Include="Commands\CommandExecutor.cs" />
     <Compile Include="Commands\SaveSolutionCommand.cs" />
-    <Compile Include="Controls\FileSystemTreeView.xaml.cs">
+    <Compile Include="Views\FileSystemTreeView.xaml.cs">
       <DependentUpon>FileSystemTreeView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Converters\BusyToProgressStateConverter.cs" />
@@ -121,7 +121,7 @@
     <Compile Include="VisualStudio\SolutionFolder.cs" />
     <Compile Include="VisualStudio\SolutionItem.cs" />
     <Compile Include="VisualStudio\SolutionProject.cs" />
-    <Page Include="Controls\FileSystemTreeView.xaml">
+    <Page Include="Views\FileSystemTreeView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
