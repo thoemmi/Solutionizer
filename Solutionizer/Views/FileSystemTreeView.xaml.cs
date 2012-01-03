@@ -7,7 +7,7 @@ using Solutionizer.Commands;
 using Solutionizer.Extensions;
 using Solutionizer.Scanner;
 
-namespace Solutionizer.Controls {
+namespace Solutionizer.Views {
     /// <summary>
     /// Interaction logic for FileSystemTreeView.xaml
     /// </summary>
@@ -103,13 +103,13 @@ namespace Solutionizer.Controls {
                 root = _rootNode;
             }
 
-            if (HideRootNode || IsFlatMode) {
+            //if (HideRootNode || IsFlatMode) {
                 RootNodes = root.Subdirectories.Cast<object>().Concat(root.Files).ToList();
-            } else {
-                RootNodes = new[] {
-                    root
-                };
-            }
+            //} else {
+            //    RootNodes = new[] {
+            //        root
+            //    };
+            //}
         }
     }
 }
