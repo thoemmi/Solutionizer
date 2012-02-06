@@ -26,4 +26,4 @@ projects to create a solution file. This solution can be saved or launched direc
 - Solution folders
   - user defined
   - drag'n'drop
-- add option to add referened projects as "unloaded"
+- <strike>add option to add referened projects as "unloaded"</strike> Not possible. "Loaded" state is persisted in proprietary *.suo files.
