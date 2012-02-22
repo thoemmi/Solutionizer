@@ -48,7 +48,6 @@
     <TextBlock Margin="0 2">Selected projects:</TextBlock>
 
         <TreeView 
-            KeyDown="TreeView_KeyDown"
             x:Name="_tree"
             Grid.Row="1"
             VirtualizingStackPanel.IsVirtualizing="True"

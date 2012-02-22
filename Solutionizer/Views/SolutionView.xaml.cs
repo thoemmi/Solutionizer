@@ -9,12 +9,14 @@ namespace Solutionizer.Views {
     /// <summary>
     /// Interaction logic for SolutionView.xaml
     /// </summary>
-    public partial class SolutionView : UserControl {
+    public partial class SolutionView {
         public SolutionView() {
             InitializeComponent();
+
+            _tree.KeyDown += TreeViewOnKeyDown;
         }
 
-        private void TreeView_KeyDown(object sender, KeyEventArgs e) {
+        private void TreeViewOnKeyDown(object sender, KeyEventArgs e) {
             if (e.Key == Key.Delete) {
                 var visual = e.OriginalSource as Visual;
                 var parentTreeViewItem = visual.TryFindParent<TreeViewItem>();
