@@ -36,14 +36,21 @@ namespace Solutionizer.Models {
             set { _instance = value; }
             get {
                 if (_instance == null) {
-                    if (File.Exists(SettingsPath)) {
-                        using (var stream = File.OpenRead(SettingsPath)) {
-                            _instance = (Settings) XamlReader.Load(stream);
+                    try {
+                        if (File.Exists(SettingsPath)) {
+                            using (var stream = File.OpenRead(SettingsPath)) {
+                                _instance = (Settings) XamlReader.Load(stream);
+                            }
+                        } else {
+                            _instance = new Settings();
                         }
-                    } else {
-                        _instance = new Settings();
+                        _instance.IsDirty = false;
                     }
-                    _instance.IsDirty = false;
+                    catch (Exception ex) {
+                        // TODO logging
+                        _instance = new Settings();
+                        _instance.IsDirty = true;
+                    }
                 }
                 return _instance;
             }
