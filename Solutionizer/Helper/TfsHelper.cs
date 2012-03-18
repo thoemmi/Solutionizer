@@ -4,7 +4,7 @@ using System.Windows.Forms;
 using Microsoft.TeamFoundation;
 using Microsoft.TeamFoundation.Client;
 using Microsoft.TeamFoundation.VersionControl.Client;
-using Solutionizer.Models;
+using Solutionizer.ViewModels;
 
 namespace Solutionizer.Helper {
     public static class TfsHelper {

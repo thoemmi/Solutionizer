@@ -2,7 +2,7 @@
 using System.Windows.Input;
 using System.Windows.Media;
 using Solutionizer.Extensions;
-using Solutionizer.Models;
+using Solutionizer.ViewModels;
 using Solutionizer.VisualStudio;
 
 namespace Solutionizer.Views {

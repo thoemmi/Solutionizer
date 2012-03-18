@@ -1,5 +1,5 @@
 ﻿using System.Windows;
-using Solutionizer.Models;
+using Solutionizer.ViewModels;
 
 namespace Solutionizer.Infrastructure {
     public class WindowStatePersistence {

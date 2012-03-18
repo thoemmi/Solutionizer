@@ -8,17 +8,16 @@
     xmlns:extToolkit="clr-namespace:Microsoft.Windows.Controls;assembly=WPFToolkit.Extended" 
     xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity" 
     xmlns:Infrastructure="clr-namespace:Solutionizer.Infrastructure" 
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-    xmlns:Models="clr-namespace:Solutionizer.Models" 
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:Views="clr-namespace:Solutionizer.Views" xmlns:System="clr-namespace:System;assembly=mscorlib"
     xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
-    TextOptions.TextFormattingMode="Display" 
+    xmlns:ViewModels="clr-namespace:Solutionizer.ViewModels" TextOptions.TextFormattingMode="Display" 
     TextOptions.TextHintingMode="Fixed" 
     SnapsToDevicePixels="true" 
     Title="Solutionizer" 
     UseLayoutRounding="True" 
-    Infrastructure:ModelAttacher.AttachModel="{x:Type Models:MainViewModel}" 
-    mc:Ignorable="d" d:DataContext="{d:DesignInstance Models:MainViewModel}" 
+    Infrastructure:ModelAttacher.AttachModel="{x:Type ViewModels:MainViewModel}" 
+    mc:Ignorable="d" d:DataContext="{d:DesignInstance ViewModels:MainViewModel}" 
     Infrastructure:WindowStatePersistence.Settings="{Binding Settings}"    
     d:DesignHeight="300" d:DesignWidth="300">
     <Window.Resources>
@@ -92,10 +91,10 @@
                     <WrapPanel.Resources>
                         <ObjectDataProvider MethodName="GetValues" ObjectType="{x:Type System:Enum}" x:Key="PossibleValues">
                             <ObjectDataProvider.MethodParameters>
-                                <x:Type TypeName="Models:VisualStudioVersion" />
+                                <x:Type TypeName="ViewModels:VisualStudioVersion" />
                             </ObjectDataProvider.MethodParameters>
                         </ObjectDataProvider>
-                        <DataTemplate DataType="{x:Type Models:VisualStudioVersion}">
+                        <DataTemplate DataType="{x:Type ViewModels:VisualStudioVersion}">
                             <TextBlock Text="{Binding}" x:Name="PART_Text" />
                             <DataTemplate.Triggers>
                                 <DataTrigger Binding="{Binding}" Value="Vs2010">

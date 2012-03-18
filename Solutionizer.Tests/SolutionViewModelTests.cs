@@ -1,6 +1,6 @@
 ﻿using System.IO;
 using NUnit.Framework;
-using Solutionizer.Models;
+using Solutionizer.ViewModels;
 using Solutionizer.VisualStudio;
 
 namespace Solutionizer.Tests {

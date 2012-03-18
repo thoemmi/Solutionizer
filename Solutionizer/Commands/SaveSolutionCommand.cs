@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using Solutionizer.Extensions;
 using Solutionizer.Helper;
-using Solutionizer.Models;
+using Solutionizer.ViewModels;
 using Solutionizer.VisualStudio;
 
 namespace Solutionizer.Commands {
