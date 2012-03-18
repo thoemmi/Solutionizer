@@ -5,7 +5,7 @@ using System.Windows.Markup;
 using System.Xml;
 using GalaSoft.MvvmLight;
 
-namespace Solutionizer.ViewModels {
+namespace Solutionizer.Infrastructure {
     public class Settings : ViewModelBase {
         private static Settings _instance;
         private bool _scanOnStartup = true;

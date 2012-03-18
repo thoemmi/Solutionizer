@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using Solutionizer.Extensions;
 using Solutionizer.Helper;
+using Solutionizer.Infrastructure;
 using Solutionizer.ViewModels;
 using Solutionizer.VisualStudio;
 

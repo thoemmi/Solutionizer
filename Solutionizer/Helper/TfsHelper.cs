@@ -4,6 +4,7 @@ using System.Windows.Forms;
 using Microsoft.TeamFoundation;
 using Microsoft.TeamFoundation.Client;
 using Microsoft.TeamFoundation.VersionControl.Client;
+using Solutionizer.Infrastructure;
 using Solutionizer.ViewModels;
 
 namespace Solutionizer.Helper {

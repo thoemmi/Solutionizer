@@ -3,6 +3,7 @@ using System.IO;
 using System.Linq;
 using NUnit.Framework;
 using Solutionizer.Commands;
+using Solutionizer.Infrastructure;
 using Solutionizer.ViewModels;
 using Solutionizer.VisualStudio;
 

@@ -91,10 +91,10 @@
                     <WrapPanel.Resources>
                         <ObjectDataProvider MethodName="GetValues" ObjectType="{x:Type System:Enum}" x:Key="PossibleValues">
                             <ObjectDataProvider.MethodParameters>
-                                <x:Type TypeName="ViewModels:VisualStudioVersion" />
+                                <x:Type TypeName="Infrastructure:VisualStudioVersion" />
                             </ObjectDataProvider.MethodParameters>
                         </ObjectDataProvider>
-                        <DataTemplate DataType="{x:Type ViewModels:VisualStudioVersion}">
+                        <DataTemplate DataType="{x:Type Infrastructure:VisualStudioVersion}">
                             <TextBlock Text="{Binding}" x:Name="PART_Text" />
                             <DataTemplate.Triggers>
                                 <DataTrigger Binding="{Binding}" Value="Vs2010">

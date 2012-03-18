@@ -100,7 +100,7 @@
     <Compile Include="Infrastructure\ModelAttacher.cs" />
     <Compile Include="Infrastructure\WindowStatePersistence.cs" />
     <Compile Include="ViewModels\Project.cs" />
-    <Compile Include="ViewModels\Settings.cs" />
+    <Compile Include="Infrastructure\Settings.cs" />
     <Compile Include="ViewModels\SolutionViewModel.cs" />
     <Compile Include="Scanner\ProjectScanner.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
