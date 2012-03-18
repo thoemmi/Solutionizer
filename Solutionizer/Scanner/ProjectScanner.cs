@@ -49,12 +49,16 @@ namespace Solutionizer.Scanner {
             subfolders.Sort((d1, d2) => String.Compare(d1.Name, d2.Name, StringComparison.InvariantCultureIgnoreCase));
             files.Sort((f1, f2) => String.Compare(f1.Name, f2.Name, StringComparison.InvariantCultureIgnoreCase));
 
-            return new DirectoryNode {
-                Name = Path.GetFileName(folderpath),
-                Path = folderpath,
-                Subdirectories = subfolders,
-                Files = files,
+            var node = new DirectoryNode {
+                Name = Path.GetFileName(folderpath), Path = folderpath, Subdirectories = subfolders, Files = files,
             };
+            foreach (var subfolder in subfolders) {
+                subfolder.Parent = node;
+            }
+            foreach (var file in files) {
+                file.Parent = node;
+            }
+            return node;
         }
 
         private static List<FileNode> GetFileNodes(string path) {
@@ -74,12 +78,15 @@ namespace Solutionizer.Scanner {
         }
     }
 
-    public class DirectoryNode {
-        private List<DirectoryNode> _subdirectories = new List<DirectoryNode>();
-        private List<FileNode> _files = new List<FileNode>();
-
+    public abstract class Node {
+        public DirectoryNode Parent { get; set; }
         public string Name { get; set; }
         public string Path { get; set; }
+    }
+
+    public class DirectoryNode : Node {
+        private List<DirectoryNode> _subdirectories = new List<DirectoryNode>();
+        private List<FileNode> _files = new List<FileNode>();
 
         public int ProjectCount {
             get { return _subdirectories.Sum(folder => folder.ProjectCount) + _files.Count; }
@@ -100,8 +107,6 @@ namespace Solutionizer.Scanner {
         }
     }
 
-    public class FileNode {
-        public string Name { get; set; }
-        public string Path { get; set; }
+    public class FileNode : Node {
     }
 }
