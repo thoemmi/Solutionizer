@@ -1,13 +1,10 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
 using Solutionizer.Commands;
-using Solutionizer.Models;
+using Solutionizer.Infrastructure;
 using Solutionizer.ViewModels;
 
 namespace Solutionizer.Views {
@@ -80,25 +77,17 @@ namespace Solutionizer.Views {
 
         private void RefreshFileTree() {
             var rootPath = RootPath;
-            var task = CommandExecutor.ExecuteAsync("Scanning projects", () => GetProjects(rootPath).ToList());
-            task.ContinueWith(result => {
-                    _rootNode = new DirectoryViewModel(
-                        Path.GetDirectoryName(rootPath),
-                        rootPath,
-                        result.Result.Select(project => new ProjectViewModel(project)).OrderBy(p => p.Name).ToList()
-                        );
-                TransformNodes();
-            }, TaskScheduler.FromCurrentSynchronizationContext());
-            task.ContinueWith(result => {
-                foreach (var project in result.Result) {
-                    project.Load();
-                }
-            });
-        }
-
-        private IEnumerable<Project> GetProjects(string rootPath) {
-            return from projectPath in Directory.EnumerateFiles(rootPath, "*.csproj", SearchOption.AllDirectories)
-                   select new Project(projectPath);
+            CommandExecutor
+                .ExecuteAsync("Scanning projects", () =>  
+                    ProjectRepository.Instance
+                        .GetProjects(rootPath)
+                        .Select(project => new ProjectViewModel(project))
+                        .OrderBy(p => p.Name)
+                        .ToList())
+                .ContinueWith(result => {
+                    _rootNode = new DirectoryViewModel(Path.GetDirectoryName(rootPath), rootPath, result.Result);
+                    TransformNodes();
+                }, TaskScheduler.FromCurrentSynchronizationContext());
         }
 
         private void TransformNodes() {
