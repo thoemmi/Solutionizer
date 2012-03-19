@@ -8,8 +8,8 @@
     <ProjectGuid>{5CC52991-689A-476E-B9F6-3448C3E598F6}</ProjectViewModelGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>CsTestProjectViewModel2</RootNamespace>
-    <AssemblyName>CsTestProjectViewModel2</AssemblyName>
+    <RootNamespace>CsTestProject2</RootNamespace>
+    <AssemblyName>CsTestProject2</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -35,9 +35,9 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\p1\CsTestProjectViewModel1.csproj">
+    <ProjectReference Include="..\p1\CsTestProject1.csproj">
       <Project>{717b4b8e-714c-4a52-a61b-f5bc4e655131}</ProjectViewModel>
-      <Name>CsTestProjectViewModel1</Name>
+      <Name>CsTestProject1</Name>
     </ProjectViewModelReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

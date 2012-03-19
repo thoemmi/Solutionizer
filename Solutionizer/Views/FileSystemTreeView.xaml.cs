@@ -1,18 +1,21 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using Solutionizer.Commands;
 using Solutionizer.Extensions;
-using Solutionizer.Scanner;
+using Solutionizer.Models;
+using Solutionizer.ViewModels;
 
 namespace Solutionizer.Views {
     /// <summary>
     /// Interaction logic for FileSystemTreeView.xaml
     /// </summary>
     public partial class FileSystemTreeView : UserControl {
-        private DirectoryNode _rootNode;
+        private DirectoryViewModel _rootNode;
 
         public FileSystemTreeView() {
             InitializeComponent();
@@ -77,10 +80,19 @@ namespace Solutionizer.Views {
 
         private void RefreshFileTree() {
             var rootPath = RootPath;
-            CommandExecutor.ExecuteAsync("Scanning projects", () => ProjectScanner.Scan(rootPath, true), result => {
-                _rootNode = result;
+            CommandExecutor.ExecuteAsync("Scanning projects", () => GetProjects(rootPath).ToList(), result => {
+                _rootNode = new DirectoryViewModel(
+                    Path.GetDirectoryName(rootPath),
+                    rootPath,
+                    result.Select(project => new ProjectViewModel(project)).ToList()
+                    );
                 TransformNodes();
             });
+        }
+
+        private IEnumerable<Project> GetProjects(string rootPath) {
+            return from projectPath in Directory.EnumerateFiles(rootPath, "*.csproj", SearchOption.AllDirectories)
+                   select new Project(projectPath);
         }
 
         private void TransformNodes() {
@@ -88,28 +100,29 @@ namespace Solutionizer.Views {
                 RootNodes = new object[0];
                 return;
             }
+            RootNodes = _rootNode.Children.ToList();
 
-            DirectoryNode root;
-            if (IsFlatMode) {
-                root = new DirectoryNode {
-                    Name = _rootNode.Name,
-                    Path = _rootNode.Path,
-                    Files = new[] {
-                        _rootNode
-                    }.Flatten(d => d.Files, d => d.Subdirectories).ToList()
-                };
-                root.Files.Sort((f1, f2) => String.Compare(f1.Name, f2.Name, StringComparison.InvariantCultureIgnoreCase));
-            } else {
-                root = _rootNode;
-            }
-
-            //if (HideRootNode || IsFlatMode) {
-                RootNodes = root.Subdirectories.Cast<object>().Concat(root.Files).ToList();
-            //} else {
-            //    RootNodes = new[] {
-            //        root
+            //DirectoryNode root;
+            //if (IsFlatMode) {
+            //    root = new DirectoryNode {
+            //        Name = _rootNode.Name,
+            //        Path = _rootNode.Path,
+            //        Files = new[] {
+            //            _rootNode
+            //        }.Flatten(d => d.Files, d => d.Subdirectories).ToList()
             //    };
+            //    root.Files.Sort((f1, f2) => String.Compare(f1.Name, f2.Name, StringComparison.InvariantCultureIgnoreCase));
+            //} else {
+            //    root = _rootNode;
             //}
+
+            ////if (HideRootNode || IsFlatMode) {
+            //    RootNodes = root.Subdirectories.Cast<object>().Concat(root.Files).ToList();
+            ////} else {
+            ////    RootNodes = new[] {
+            ////        root
+            ////    };
+            ////}
         }
     }
 }

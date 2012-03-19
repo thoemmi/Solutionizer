@@ -2,6 +2,7 @@ using System;
 using System.Collections.ObjectModel;
 using System.Linq;
 using Solutionizer.Infrastructure;
+using Solutionizer.Models;
 using Solutionizer.ViewModels;
 
 namespace Solutionizer.VisualStudio {
@@ -13,8 +14,8 @@ namespace Solutionizer.VisualStudio {
             get { return _items; }
         }
 
-        public bool ContainsProject(ProjectViewModel projectViewModel) {
-            return _items.OfType<SolutionProject>().Any(p => p.Guid == projectViewModel.Guid);
+        public bool ContainsProject(Project project) {
+            return _items.OfType<SolutionProject>().Any(p => p.Guid == project.Guid);
         }
 
         public SolutionFolder GetOrCreateSubfolder(string folderName) {
@@ -29,11 +30,11 @@ namespace Solutionizer.VisualStudio {
             return folder;
         }
 
-        public void AddProject(ProjectViewModel projectViewModel) {
+        public void AddProject(Project project) {
             _items.Add(new SolutionProject {
-                Guid = projectViewModel.Guid,
-                Name = projectViewModel.Name,
-                Filepath = projectViewModel.Filepath
+                Guid = project.Guid,
+                Name = project.Name,
+                Filepath = project.Filepath
             });
         }
     }

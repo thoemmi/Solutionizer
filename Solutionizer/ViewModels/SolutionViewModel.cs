@@ -7,7 +7,7 @@ using System.Windows.Input;
 using GalaSoft.MvvmLight;
 using Solutionizer.Helper;
 using Solutionizer.Infrastructure;
-using Solutionizer.Scanner;
+using Solutionizer.Models;
 using Solutionizer.VisualStudio;
 
 namespace Solutionizer.ViewModels {
@@ -25,7 +25,7 @@ namespace Solutionizer.ViewModels {
         }
 
         public SolutionViewModel() {
-            _dropCommand = new FixedRelayCommand<object>(OnDrop, obj => obj is FileNode);
+            _dropCommand = new FixedRelayCommand<object>(OnDrop, obj => obj is ProjectViewModel);
             _removeSolutionItemCommand = new FixedRelayCommand<SolutionItem>(OnRemoveSolutionItem);
             _solutionRoot.Items.CollectionChanged += OnItemsOnCollectionChanged;
         }
@@ -47,7 +47,8 @@ namespace Solutionizer.ViewModels {
         }
 
         private void OnDrop(object node) {
-            var project = ProjectViewModel.Load(((FileNode) node).Path);
+            var project = ((ProjectViewModel) node).Project;
+            project.Load();
             AddProject(project);
         }
 
@@ -75,59 +76,59 @@ namespace Solutionizer.ViewModels {
             }
         }
 
-        public void AddProject(ProjectViewModel projectViewModel) {
-            _isSccBound |= projectViewModel.IsSccBound;
+        public void AddProject(Project project) {
+            _isSccBound |= project.IsSccBound;
 
-            if (_solutionRoot.ContainsProject(projectViewModel)) {
+            if (_solutionRoot.ContainsProject(project)) {
                 return;
             }
 
-            _solutionRoot.AddProject(projectViewModel);
+            _solutionRoot.AddProject(project);
 
             var referenceFolder = _solutionRoot.Items.OfType<SolutionFolder>().SingleOrDefault();
             if (referenceFolder != null) {
-                RemoveProject(referenceFolder, projectViewModel);
+                RemoveProject(referenceFolder, project);
             }
 
             if (Settings.Instance.IncludeReferencedProjects) {
-                AddReferencedProjects(projectViewModel, Settings.Instance.ReferenceTreeDepth);
+                AddReferencedProjects(project, Settings.Instance.ReferenceTreeDepth);
             }
         }
 
-        private static void RemoveProject(SolutionFolder solutionFolder, ProjectViewModel projectViewModel) {
-            var item = solutionFolder.Items.SingleOrDefault(p => p.Guid == projectViewModel.Guid);
+        private static void RemoveProject(SolutionFolder solutionFolder, Project project) {
+            var item = solutionFolder.Items.SingleOrDefault(p => p.Guid == project.Guid);
             if (item != null) {
                 solutionFolder.Items.Remove(item);
                 return;
             }
 
             foreach (var subfolder in solutionFolder.Items.OfType<SolutionFolder>()) {
-                RemoveProject(subfolder, projectViewModel);
+                RemoveProject(subfolder, project);
             }
         }
 
-        private void AddReferencedProjects(ProjectViewModel projectViewModel, int depth) {
-            foreach (var projectReference in projectViewModel.ProjectReferences) {
-                var referencedProject = ProjectViewModel.Load(projectReference);
+        private void AddReferencedProjects(Project project, int depth) {
+            foreach (var projectReference in project.ProjectReferences) {
+                //var referencedProject = Project.Load(projectReference);
 
-                if (_solutionRoot.ContainsProject(referencedProject)) {
-                    continue;
-                }
+                //if (_solutionRoot.ContainsProject(referencedProject)) {
+                //    continue;
+                //}
 
-                var relPath = GetRelativeFolder(referencedProject);
-                var folder = GetSolutionFolder(relPath);
-                if (!folder.ContainsProject(referencedProject)) {
-                    folder.AddProject(referencedProject);
+                //var relPath = GetRelativeFolder(referencedProject);
+                //var folder = GetSolutionFolder(relPath);
+                //if (!folder.ContainsProject(referencedProject)) {
+                //    folder.AddProject(referencedProject);
 
-                    if (depth > 0) {
-                        AddReferencedProjects(referencedProject, depth - 1);
-                    }
-                }
+                //    if (depth > 0) {
+                //        AddReferencedProjects(referencedProject, depth - 1);
+                //    }
+                //}
             }
         }
 
-        private string GetRelativeFolder(ProjectViewModel projectViewModel) {
-            return FileSystem.GetRelativePath(_rootPath, Path.GetDirectoryName(projectViewModel.Filepath));
+        private string GetRelativeFolder(Project project) {
+            return FileSystem.GetRelativePath(_rootPath, Path.GetDirectoryName(project.Filepath));
         }
 
         private SolutionFolder GetSolutionFolder(string path) {

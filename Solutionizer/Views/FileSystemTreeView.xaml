@@ -3,13 +3,14 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:Helper="clr-namespace:Solutionizer.Helper" xmlns:Scanner="clr-namespace:Solutionizer.Scanner"
-             xmlns:Converters="clr-namespace:Solutionizer.Converters" mc:Ignorable="d" 
+             xmlns:Helper="clr-namespace:Solutionizer.Helper"
+             xmlns:Converters="clr-namespace:Solutionizer.Converters"
+             xmlns:ViewModels="clr-namespace:Solutionizer.ViewModels" mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300" x:Name="_root">
     <UserControl.Resources>
         <Converters:FilePathToImageSourceConverter x:Key="FilePathToImageSource"/>
 
-        <HierarchicalDataTemplate DataType="{x:Type Scanner:DirectoryNode}" ItemsSource ="{Binding Children}">
+        <HierarchicalDataTemplate DataType="{x:Type ViewModels:DirectoryViewModel}" ItemsSource ="{Binding Children}">
             <StackPanel Orientation="Horizontal" Margin="1">
                 <Image Height="16" Width="16" x:Name="nodeImg" Source="{Converters:Shell32Icon FileName='shell32.dll',IconIndex=3}" Margin="0 0 4 0" />
                 <TextBlock>
@@ -24,7 +25,7 @@
             </HierarchicalDataTemplate.Triggers>
         </HierarchicalDataTemplate>
 
-        <DataTemplate DataType="{x:Type Scanner:FileNode}">
+        <DataTemplate DataType="{x:Type ViewModels:ProjectViewModel}">
             <StackPanel Orientation="Horizontal" Margin="1">
                 <Image Height="16" Width="16" Source="{Binding Path=Path, Converter={StaticResource FilePathToImageSource}}" Margin="0 0 4 0"/>
                 <TextBlock Text="{Binding Name}" />

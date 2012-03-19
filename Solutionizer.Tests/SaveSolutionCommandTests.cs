@@ -4,6 +4,7 @@ using System.Linq;
 using NUnit.Framework;
 using Solutionizer.Commands;
 using Solutionizer.Infrastructure;
+using Solutionizer.Models;
 using Solutionizer.ViewModels;
 using Solutionizer.VisualStudio;
 
@@ -13,7 +14,7 @@ namespace Solutionizer.Tests {
         [Test]
         public void CanAddSaveSolution() {
             CopyTestDataToPath("CsTestProject1.csproj", _testDataPath);
-            var project = ProjectViewModel.Load(Path.Combine(_testDataPath, "CsTestProject1.csproj"));
+            var project = Project.Load(Path.Combine(_testDataPath, "CsTestProject1.csproj"));
 
             var solution = new SolutionViewModel(_testDataPath);
             solution.AddProject(project);
@@ -30,7 +31,7 @@ namespace Solutionizer.Tests {
         public void CanAddSaveSolutionWithProjectReferences() {
             CopyTestDataToPath("CsTestProject1.csproj", Path.Combine(_testDataPath, "p1"));
             CopyTestDataToPath("CsTestProject2.csproj", Path.Combine(_testDataPath, "p2"));
-            var project = ProjectViewModel.Load(Path.Combine(_testDataPath, "p2", "CsTestProject2.csproj"));
+            var project = Project.Load(Path.Combine(_testDataPath, "p2", "CsTestProject2.csproj"));
 
             var solution = new SolutionViewModel(_testDataPath);
             solution.AddProject(project);
@@ -51,7 +52,7 @@ namespace Solutionizer.Tests {
             CopyTestDataToPath("CsTestProject1.csproj", Path.Combine(_testDataPath, "sub", "p1"));
             CopyTestDataToPath("CsTestProject2.csproj", Path.Combine(_testDataPath, "sub", "p2"));
             CopyTestDataToPath("CsTestProject3.csproj", Path.Combine(_testDataPath, "p3", "sub"));
-            var project = ProjectViewModel.Load(Path.Combine(_testDataPath, "p3", "sub", "CsTestProject3.csproj"));
+            var project = Project.Load(Path.Combine(_testDataPath, "p3", "sub", "CsTestProject3.csproj"));
 
             var solution = new SolutionViewModel(_testDataPath);
             solution.AddProject(project);

@@ -1,110 +1,38 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Xml;
+using GalaSoft.MvvmLight;
+using Solutionizer.Models;
 
 namespace Solutionizer.ViewModels {
-    public class ProjectViewModel {
-        private string _filepath;
-        private string _name;
-        private string _assemblyName;
-        private string _targetFilePath;
-        private Guid _guid;
-        private bool _isSccBound;
-        private List<string> _projectReferences;
-        private List<string> _assemblyReferences;
+    public class ProjectViewModel : ViewModelBase, IDisposable {
+        private readonly Project _project;
 
-        private static readonly Dictionary<string, ProjectViewModel> _knownProjectsByPath = new Dictionary<string, ProjectViewModel>(StringComparer.InvariantCultureIgnoreCase);
-
-        public static ProjectViewModel Load(string filename) {
-            ProjectViewModel projectViewModel;
-            if (!_knownProjectsByPath.TryGetValue(filename, out projectViewModel)) {
-                projectViewModel = LoadInternal(filename);
-                _knownProjectsByPath.Add(filename, projectViewModel);
-            }
-            return projectViewModel;
+        public ProjectViewModel(Project project) {
+            _project = project;
+            _project.Loaded += ProjectOnLoaded;
         }
 
-        public static ProjectViewModel LoadInternal(string filename) {
-            var projectReferences = new List<string>();
-            var assemblyReferences = new List<string>();
-
-            var xmlDocument = new XmlDocument();
-            xmlDocument.Load(filename);
-            if (xmlDocument.DocumentElement.NamespaceURI != "http://schemas.microsoft.com/developer/msbuild/2003") {
-                throw new ArgumentException("Not a valid VS2005 C# project file: \"" + filename + "\"");
-            }
-
-            var assemblyName = xmlDocument.GetElementsByTagName("AssemblyName")[0].FirstChild.Value;
-            var guid = Guid.Parse(xmlDocument.GetElementsByTagName("ProjectGuid")[0].FirstChild.Value);
-            var directoryName = Path.GetDirectoryName(filename);
-            foreach (XmlNode xmlNode in xmlDocument.GetElementsByTagName("ProjectReference")) {
-                projectReferences.Add(Path.GetFullPath(Path.Combine(directoryName, xmlNode.Attributes["Include"].Value)));
-            }
-            foreach (XmlNode xmlNode2 in xmlDocument.GetElementsByTagName("Reference")) {
-                var include = xmlNode2.Attributes["Include"].Value;
-                var num = include.IndexOf(',');
-                if (num >= 0) {
-                    include = include.Substring(0, num);
-                }
-                //ProjectViewModel.binary_references.Add(text);
-                assemblyReferences.Add(include.ToLowerInvariant());
-            }
-
-            var outputPath = xmlDocument.GetElementsByTagName("OutputPath")[0].FirstChild.Value;
-            var outputType = xmlDocument.GetElementsByTagName("OutputType")[0].FirstChild.Value;
-            var path = assemblyName + ((outputType == "WinExe") ? ".exe" : ".dll");
-            var targetFilePath = Path.Combine(Path.GetFullPath(Path.Combine(directoryName, outputPath)), path);
-
-            bool isSccBound = false;
-            var elementsByTagName = xmlDocument.GetElementsByTagName("SccProjectName");
-            if (elementsByTagName.Count > 0) {
-                isSccBound = !string.IsNullOrEmpty(elementsByTagName[0].FirstChild.Value);
-            }
-
-            return new ProjectViewModel {
-                _filepath = filename,
-                _name = Path.GetFileNameWithoutExtension(filename),
-                _assemblyName = assemblyName,
-                _guid = guid,
-                _targetFilePath = targetFilePath,
-                _isSccBound = isSccBound,
-                _projectReferences = projectReferences,
-                _assemblyReferences = assemblyReferences
-            };
+        void IDisposable.Dispose() {
+            _project.Loaded -= ProjectOnLoaded;
         }
 
+        private void ProjectOnLoaded(object sender, EventArgs eventArgs) {
+            RaisePropertyChanged(() => IsLoaded);
+        }
 
-        public string Filepath {
-            get { return _filepath; }
+        public Project Project {
+            get { return _project; }
         }
 
         public string Name {
-            get { return _name; }
+            get { return _project.Name; }
         }
 
-        public string AssemblyName {
-            get { return _assemblyName; }
+        public string Path {
+            get { return _project.Filepath; }
         }
 
-        public string TargetFilePath {
-            get { return _targetFilePath; }
-        }
-
-        public Guid Guid {
-            get { return _guid; }
-        }
-
-        public bool IsSccBound {
-            get { return _isSccBound; }
-        }
-
-        public List<string> ProjectReferences {
-            get { return _projectReferences; }
-        }
-
-        public List<string> AssemblyReferences {
-            get { return _assemblyReferences; }
+        public bool IsLoaded {
+            get { return _project.IsLoaded; }
         }
     }
 }

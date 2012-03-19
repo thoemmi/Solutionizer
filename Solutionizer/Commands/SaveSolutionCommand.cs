@@ -27,7 +27,7 @@ namespace Solutionizer.Commands {
                 var projects = _solution.SolutionRoot.Items.Flatten<SolutionItem, SolutionProject, SolutionFolder>(p => p.Items);
 
                 foreach (var project in projects) {
-                    writer.WriteLine("ProjectViewModel(\"{0}\") = \"{1}\", \"{2}\", \"{3}\"", "{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}",
+                    writer.WriteLine("Project(\"{0}\") = \"{1}\", \"{2}\", \"{3}\"", "{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}",
                                      project.Name, FileSystem.GetRelativePath(_solutionFileName, project.Filepath),
                                      project.Guid.ToString("B").ToUpperInvariant());
                     writer.WriteLine("EndProject");
@@ -35,7 +35,7 @@ namespace Solutionizer.Commands {
 
                 var folders = _solution.SolutionRoot.Items.Flatten<SolutionItem, SolutionFolder, SolutionFolder>(p => p.Items);
                 foreach (var folder in folders) {
-                    writer.WriteLine("ProjectViewModel(\"{0}\") = \"{1}\", \"{2}\", \"{3}\"", "{2150E333-8FDC-42A3-9474-1A3956D46DE8}",
+                    writer.WriteLine("Project(\"{0}\") = \"{1}\", \"{2}\", \"{3}\"", "{2150E333-8FDC-42A3-9474-1A3956D46DE8}",
                                      folder.Name, folder.Name, folder.Guid.ToString("B").ToUpperInvariant());
                     writer.WriteLine("EndProject");
                 }
