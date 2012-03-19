@@ -8,7 +8,9 @@ namespace Solutionizer.ViewModels {
 
         public ProjectViewModel(Project project) {
             _project = project;
-            _project.Loaded += ProjectOnLoaded;
+            if (!_project.IsLoaded) {
+                _project.Loaded += ProjectOnLoaded;
+            }
         }
 
         void IDisposable.Dispose() {
@@ -16,6 +18,7 @@ namespace Solutionizer.ViewModels {
         }
 
         private void ProjectOnLoaded(object sender, EventArgs eventArgs) {
+            _project.Loaded -= ProjectOnLoaded;
             RaisePropertyChanged(() => IsLoaded);
         }
 
