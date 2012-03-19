@@ -37,5 +37,11 @@ namespace Solutionizer.Infrastructure {
             return from projectPath in Directory.EnumerateFiles(rootPath, "*.csproj", SearchOption.AllDirectories)
                    select _projects.GetOrAdd(projectPath, path => new Project(path));
         }
+
+        public Project GetProject(string filepath) {
+            Project project;
+            _projects.TryGetValue(filepath, out project);
+            return project;
+        }
     }
 }
