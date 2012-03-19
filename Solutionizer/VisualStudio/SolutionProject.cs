@@ -1,6 +1,6 @@
 namespace Solutionizer.VisualStudio {
     public class SolutionProject : SolutionItem {
-        //public Project Project { get; set; }
+        //public ProjectViewModel ProjectViewModel { get; set; }
         public string Filepath { get; set; }
     }
 }

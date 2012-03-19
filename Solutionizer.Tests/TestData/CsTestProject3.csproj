@@ -5,11 +5,11 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{702753C5-4F7B-43E2-8844-8F931845D821}</ProjectGuid>
+    <ProjectGuid>{702753C5-4F7B-43E2-8844-8F931845D821}</ProjectViewModelGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>CsTestProject3</RootNamespace>
-    <AssemblyName>CsTestProject3</AssemblyName>
+    <RootNamespace>CsTestProjectViewModel3</RootNamespace>
+    <AssemblyName>CsTestProjectViewModel3</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -35,10 +35,10 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\sub\p2\CsTestProject2.csproj">
-      <Project>{5CC52991-689A-476E-B9F6-3448C3E598F6}</Project>
-      <Name>CsTestProject2</Name>
-    </ProjectReference>
+    <ProjectReference Include="..\..\sub\p2\CsTestProjectViewModel2.csproj">
+      <Project>{5CC52991-689A-476E-B9F6-3448C3E598F6}</ProjectViewModel>
+      <Name>CsTestProjectViewModel2</Name>
+    </ProjectViewModelReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

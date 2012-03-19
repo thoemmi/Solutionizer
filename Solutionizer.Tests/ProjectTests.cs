@@ -9,7 +9,7 @@ namespace Solutionizer.Tests {
         public void CanReadProjectFileWithoutProjectReferences() {
             CopyTestDataToPath("CsTestProject1.csproj", _testDataPath);
 
-            var project = Project.Load(Path.Combine(_testDataPath, "CsTestProject1.csproj"));
+            var project = ProjectViewModel.Load(Path.Combine(_testDataPath, "CsTestProject1.csproj"));
 
             Assert.AreEqual("CsTestProject1", project.Name);
             Assert.AreEqual("CsTestProject1", project.AssemblyName);
@@ -20,7 +20,7 @@ namespace Solutionizer.Tests {
         public void CanReadProjectFileWithProjectReferences() {
             CopyTestDataToPath("CsTestProject2.csproj", Path.Combine(_testDataPath, "p2"));
 
-            var project = Project.Load(Path.Combine(_testDataPath, "p2", "CsTestProject2.csproj"));
+            var project = ProjectViewModel.Load(Path.Combine(_testDataPath, "p2", "CsTestProject2.csproj"));
 
             Assert.AreEqual("CsTestProject2", project.Name);
             Assert.AreEqual("CsTestProject2", project.AssemblyName);

@@ -99,7 +99,7 @@
     <Compile Include="Infrastructure\FixedRelayCommandGeneric.cs" />
     <Compile Include="Infrastructure\ModelAttacher.cs" />
     <Compile Include="Infrastructure\WindowStatePersistence.cs" />
-    <Compile Include="ViewModels\Project.cs" />
+    <Compile Include="ViewModels\ProjectViewModel.cs" />
     <Compile Include="Infrastructure\Settings.cs" />
     <Compile Include="ViewModels\SolutionViewModel.cs" />
     <Compile Include="Scanner\ProjectScanner.cs" />

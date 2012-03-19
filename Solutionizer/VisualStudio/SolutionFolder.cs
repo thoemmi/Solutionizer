@@ -13,8 +13,8 @@ namespace Solutionizer.VisualStudio {
             get { return _items; }
         }
 
-        public bool ContainsProject(Project project) {
-            return _items.OfType<SolutionProject>().Any(p => p.Guid == project.Guid);
+        public bool ContainsProject(ProjectViewModel projectViewModel) {
+            return _items.OfType<SolutionProject>().Any(p => p.Guid == projectViewModel.Guid);
         }
 
         public SolutionFolder GetOrCreateSubfolder(string folderName) {
@@ -29,11 +29,11 @@ namespace Solutionizer.VisualStudio {
             return folder;
         }
 
-        public void AddProject(Project project) {
+        public void AddProject(ProjectViewModel projectViewModel) {
             _items.Add(new SolutionProject {
-                Guid = project.Guid,
-                Name = project.Name,
-                Filepath = project.Filepath
+                Guid = projectViewModel.Guid,
+                Name = projectViewModel.Name,
+                Filepath = projectViewModel.Filepath
             });
         }
     }

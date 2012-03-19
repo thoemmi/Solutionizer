@@ -9,7 +9,7 @@ namespace Solutionizer.Tests {
         [Test]
         public void CanAddProject() {
             CopyTestDataToPath("CsTestProject1.csproj", _testDataPath);
-            var project = Project.Load(Path.Combine(_testDataPath, "CsTestProject1.csproj"));
+            var project = ProjectViewModel.Load(Path.Combine(_testDataPath, "CsTestProject1.csproj"));
 
             var sut = new SolutionViewModel(_testDataPath);
             sut.AddProject(project);
@@ -23,7 +23,7 @@ namespace Solutionizer.Tests {
         public void CanAddProjectWithProjectReference() {
             CopyTestDataToPath("CsTestProject1.csproj", Path.Combine(_testDataPath, "p1"));
             CopyTestDataToPath("CsTestProject2.csproj", Path.Combine(_testDataPath, "p2"));
-            var project = Project.Load(Path.Combine(_testDataPath, "p2", "CsTestProject2.csproj"));
+            var project = ProjectViewModel.Load(Path.Combine(_testDataPath, "p2", "CsTestProject2.csproj"));
 
             var sut = new SolutionViewModel(_testDataPath);
             sut.AddProject(project);

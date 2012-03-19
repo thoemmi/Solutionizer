@@ -4,7 +4,7 @@ using System.IO;
 using System.Xml;
 
 namespace Solutionizer.ViewModels {
-    public class Project {
+    public class ProjectViewModel {
         private string _filepath;
         private string _name;
         private string _assemblyName;
@@ -14,18 +14,18 @@ namespace Solutionizer.ViewModels {
         private List<string> _projectReferences;
         private List<string> _assemblyReferences;
 
-        private static readonly Dictionary<string, Project> _knownProjectsByPath = new Dictionary<string, Project>(StringComparer.InvariantCultureIgnoreCase);
+        private static readonly Dictionary<string, ProjectViewModel> _knownProjectsByPath = new Dictionary<string, ProjectViewModel>(StringComparer.InvariantCultureIgnoreCase);
 
-        public static Project Load(string filename) {
-            Project project;
-            if (!_knownProjectsByPath.TryGetValue(filename, out project)) {
-                project = LoadInternal(filename);
-                _knownProjectsByPath.Add(filename, project);
+        public static ProjectViewModel Load(string filename) {
+            ProjectViewModel projectViewModel;
+            if (!_knownProjectsByPath.TryGetValue(filename, out projectViewModel)) {
+                projectViewModel = LoadInternal(filename);
+                _knownProjectsByPath.Add(filename, projectViewModel);
             }
-            return project;
+            return projectViewModel;
         }
 
-        public static Project LoadInternal(string filename) {
+        public static ProjectViewModel LoadInternal(string filename) {
             var projectReferences = new List<string>();
             var assemblyReferences = new List<string>();
 
@@ -47,7 +47,7 @@ namespace Solutionizer.ViewModels {
                 if (num >= 0) {
                     include = include.Substring(0, num);
                 }
-                //Project.binary_references.Add(text);
+                //ProjectViewModel.binary_references.Add(text);
                 assemblyReferences.Add(include.ToLowerInvariant());
             }
 
@@ -62,7 +62,7 @@ namespace Solutionizer.ViewModels {
                 isSccBound = !string.IsNullOrEmpty(elementsByTagName[0].FirstChild.Value);
             }
 
-            return new Project {
+            return new ProjectViewModel {
                 _filepath = filename,
                 _name = Path.GetFileNameWithoutExtension(filename),
                 _assemblyName = assemblyName,
