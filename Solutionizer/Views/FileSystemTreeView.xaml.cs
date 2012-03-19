@@ -1,12 +1,11 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using Solutionizer.Commands;
-using Solutionizer.Extensions;
 using Solutionizer.Models;
 using Solutionizer.ViewModels;
 
@@ -14,7 +13,7 @@ namespace Solutionizer.Views {
     /// <summary>
     /// Interaction logic for FileSystemTreeView.xaml
     /// </summary>
-    public partial class FileSystemTreeView : UserControl {
+    public partial class FileSystemTreeView {
         private DirectoryViewModel _rootNode;
 
         public FileSystemTreeView() {
@@ -80,14 +79,16 @@ namespace Solutionizer.Views {
 
         private void RefreshFileTree() {
             var rootPath = RootPath;
-            CommandExecutor.ExecuteAsync("Scanning projects", () => GetProjects(rootPath).ToList(), result => {
+            CommandExecutor
+                .ExecuteAsync("Scanning projects", () => GetProjects(rootPath).ToList())
+                .ContinueWith(result => {
                 _rootNode = new DirectoryViewModel(
                     Path.GetDirectoryName(rootPath),
                     rootPath,
-                    result.Select(project => new ProjectViewModel(project)).ToList()
+                    result.Result.Select(project => new ProjectViewModel(project)).ToList()
                     );
                 TransformNodes();
-            });
+            }, TaskScheduler.FromCurrentSynchronizationContext());
         }
 
         private IEnumerable<Project> GetProjects(string rootPath) {

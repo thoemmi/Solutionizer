@@ -7,24 +7,24 @@ namespace Solutionizer.Commands {
         private readonly TaskScheduler _scheduler;
         private static CommandExecutor _instance;
 
-        public static void ExecuteAsync<T>(string message, Func<T> command, Action<T> callback) {
+        public static Task<T> ExecuteAsync<T>(string message, Func<T> command) {
             if (_instance == null) {
                 throw new InvalidOperationException("No instance set");
             }
-            _instance.ExecuteAsyncInternal(message, command, callback);
+            return _instance.ExecuteAsyncInternal(message, command);
         }
 
-        private void ExecuteAsyncInternal<T>(string message, Func<T> command, Action<T> callback) {
+        private Task<T> ExecuteAsyncInternal<T>(string message, Func<T> command) {
             Dispatcher.Invoke((Action) (() => {
                 BusyMessage = message;
                 IsBusy = true;
             }));
-            Task.Factory.StartNew(command)
-                .ContinueWith(result => {
+            Task<T> task = Task.Factory.StartNew(command);
+            task.ContinueWith(result => {
                     IsBusy = false;
                     BusyMessage = String.Empty;
-                    callback(result.Result);
                 }, _scheduler);
+            return task;
         }
 
         public CommandExecutor() {
