@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -79,16 +80,20 @@ namespace Solutionizer.Views {
 
         private void RefreshFileTree() {
             var rootPath = RootPath;
-            CommandExecutor
-                .ExecuteAsync("Scanning projects", () => GetProjects(rootPath).ToList())
-                .ContinueWith(result => {
-                _rootNode = new DirectoryViewModel(
-                    Path.GetDirectoryName(rootPath),
-                    rootPath,
-                    result.Result.Select(project => new ProjectViewModel(project)).ToList()
-                    );
+            var task = CommandExecutor.ExecuteAsync("Scanning projects", () => GetProjects(rootPath).ToList());
+            task.ContinueWith(result => {
+                    _rootNode = new DirectoryViewModel(
+                        Path.GetDirectoryName(rootPath),
+                        rootPath,
+                        result.Result.Select(project => new ProjectViewModel(project)).OrderBy(p => p.Name).ToList()
+                        );
                 TransformNodes();
             }, TaskScheduler.FromCurrentSynchronizationContext());
+            task.ContinueWith(result => {
+                foreach (var project in result.Result) {
+                    project.Load();
+                }
+            });
         }
 
         private IEnumerable<Project> GetProjects(string rootPath) {

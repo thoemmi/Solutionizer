@@ -12,7 +12,7 @@
 
         <HierarchicalDataTemplate DataType="{x:Type ViewModels:DirectoryViewModel}" ItemsSource ="{Binding Children}">
             <StackPanel Orientation="Horizontal" Margin="1">
-                <Image Height="16" Width="16" x:Name="nodeImg" Source="{Converters:Shell32Icon FileName='shell32.dll',IconIndex=3}" Margin="0 0 4 0" />
+                <Image Width="16" Height="16" x:Name="nodeImg" Source="{Converters:Shell32Icon FileName='shell32.dll',IconIndex=3}" Margin="0 0 4 0"/>
                 <TextBlock>
                     <Run Text="{Binding Name, Mode=OneTime}"/>
                     <!--<Run Foreground="blue" Text="("/><Run Foreground="blue" Text="{Binding ProjectCount, Mode=OneTime}"/><Run Foreground="blue" Text=")"/>-->
@@ -27,9 +27,17 @@
 
         <DataTemplate DataType="{x:Type ViewModels:ProjectViewModel}">
             <StackPanel Orientation="Horizontal" Margin="1">
-                <Image Height="16" Width="16" Source="{Binding Path=Path, Converter={StaticResource FilePathToImageSource}}" Margin="0 0 4 0"/>
+                <Grid Width="16" Height="16"  Margin="0 0 4 0">
+                    <Image Height="16" Width="16" Source="{Binding Path=Path, Converter={StaticResource FilePathToImageSource}}"/>
+                    <Image Width="10" Height="13" x:Name="_waitImage" Source="/Resources/wait.png" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0 0 -1 -1"/>
+                </Grid>
                 <TextBlock Text="{Binding Name}" />
             </StackPanel>
+            <DataTemplate.Triggers>
+                <DataTrigger Binding="{Binding Path=IsLoaded}" Value="true">
+                    <Setter TargetName="_waitImage" Property="Visibility" Value="Hidden"/>
+                </DataTrigger>
+            </DataTemplate.Triggers>
         </DataTemplate>
 
         <DataTemplate x:Key="ProjectItemDrag">
