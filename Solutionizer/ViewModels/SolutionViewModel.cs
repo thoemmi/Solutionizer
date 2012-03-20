@@ -110,6 +110,10 @@ namespace Solutionizer.ViewModels {
         private void AddReferencedProjects(Project project, int depth) {
             foreach (var projectReference in project.ProjectReferences) {
                 var referencedProject = ProjectRepository.Instance.GetProject(projectReference);
+                if (referencedProject == null) {
+                    // TODO log unknown project
+                    continue;
+                }
 
                 if (_solutionRoot.ContainsProject(referencedProject)) {
                     continue;
