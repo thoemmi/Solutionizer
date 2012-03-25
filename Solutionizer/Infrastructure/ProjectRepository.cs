@@ -29,16 +29,40 @@ namespace Solutionizer.Infrastructure {
         }
 
         private ProjectFolder CreateProjectFolder(string path, ProjectFolder parent) {
+            bool simplifyProjectTree = Settings.Instance.SimplifyProjectTree;
+
             var projectFolder = new ProjectFolder(path, parent);
             foreach (var subdirectory in Directory.EnumerateDirectories(path)) {
                 var folder = CreateProjectFolder(subdirectory, projectFolder);
                 if (!folder.IsEmpty) {
-                    projectFolder.Folders.Add(folder);
+                    if (simplifyProjectTree && folder.Folders.Count == 0 && folder.Projects.Count == 1) {
+                        // if a subfolder contains a project only and no other folders, just add that project instead of the subfolder
+                        var project = folder.Projects[0];
+                        project.Parent = projectFolder;
+                        projectFolder.Projects.Add(project);
+                    } else {
+                        projectFolder.Folders.Add(folder);
+                    }
                 }
             }
             foreach (var projectPath in Directory.EnumerateFiles(path, "*.csproj", SearchOption.TopDirectoryOnly)) {
                 projectFolder.Projects.Add(CreateProject(projectPath, projectFolder));
             }
+
+            // if the folder contains no project but one subfolder, skip the subfolder and add its content instead
+            if (simplifyProjectTree && projectFolder.Projects.Count == 0 && projectFolder.Folders.Count == 1) {
+                var subfolder = projectFolder.Folders[0];
+                projectFolder.Folders.Clear();
+                foreach (var folder in subfolder.Folders) {
+                    folder.Parent = projectFolder;
+                    projectFolder.Folders.Add(folder);
+                }
+                foreach (var project in subfolder.Projects) {
+                    project.Parent = projectFolder;
+                    projectFolder.Projects.Add(project);
+                }
+            }
+
             return projectFolder;
         }
 

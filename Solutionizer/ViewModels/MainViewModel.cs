@@ -29,7 +29,6 @@ namespace Solutionizer.ViewModels {
             _saveCommand = new FixedRelayCommand(OnSave, () => Solution.SolutionHasItems);
             _newSolutionCommand = new FixedRelayCommand(() => Solution = new SolutionViewModel(_settings.RootPath));
             _toggleFlatModeCommand = new FixedRelayCommand(() => _settings.IsFlatMode = !_settings.IsFlatMode);
-            _toggleHideRootNodeCommand = new FixedRelayCommand(() => _settings.HideRootNode = !_settings.HideRootNode, () => !_settings.IsFlatMode);
         }
 
         private void OnSelectRootPath() {

@@ -10,11 +10,11 @@ namespace Solutionizer.Infrastructure {
         private static Settings _instance;
         private bool _scanOnStartup = true;
         private bool _isFlatMode;
-        private bool _hideRootNode;
         private bool _isDirty;
         private WindowSettings _windowSettings;
         private bool _includeReferencedProjects = true;
         private int _referenceTreeDepth = 6;
+        private bool _simplifyProjectTree;
         private Uri _tfsName;
         private VisualStudioVersion _visualStudioVersion = VisualStudioVersion.Vs2010;
 
@@ -86,12 +86,12 @@ namespace Solutionizer.Infrastructure {
             }
         }
 
-        public bool HideRootNode {
-            get { return _hideRootNode; }
+        public bool SimplifyProjectTree {
+            get { return _simplifyProjectTree; }
             set {
-                if (_hideRootNode != value) {
-                    _hideRootNode = value;
-                    RaisePropertyChanged(() => HideRootNode);
+                if (_simplifyProjectTree != value) {
+                    _simplifyProjectTree = value;
+                    RaisePropertyChanged(() => SimplifyProjectTree);
                     IsDirty = true;
                 }
             }

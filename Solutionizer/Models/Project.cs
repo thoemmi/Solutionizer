@@ -6,7 +6,7 @@ using System.Xml;
 namespace Solutionizer.Models {
     public class Project {
         private readonly string _filepath;
-        private readonly ProjectFolder _parent;
+        private ProjectFolder _parent;
         private readonly string _name;
         private bool _isLoaded;
         private string _assemblyName;
@@ -52,6 +52,7 @@ namespace Solutionizer.Models {
 
         public ProjectFolder Parent {
             get { return _parent; }
+            set { _parent = value; }
         }
 
         private void LoadInternal() {

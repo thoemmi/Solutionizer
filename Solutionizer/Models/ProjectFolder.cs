@@ -5,7 +5,7 @@ namespace Solutionizer.Models {
     public class ProjectFolder {
         private readonly string _name;
         private readonly string _fullPath;
-        private readonly ProjectFolder _parent;
+        private ProjectFolder _parent;
         private readonly List<ProjectFolder> _folders = new List<ProjectFolder>();
         private readonly List<Project> _projects = new List<Project>();
 
@@ -25,6 +25,7 @@ namespace Solutionizer.Models {
 
         public ProjectFolder Parent {
             get { return _parent; }
+            set { _parent = value; }
         }
 
         public bool IsEmpty {
