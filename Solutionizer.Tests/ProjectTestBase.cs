@@ -7,18 +7,23 @@ using Solutionizer.ViewModels;
 namespace Solutionizer.Tests {
     public class ProjectTestBase {
         private static readonly Random _random = new Randomizer(Environment.TickCount);
+        protected string _testDataFolderName;
         protected string _testDataPath;
 
         [SetUp]
         public void SetUp() {
             Settings.Instance = new Settings();
 
-            _testDataPath = Path.Combine(Path.GetTempPath(), "SolutionizerTest-" + DateTime.Now.ToString("o").Replace(':', '-') + "-" + _random.Next());
+            _testDataFolderName = "SolutionizerTest-" + DateTime.Now.ToString("o").Replace(':', '-') + "-" + _random.Next();
+            _testDataPath = Path.Combine(Path.GetTempPath(), _testDataFolderName);
             Directory.CreateDirectory(_testDataPath);
         } 
 
         [TearDown]
         public void TearDown() {
+            while (!ProjectRepository.Instance.AllProjectLoaded) {
+                System.Threading.Thread.Sleep(100);
+            }
             Directory.Delete(_testDataPath, true);
         }
 

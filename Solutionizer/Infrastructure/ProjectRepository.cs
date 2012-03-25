@@ -51,5 +51,9 @@ namespace Solutionizer.Infrastructure {
             _projects.TryGetValue(projectPath, out project);
             return project;
         }
+
+        public bool AllProjectLoaded {
+            get { return _projects.Values.All(project => project.IsLoaded); }
+        }
     }
 }

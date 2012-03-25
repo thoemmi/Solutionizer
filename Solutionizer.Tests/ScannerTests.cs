@@ -1,28 +1,28 @@
 ﻿using System.IO;
 using NUnit.Framework;
-using Solutionizer.Scanner;
+using Solutionizer.Infrastructure;
 
 namespace Solutionizer.Tests {
     [TestFixture]
     public class ScannerTests : ProjectTestBase {
         [Test]
         public void CanScanEmptyDirectory() {
-            var root = ProjectScanner.Scan(_testDataPath, false);
-            Assert.AreEqual(_testDataPath, root.Path);
-            Assert.AreEqual(_testDataPath, root.Name);
-            Assert.IsEmpty(root.Subdirectories);
-            Assert.IsEmpty(root.Files);
+            var root = ProjectRepository.Instance.GetProjects(_testDataPath);
+            Assert.AreEqual(_testDataPath, root.FullPath);
+            Assert.AreEqual(_testDataFolderName, root.Name);
+            Assert.IsEmpty(root.Folders);
+            Assert.IsEmpty(root.Projects);
         }
 
         [Test]
         public void EmptySubdirectoriesAreOmitted() {
             Directory.CreateDirectory(Path.Combine(_testDataPath, "YouShouldNotSeeMe"));
 
-            var root = ProjectScanner.Scan(_testDataPath, false);
-            Assert.AreEqual(_testDataPath, root.Path);
-            Assert.AreEqual(_testDataPath, root.Name);
-            Assert.IsEmpty(root.Subdirectories);
-            Assert.IsEmpty(root.Files);
+            var root = ProjectRepository.Instance.GetProjects(_testDataPath);
+            Assert.AreEqual(_testDataPath, root.FullPath);
+            Assert.AreEqual(_testDataFolderName, root.Name);
+            Assert.IsEmpty(root.Folders);
+            Assert.IsEmpty(root.Projects);
         }
 
         [Test]
@@ -30,21 +30,21 @@ namespace Solutionizer.Tests {
             CopyTestDataToPath("CsTestProject1.csproj", _testDataPath);
             CopyTestDataToPath("CsTestProject2.csproj", _testDataPath);
 
-            var root = ProjectScanner.Scan(_testDataPath, false);
-            Assert.AreEqual(_testDataPath, root.Path);
-            Assert.AreEqual(_testDataPath, root.Name);
-            Assert.IsEmpty(root.Subdirectories);
-            Assert.AreEqual(2, root.Files.Count);
+            var root = ProjectRepository.Instance.GetProjects(_testDataPath);
+            Assert.AreEqual(_testDataPath, root.FullPath);
+            Assert.AreEqual(_testDataFolderName, root.Name);
+            Assert.IsEmpty(root.Folders);
+            Assert.AreEqual(2, root.Projects.Count);
         }
 
         [Test]
         public void CanReadProjectInRoot() {
             CopyTestDataToPath("CsTestProject1.csproj", _testDataPath);
 
-            var root = ProjectScanner.Scan(_testDataPath, false);
+            var root = ProjectRepository.Instance.GetProjects(_testDataPath);
 
-            Assert.AreEqual("CsTestProject1", root.Files[0].Name);
-            Assert.AreEqual(Path.Combine(_testDataPath, "CsTestProject1.csproj"), root.Files[0].Path);
+            Assert.AreEqual("CsTestProject1", root.Projects[0].Name);
+            Assert.AreEqual(Path.Combine(_testDataPath, "CsTestProject1.csproj"), root.Projects[0].Filepath);
         }
 
         [Test]
@@ -52,21 +52,21 @@ namespace Solutionizer.Tests {
             CopyTestDataToPath("CsTestProject1.csproj", Path.Combine(_testDataPath, "p1"));
             CopyTestDataToPath("CsTestProject2.csproj", Path.Combine(_testDataPath, "p2"));
 
-            var root = ProjectScanner.Scan(_testDataPath, false);
-            Assert.AreEqual(_testDataPath, root.Path);
-            Assert.AreEqual(_testDataPath, root.Name);
-            Assert.AreEqual(2, root.Subdirectories.Count);
-            Assert.IsEmpty(root.Files);
+            var root = ProjectRepository.Instance.GetProjects(_testDataPath);
+            Assert.AreEqual(_testDataPath, root.FullPath);
+            Assert.AreEqual(_testDataFolderName, root.Name);
+            Assert.AreEqual(2, root.Folders.Count);
+            Assert.IsEmpty(root.Projects);
         }
 
         [Test]
         public void CanReadProjectInSubdirectory() {
             CopyTestDataToPath("CsTestProject1.csproj", Path.Combine(_testDataPath, "dir"));
 
-            var root = ProjectScanner.Scan(_testDataPath, false);
+            var root = ProjectRepository.Instance.GetProjects(_testDataPath);
 
-            Assert.AreEqual("CsTestProject1", root.Subdirectories[0].Files[0].Name);
-            Assert.AreEqual(Path.Combine(_testDataPath, "dir", "CsTestProject1.csproj"), root.Subdirectories[0].Files[0].Path);
+            Assert.AreEqual("CsTestProject1", root.Folders[0].Projects[0].Name);
+            Assert.AreEqual(Path.Combine(_testDataPath, "dir", "CsTestProject1.csproj"), root.Folders[0].Projects[0].Filepath);
         }
     }
 }

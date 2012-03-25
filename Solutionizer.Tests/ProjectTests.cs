@@ -1,7 +1,6 @@
 ﻿using System.IO;
 using NUnit.Framework;
 using Solutionizer.Models;
-using Solutionizer.ViewModels;
 
 namespace Solutionizer.Tests {
     [TestFixture]
@@ -10,7 +9,8 @@ namespace Solutionizer.Tests {
         public void CanReadProjectFileWithoutProjectReferences() {
             CopyTestDataToPath("CsTestProject1.csproj", _testDataPath);
 
-            var project = Project.Load(Path.Combine(_testDataPath, "CsTestProject1.csproj"));
+            var project = new Project(Path.Combine(_testDataPath, "CsTestProject1.csproj"));
+            project.Load();
 
             Assert.AreEqual("CsTestProject1", project.Name);
             Assert.AreEqual("CsTestProject1", project.AssemblyName);
@@ -21,7 +21,8 @@ namespace Solutionizer.Tests {
         public void CanReadProjectFileWithProjectReferences() {
             CopyTestDataToPath("CsTestProject2.csproj", Path.Combine(_testDataPath, "p2"));
 
-            var project = Project.Load(Path.Combine(_testDataPath, "p2", "CsTestProject2.csproj"));
+            var project = new Project(Path.Combine(_testDataPath, "p2", "CsTestProject2.csproj"));
+            project.Load();
 
             Assert.AreEqual("CsTestProject2", project.Name);
             Assert.AreEqual("CsTestProject2", project.AssemblyName);

@@ -16,6 +16,8 @@ namespace Solutionizer.Models {
         private List<string> _projectReferences;
         private List<string> _assemblyReferences;
 
+        public Project(string filepath) : this(filepath, null) {}
+
         public Project(string filepath, ProjectFolder parent) {
             _filepath = filepath;
             _parent = parent;
@@ -33,7 +35,12 @@ namespace Solutionizer.Models {
 
         public void Load() {
             if (!_isLoaded) {
-                LoadInternal();
+                try {
+                    LoadInternal();
+                }
+                catch (XmlException) {
+                    // log exception
+                }
                 _isLoaded = true;
                 OnLoaded();
             }

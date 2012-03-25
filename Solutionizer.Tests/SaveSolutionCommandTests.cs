@@ -14,7 +14,10 @@ namespace Solutionizer.Tests {
         [Test]
         public void CanAddSaveSolution() {
             CopyTestDataToPath("CsTestProject1.csproj", _testDataPath);
-            var project = Project.Load(Path.Combine(_testDataPath, "CsTestProject1.csproj"));
+            ProjectRepository.Instance.GetProjects(_testDataPath);
+
+            var project = ProjectRepository.Instance.GetProject(Path.Combine(_testDataPath, "CsTestProject1.csproj"));
+            project.Load();
 
             var solution = new SolutionViewModel(_testDataPath);
             solution.AddProject(project);
@@ -31,7 +34,10 @@ namespace Solutionizer.Tests {
         public void CanAddSaveSolutionWithProjectReferences() {
             CopyTestDataToPath("CsTestProject1.csproj", Path.Combine(_testDataPath, "p1"));
             CopyTestDataToPath("CsTestProject2.csproj", Path.Combine(_testDataPath, "p2"));
-            var project = Project.Load(Path.Combine(_testDataPath, "p2", "CsTestProject2.csproj"));
+            ProjectRepository.Instance.GetProjects(_testDataPath);
+
+            var project = ProjectRepository.Instance.GetProject(Path.Combine(_testDataPath, "p2", "CsTestProject2.csproj"));
+            project.Load();
 
             var solution = new SolutionViewModel(_testDataPath);
             solution.AddProject(project);
@@ -52,7 +58,10 @@ namespace Solutionizer.Tests {
             CopyTestDataToPath("CsTestProject1.csproj", Path.Combine(_testDataPath, "sub", "p1"));
             CopyTestDataToPath("CsTestProject2.csproj", Path.Combine(_testDataPath, "sub", "p2"));
             CopyTestDataToPath("CsTestProject3.csproj", Path.Combine(_testDataPath, "p3", "sub"));
-            var project = Project.Load(Path.Combine(_testDataPath, "p3", "sub", "CsTestProject3.csproj"));
+            ProjectRepository.Instance.GetProjects(_testDataPath);
+
+            var project = ProjectRepository.Instance.GetProject(Path.Combine(_testDataPath, "p3", "sub", "CsTestProject3.csproj"));
+            project.Load();
 
             var solution = new SolutionViewModel(_testDataPath);
             solution.AddProject(project);
