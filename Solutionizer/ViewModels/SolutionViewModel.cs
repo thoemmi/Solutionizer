@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
-using System.IO;
 using System.Linq;
 using System.Windows.Input;
 using GalaSoft.MvvmLight;
-using Solutionizer.Helper;
 using Solutionizer.Infrastructure;
 using Solutionizer.Models;
 using Solutionizer.VisualStudio;
@@ -119,8 +117,7 @@ namespace Solutionizer.ViewModels {
                     continue;
                 }
 
-                var relPath = GetRelativeFolder(referencedProject);
-                var folder = GetSolutionFolder(relPath);
+                var folder = GetSolutionFolder(referencedProject);
                 if (!folder.ContainsProject(referencedProject)) {
                     folder.AddProject(referencedProject);
 
@@ -131,14 +128,17 @@ namespace Solutionizer.ViewModels {
             }
         }
 
-        private string GetRelativeFolder(Project project) {
-            return FileSystem.GetRelativePath(_rootPath, Path.GetDirectoryName(project.Filepath));
-        }
+        private SolutionFolder GetSolutionFolder(Project project) {
+            // get chain of folders from root to project
+            var folderNames = new List<string>();
+            var projectFolder = project.Parent;
+            while (projectFolder.Parent != null) {
+                folderNames.Add(projectFolder.Name);
+                projectFolder = projectFolder.Parent;
+            }
+            folderNames.Reverse();
 
-        private SolutionFolder GetSolutionFolder(string path) {
             var folder = GetOrCreateReferenceFolder();
-            var folderNames = path.Split('\\');
-            folderNames = folderNames.Take(folderNames.Length - 1).ToArray();
             foreach (var folderName in folderNames) {
                 folder = folder.GetOrCreateSubfolder(folderName);
             }
