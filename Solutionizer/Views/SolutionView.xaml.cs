@@ -26,7 +26,7 @@ namespace Solutionizer.Views {
                     return;
                 }
 
-                var index = parentTreeViewItem.Items.IndexOf(selectedItem);
+                var index = parentTreeViewItem != null ? parentTreeViewItem.Items.IndexOf(selectedItem) : -1;
 
                 var viewModel = (SolutionViewModel) DataContext;
                 viewModel.RemoveSolutionItemCommand.Execute(selectedItem);
