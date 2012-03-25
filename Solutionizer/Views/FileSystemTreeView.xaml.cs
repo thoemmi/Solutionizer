@@ -1,10 +1,10 @@
 ﻿using System.Collections;
-using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using Solutionizer.Commands;
 using Solutionizer.Infrastructure;
+using Solutionizer.Models;
 using Solutionizer.ViewModels;
 
 namespace Solutionizer.Views {
@@ -12,7 +12,7 @@ namespace Solutionizer.Views {
     /// Interaction logic for FileSystemTreeView.xaml
     /// </summary>
     public partial class FileSystemTreeView {
-        private DirectoryViewModel _rootNode;
+        private ProjectFolder _rootNode;
 
         public FileSystemTreeView() {
             InitializeComponent();
@@ -78,14 +78,9 @@ namespace Solutionizer.Views {
         private void RefreshFileTree() {
             var rootPath = RootPath;
             CommandExecutor
-                .ExecuteAsync("Scanning projects", () =>  
-                    ProjectRepository.Instance
-                        .GetProjects(rootPath)
-                        .Select(project => new ProjectViewModel(project))
-                        .OrderBy(p => p.Name)
-                        .ToList())
+                .ExecuteAsync("Scanning projects", () =>  ProjectRepository.Instance.GetProjects(rootPath))
                 .ContinueWith(result => {
-                    _rootNode = new DirectoryViewModel(Path.GetDirectoryName(rootPath), rootPath, result.Result);
+                    _rootNode = result.Result;
                     TransformNodes();
                 }, TaskScheduler.FromCurrentSynchronizationContext());
         }
@@ -95,29 +90,22 @@ namespace Solutionizer.Views {
                 RootNodes = new object[0];
                 return;
             }
-            RootNodes = _rootNode.Children.ToList();
+            RootNodes = CreateDirectoryViewModel(_rootNode, null).Children.ToList();
+        }
 
-            //DirectoryNode root;
-            //if (IsFlatMode) {
-            //    root = new DirectoryNode {
-            //        Name = _rootNode.Name,
-            //        Path = _rootNode.Path,
-            //        Files = new[] {
-            //            _rootNode
-            //        }.Flatten(d => d.Files, d => d.Subdirectories).ToList()
-            //    };
-            //    root.Files.Sort((f1, f2) => String.Compare(f1.Name, f2.Name, StringComparison.InvariantCultureIgnoreCase));
-            //} else {
-            //    root = _rootNode;
-            //}
+        public DirectoryViewModel CreateDirectoryViewModel(ProjectFolder projectFolder, DirectoryViewModel parent) {
+            var viewModel = new DirectoryViewModel(projectFolder, parent);
+            foreach (var folder in projectFolder.Folders) {
+                viewModel.Directories.Add(CreateDirectoryViewModel(folder, viewModel));
+            }
+            foreach (var project in projectFolder.Projects) {
+                viewModel.Projects.Add(CreateProjectViewModel(project, viewModel));
+            }
+            return viewModel;
+        }
 
-            ////if (HideRootNode || IsFlatMode) {
-            //    RootNodes = root.Subdirectories.Cast<object>().Concat(root.Files).ToList();
-            ////} else {
-            ////    RootNodes = new[] {
-            ////        root
-            ////    };
-            ////}
+        private ProjectViewModel CreateProjectViewModel(Project project, DirectoryViewModel parent) {
+            return new ProjectViewModel(project, parent);
         }
     }
 }

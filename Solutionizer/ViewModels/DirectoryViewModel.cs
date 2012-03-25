@@ -1,27 +1,38 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using GalaSoft.MvvmLight;
+using Solutionizer.Models;
 
 namespace Solutionizer.ViewModels {
     public class DirectoryViewModel : ViewModelBase {
-        private readonly string _name;
-        private readonly string _path;
-        private readonly List<DirectoryViewModel> _directories;
-        private readonly List<ProjectViewModel> _projects;
+        private readonly ProjectFolder _projectFolder;
+        private readonly DirectoryViewModel _parent;
+        private readonly List<DirectoryViewModel> _directories = new List<DirectoryViewModel>();
+        private readonly List<ProjectViewModel> _projects = new List<ProjectViewModel>();
 
-        public DirectoryViewModel(string name, string path, List<ProjectViewModel> projects) {
-            _name = name;
-            _path = path;
-            _directories = new List<DirectoryViewModel>();
-            _projects = projects;
+        public DirectoryViewModel(ProjectFolder projectFolder, DirectoryViewModel parent) {
+            _projectFolder = projectFolder;
+            _parent = parent;
         }
 
         public string Name {
-            get { return _name; }
+            get { return _projectFolder.Name; }
         }
 
         public string Path {
-            get { return _path; }
+            get { return _projectFolder.FullPath; }
+        }
+
+        public DirectoryViewModel Parent {
+            get { return _parent; }
+        }
+
+        public List<DirectoryViewModel> Directories {
+            get { return _directories; }
+        }
+
+        public List<ProjectViewModel> Projects {
+            get { return _projects; }
         }
 
         public IList<object> Children {

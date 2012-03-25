@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Concurrent;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using Solutionizer.Helper;
 using Solutionizer.Models;
 
 namespace Solutionizer.Infrastructure {
@@ -12,62 +10,45 @@ namespace Solutionizer.Infrastructure {
         private static ProjectRepository _instance;
 
         public static ProjectRepository Instance {
-            get {
-                return _instance ?? (_instance = new ProjectRepository());
-            }
+            get { return _instance ?? (_instance = new ProjectRepository()); }
         }
 
-        private readonly ConcurrentDictionary<string,Project> _projects = new ConcurrentDictionary<string, Project>(StringComparer.InvariantCultureIgnoreCase);
+        private readonly ConcurrentDictionary<string, Project> _projects =
+            new ConcurrentDictionary<string, Project>(StringComparer.InvariantCultureIgnoreCase);
 
-        public IEnumerable<Project> GetProjects(string rootPath) {
-            var projects = GetOrAddProjects(rootPath).ToList();
-
-            PopulateLogicalPaths(rootPath, projects);
+        public ProjectFolder GetProjects(string rootPath) {
+            var projectFolder = CreateProjectFolder(rootPath, null);
 
             // load project details asynchronously
-            foreach (var p in projects) {
+            foreach (var p in _projects.Values.ToList().Where(p => !p.IsLoaded)) {
                 var project = p;
                 Task.Factory.StartNew(project.Load);
             }
-            return projects;
+
+            return projectFolder;
         }
 
-        private void PopulateLogicalPaths(string rootPath, List<Project> projects) {
-            var separators = new[] { Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar };
-            var ps = projects.ToDictionary(
-                project => project,
-                project => FileSystem.GetRelativePath(rootPath, Path.GetDirectoryName(project.Filepath)).Split(separators, StringSplitOptions.RemoveEmptyEntries)
-                );
-
-            var folder = new ProjectFolder(String.Empty);
-            Populate(folder, ps);
-        }
-
-        private void Populate(ProjectFolder folder, Dictionary<Project, string[]> projects) {
-            var directChildren = projects.Where(pair => pair.Value.Length == 0).Select(pair => pair.Key).ToList();
-            folder.Projects.AddRange(directChildren);
-            foreach (var directChild in directChildren) {
-                projects.Remove(directChild);
+        private ProjectFolder CreateProjectFolder(string path, ProjectFolder parent) {
+            var projectFolder = new ProjectFolder(path, parent);
+            foreach (var subdirectory in Directory.EnumerateDirectories(path)) {
+                var folder = CreateProjectFolder(subdirectory, projectFolder);
+                if (!folder.IsEmpty) {
+                    projectFolder.Folders.Add(folder);
+                }
             }
-
-            var subfolderNames = projects.GroupBy(pair => pair.Value[0]).ToList();
-            foreach (var subfolderName in subfolderNames) {
-                var subthing = new ProjectFolder(subfolderName.Key);
-                folder.Folders.Add(subthing);
-
-                var subprojects = subfolderName.ToDictionary(pair => pair.Key, pair => pair.Value.Skip(1).ToArray());
-                Populate(subthing, subprojects);
+            foreach (var projectPath in Directory.EnumerateFiles(path, "*.csproj", SearchOption.TopDirectoryOnly)) {
+                projectFolder.Projects.Add(CreateProject(projectPath, projectFolder));
             }
+            return projectFolder;
         }
 
-        private IEnumerable<Project> GetOrAddProjects(string rootPath) {
-            return from projectPath in Directory.EnumerateFiles(rootPath, "*.csproj", SearchOption.AllDirectories)
-                   select _projects.GetOrAdd(projectPath, path => new Project(path));
+        private Project CreateProject(string projectPath, ProjectFolder projectFolder) {
+            return _projects.GetOrAdd(projectPath, path => new Project(path, projectFolder));
         }
 
-        public Project GetProject(string filepath) {
+        public Project GetProject(string projectPath) {
             Project project;
-            _projects.TryGetValue(filepath, out project);
+            _projects.TryGetValue(projectPath, out project);
             return project;
         }
     }

@@ -6,6 +6,7 @@ using System.Xml;
 namespace Solutionizer.Models {
     public class Project {
         private readonly string _filepath;
+        private readonly ProjectFolder _parent;
         private readonly string _name;
         private bool _isLoaded;
         private string _assemblyName;
@@ -15,8 +16,9 @@ namespace Solutionizer.Models {
         private List<string> _projectReferences;
         private List<string> _assemblyReferences;
 
-        public Project(string filepath) {
+        public Project(string filepath, ProjectFolder parent) {
             _filepath = filepath;
+            _parent = parent;
             _name = Path.GetFileNameWithoutExtension(_filepath);
         }
 
@@ -39,6 +41,10 @@ namespace Solutionizer.Models {
 
         public bool IsLoaded {
             get { return _isLoaded; }
+        }
+
+        public ProjectFolder Parent {
+            get { return _parent; }
         }
 
         private void LoadInternal() {

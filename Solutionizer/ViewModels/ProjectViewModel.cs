@@ -5,9 +5,11 @@ using Solutionizer.Models;
 namespace Solutionizer.ViewModels {
     public class ProjectViewModel : ViewModelBase, IDisposable {
         private readonly Project _project;
+        private readonly DirectoryViewModel _parent;
 
-        public ProjectViewModel(Project project) {
+        public ProjectViewModel(Project project, DirectoryViewModel parent) {
             _project = project;
+            _parent = parent;
             if (!_project.IsLoaded) {
                 _project.Loaded += ProjectOnLoaded;
             }
@@ -24,6 +26,10 @@ namespace Solutionizer.ViewModels {
 
         public Project Project {
             get { return _project; }
+        }
+
+        public DirectoryViewModel Parent {
+            get { return _parent; }
         }
 
         public string Name {
