@@ -81,6 +81,7 @@
     <Compile Include="Commands\CommandExecutor.cs" />
     <Compile Include="Commands\SaveSolutionCommand.cs" />
     <Compile Include="Infrastructure\ProjectRepository.cs" />
+    <Compile Include="Models\ProjectFolder.cs" />
     <Compile Include="ViewModels\DirectoryViewModel.cs" />
     <Compile Include="ViewModels\ProjectViewModel.cs" />
     <Compile Include="Views\FileSystemTreeView.xaml.cs">
