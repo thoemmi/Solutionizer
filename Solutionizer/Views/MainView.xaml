@@ -53,7 +53,6 @@
 
                 <StackPanel Orientation="Horizontal">
                     <ToggleButton Margin="2" Command="{Binding ToggleFlatModeCommand}" IsChecked="{Binding Settings.IsFlatMode, Mode=OneWay}" ToolTip="Toggle between flat and hierarchical display">Flat</ToggleButton>
-                    <!--<ToggleButton Command="{Binding ToggleHideRootNodeCommand}" IsChecked="{Binding Settings.HideRootNode, Mode=OneWay}" ToolTip="Hide the root node">H</ToggleButton>-->
                 </StackPanel>
 
                 <Border Grid.Row="1" Margin="6 6 0 6" Padding="2" BorderThickness="1" BorderBrush="{DynamicResource {x:Static SystemColors.ActiveBorderBrushKey}}">

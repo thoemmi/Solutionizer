@@ -19,7 +19,6 @@ namespace Solutionizer.ViewModels {
         private readonly ICommand _saveCommand;
         private readonly ICommand _newSolutionCommand;
         private readonly ICommand _toggleFlatModeCommand;
-        private readonly ICommand _toggleHideRootNodeCommand;
 
         public MainViewModel() {
             _onLoadedCommand = new FixedRelayCommand(OnLoaded);
@@ -92,10 +91,6 @@ namespace Solutionizer.ViewModels {
 
         public ICommand ToggleFlatModeCommand {
             get { return _toggleFlatModeCommand; }
-        }
-
-        public ICommand ToggleHideRootNodeCommand {
-            get { return _toggleHideRootNodeCommand; }
         }
 
         public Settings Settings {
