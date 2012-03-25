@@ -4,7 +4,6 @@ using System.Linq;
 using NUnit.Framework;
 using Solutionizer.Commands;
 using Solutionizer.Infrastructure;
-using Solutionizer.Models;
 using Solutionizer.ViewModels;
 using Solutionizer.VisualStudio;
 
