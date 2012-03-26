@@ -10,7 +10,7 @@ using Solutionizer.ViewModels;
 namespace Solutionizer.Helper {
     public static class TfsHelper {
         public static bool TryGetTeamProjectCollection(string localPath, out Uri tfsName, out string tfsFolder) {
-            tfsName = Settings.Instance.TFSName;
+            tfsName = Settings.Instance.TfsName;
             tfsFolder = null;
             if (tfsName == null) {
                 using (var dlg = new TeamProjectPicker(TeamProjectPickerMode.NoProject, false)) {
@@ -19,7 +19,7 @@ namespace Solutionizer.Helper {
                         return false;
                     }
                     tfsName = dlg.SelectedTeamProjectCollection.Uri;
-                    Settings.Instance.TFSName = tfsName;
+                    Settings.Instance.TfsName = tfsName;
                 }
             }
 

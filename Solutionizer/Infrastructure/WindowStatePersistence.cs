@@ -1,5 +1,4 @@
 ﻿using System.Windows;
-using Solutionizer.ViewModels;
 
 namespace Solutionizer.Infrastructure {
     public class WindowStatePersistence {
@@ -13,13 +12,52 @@ namespace Solutionizer.Infrastructure {
             }
 
             var setting = e.NewValue as Settings;
-            if (setting != null && setting.WindowSettings != null) {
-                window.Top = setting.WindowSettings.Top;
-                window.Left = setting.WindowSettings.Left;
-                window.Width = setting.WindowSettings.Width;
-                window.Height = setting.WindowSettings.Height;
-                if (setting.WindowSettings.Maximized) {
-                    window.WindowState = WindowState.Maximized;
+            if (setting != null) {
+                if (setting.WindowSettings != null) {
+                    var top = setting.WindowSettings.Top;
+                    var left = setting.WindowSettings.Left;
+                    var width = setting.WindowSettings.Width;
+                    var height = setting.WindowSettings.Height;
+
+                    // right
+                    var delta = (left + width) - (SystemParameters.VirtualScreenLeft + SystemParameters.VirtualScreenWidth);
+                    if (delta > 0) {
+                        left -= delta;
+                    }
+                    // left
+                    delta = left - SystemParameters.VirtualScreenLeft;
+                    if (delta < 0) {
+                        left -= delta;
+                    }
+                    // width
+                    delta = (left + width) - (SystemParameters.VirtualScreenLeft + SystemParameters.VirtualScreenWidth);
+                    if (delta > 0) {
+                        width -= delta;
+                    }
+                    // bottom
+                    delta = (top + height) - (SystemParameters.VirtualScreenTop + SystemParameters.VirtualScreenHeight);
+                    if (delta > 0) {
+                        top -= delta;
+                    }
+                    // left
+                    delta = top - SystemParameters.VirtualScreenTop;
+                    if (delta < 0) {
+                        top -= delta;
+                    }
+                    // width
+                    delta = (top + height) - (SystemParameters.VirtualScreenTop + SystemParameters.VirtualScreenHeight);
+                    if (delta > 0) {
+                        height -= delta;
+                    }
+
+                    window.Top = top;
+                    window.Left = left;
+                    window.Width = width;
+                    window.Height = height;
+
+                    if (setting.WindowSettings.Maximized) {
+                        window.WindowState = WindowState.Maximized;
+                    }
                 }
                 window.Closing += (sender, args) => {
                     if (window.WindowState == WindowState.Maximized) {

@@ -1,12 +1,13 @@
 ﻿using System;
 using System.IO;
 using System.Reflection;
-using System.Windows.Markup;
-using System.Xml;
 using GalaSoft.MvvmLight;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
+using Formatting = Newtonsoft.Json.Formatting;
 
 namespace Solutionizer.Infrastructure {
-    public class Settings : ViewModelBase {
+    public class Settings : ObservableObject {
         private static Settings _instance;
         private bool _scanOnStartup = true;
         private bool _isFlatMode;
@@ -16,7 +17,7 @@ namespace Solutionizer.Infrastructure {
         private int _referenceTreeDepth = 6;
         private bool _simplifyProjectTree;
         private Uri _tfsName;
-        private VisualStudioVersion _visualStudioVersion = VisualStudioVersion.Vs2010;
+        private VisualStudioVersion _visualStudioVersion = VisualStudioVersion.VS2010;
 
         private string _rootPath = Path.Combine(
             Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
@@ -28,7 +29,7 @@ namespace Solutionizer.Infrastructure {
                 return Path.Combine(
                     Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
                     Assembly.GetEntryAssembly().GetName().Name,
-                    "settings.xml");
+                    "settings.json");
             }
         }
 
@@ -38,15 +39,13 @@ namespace Solutionizer.Infrastructure {
                 if (_instance == null) {
                     try {
                         if (File.Exists(SettingsPath)) {
-                            using (var stream = File.OpenRead(SettingsPath)) {
-                                _instance = (Settings) XamlReader.Load(stream);
-                            }
+                            var fileData = File.ReadAllText(SettingsPath);
+                            _instance = JsonConvert.DeserializeObject<Settings>(fileData);
                         } else {
                             _instance = new Settings();
                         }
                         _instance.IsDirty = false;
-                    }
-                    catch (Exception ex) {
+                    } catch (Exception ex) {
                         // TODO logging
                         _instance = new Settings();
                         _instance.IsDirty = true;
@@ -66,10 +65,12 @@ namespace Solutionizer.Infrastructure {
                 Directory.CreateDirectory(path);
             }
 
-            using (var stream = XmlWriter.Create(SettingsPath, new XmlWriterSettings {
-                Indent = true, NewLineOnAttributes = true
-            })) {
-                XamlWriter.Save(this, stream);
+            try {
+                using (var textWriter = new StreamWriter(SettingsPath)) {
+                    textWriter.WriteLine(JsonConvert.SerializeObject(this, Formatting.Indented));
+                }
+            } catch (Exception e) {
+                // log exception
             }
 
             IsDirty = false;
@@ -108,6 +109,7 @@ namespace Solutionizer.Infrastructure {
             }
         }
 
+        [JsonIgnore]
         public bool IsDirty {
             get { return _isDirty; }
             private set {
@@ -162,17 +164,18 @@ namespace Solutionizer.Infrastructure {
             }
         }
 
-        public Uri TFSName {
+        public Uri TfsName {
             get { return _tfsName; }
             set {
                 if (_tfsName != value) {
                     _tfsName = value;
-                    RaisePropertyChanged(() => TFSName);
+                    RaisePropertyChanged(() => TfsName);
                     IsDirty = true;
                 }
             }
         }
 
+        [JsonConverter(typeof(StringEnumConverter))]
         public VisualStudioVersion VisualStudioVersion {
             get { return _visualStudioVersion; }
             set {
@@ -194,7 +197,7 @@ namespace Solutionizer.Infrastructure {
     }
 
     public enum VisualStudioVersion {
-        Vs2010,
-        Vs2011
+        VS2010,
+        VS11
     }
 }

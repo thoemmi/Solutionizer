@@ -23,7 +23,7 @@ namespace Solutionizer.Tests {
 
             var targetPath = Path.Combine(_testDataPath, "test.sln");
 
-            var cmd = new SaveSolutionCommand(targetPath, VisualStudioVersion.Vs2010, solution);
+            var cmd = new SaveSolutionCommand(targetPath, VisualStudioVersion.VS2010, solution);
             cmd.Execute();
 
             Assert.AreEqual(ReadFromResource("CsTestProject1.sln"), File.ReadAllText(targetPath));
@@ -46,7 +46,7 @@ namespace Solutionizer.Tests {
 
             var targetPath = Path.Combine(_testDataPath, "test.sln");
 
-            var cmd = new SaveSolutionCommand(targetPath, VisualStudioVersion.Vs2010, solution);
+            var cmd = new SaveSolutionCommand(targetPath, VisualStudioVersion.VS2010, solution);
             cmd.Execute();
 
             Assert.AreEqual(ReadFromResource("CsTestProject2.sln"), File.ReadAllText(targetPath));
@@ -72,7 +72,7 @@ namespace Solutionizer.Tests {
 
             var targetPath = Path.Combine(_testDataPath, "test.sln");
 
-            var cmd = new SaveSolutionCommand(targetPath, VisualStudioVersion.Vs2010, solution);
+            var cmd = new SaveSolutionCommand(targetPath, VisualStudioVersion.VS2010, solution);
             cmd.Execute();
 
             Assert.AreEqual(ReadFromResource("CsTestProject3.sln"), File.ReadAllText(targetPath));

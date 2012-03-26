@@ -52,6 +52,9 @@
     <Reference Include="Microsoft.TeamFoundation.Client, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
     <Reference Include="Microsoft.TeamFoundation.Common, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
     <Reference Include="Microsoft.TeamFoundation.VersionControl.Client, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\packages\Newtonsoft.Json.4.5.1\lib\net40\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="Ookii.Dialogs.Wpf">
       <HintPath>..\packages\Ookii.Dialogs.1.0\lib\net35\Ookii.Dialogs.Wpf.dll</HintPath>
     </Reference>

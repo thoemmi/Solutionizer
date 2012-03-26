@@ -96,11 +96,11 @@
                         <DataTemplate DataType="{x:Type Infrastructure:VisualStudioVersion}">
                             <TextBlock Text="{Binding}" x:Name="PART_Text" />
                             <DataTemplate.Triggers>
-                                <DataTrigger Binding="{Binding}" Value="Vs2010">
+                                <DataTrigger Binding="{Binding}" Value="VS2010">
                                     <Setter TargetName="PART_Text" Property="Text" Value="Visual Studio 2010" />
                                 </DataTrigger>
-                                <DataTrigger Binding="{Binding}" Value="Vs2011">
-                                    <Setter TargetName="PART_Text" Property="Text" Value="Visual Studio 2011" />
+                                <DataTrigger Binding="{Binding}" Value="VS11">
+                                    <Setter TargetName="PART_Text" Property="Text" Value="Visual Studio 11" />
                                 </DataTrigger>
                             </DataTemplate.Triggers>
                         </DataTemplate>

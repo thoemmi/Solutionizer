@@ -59,11 +59,11 @@ namespace Solutionizer.Commands {
         private void WriteHeader(TextWriter writer) {
             writer.WriteLine();
             switch (_visualStudioVersion) {
-                case VisualStudioVersion.Vs2010:
+                case VisualStudioVersion.VS2010:
                     writer.WriteLine("Microsoft Visual Studio Solution File, Format Version 11.00");
                     writer.WriteLine("# Visual Studio 2010");
                     break;
-                case VisualStudioVersion.Vs2011:
+                case VisualStudioVersion.VS11:
                     writer.WriteLine("Microsoft Visual Studio Solution File, Format Version 12.00");
                     writer.WriteLine("# Visual Studio 11");
                     break;
