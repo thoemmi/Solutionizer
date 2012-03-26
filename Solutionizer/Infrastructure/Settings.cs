@@ -18,6 +18,7 @@ namespace Solutionizer.Infrastructure {
         private bool _simplifyProjectTree;
         private Uri _tfsName;
         private VisualStudioVersion _visualStudioVersion = VisualStudioVersion.VS2010;
+        private string _referenceFolderName = "_References";
 
         private string _rootPath = Path.Combine(
             Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
@@ -159,6 +160,17 @@ namespace Solutionizer.Infrastructure {
                 if (_referenceTreeDepth != value) {
                     _referenceTreeDepth = value;
                     RaisePropertyChanged(() => ReferenceTreeDepth);
+                    IsDirty = true;
+                }
+            }
+        }
+
+        public string ReferenceFolderName {
+            get { return _referenceFolderName; }
+            set {
+                if (_referenceFolderName != value) {
+                    _referenceFolderName = value;
+                    RaisePropertyChanged(() => ReferenceFolderName);
                     IsDirty = true;
                 }
             }

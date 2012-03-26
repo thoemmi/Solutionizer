@@ -146,7 +146,7 @@ namespace Solutionizer.ViewModels {
         }
 
         private SolutionFolder GetOrCreateReferenceFolder() {
-            return _solutionRoot.GetOrCreateSubfolder("_References");
+            return _solutionRoot.GetOrCreateSubfolder(Settings.Instance.ReferenceFolderName);
         }
 
         public bool IsSccBound {
