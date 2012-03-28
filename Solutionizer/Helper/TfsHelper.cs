@@ -5,7 +5,6 @@ using Microsoft.TeamFoundation;
 using Microsoft.TeamFoundation.Client;
 using Microsoft.TeamFoundation.VersionControl.Client;
 using Solutionizer.Infrastructure;
-using Solutionizer.ViewModels;
 
 namespace Solutionizer.Helper {
     public static class TfsHelper {
@@ -13,13 +12,18 @@ namespace Solutionizer.Helper {
             tfsName = Settings.Instance.TfsName;
             tfsFolder = null;
             if (tfsName == null) {
-                using (var dlg = new TeamProjectPicker(TeamProjectPickerMode.NoProject, false)) {
-                    dlg.AcceptButtonText = "Select";
-                    if (dlg.ShowDialog() != DialogResult.OK) {
-                        return false;
+                var projectCollections = RegisteredTfsConnections.GetProjectCollections();
+                if (projectCollections != null && projectCollections.Length == 1) {
+                    tfsName = projectCollections[0].Uri;
+                } else {
+                    using (var dlg = new TeamProjectPicker(TeamProjectPickerMode.NoProject, false)) {
+                        dlg.AcceptButtonText = "Select";
+                        if (dlg.ShowDialog() != DialogResult.OK) {
+                            return false;
+                        }
+                        tfsName = dlg.SelectedTeamProjectCollection.Uri;
+                        Settings.Instance.TfsName = tfsName;
                     }
-                    tfsName = dlg.SelectedTeamProjectCollection.Uri;
-                    Settings.Instance.TfsName = tfsName;
                 }
             }
 
@@ -46,7 +50,7 @@ namespace Solutionizer.Helper {
                 workspaceArray = versionControlServer.QueryWorkspaces(null, versionControlServer.AuthorizedUser, Environment.MachineName);
             }
 
-            if (workspaceArray.Length == 0) {
+            if (workspaceArray == null || workspaceArray.Length == 0) {
                 return null;
             }
 
@@ -56,17 +60,12 @@ namespace Solutionizer.Helper {
 
             foreach (var workspace in workspaceArray) {
                 foreach (var workingFolder in workspace.Folders) {
-                    if (!workingFolder.IsCloaked && localPath.StartsWith(workingFolder.LocalItem, true, CultureInfo.InvariantCulture) &&
-                        workspace.IsLocalPathMapped(localPath)) {
+                    if (!workingFolder.IsCloaked && workspace.IsLocalPathMapped(localPath) && localPath.StartsWith(workingFolder.LocalItem, true, CultureInfo.InvariantCulture)) {
                         return workspace;
                     }
                 }
             }
-            //WorkspaceSelectionDlg workspaceSelectionDlg = new WorkspaceSelectionDlg((IEnumerable<Workspace>)workspaceArray, Settings.Default.TFSWorkspace);
-            //if (workspaceSelectionDlg.ShowDialog() == DialogResult.Cancel)
-            //    return (Workspace)null;
-            //Workspace selectedWorkspace = workspaceSelectionDlg.SelectedWorkspace;
-            //Settings.Default.TFSWorkspace = selectedWorkspace.Name;
+
             return null;
         }
     }
