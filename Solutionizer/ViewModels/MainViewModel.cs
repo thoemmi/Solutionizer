@@ -19,6 +19,9 @@ namespace Solutionizer.ViewModels {
         private readonly ICommand _saveCommand;
         private readonly ICommand _newSolutionCommand;
         private readonly ICommand _toggleFlatModeCommand;
+        private readonly ICommand _showSettingsCommand;
+        private readonly ICommand _hideSettingsCommand;
+        private bool _showSettings;
 
         public MainViewModel() {
             _onLoadedCommand = new FixedRelayCommand(OnLoaded);
@@ -28,6 +31,8 @@ namespace Solutionizer.ViewModels {
             _saveCommand = new FixedRelayCommand(OnSave, () => Solution.SolutionHasItems);
             _newSolutionCommand = new FixedRelayCommand(() => Solution = new SolutionViewModel(_settings.RootPath));
             _toggleFlatModeCommand = new FixedRelayCommand(() => _settings.IsFlatMode = !_settings.IsFlatMode);
+            _showSettingsCommand = new FixedRelayCommand(() => ShowSettings = true);
+            _hideSettingsCommand = new FixedRelayCommand(() => ShowSettings = false);
         }
 
         private void OnSelectRootPath() {
@@ -105,6 +110,24 @@ namespace Solutionizer.ViewModels {
                     RaisePropertyChanged(() => Solution);
                 }
             }
+        }
+
+        public bool ShowSettings {
+            get { return _showSettings; }
+            set {
+                if (_showSettings != value) {
+                    _showSettings = value;
+                    RaisePropertyChanged(() => ShowSettings);
+                }
+            }
+        }
+
+        public ICommand ShowSettingsCommand {
+            get { return _showSettingsCommand; }
+        }
+
+        public ICommand HideSettingsCommand {
+            get { return _hideSettingsCommand; }
         }
     }
 }

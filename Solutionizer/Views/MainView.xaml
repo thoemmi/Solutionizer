@@ -70,7 +70,7 @@
                 FontWeight="Bold" FontSize="20" Margin="20,5,0,0"/>
 
             <Controls:WindowCommands HorizontalAlignment="Right" VerticalAlignment="Top">
-                <Button x:Name="ShowSettings" Content="Settings"/>
+                <Button x:Name="ShowSettings" Content="Settings" Command="{Binding ShowSettingsCommand}"/>
             </Controls:WindowCommands>
 
             <Rectangle HorizontalAlignment="Left" Width="10" StrokeThickness="0" Margin="0 10 0 0" Fill="{DynamicResource HighlightBrush}"/>
@@ -143,12 +143,13 @@
                 </StackPanel>
             </Border>
         </Grid>
-        <Grid Grid.Row="1">
+
+        <Grid Grid.Row="1" Background="#3f000000" Panel.ZIndex="1000" Visibility="{Binding ShowSettings, Converter={StaticResource BooleanToVisibilityConverter}}">
             <Border Background="White" VerticalAlignment="Center" HorizontalAlignment="Center" Padding="10">
                 <Border.Effect>
                     <DropShadowEffect Opacity=".5"/>
                 </Border.Effect>
-                <Grid Helper:GridHelper.RowCount="8">
+                <Grid Helper:GridHelper.RowCount="9">
                     <Grid.Resources>
                         <ObjectDataProvider MethodName="GetValues" ObjectType="{x:Type System:Enum}" x:Key="PossibleValues">
                             <ObjectDataProvider.MethodParameters>
@@ -224,6 +225,11 @@
                         SelectedValue="{Binding Settings.VisualStudioVersion}"
                         Width="150"
                         />
+                    <Button 
+                        Margin="0 10 0 0"
+                        HorizontalAlignment="Right"
+                        Grid.Row="8" Grid.Column="1"
+                        Content="Close" Command="{Binding HideSettingsCommand}"/>
                 </Grid>
             </Border>
         </Grid>
