@@ -1,17 +1,16 @@
-﻿<Controls:MetroWindow 
+﻿<Window 
     x:Class="Solutionizer.Views.MainView" 
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
     xmlns:cmd="clr-namespace:GalaSoft.MvvmLight.Command;assembly=GalaSoft.MvvmLight.Extras.WPF4" 
     xmlns:Commands="clr-namespace:Solutionizer.Commands" xmlns:Converters="clr-namespace:Solutionizer.Converters" 
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-    xmlns:extToolkit="clr-namespace:Microsoft.Windows.Controls;assembly=WPFToolkit.Extended" 
     xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity" 
     xmlns:Infrastructure="clr-namespace:Solutionizer.Infrastructure" 
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:Views="clr-namespace:Solutionizer.Views" xmlns:System="clr-namespace:System;assembly=mscorlib"
     xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
-    xmlns:ViewModels="clr-namespace:Solutionizer.ViewModels" TextOptions.TextFormattingMode="Display" 
+    xmlns:ViewModels="clr-namespace:Solutionizer.ViewModels" xmlns:Behaviours="clr-namespace:MahApps.Metro.Behaviours;assembly=MahApps.Metro" xmlns:WPFSpark="clr-namespace:WPFSpark;assembly=WPFSpark" TextOptions.TextFormattingMode="Display" 
     TextOptions.TextHintingMode="Fixed" 
     SnapsToDevicePixels="true" 
     Title="Solutionizer" 
@@ -19,14 +18,21 @@
     Infrastructure:ModelAttacher.AttachModel="{x:Type ViewModels:MainViewModel}" 
     mc:Ignorable="d" d:DataContext="{d:DesignInstance ViewModels:MainViewModel}" 
     Infrastructure:WindowStatePersistence.Settings="{Binding Settings}"    
-    d:DesignHeight="300" d:DesignWidth="300">
+    d:DesignHeight="300" d:DesignWidth="300" x:Name="_window">
+    
     <Window.Resources>
         <Converters:BusyToProgressStateConverter x:Key="BusyToProgressStateConverter" />
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
         <Commands:CommandExecutor x:Key="commandExecutor" />
     </Window.Resources>
+    
     <Window.TaskbarItemInfo>
         <TaskbarItemInfo ProgressState="{Binding IsBusy, Source={StaticResource commandExecutor}, Converter={StaticResource BusyToProgressStateConverter}}" />
     </Window.TaskbarItemInfo>
+
+    <i:Interaction.Behaviors>
+        <Behaviours:BorderlessWindowBehavior/>
+    </i:Interaction.Behaviors>
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="Loaded">
             <cmd:EventToCommand Command="{Binding OnLoadedCommand, Mode=OneWay}" />
@@ -35,12 +41,18 @@
             <cmd:EventToCommand Command="{Binding OnClosedCommand, Mode=OneWay}" />
         </i:EventTrigger>
     </i:Interaction.Triggers>
+    
     <Grid>
-        <Grid.Resources>
-
-        </Grid.Resources>
-        <extToolkit:BusyIndicator BusyContent="{Binding BusyMessage, Source={StaticResource commandExecutor}}" IsBusy="{Binding IsBusy, Source={StaticResource commandExecutor}}">
-            <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Grid MouseDown="Grid_MouseDown_1">
+            <TextBlock Text="{Binding Path=Title, ElementName=_window}" FontSize="16" Padding="4"/>
+            <Controls:WindowCommands HorizontalAlignment="Right" VerticalAlignment="Top"/>
+        </Grid>
+        
+            <Grid Grid.Row="1">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="auto" />
                     <RowDefinition Height="*" />
@@ -114,6 +126,18 @@
                 <Views:SolutionView Grid.Column="2" Grid.Row="1" Margin="0 3 3 3" DataContext="{Binding Solution}" />
 
             </Grid>
-        </extToolkit:BusyIndicator>
+        <Grid Grid.Row="1" Background="#3f000000" Panel.ZIndex="1000" Visibility="{Binding IsBusy, Source={StaticResource commandExecutor}, Converter={StaticResource BooleanToVisibilityConverter}}">
+                <Border Background="White" VerticalAlignment="Center" HorizontalAlignment="Center">
+                    <Border.Effect>
+                    <DropShadowEffect Opacity=".5"/>
+                </Border.Effect>
+                    <StackPanel Orientation="Vertical">
+                    <TextBlock Margin="10">Loading projects...</TextBlock>
+                    <WPFSpark:FluidProgressBar Width="300" Height="4" Foreground="#7f000000" Delay="0:0:0.15" Margin="10" />
+                    <!--<TextBlock Margin="10">1 project found so far</TextBlock>-->
+                        <!--<Button HorizontalAlignment="Right" Margin="10 4">Cancel</Button>-->
+                </StackPanel>
+            </Border>
+        </Grid>
     </Grid>
-</Controls:MetroWindow>
+</Window>
