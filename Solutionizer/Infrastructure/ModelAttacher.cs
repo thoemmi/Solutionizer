@@ -22,11 +22,11 @@ namespace Solutionizer.Infrastructure {
             }
         }
 
-        public static string GetAttachModel(UIElement element) {
-            return (string) element.GetValue(AttachModelProperty);
+        public static Type GetAttachModel(UIElement element) {
+            return (Type)element.GetValue(AttachModelProperty);
         }
 
-        public static void SetAttachModel(UIElement element, string value) {
+        public static void SetAttachModel(UIElement element, Type value) {
             element.SetValue(AttachModelProperty, value);
         }
     }
