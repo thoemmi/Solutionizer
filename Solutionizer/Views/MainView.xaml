@@ -11,6 +11,7 @@
     xmlns:Views="clr-namespace:Solutionizer.Views" xmlns:System="clr-namespace:System;assembly=mscorlib"
     xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
     xmlns:ViewModels="clr-namespace:Solutionizer.ViewModels" xmlns:Behaviours="clr-namespace:MahApps.Metro.Behaviours;assembly=MahApps.Metro" xmlns:WPFSpark="clr-namespace:WPFSpark;assembly=WPFSpark" TextOptions.TextFormattingMode="Display" 
+    xmlns:Behaviors="clr-namespace:Solutionizer.Infrastructure"
     TextOptions.TextHintingMode="Fixed" 
     SnapsToDevicePixels="true" 
     Title="Solutionizer" 
@@ -47,7 +48,11 @@
             <RowDefinition Height="auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <Grid MouseDown="Grid_MouseDown_1">
+        <Grid>
+            <i:Interaction.Behaviors>
+                <Behaviors:DragMoveWindowBehavior/>
+            </i:Interaction.Behaviors>
+
             <TextBlock Text="{Binding Path=Title, ElementName=_window}" FontSize="16" Padding="4"/>
             <Controls:WindowCommands HorizontalAlignment="Right" VerticalAlignment="Top"/>
         </Grid>
@@ -90,7 +95,6 @@
                         Grid.Row="1"
                         Grid.ColumnSpan="3"
                         ScanOnStartup="{Binding Settings.ScanOnStartup}"
-                        HideRootNode="{Binding Settings.HideRootNode}" 
                         IsFlatMode="{Binding Settings.IsFlatMode}" 
                         RootPath="{Binding Settings.RootPath}" />
                 </Grid>

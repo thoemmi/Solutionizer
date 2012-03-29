@@ -47,18 +47,6 @@ namespace Solutionizer.Views {
             set { SetValue(IsFlatModeProperty, value); }
         }
 
-        public static readonly DependencyProperty HideRootNodeProperty =
-            DependencyProperty.Register(
-                "HideRootNode", 
-                typeof (bool), 
-                typeof (FileSystemTreeView),
-                new PropertyMetadata(default(bool), (o, args) => ((FileSystemTreeView)o).TransformNodes()));
-
-        public bool HideRootNode {
-            get { return (bool) GetValue(HideRootNodeProperty); }
-            set { SetValue(HideRootNodeProperty, value); }
-        }
-
         public static readonly DependencyProperty RootNodesProperty =
             DependencyProperty.Register("RootNodes", typeof (IList), typeof (FileSystemTreeView), new PropertyMetadata(default(IList)));
 
