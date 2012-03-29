@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using System.Windows;
+using GalaSoft.MvvmLight;
 
 namespace Solutionizer.Commands {
     public class CommandExecutor : DependencyObject {
@@ -28,6 +29,10 @@ namespace Solutionizer.Commands {
         }
 
         public CommandExecutor() {
+            if (ViewModelBase.IsInDesignModeStatic) {
+                return;
+            }
+
             if (_instance != null) {
                 throw new InvalidOperationException("Only one instance allowed");
             }
