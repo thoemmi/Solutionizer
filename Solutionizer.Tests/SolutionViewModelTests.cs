@@ -27,6 +27,7 @@ namespace Solutionizer.Tests {
             CopyTestDataToPath("CsTestProject1.csproj", Path.Combine(_testDataPath, "p1"));
             CopyTestDataToPath("CsTestProject2.csproj", Path.Combine(_testDataPath, "p2"));
             ProjectRepository.Instance.GetProjects(_testDataPath);
+            WaitForProjectLoaded();
 
             var project = new Project(Path.Combine(_testDataPath, "p2", "CsTestProject2.csproj"));
             project.Load();

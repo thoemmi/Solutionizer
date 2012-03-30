@@ -3,7 +3,6 @@ using System.IO;
 using NUnit.Framework;
 using Solutionizer.Infrastructure;
 using Solutionizer.Services;
-using Solutionizer.ViewModels;
 
 namespace Solutionizer.Tests {
     public class ProjectTestBase {
@@ -13,7 +12,9 @@ namespace Solutionizer.Tests {
 
         [SetUp]
         public void SetUp() {
-            Settings.Instance = new Settings();
+            Settings.Instance = new Settings {
+                SimplifyProjectTree = true
+            };
 
             _testDataFolderName = "SolutionizerTest-" + DateTime.Now.ToString("o").Replace(':', '-') + "-" + _random.Next();
             _testDataPath = Path.Combine(Path.GetTempPath(), _testDataFolderName);
@@ -22,9 +23,7 @@ namespace Solutionizer.Tests {
 
         [TearDown]
         public void TearDown() {
-            while (!ProjectRepository.Instance.AllProjectLoaded) {
-                System.Threading.Thread.Sleep(100);
-            }
+            WaitForProjectLoaded();
             Directory.Delete(_testDataPath, true);
         }
 
@@ -38,8 +37,15 @@ namespace Solutionizer.Tests {
 
         protected string ReadFromResource(string resource) {
             var stream = typeof(ProjectTestBase).Assembly.GetManifestResourceStream("Solutionizer.Tests.TestData." + resource);
+            Assert.NotNull(stream);
             using (var input = new StreamReader(stream)) {
                 return input.ReadToEnd();
+            }
+        }
+
+        protected void WaitForProjectLoaded() {
+            while (!ProjectRepository.Instance.AllProjectLoaded) {
+                System.Threading.Thread.Sleep(50);
             }
         }
     }

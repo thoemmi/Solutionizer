@@ -55,8 +55,7 @@ namespace Solutionizer.Tests {
             var root = ProjectRepository.Instance.GetProjects(_testDataPath);
             Assert.AreEqual(_testDataPath, root.FullPath);
             Assert.AreEqual(_testDataFolderName, root.Name);
-            Assert.AreEqual(2, root.Folders.Count);
-            Assert.IsEmpty(root.Projects);
+            Assert.AreEqual(2, root.Projects.Count);
         }
 
         [Test]
@@ -65,8 +64,7 @@ namespace Solutionizer.Tests {
 
             var root = ProjectRepository.Instance.GetProjects(_testDataPath);
 
-            Assert.AreEqual("CsTestProject1", root.Folders[0].Projects[0].Name);
-            Assert.AreEqual(Path.Combine(_testDataPath, "dir", "CsTestProject1.csproj"), root.Folders[0].Projects[0].Filepath);
+            Assert.AreEqual(Path.Combine(_testDataPath, "dir", "CsTestProject1.csproj"), root.Projects[0].Filepath);
         }
     }
 }
