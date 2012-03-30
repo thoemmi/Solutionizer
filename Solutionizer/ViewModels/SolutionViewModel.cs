@@ -6,6 +6,7 @@ using System.Windows.Input;
 using GalaSoft.MvvmLight;
 using Solutionizer.Infrastructure;
 using Solutionizer.Models;
+using Solutionizer.Services;
 using Solutionizer.VisualStudio;
 
 namespace Solutionizer.ViewModels {

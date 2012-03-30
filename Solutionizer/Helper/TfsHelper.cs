@@ -5,6 +5,7 @@ using Microsoft.TeamFoundation;
 using Microsoft.TeamFoundation.Client;
 using Microsoft.TeamFoundation.VersionControl.Client;
 using Solutionizer.Infrastructure;
+using Solutionizer.Services;
 
 namespace Solutionizer.Helper {
     public static class TfsHelper {

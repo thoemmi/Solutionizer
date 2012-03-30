@@ -7,6 +7,7 @@ using GalaSoft.MvvmLight;
 using Ookii.Dialogs.Wpf;
 using Solutionizer.Commands;
 using Solutionizer.Infrastructure;
+using Solutionizer.Services;
 
 namespace Solutionizer.ViewModels {
     public class MainViewModel : ViewModelBase {

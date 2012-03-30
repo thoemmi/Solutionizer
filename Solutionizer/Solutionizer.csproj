@@ -113,7 +113,7 @@
     <Compile Include="Infrastructure\ModelAttacher.cs" />
     <Compile Include="Infrastructure\WindowStatePersistence.cs" />
     <Compile Include="Models\Project.cs" />
-    <Compile Include="Infrastructure\Settings.cs" />
+    <Compile Include="Services\Settings.cs" />
     <Compile Include="ViewModels\SolutionViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="Infrastructure\SortedObservableCollection.cs" />
@@ -166,6 +166,7 @@
   <ItemGroup>
     <Resource Include="Resources\wait.png" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

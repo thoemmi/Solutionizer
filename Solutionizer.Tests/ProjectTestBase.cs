@@ -2,6 +2,7 @@
 using System.IO;
 using NUnit.Framework;
 using Solutionizer.Infrastructure;
+using Solutionizer.Services;
 using Solutionizer.ViewModels;
 
 namespace Solutionizer.Tests {

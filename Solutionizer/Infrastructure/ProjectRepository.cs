@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Solutionizer.Models;
+using Solutionizer.Services;
 
 namespace Solutionizer.Infrastructure {
     public class ProjectRepository {
