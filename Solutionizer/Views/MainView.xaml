@@ -19,7 +19,7 @@
     Infrastructure:ModelAttacher.AttachModel="{x:Type ViewModels:MainViewModel}" 
     mc:Ignorable="d" d:DataContext="{d:DesignInstance ViewModels:MainViewModel}" 
     Infrastructure:WindowStatePersistence.Settings="{Binding Settings}"    
-    d:DesignHeight="478" d:DesignWidth="752" x:Name="_window" SizeToContent="WidthAndHeight">
+    d:DesignHeight="478" d:DesignWidth="752" x:Name="_window">
     
     <Window.Resources>
         <ResourceDictionary>
