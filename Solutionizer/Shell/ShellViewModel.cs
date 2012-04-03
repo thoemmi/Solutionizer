@@ -10,5 +10,9 @@ namespace Solutionizer {
         public ProjectRepositoryViewModel ProjectRepository {
             get { return _projectRepository; }
         }
+
+        public ShellViewModel() {
+            _projectRepository.RootPath = "xxx";
+        }
     }
 }
