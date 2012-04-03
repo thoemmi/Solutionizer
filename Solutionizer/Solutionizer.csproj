@@ -100,6 +100,7 @@
     </Compile>
     <Compile Include="ProjectRepository\ProjectRepositoryViewModel.cs" />
     <Compile Include="Shell\ShellViewModel.cs" />
+    <Compile Include="Solution\SolutionViewModel.cs" />
     <Compile Include="ViewModels\DirectoryViewModel.cs" />
     <Compile Include="ViewModels\ProjectViewModel.cs" />
     <Compile Include="Views\FileSystemTreeView.xaml.cs">
@@ -146,6 +147,10 @@
     <Page Include="Shell\ShellView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Solution\SolutionView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\FileSystemTreeView.xaml">
       <SubType>Designer</SubType>
