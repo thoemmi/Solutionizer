@@ -44,7 +44,7 @@ namespace Solutionizer.Tests {
         }
 
         protected void WaitForProjectLoaded() {
-            while (!ProjectRepository.Instance.AllProjectLoaded) {
+            while (!Solutionizer.Infrastructure.ProjectRepository.Instance.AllProjectLoaded) {
                 System.Threading.Thread.Sleep(50);
             }
         }

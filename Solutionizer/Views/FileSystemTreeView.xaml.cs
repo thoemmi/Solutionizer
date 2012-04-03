@@ -66,7 +66,7 @@ namespace Solutionizer.Views {
         private void RefreshFileTree() {
             var rootPath = RootPath;
             CommandExecutor
-                .ExecuteAsync("Scanning projects", () =>  ProjectRepository.Instance.GetProjects(rootPath))
+                .ExecuteAsync("Scanning projects", () =>  Solutionizer.Infrastructure.ProjectRepository.Instance.GetProjects(rootPath))
                 .ContinueWith(result => {
                     _rootNode = result.Result;
                     TransformNodes();

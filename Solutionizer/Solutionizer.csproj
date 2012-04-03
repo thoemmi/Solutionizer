@@ -39,6 +39,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Caliburn.Micro">
+      <HintPath>..\packages\Caliburn.Micro.1.3.1\lib\net40\Caliburn.Micro.dll</HintPath>
+    </Reference>
     <Reference Include="GalaSoft.MvvmLight.Extras.WPF4, Version=0.0.0.0, Culture=neutral, PublicKeyToken=1673db7d5906b0ad, processorArchitecture=MSIL">
       <HintPath>..\packages\MvvmLightLibsPreview.4.1.0\lib\net40\GalaSoft.MvvmLight.Extras.WPF4.dll</HintPath>
     </Reference>
@@ -61,10 +64,11 @@
       <HintPath>..\packages\Ookii.Dialogs.1.0\lib\net35\Ookii.Dialogs.Wpf.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Windows.Interactivity, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\MahApps.Metro.0.7.9.55-ALPHA\lib\net40\System.Windows.Interactivity.dll</HintPath>
+      <HintPath>..\packages\Caliburn.Micro.1.3.1\lib\net40\System.Windows.Interactivity.dll</HintPath>
     </Reference>
     <Reference Include="System.Xml" />
     <Reference Include="System.Core" />
@@ -83,12 +87,19 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="AppBootstrapper.cs" />
     <Compile Include="Commands\CommandExecutor.cs" />
     <Compile Include="Commands\SaveSolutionCommand.cs" />
     <Compile Include="Helper\GridHelper.cs" />
     <Compile Include="Infrastructure\DragMoveWindowBehavior.cs" />
     <Compile Include="Infrastructure\ProjectRepository.cs" />
+    <Compile Include="IShell.cs" />
     <Compile Include="Models\ProjectFolder.cs" />
+    <Compile Include="ProjectRepository\ProjectRepositoryView.xaml.cs">
+      <DependentUpon>ProjectRepositoryView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ProjectRepository\ProjectRepositoryViewModel.cs" />
+    <Compile Include="Shell\ShellViewModel.cs" />
     <Compile Include="ViewModels\DirectoryViewModel.cs" />
     <Compile Include="ViewModels\ProjectViewModel.cs" />
     <Compile Include="Views\FileSystemTreeView.xaml.cs">
@@ -128,6 +139,14 @@
     <Compile Include="VisualStudio\SolutionFolder.cs" />
     <Compile Include="VisualStudio\SolutionItem.cs" />
     <Compile Include="VisualStudio\SolutionProject.cs" />
+    <Page Include="ProjectRepository\ProjectRepositoryView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Shell\ShellView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Views\FileSystemTreeView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
