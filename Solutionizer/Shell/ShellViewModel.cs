@@ -1,6 +1,6 @@
 ﻿using Solutionizer.ProjectRepository;
 
-namespace Solutionizer {
+namespace Solutionizer.Shell {
     using System.ComponentModel.Composition;
 
     [Export(typeof(IShell))]
