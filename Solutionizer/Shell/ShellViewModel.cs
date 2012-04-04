@@ -26,6 +26,10 @@ namespace Solutionizer.Shell {
             get { return _solution; }
         }
 
+        public Settings Settings {
+            get { return _settings; }
+        }
+
         protected override void OnViewLoaded(object view) {
             base.OnViewLoaded(view);
 

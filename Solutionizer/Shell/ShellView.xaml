@@ -6,6 +6,7 @@
         xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity" 
         xmlns:Behaviours="clr-namespace:MahApps.Metro.Behaviours;assembly=MahApps.Metro" 
         xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro" 
+        Infrastructure:WindowStatePersistence.Settings="{Binding Settings}"  
         TextOptions.TextHintingMode="Fixed" 
         SnapsToDevicePixels="true" 
         Title="Solutionizer" 
