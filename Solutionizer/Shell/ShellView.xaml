@@ -71,8 +71,9 @@
                 Grid.Column="1" Width="6" Background="Transparent" ShowsPreview="true" 
                 HorizontalAlignment="Center" VerticalAlignment="Stretch" />
 
-                <ContentControl 
-Grid.Column="2"                 
+            <ContentControl 
+                Margin="0 3 3 3" 
+                Grid.Column="2"  
                 x:Name="Solution" />
         </Grid>
     </Grid>
