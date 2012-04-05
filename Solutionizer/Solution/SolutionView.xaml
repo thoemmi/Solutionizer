@@ -6,7 +6,9 @@
              xmlns:VisualStudio="clr-namespace:Solutionizer.VisualStudio" 
              xmlns:Models="clr-namespace:Solutionizer.Models" 
              xmlns:Converters="clr-namespace:Solutionizer.Converters" 
-             xmlns:Solution="clr-namespace:Solutionizer.Solution" mc:Ignorable="d" 
+             xmlns:Solution="clr-namespace:Solutionizer.Solution" xmlns:Helper="clr-namespace:Solutionizer.Helper"
+             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+             xmlns:cal="http://www.caliburnproject.org" mc:Ignorable="d" 
              d:DataContext="{d:DesignInstance Type=Solution:SolutionViewModel}"
              d:DesignHeight="300" d:DesignWidth="300">
     <Grid>
@@ -51,9 +53,21 @@
             x:Name="_tree"
             Grid.Row="1"
             VirtualizingStackPanel.IsVirtualizing="True"
-            VirtualizingStackPanel.VirtualizationMode="Recycling"
-            Margin="3 3 0 3"
-            />
+            VirtualizingStackPanel.VirtualizationMode="Recycling" AllowDrop="True"
+            Margin="3 3 0 3">
+            <i:Interaction.Triggers>
+                <i:EventTrigger EventName="PreviewDragOver">
+                    <cal:ActionMessage MethodName="PreviewDragOver">
+                        <cal:Parameter Value="$eventArgs" />
+                    </cal:ActionMessage>
+                </i:EventTrigger>
+                <i:EventTrigger EventName="PreviewDrop">
+                    <cal:ActionMessage MethodName="PreviewDrop">
+                        <cal:Parameter Value="$eventArgs" />
+                    </cal:ActionMessage>
+                </i:EventTrigger>
+            </i:Interaction.Triggers>
+        </TreeView>
 
     </Grid>
 </UserControl>
