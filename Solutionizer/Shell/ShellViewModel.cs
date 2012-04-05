@@ -35,7 +35,7 @@ namespace Solutionizer.Shell {
 
             if (_settings.ScanOnStartup) {
                 _projectRepository.RootPath = _settings.RootPath;
-                _projectRepository.RootFolder = Solutionizer.Infrastructure.ProjectRepository.Instance.GetProjects(_settings.RootPath);
+                //_projectRepository.RootFolder = Solutionizer.Infrastructure.ProjectRepository.Instance.GetProjects(_settings.RootPath);
             }
         }
     }
