@@ -53,21 +53,10 @@
             x:Name="_tree"
             Grid.Row="1"
             VirtualizingStackPanel.IsVirtualizing="True"
-            VirtualizingStackPanel.VirtualizationMode="Recycling" AllowDrop="True"
-            Margin="3 3 0 3">
-            <i:Interaction.Triggers>
-                <i:EventTrigger EventName="PreviewDragOver">
-                    <cal:ActionMessage MethodName="PreviewDragOver">
-                        <cal:Parameter Value="$eventArgs" />
-                    </cal:ActionMessage>
-                </i:EventTrigger>
-                <i:EventTrigger EventName="PreviewDrop">
-                    <cal:ActionMessage MethodName="PreviewDrop">
-                        <cal:Parameter Value="$eventArgs" />
-                    </cal:ActionMessage>
-                </i:EventTrigger>
-            </i:Interaction.Triggers>
-        </TreeView>
+            VirtualizingStackPanel.VirtualizationMode="Recycling" 
+            Helper:DragDropHelper.IsDropTarget="True" 
+            Helper:DragDropHelper.DropCommand="{Binding DropCommand}"
+            Margin="3 3 0 3"/>
 
     </Grid>
 </UserControl>
