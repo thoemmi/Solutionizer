@@ -51,16 +51,29 @@ namespace Solutionizer.Solution {
             }
         }
 
-        private static void RemoveProject(SolutionFolder solutionFolder, Project project) {
+        private static bool RemoveProject(SolutionFolder solutionFolder, Project project) {
+            bool removed = false;
             var item = solutionFolder.Items.SingleOrDefault(p => p.Guid == project.Guid);
             if (item != null) {
                 solutionFolder.Items.Remove(item);
-                return;
+                removed = true;
             }
 
+            var foldersToRemove = new List<SolutionFolder>();
             foreach (var subfolder in solutionFolder.Items.OfType<SolutionFolder>()) {
-                RemoveProject(subfolder, project);
+                if (RemoveProject(subfolder, project)) {
+                    removed = true;
+                    if (subfolder.Items.Count == 0) {
+                        foldersToRemove.Add(subfolder);
+                    }
+                }
             }
+            if (foldersToRemove.Count > 0) {
+                foreach (var folder in foldersToRemove) {
+                    solutionFolder.Items.Remove(folder);
+                }
+            }
+            return removed;
         }
 
         private void AddReferencedProjects(Project project, int depth) {
