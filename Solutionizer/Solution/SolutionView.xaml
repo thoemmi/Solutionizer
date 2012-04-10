@@ -50,7 +50,7 @@
         <TextBlock Margin="0 2">Selected projects:</TextBlock>
 
         <TreeView 
-            x:Name="_tree"
+            x:Name="SolutionItems"
             Grid.Row="1"
             VirtualizingStackPanel.IsVirtualizing="True"
             VirtualizingStackPanel.VirtualizationMode="Recycling" 
