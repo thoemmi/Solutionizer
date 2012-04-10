@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
 using System.Windows.Media;
 
 namespace Solutionizer.Extensions {
@@ -78,23 +79,50 @@ namespace Solutionizer.Extensions {
         /// <param name="visual">The parent element.</param>
         /// <returns></returns>
         public static T FindVisualChild<T>(this DependencyObject visual) where T : DependencyObject {
-            for (var i = 0; i < VisualTreeHelper.GetChildrenCount(visual); i++) {
-                var child = (Visual)VisualTreeHelper.GetChild(visual, i);
-                if (child != null) {
-                    var correctlyTyped = child as T;
-                    if (correctlyTyped != null) {
-                        return correctlyTyped;
-                    }
+            return FindVisualChild<T>(visual, null);
+        }
 
-                    var descendent = FindVisualChild<T>(child);
-                    if (descendent != null) {
-                        return descendent;
+        /// <summary>
+        /// Search for an element of a certain type in the visual tree.
+        /// </summary>
+        /// <typeparam name="T">The type of element to find.</typeparam>
+        /// <param name="visual">The parent element.</param>
+        /// <param name="name"> </param>
+        /// <returns></returns>
+        public static T FindVisualChild<T>(this DependencyObject visual, string name) where T : DependencyObject {
+            // Confirm parent and childName are valid. 
+            if (visual == null) return null;
+
+            T foundChild = null;
+
+            for (int i = 0; i < VisualTreeHelper.GetChildrenCount(visual); i++) {
+                var child = VisualTreeHelper.GetChild(visual, i);
+                // If the child is not of the request child type child
+                var childType = child as T;
+                if (childType == null) {
+                    // recursively drill down the tree
+                    foundChild = FindVisualChild<T>(child, name);
+
+                    // If the child is found, break so we do not overwrite the found child. 
+                    if (foundChild != null) {
+                        break;
                     }
+                } else if (!String.IsNullOrEmpty(name)) {
+                    var frameworkElement = child as FrameworkElement;
+                    // If the child's name is set for search
+                    if (frameworkElement != null && frameworkElement.Name == name) {
+                        // if the child's name is of the request name
+                        foundChild = childType;
+                        break;
+                    }
+                } else {
+                    // child element found.
+                    foundChild = childType;
+                    break;
                 }
             }
 
-            return null;
+            return foundChild;
         }
-
     }
 }
