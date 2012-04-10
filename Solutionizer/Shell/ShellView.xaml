@@ -51,7 +51,7 @@
                 FontWeight="Bold" FontSize="20" Margin="20,5,0,0"/>
 
             <Controls:WindowCommands HorizontalAlignment="Right" VerticalAlignment="Top">
-                <!--<Button x:Name="ShowSettings" Content="Settings" Command="{Binding ShowSettingsCommand}"/>-->
+                <Button x:Name="ShowSettings" Content="Settings" />
             </Controls:WindowCommands>
 
             <Rectangle HorizontalAlignment="Left" Width="10" StrokeThickness="0" Margin="0 10 0 0" Fill="{DynamicResource HighlightBrush}"/>
