@@ -4,7 +4,6 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Solutionizer.Models;
-using Solutionizer.Services;
 
 namespace Solutionizer.Infrastructure {
     public class ProjectRepository {
@@ -30,7 +29,7 @@ namespace Solutionizer.Infrastructure {
         }
 
         private ProjectFolder CreateProjectFolder(string path, ProjectFolder parent) {
-            bool simplifyProjectTree = Settings.Instance.SimplifyProjectTree;
+            bool simplifyProjectTree = Services.Settings.Instance.SimplifyProjectTree;
 
             var projectFolder = new ProjectFolder(path, parent);
             foreach (var subdirectory in Directory.EnumerateDirectories(path)) {

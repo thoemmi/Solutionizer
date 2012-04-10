@@ -5,7 +5,6 @@ using System.Windows.Input;
 using Caliburn.Micro;
 using Solutionizer.Infrastructure;
 using Solutionizer.Models;
-using Solutionizer.Services;
 using Solutionizer.ViewModels;
 using Solutionizer.VisualStudio;
 
@@ -15,6 +14,7 @@ namespace Solutionizer.Solution {
         private bool _isSccBound;
         private readonly SolutionFolder _solutionRoot = new SolutionFolder(null);
         private SolutionItem _selectedItem;
+        private readonly Services.Settings _settings = Services.Settings.Instance;
 
         public SolutionViewModel() {
             _dropCommand = new FixedRelayCommand<object>(OnDrop, obj => obj is ProjectViewModel);
@@ -48,8 +48,8 @@ namespace Solutionizer.Solution {
                 RemoveProject(referenceFolder, project);
             }
 
-            if (Settings.Instance.IncludeReferencedProjects) {
-                AddReferencedProjects(project, Settings.Instance.ReferenceTreeDepth);
+            if (_settings.IncludeReferencedProjects) {
+                AddReferencedProjects(project, _settings.ReferenceTreeDepth);
             }
         }
 
@@ -119,7 +119,7 @@ namespace Solutionizer.Solution {
         }
 
         private SolutionFolder GetOrCreateReferenceFolder() {
-            return _solutionRoot.GetOrCreateSubfolder(Settings.Instance.ReferenceFolderName);
+            return _solutionRoot.GetOrCreateSubfolder(_settings.ReferenceFolderName);
         }
 
         public SolutionItem SelectedItem {

@@ -4,13 +4,11 @@ using System.Windows.Forms;
 using Microsoft.TeamFoundation;
 using Microsoft.TeamFoundation.Client;
 using Microsoft.TeamFoundation.VersionControl.Client;
-using Solutionizer.Infrastructure;
-using Solutionizer.Services;
 
 namespace Solutionizer.Helper {
     public static class TfsHelper {
         public static bool TryGetTeamProjectCollection(string localPath, out Uri tfsName, out string tfsFolder) {
-            tfsName = Settings.Instance.TfsName;
+            tfsName = Services.Settings.Instance.TfsName;
             tfsFolder = null;
             if (tfsName == null) {
                 var projectCollections = RegisteredTfsConnections.GetProjectCollections();
@@ -23,7 +21,7 @@ namespace Solutionizer.Helper {
                             return false;
                         }
                         tfsName = dlg.SelectedTeamProjectCollection.Uri;
-                        Settings.Instance.TfsName = tfsName;
+                        Services.Settings.Instance.TfsName = tfsName;
                     }
                 }
             }

@@ -2,7 +2,6 @@
 using Caliburn.Micro;
 using Ookii.Dialogs.Wpf;
 using Solutionizer.ProjectRepository;
-using Solutionizer.Services;
 using Solutionizer.Solution;
 
 namespace Solutionizer.Shell {
@@ -10,12 +9,12 @@ namespace Solutionizer.Shell {
 
     [Export(typeof(IShell))]
     public sealed class ShellViewModel : Screen, IShell {
-        private readonly Settings _settings;
+        private readonly Services.Settings _settings;
         private readonly ProjectRepositoryViewModel _projectRepository = new ProjectRepositoryViewModel();
         private readonly SolutionViewModel _solution = new SolutionViewModel();
 
         [ImportingConstructor]
-        public ShellViewModel(Settings settings) {
+        public ShellViewModel(Services.Settings settings) {
             _settings = settings;
             DisplayName = "Solutionizer";
         }
@@ -28,7 +27,7 @@ namespace Solutionizer.Shell {
             get { return _solution; }
         }
 
-        public Settings Settings {
+        public Services.Settings Settings {
             get { return _settings; }
         }
 

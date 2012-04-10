@@ -1,10 +1,9 @@
 ﻿using System.Windows;
-using Solutionizer.Services;
 
 namespace Solutionizer.Infrastructure {
     public class WindowStatePersistence {
         public static readonly DependencyProperty SettingsProperty =
-            DependencyProperty.RegisterAttached("Settings", typeof (Settings), typeof (WindowStatePersistence), new PropertyMetadata(default(Settings), OnChanged));
+            DependencyProperty.RegisterAttached("Settings", typeof (Services.Settings), typeof (WindowStatePersistence), new PropertyMetadata(null, OnChanged));
 
         private static void OnChanged(DependencyObject d, DependencyPropertyChangedEventArgs e) {
             var window = d as Window;
@@ -12,7 +11,7 @@ namespace Solutionizer.Infrastructure {
                 return;
             }
 
-            var setting = e.NewValue as Settings;
+            var setting = e.NewValue as Services.Settings;
             if (setting != null) {
                 if (setting.WindowSettings != null) {
                     var top = setting.WindowSettings.Top;
@@ -82,12 +81,12 @@ namespace Solutionizer.Infrastructure {
             }
         }
 
-        public static void SetSettings(Window element, Settings value) {
+        public static void SetSettings(Window element, Services.Settings value) {
             element.SetValue(SettingsProperty, value);
         }
 
-        public static Settings GetSettings(Window element) {
-            return (Settings) element.GetValue(SettingsProperty);
+        public static Services.Settings GetSettings(Window element) {
+            return (Services.Settings)element.GetValue(SettingsProperty);
         }
     }
 }

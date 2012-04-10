@@ -5,7 +5,7 @@ using System.ComponentModel.Composition.Hosting;
 using System.ComponentModel.Composition.Primitives;
 using System.Linq;
 using Caliburn.Micro;
-using Solutionizer.Services;
+using Solutionizer.Infrastructure;
 
 namespace Solutionizer {
     public class AppBootstrapper : Bootstrapper<IShell> {
@@ -23,9 +23,9 @@ namespace Solutionizer {
 
             var batch = new CompositionBatch();
 
-            batch.AddExportedValue<IWindowManager>(new WindowManager());
+            batch.AddExportedValue<IWindowManager>(new MetroWindowManager());
             batch.AddExportedValue<IEventAggregator>(new EventAggregator());
-            batch.AddExportedValue(Settings.Instance);
+            batch.AddExportedValue(Services.Settings.Instance);
             batch.AddExportedValue(_container);
             batch.AddExportedValue(catalog);
 
@@ -53,7 +53,7 @@ namespace Solutionizer {
         }
 
         protected override void OnExit(object sender, EventArgs e) {
-            Settings.Instance.Save();
+            Services.Settings.Instance.Save();
             base.OnExit(sender, e);
         }
     }

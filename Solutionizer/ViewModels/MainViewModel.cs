@@ -7,12 +7,11 @@ using GalaSoft.MvvmLight;
 using Ookii.Dialogs.Wpf;
 using Solutionizer.Commands;
 using Solutionizer.Infrastructure;
-using Solutionizer.Services;
 
 namespace Solutionizer.ViewModels {
     public class MainViewModel : ViewModelBase {
-        private readonly Settings _settings = Settings.Instance;
-        private SolutionViewModel _solution = new SolutionViewModel(Settings.Instance.RootPath);
+        private readonly Services.Settings _settings = Services.Settings.Instance;
+        private SolutionViewModel _solution = new SolutionViewModel(Services.Settings.Instance.RootPath);
         private readonly ICommand _onLoadedCommand;
         private readonly ICommand _onClosedCommand;
         private readonly ICommand _selectRootPathCommand;
@@ -55,7 +54,7 @@ namespace Solutionizer.ViewModels {
 
         private void OnLaunch() {
             var newFilename = Path.Combine(Path.GetTempPath(), DateTime.Now.ToString("yyyy-MM-dd_HHmmss")) + ".sln";
-            new SaveSolutionCommand(newFilename, Settings.VisualStudioVersion, Solution).Execute();
+            new SaveSolutionCommand(newFilename, _settings.VisualStudioVersion, Solution).Execute();
             Process.Start(newFilename);
             Application.Current.MainWindow.WindowState = WindowState.Minimized;
         }
@@ -67,7 +66,7 @@ namespace Solutionizer.ViewModels {
                 DefaultExt = ".sln"
             };
             if (dlg.ShowDialog() == true) {
-                new SaveSolutionCommand(dlg.FileName, Settings.VisualStudioVersion, Solution).Execute();
+                new SaveSolutionCommand(dlg.FileName, _settings.VisualStudioVersion, Solution).Execute();
             }
         }
 
@@ -99,7 +98,7 @@ namespace Solutionizer.ViewModels {
             get { return _toggleFlatModeCommand; }
         }
 
-        public Settings Settings {
+        public Services.Settings Settings {
             get { return _settings; }
         }
 

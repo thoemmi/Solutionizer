@@ -96,6 +96,7 @@
     <Compile Include="Infrastructure\BindableSelectedItemBehavior .cs" />
     <Compile Include="Infrastructure\DragMoveWindowBehavior.cs" />
     <Compile Include="Infrastructure\InputBindingTrigger.cs" />
+    <Compile Include="Infrastructure\MetroWindowManager.cs" />
     <Compile Include="Infrastructure\ProjectRepository.cs" />
     <Compile Include="IShell.cs" />
     <Compile Include="Models\ProjectFolder.cs" />
@@ -103,6 +104,7 @@
       <DependentUpon>ProjectRepositoryView.xaml</DependentUpon>
     </Compile>
     <Compile Include="ProjectRepository\ProjectRepositoryViewModel.cs" />
+    <Compile Include="Settings\SettingsViewModel.cs" />
     <Compile Include="Shell\ShellViewModel.cs" />
     <Compile Include="Solution\SolutionViewModel.cs" />
     <Compile Include="ViewModels\DirectoryViewModel.cs" />
@@ -145,6 +147,10 @@
     <Compile Include="VisualStudio\SolutionItem.cs" />
     <Compile Include="VisualStudio\SolutionProject.cs" />
     <Page Include="ProjectRepository\ProjectRepositoryView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Settings\SettingsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

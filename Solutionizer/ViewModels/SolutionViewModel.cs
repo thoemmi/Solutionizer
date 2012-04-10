@@ -6,7 +6,6 @@ using System.Windows.Input;
 using GalaSoft.MvvmLight;
 using Solutionizer.Infrastructure;
 using Solutionizer.Models;
-using Solutionizer.Services;
 using Solutionizer.VisualStudio;
 
 namespace Solutionizer.ViewModels {
@@ -18,6 +17,7 @@ namespace Solutionizer.ViewModels {
         private bool _isDirty;
         private bool _isSccBound;
         private readonly string _rootPath;
+        private Services.Settings _settings = Services.Settings.Instance;
 
         public SolutionViewModel(string rootPath) : this() {
             _rootPath = rootPath;
@@ -89,8 +89,8 @@ namespace Solutionizer.ViewModels {
                 RemoveProject(referenceFolder, project);
             }
 
-            if (Settings.Instance.IncludeReferencedProjects) {
-                AddReferencedProjects(project, Settings.Instance.ReferenceTreeDepth);
+            if (_settings.IncludeReferencedProjects) {
+                AddReferencedProjects(project, _settings.ReferenceTreeDepth);
             }
         }
 
@@ -108,7 +108,7 @@ namespace Solutionizer.ViewModels {
 
         private void AddReferencedProjects(Project project, int depth) {
             foreach (var projectReference in project.ProjectReferences) {
-                var referencedProject = Solutionizer.Infrastructure.ProjectRepository.Instance.GetProject(projectReference);
+                var referencedProject = Infrastructure.ProjectRepository.Instance.GetProject(projectReference);
                 if (referencedProject == null) {
                     // TODO log unknown project
                     continue;
@@ -147,7 +147,7 @@ namespace Solutionizer.ViewModels {
         }
 
         private SolutionFolder GetOrCreateReferenceFolder() {
-            return _solutionRoot.GetOrCreateSubfolder(Settings.Instance.ReferenceFolderName);
+            return _solutionRoot.GetOrCreateSubfolder(_settings.ReferenceFolderName);
         }
 
         public bool IsSccBound {
