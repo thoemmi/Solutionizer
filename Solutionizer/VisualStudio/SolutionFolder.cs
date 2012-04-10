@@ -10,6 +10,9 @@ namespace Solutionizer.VisualStudio {
         private readonly SortedObservableCollection<SolutionItem> _items =
             new SortedObservableCollection<SolutionItem>(new SolutionItemComparer());
 
+        public SolutionFolder(SolutionFolder parent) : base(parent) {
+        }
+
         public ObservableCollection<SolutionItem> Items {
             get { return _items; }
         }
@@ -21,7 +24,7 @@ namespace Solutionizer.VisualStudio {
         public SolutionFolder GetOrCreateSubfolder(string folderName) {
             var folder = _items.OfType<SolutionFolder>().SingleOrDefault(p => p.Name == folderName);
             if (folder == null) {
-                folder = new SolutionFolder {
+                folder = new SolutionFolder(this) {
                     Guid = Guid.NewGuid(),
                     Name = folderName
                 };
@@ -31,7 +34,7 @@ namespace Solutionizer.VisualStudio {
         }
 
         public void AddProject(Project project) {
-            _items.Add(new SolutionProject {
+            _items.Add(new SolutionProject(this) {
                 Guid = project.Guid,
                 Name = project.Name,
                 Filepath = project.Filepath

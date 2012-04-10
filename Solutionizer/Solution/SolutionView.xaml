@@ -9,6 +9,7 @@
              xmlns:Solution="clr-namespace:Solutionizer.Solution" xmlns:Helper="clr-namespace:Solutionizer.Helper"
              xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
              xmlns:cal="http://www.caliburnproject.org" mc:Ignorable="d" 
+             xmlns:Infrastructure="clr-namespace:Solutionizer.Infrastructure"
              d:DataContext="{d:DesignInstance Type=Solution:SolutionViewModel}"
              d:DesignHeight="300" d:DesignWidth="300">
     <Grid>
@@ -56,7 +57,18 @@
             VirtualizingStackPanel.VirtualizationMode="Recycling" 
             Helper:DragDropHelper.IsDropTarget="True" 
             Helper:DragDropHelper.DropCommand="{Binding DropCommand}"
-            Margin="3 3 0 3"/>
-
+            Margin="3 3 0 3">
+            <i:Interaction.Behaviors>
+                <Infrastructure:BindableSelectedItemBehavior SelectedItem="{Binding SelectedItem}" />
+            </i:Interaction.Behaviors>
+            <i:Interaction.Triggers>
+                <Infrastructure:InputBindingTrigger>
+                    <Infrastructure:InputBindingTrigger.InputBinding>
+                        <KeyBinding Key="Delete"/>
+                    </Infrastructure:InputBindingTrigger.InputBinding>
+                    <cal:ActionMessage MethodName="RemoveSolutionItem"/>
+                </Infrastructure:InputBindingTrigger>
+            </i:Interaction.Triggers>
+        </TreeView>
     </Grid>
 </UserControl>

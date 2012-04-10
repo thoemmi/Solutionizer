@@ -11,7 +11,7 @@ using Solutionizer.VisualStudio;
 
 namespace Solutionizer.ViewModels {
     public class SolutionViewModel : ViewModelBase {
-        private readonly SolutionFolder _solutionRoot = new SolutionFolder();
+        private readonly SolutionFolder _solutionRoot = new SolutionFolder(null);
         private readonly ICommand _dropCommand;
         private readonly ICommand _removeSolutionItemCommand;
         private bool _solutionHasItems;

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Input;
+using Caliburn.Micro;
 using Solutionizer.Infrastructure;
 using Solutionizer.Models;
 using Solutionizer.Services;
@@ -9,10 +10,11 @@ using Solutionizer.ViewModels;
 using Solutionizer.VisualStudio;
 
 namespace Solutionizer.Solution {
-    public class SolutionViewModel {
+    public class SolutionViewModel : PropertyChangedBase {
         private readonly ICommand _dropCommand;
         private bool _isSccBound;
-        private readonly SolutionFolder _solutionRoot = new SolutionFolder();
+        private readonly SolutionFolder _solutionRoot = new SolutionFolder(null);
+        private SolutionItem _selectedItem;
 
         public SolutionViewModel() {
             _dropCommand = new FixedRelayCommand<object>(OnDrop, obj => obj is ProjectViewModel);
@@ -118,6 +120,32 @@ namespace Solutionizer.Solution {
 
         private SolutionFolder GetOrCreateReferenceFolder() {
             return _solutionRoot.GetOrCreateSubfolder(Settings.Instance.ReferenceFolderName);
+        }
+
+        public SolutionItem SelectedItem {
+            get { return _selectedItem; }
+            set {
+                if (_selectedItem != value) {
+                    _selectedItem = value;
+                    NotifyOfPropertyChange(() => SelectedItem);
+                }
+            }
+        }
+
+        public void RemoveSolutionItem() {
+            if (_selectedItem != null) {
+                var parentFolder = _selectedItem.Parent;
+
+                var index = parentFolder.Items.IndexOf(_selectedItem);
+                parentFolder.Items.Remove(_selectedItem);
+
+                if (index >= 0) {
+                    if (index >= parentFolder.Items.Count) {
+                        index--;
+                    }
+                    SelectedItem = index >= 0 ? parentFolder.Items[index] : parentFolder;
+                }
+            }
         }
     }
 }
