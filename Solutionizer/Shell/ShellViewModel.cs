@@ -1,4 +1,6 @@
-﻿using Caliburn.Micro;
+﻿using System.Windows;
+using Caliburn.Micro;
+using Ookii.Dialogs.Wpf;
 using Solutionizer.ProjectRepository;
 using Solutionizer.Services;
 using Solutionizer.Solution;
@@ -34,9 +36,24 @@ namespace Solutionizer.Shell {
             base.OnViewLoaded(view);
 
             if (_settings.ScanOnStartup) {
-                _projectRepository.RootPath = _settings.RootPath;
-                //_projectRepository.RootFolder = Solutionizer.Infrastructure.ProjectRepository.Instance.GetProjects(_settings.RootPath);
+                LoadProjects(_settings.RootPath);
             }
+        }
+
+        public void SelectRootPath() {
+            var dlg = new VistaFolderBrowserDialog {
+                SelectedPath = _settings.RootPath
+            };
+            if (dlg.ShowDialog(Application.Current.MainWindow) == true) {
+                _settings.RootPath = dlg.SelectedPath;
+                LoadProjects(dlg.SelectedPath);
+            }
+        }
+
+        private void LoadProjects(string path) {
+            _projectRepository.RootPath = path;
+            _projectRepository.RootFolder = Infrastructure.ProjectRepository.Instance.GetProjects(path);
+            //Solution = new SolutionViewModel(dlg.SelectedPath);
         }
     }
 }
