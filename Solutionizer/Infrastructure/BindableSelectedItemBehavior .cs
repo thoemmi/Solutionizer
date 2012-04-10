@@ -2,6 +2,7 @@
 using System.Windows.Controls;
 using System.Windows.Interactivity;
 using System.Windows.Media;
+using Solutionizer.Extensions;
 
 namespace Solutionizer.Infrastructure {
     public class BindableSelectedItemBehavior : Behavior<TreeView> {
@@ -52,11 +53,11 @@ namespace Solutionizer.Infrastructure {
                 } else {
                     // The Tree template has not named the ItemsPresenter, 
                     // so walk the descendents and find the child.
-                    itemsPresenter = FindVisualChild<ItemsPresenter>(container);
+                    itemsPresenter = container.FindVisualChild<ItemsPresenter>();
                     if (itemsPresenter == null) {
                         container.UpdateLayout();
 
-                        itemsPresenter = FindVisualChild<ItemsPresenter>(container);
+                        itemsPresenter = container.FindVisualChild<ItemsPresenter>();
                     }
                 }
 
@@ -84,31 +85,6 @@ namespace Solutionizer.Infrastructure {
                         // The object is not under this TreeViewItem
                         // so collapse it.
                         subContainer.IsExpanded = false;
-                    }
-                }
-            }
-
-            return null;
-        }
-
-        /// <summary>
-        /// Search for an element of a certain type in the visual tree.
-        /// </summary>
-        /// <typeparam name="T">The type of element to find.</typeparam>
-        /// <param name="visual">The parent element.</param>
-        /// <returns></returns>
-        private static T FindVisualChild<T>(Visual visual) where T : Visual {
-            for (var i = 0; i < VisualTreeHelper.GetChildrenCount(visual); i++) {
-                var child = (Visual) VisualTreeHelper.GetChild(visual, i);
-                if (child != null) {
-                    var correctlyTyped = child as T;
-                    if (correctlyTyped != null) {
-                        return correctlyTyped;
-                    }
-
-                    var descendent = FindVisualChild<T>(child);
-                    if (descendent != null) {
-                        return descendent;
                     }
                 }
             }

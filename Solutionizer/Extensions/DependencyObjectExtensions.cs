@@ -70,5 +70,31 @@ namespace Solutionizer.Extensions {
             //if it's not a ContentElement/FrameworkElement, rely on VisualTreeHelper
             return VisualTreeHelper.GetParent(child);
         }
+
+        /// <summary>
+        /// Search for an element of a certain type in the visual tree.
+        /// </summary>
+        /// <typeparam name="T">The type of element to find.</typeparam>
+        /// <param name="visual">The parent element.</param>
+        /// <returns></returns>
+        public static T FindVisualChild<T>(this DependencyObject visual) where T : DependencyObject {
+            for (var i = 0; i < VisualTreeHelper.GetChildrenCount(visual); i++) {
+                var child = (Visual)VisualTreeHelper.GetChild(visual, i);
+                if (child != null) {
+                    var correctlyTyped = child as T;
+                    if (correctlyTyped != null) {
+                        return correctlyTyped;
+                    }
+
+                    var descendent = FindVisualChild<T>(child);
+                    if (descendent != null) {
+                        return descendent;
+                    }
+                }
+            }
+
+            return null;
+        }
+
     }
 }
