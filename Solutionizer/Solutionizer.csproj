@@ -96,7 +96,7 @@
     <Compile Include="Infrastructure\BindableSelectedItemBehavior .cs" />
     <Compile Include="Infrastructure\DragMoveWindowBehavior.cs" />
     <Compile Include="Infrastructure\InputBindingTrigger.cs" />
-    <Compile Include="Infrastructure\MetroWindowManager.cs" />
+    <Compile Include="Infrastructure\DialogManager.cs" />
     <Compile Include="Infrastructure\ProjectRepository.cs" />
     <Compile Include="IShell.cs" />
     <Compile Include="Models\ProjectFolder.cs" />

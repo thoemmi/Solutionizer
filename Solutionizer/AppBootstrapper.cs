@@ -23,7 +23,7 @@ namespace Solutionizer {
 
             var batch = new CompositionBatch();
 
-            batch.AddExportedValue<IWindowManager>(new MetroWindowManager());
+            batch.AddExportedValue<IWindowManager>(new WindowManager());
             batch.AddExportedValue<IEventAggregator>(new EventAggregator());
             batch.AddExportedValue(Services.Settings.Instance);
             batch.AddExportedValue(_container);
