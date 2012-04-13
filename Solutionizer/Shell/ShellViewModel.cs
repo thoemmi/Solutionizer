@@ -12,12 +12,12 @@ namespace Solutionizer.Shell {
     [Export(typeof(IShell))]
     public sealed class ShellViewModel : Screen, IShell {
         private readonly Services.Settings _settings;
-        private readonly DialogManager _dialogManager;
+        private readonly IDialogManager _dialogManager;
         private readonly ProjectRepositoryViewModel _projectRepository = new ProjectRepositoryViewModel();
         private readonly SolutionViewModel _solution = new SolutionViewModel();
 
         [ImportingConstructor]
-        public ShellViewModel(Services.Settings settings, DialogManager dialogManager) {
+        public ShellViewModel(Services.Settings settings, IDialogManager dialogManager) {
             _settings = settings;
             _dialogManager = dialogManager;
             DisplayName = "Solutionizer";
@@ -55,6 +55,10 @@ namespace Solutionizer.Shell {
 
         public void ShowSettings() {
             _dialogManager.ShowDialog(new SettingsViewModel());
+        }
+
+        public IDialogManager Dialogs {
+            get { return _dialogManager; }
         }
 
         private void LoadProjects(string path) {

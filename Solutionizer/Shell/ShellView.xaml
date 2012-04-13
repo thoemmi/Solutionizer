@@ -77,10 +77,11 @@
                 Grid.Column="2"  
                 x:Name="Solution" />
         </Grid>
-        
-        <Grid 
-            x:Name="DialogPlaceHolder"
+
+        <ContentControl 
             Grid.RowSpan="2"
-            />
+            x:Name="Dialogs" 
+            VerticalContentAlignment="Stretch"
+            HorizontalContentAlignment="Stretch"/>
     </Grid>
 </Window>
