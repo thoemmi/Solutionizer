@@ -7,6 +7,7 @@ namespace Solutionizer.Settings {
         private bool _scanOnStartup;
         private bool _simplifyProjectTree;
         private bool _includeReferencedProjects;
+        private bool _isFlatMode;
 
         public SettingsViewModel() {
             DisplayName = "Settings";
@@ -18,6 +19,7 @@ namespace Solutionizer.Settings {
             ScanOnStartup = Services.Settings.Instance.ScanOnStartup;
             SimplifyProjectTree = Services.Settings.Instance.SimplifyProjectTree;
             IncludeReferencedProjects = Services.Settings.Instance.IncludeReferencedProjects;
+            IsFlatMode = Services.Settings.Instance.IsFlatMode;
         }
 
         public bool ScanOnStartup {
@@ -50,6 +52,16 @@ namespace Solutionizer.Settings {
             }
         }
 
+        public bool IsFlatMode {
+            get { return _isFlatMode; }
+            set {
+                if (_isFlatMode != value) {
+                    _isFlatMode = value;
+                    NotifyOfPropertyChange(() => IsFlatMode);
+                }
+            }
+        }
+
         public override void NotifyOfPropertyChange(string propertyName) {
             base.NotifyOfPropertyChange(propertyName);
 
@@ -65,6 +77,7 @@ namespace Solutionizer.Settings {
             Services.Settings.Instance.ScanOnStartup = ScanOnStartup;
             Services.Settings.Instance.SimplifyProjectTree = SimplifyProjectTree;
             Services.Settings.Instance.IncludeReferencedProjects = IncludeReferencedProjects;
+            Services.Settings.Instance.IsFlatMode = IsFlatMode;
 
             TryClose(true);
         }
@@ -74,7 +87,8 @@ namespace Solutionizer.Settings {
                 return
                     ScanOnStartup != Services.Settings.Instance.ScanOnStartup ||
                     SimplifyProjectTree != Services.Settings.Instance.SimplifyProjectTree ||
-                    IncludeReferencedProjects != Services.Settings.Instance.IncludeReferencedProjects;
+                    IncludeReferencedProjects != Services.Settings.Instance.IncludeReferencedProjects ||
+                    IsFlatMode != Services.Settings.Instance.IsFlatMode;
             }
         }
 
