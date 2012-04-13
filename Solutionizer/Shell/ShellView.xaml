@@ -77,5 +77,10 @@
                 Grid.Column="2"  
                 x:Name="Solution" />
         </Grid>
+        
+        <Grid 
+            x:Name="DialogPlaceHolder"
+            Grid.RowSpan="2"
+            />
     </Grid>
 </Window>

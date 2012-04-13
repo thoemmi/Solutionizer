@@ -94,6 +94,9 @@
     <Compile Include="Commands\SaveSolutionCommand.cs" />
     <Compile Include="Helper\GridHelper.cs" />
     <Compile Include="Infrastructure\BindableSelectedItemBehavior .cs" />
+    <Compile Include="Infrastructure\DialogView.xaml.cs">
+      <DependentUpon>DialogView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Infrastructure\DragMoveWindowBehavior.cs" />
     <Compile Include="Infrastructure\InputBindingTrigger.cs" />
     <Compile Include="Infrastructure\DialogManager.cs" />
@@ -146,6 +149,10 @@
     <Compile Include="VisualStudio\SolutionFolder.cs" />
     <Compile Include="VisualStudio\SolutionItem.cs" />
     <Compile Include="VisualStudio\SolutionProject.cs" />
+    <Page Include="Infrastructure\DialogView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="ProjectRepository\ProjectRepositoryView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
