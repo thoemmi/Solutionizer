@@ -4,25 +4,30 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:Helper="clr-namespace:Solutionizer.Helper" mc:Ignorable="d" 
-             Width="300" Height="300"
              d:DesignHeight="300" d:DesignWidth="300">
     <StackPanel>
-        <TextBlock>Hello World</TextBlock>
+
+        <Grid Helper:GridHelper.RowCount="3">
+            <CheckBox Margin="0 0 0 8" x:Name="ScanOnStartup" Content="Scan projects on start-up"/>
+            <CheckBox Margin="0 0 0 8" Grid.Row="1" x:Name="SimplifyProjectTree" Content="Skip empty folders in hierarchy"/>
+            <CheckBox Margin="0 0 0 8" Grid.Row="2" x:Name="IncludeReferencedProjects" Content="Add referenced projects automatically"/>
+        </Grid>
 
         <StackPanel
-            Margin="0 8"
+            Margin="0 8 0 0"
             Grid.Row="1"
             Orientation="Horizontal"
             HorizontalAlignment="Right">
-        <Button 
-            MinWidth="75"
-            x:Name="Ok" 
-            Content="OK"/>
-        <Button 
-            Margin="8 0 0 0"
-            MinWidth="75"
-            x:Name="Cancel" 
-            Content="Cancel"/>
+            
+            <Button 
+                MinWidth="75"
+                x:Name="Ok" 
+                Content="OK"/>
+            <Button 
+                Margin="8 0 0 0"
+                MinWidth="75"
+                x:Name="Cancel" 
+                Content="Cancel"/>
         </StackPanel>
     </StackPanel>
 </UserControl>

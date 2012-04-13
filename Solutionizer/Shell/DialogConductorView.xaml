@@ -19,9 +19,9 @@
             <TextBlock x:Name="ActiveItem_DisplayName"
 					           FontWeight="Bold"
 					           FontSize="20"
-					           Margin="8"/>
+					           Margin="16 8"/>
             <ContentControl x:Name="ActiveItem" MinWidth="240"
-                                               Margin="8" />
+                                               Margin="16 8" />
         </StackPanel>
     </Grid>
 </UserControl>
