@@ -7,15 +7,19 @@
              d:DesignHeight="300" d:DesignWidth="300">
     <StackPanel>
 
-        <Grid Helper:GridHelper.RowCount="4">
+        <Grid Helper:GridHelper.RowCount="5">
             <CheckBox Margin="0 0 0 8" x:Name="ScanOnStartup" Content="Scan projects on start-up"/>
             <CheckBox Margin="0 0 0 8" Grid.Row="1" x:Name="SimplifyProjectTree" Content="Skip empty folders in hierarchy"/>
             <CheckBox Margin="0 0 0 8" Grid.Row="2" x:Name="IncludeReferencedProjects" Content="Add referenced projects automatically"/>
-            <CheckBox Margin="0 0 0 8" Grid.Row="3" x:Name="IsFlatMode" Content="Show projects as flat list."/>
+            <StackPanel Orientation="Horizontal" Grid.Row="3" IsEnabled="{Binding IncludeReferencedProjects}" Margin="20 0 0 0" >
+                <TextBlock>Folder name:</TextBlock>
+                <TextBox x:Name="ReferenceFolderName" Width="200"/>
+            </StackPanel>
+            <CheckBox Margin="0 0 0 8" Grid.Row="4" x:Name="IsFlatMode" Content="Show projects as flat list."/>
         </Grid>
 
         <StackPanel
-            Margin="0 8 0 0"
+            Margin="0 16 0 0"
             Grid.Row="1"
             Orientation="Horizontal"
             HorizontalAlignment="Right">

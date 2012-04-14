@@ -8,6 +8,7 @@ namespace Solutionizer.Settings {
         private bool _simplifyProjectTree;
         private bool _includeReferencedProjects;
         private bool _isFlatMode;
+        private string _referenceFolderName;
 
         public SettingsViewModel() {
             DisplayName = "Settings";
@@ -19,6 +20,7 @@ namespace Solutionizer.Settings {
             ScanOnStartup = Services.Settings.Instance.ScanOnStartup;
             SimplifyProjectTree = Services.Settings.Instance.SimplifyProjectTree;
             IncludeReferencedProjects = Services.Settings.Instance.IncludeReferencedProjects;
+            ReferenceFolderName = Services.Settings.Instance.ReferenceFolderName;
             IsFlatMode = Services.Settings.Instance.IsFlatMode;
         }
 
@@ -52,6 +54,16 @@ namespace Solutionizer.Settings {
             }
         }
 
+        public string ReferenceFolderName {
+            get { return _referenceFolderName; }
+            set {
+                if (_referenceFolderName != value) {
+                    _referenceFolderName = value;
+                    NotifyOfPropertyChange(() => ReferenceFolderName);
+                }
+            }
+        }
+
         public bool IsFlatMode {
             get { return _isFlatMode; }
             set {
@@ -77,6 +89,7 @@ namespace Solutionizer.Settings {
             Services.Settings.Instance.ScanOnStartup = ScanOnStartup;
             Services.Settings.Instance.SimplifyProjectTree = SimplifyProjectTree;
             Services.Settings.Instance.IncludeReferencedProjects = IncludeReferencedProjects;
+            Services.Settings.Instance.ReferenceFolderName = ReferenceFolderName;
             Services.Settings.Instance.IsFlatMode = IsFlatMode;
 
             TryClose(true);
@@ -88,6 +101,7 @@ namespace Solutionizer.Settings {
                     ScanOnStartup != Services.Settings.Instance.ScanOnStartup ||
                     SimplifyProjectTree != Services.Settings.Instance.SimplifyProjectTree ||
                     IncludeReferencedProjects != Services.Settings.Instance.IncludeReferencedProjects ||
+                    ReferenceFolderName != Services.Settings.Instance.ReferenceFolderName ||
                     IsFlatMode != Services.Settings.Instance.IsFlatMode;
             }
         }
