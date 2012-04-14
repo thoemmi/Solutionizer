@@ -101,9 +101,6 @@
     <Compile Include="Infrastructure\ProjectRepository.cs" />
     <Compile Include="IShell.cs" />
     <Compile Include="Models\ProjectFolder.cs" />
-    <Compile Include="ProjectRepository\ProjectRepositoryView.xaml.cs">
-      <DependentUpon>ProjectRepositoryView.xaml</DependentUpon>
-    </Compile>
     <Compile Include="ProjectRepository\ProjectRepositoryViewModel.cs" />
     <Compile Include="Settings\SettingsViewModel.cs" />
     <Compile Include="Shell\DialogConductorViewModel.cs" />
