@@ -12,7 +12,7 @@
     <Grid Visibility="{Binding ActiveItem, Mode=TwoWay, Converter={StaticResource NullToCollapsedConverter}}"
 	      Background="#3f000000">
         <Controls:WindowCommands HorizontalAlignment="Right" VerticalAlignment="Top"/>
-        <StackPanel HorizontalAlignment="Center" Background="white" >
+        <StackPanel HorizontalAlignment="Center" Background="white" VerticalAlignment="Center">
             <StackPanel.Effect>
                 <DropShadowEffect BlurRadius="10" ShadowDepth="0" />
             </StackPanel.Effect>
