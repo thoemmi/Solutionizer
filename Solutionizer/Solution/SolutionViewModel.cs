@@ -10,13 +10,18 @@ using Solutionizer.VisualStudio;
 
 namespace Solutionizer.Solution {
     public class SolutionViewModel : PropertyChangedBase {
+        private readonly string _rootPath;
+        private readonly IDictionary<string, Project> _projects;
         private readonly ICommand _dropCommand;
         private bool _isSccBound;
+        private bool _isDirty;
         private readonly SolutionFolder _solutionRoot = new SolutionFolder(null);
         private SolutionItem _selectedItem;
         private readonly Services.Settings _settings = Services.Settings.Instance;
 
-        public SolutionViewModel() {
+        public SolutionViewModel(string rootPath, IDictionary<string, Project> projects) {
+            _rootPath = rootPath;
+            _projects = projects;
             _dropCommand = new FixedRelayCommand<object>(OnDrop, obj => obj is ProjectViewModel);
         }
 
@@ -30,9 +35,22 @@ namespace Solutionizer.Solution {
             get { return _dropCommand; }
         }
 
-        public IList SolutionItems {
+        public IList<SolutionItem> SolutionItems {
             get { return _solutionRoot.Items; }
-        } 
+        }
+
+        public bool IsDirty {
+            get { return _isDirty; }
+            set { _isDirty = value; }
+        }
+
+        public string RootPath {
+            get { return _rootPath; }
+        }
+
+        public bool IsSccBound {
+            get { return _isSccBound; }
+        }
 
         public void AddProject(Project project) {
             _isSccBound |= project.IsSccBound;
@@ -80,8 +98,8 @@ namespace Solutionizer.Solution {
 
         private void AddReferencedProjects(Project project, int depth) {
             foreach (var projectReference in project.ProjectReferences) {
-                var referencedProject = Infrastructure.ProjectRepository.Instance.GetProject(projectReference);
-                if (referencedProject == null) {
+                Project referencedProject;
+                if (!_projects.TryGetValue(projectReference, out referencedProject)) {
                     // TODO log unknown project
                     continue;
                 }

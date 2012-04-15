@@ -65,12 +65,12 @@ namespace Solutionizer.Views {
 
         private void RefreshFileTree() {
             var rootPath = RootPath;
-            CommandExecutor
-                .ExecuteAsync("Scanning projects", () =>  Solutionizer.Infrastructure.ProjectRepository.Instance.GetProjects(rootPath))
-                .ContinueWith(result => {
-                    _rootNode = result.Result;
-                    TransformNodes();
-                }, TaskScheduler.FromCurrentSynchronizationContext());
+            //CommandExecutor
+            //    .ExecuteAsync("Scanning projects", () =>  Solutionizer.Infrastructure.ProjectRepository.Instance.GetProjects(rootPath))
+            //    .ContinueWith(result => {
+            //        _rootNode = result.Result;
+            //        TransformNodes();
+            //    }, TaskScheduler.FromCurrentSynchronizationContext());
         }
 
         private void TransformNodes() {

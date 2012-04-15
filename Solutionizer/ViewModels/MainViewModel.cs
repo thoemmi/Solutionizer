@@ -54,7 +54,7 @@ namespace Solutionizer.ViewModels {
 
         private void OnLaunch() {
             var newFilename = Path.Combine(Path.GetTempPath(), DateTime.Now.ToString("yyyy-MM-dd_HHmmss")) + ".sln";
-            new SaveSolutionCommand(newFilename, _settings.VisualStudioVersion, Solution).Execute();
+            //new SaveSolutionCommand(newFilename, _settings.VisualStudioVersion, Solution).Execute();
             Process.Start(newFilename);
             Application.Current.MainWindow.WindowState = WindowState.Minimized;
         }
@@ -66,7 +66,7 @@ namespace Solutionizer.ViewModels {
                 DefaultExt = ".sln"
             };
             if (dlg.ShowDialog() == true) {
-                new SaveSolutionCommand(dlg.FileName, _settings.VisualStudioVersion, Solution).Execute();
+                //new SaveSolutionCommand(dlg.FileName, _settings.VisualStudioVersion, Solution).Execute();
             }
         }
 

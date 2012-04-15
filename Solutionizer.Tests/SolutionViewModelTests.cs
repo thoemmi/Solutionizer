@@ -1,8 +1,8 @@
 ﻿using System.IO;
 using NUnit.Framework;
-using Solutionizer.Infrastructure;
+using Solutionizer.FileScanning;
 using Solutionizer.Models;
-using Solutionizer.ViewModels;
+using Solutionizer.Solution;
 using Solutionizer.VisualStudio;
 
 namespace Solutionizer.Tests {
@@ -11,36 +11,47 @@ namespace Solutionizer.Tests {
         [Test]
         public void CanAddProject() {
             CopyTestDataToPath("CsTestProject1.csproj", _testDataPath);
-            var project = new Project(Path.Combine(_testDataPath, "CsTestProject1.csproj"));
-            project.Load();
 
-            var sut = new SolutionViewModel(_testDataPath);
+            _fileScanner = new FileScanningViewModel();
+            _fileScanner.Path = _testDataPath;
+            _fileScanner.LoadProjects();
+
+            WaitForProjectLoaded(_fileScanner);
+
+            Project project;
+            _fileScanner.Projects.TryGetValue(Path.Combine(_testDataPath, "CsTestProject1.csproj"), out project);
+
+            var sut = new SolutionViewModel(_testDataPath, _fileScanner.Projects);
             sut.AddProject(project);
 
-            Assert.AreEqual(1, sut.SolutionRoot.Items.Count);
-            Assert.AreEqual("CsTestProject1", sut.SolutionRoot.Items[0].Name);
-            Assert.AreEqual(typeof (SolutionProject), sut.SolutionRoot.Items[0].GetType());
+            Assert.AreEqual(1, sut.SolutionItems.Count);
+            Assert.AreEqual("CsTestProject1", sut.SolutionItems[0].Name);
+            Assert.AreEqual(typeof (SolutionProject), sut.SolutionItems[0].GetType());
         }
 
         [Test]
         public void CanAddProjectWithProjectReference() {
             CopyTestDataToPath("CsTestProject1.csproj", Path.Combine(_testDataPath, "p1"));
             CopyTestDataToPath("CsTestProject2.csproj", Path.Combine(_testDataPath, "p2"));
-            Solutionizer.Infrastructure.ProjectRepository.Instance.GetProjects(_testDataPath);
-            WaitForProjectLoaded();
 
-            var project = new Project(Path.Combine(_testDataPath, "p2", "CsTestProject2.csproj"));
-            project.Load();
+            _fileScanner = new FileScanningViewModel();
+            _fileScanner.Path = _testDataPath;
+            _fileScanner.LoadProjects();
 
-            var sut = new SolutionViewModel(_testDataPath);
+            WaitForProjectLoaded(_fileScanner);
+
+            Project project;
+            _fileScanner.Projects.TryGetValue(Path.Combine(_testDataPath, "p2", "CsTestProject2.csproj"), out project);
+
+            var sut = new SolutionViewModel(_testDataPath, _fileScanner.Projects);
             sut.AddProject(project);
 
-            Assert.AreEqual(2, sut.SolutionRoot.Items.Count);
-            Assert.AreEqual("_References", sut.SolutionRoot.Items[0].Name);
-            Assert.AreEqual("CsTestProject2", sut.SolutionRoot.Items[1].Name);
+            Assert.AreEqual(2, sut.SolutionItems.Count);
+            Assert.AreEqual("_References", sut.SolutionItems[0].Name);
+            Assert.AreEqual("CsTestProject2", sut.SolutionItems[1].Name);
 
-            Assert.AreEqual(1, ((SolutionFolder) sut.SolutionRoot.Items[0]).Items.Count);
-            Assert.AreEqual("CsTestProject1", ((SolutionFolder) sut.SolutionRoot.Items[0]).Items[0].Name);
+            Assert.AreEqual(1, ((SolutionFolder) sut.SolutionItems[0]).Items.Count);
+            Assert.AreEqual("CsTestProject1", ((SolutionFolder) sut.SolutionItems[0]).Items[0].Name);
         }
     }
 }

@@ -108,24 +108,24 @@ namespace Solutionizer.ViewModels {
 
         private void AddReferencedProjects(Project project, int depth) {
             foreach (var projectReference in project.ProjectReferences) {
-                var referencedProject = Infrastructure.ProjectRepository.Instance.GetProject(projectReference);
-                if (referencedProject == null) {
-                    // TODO log unknown project
-                    continue;
-                }
+                //var referencedProject = Infrastructure.ProjectRepository.Instance.GetProject(projectReference);
+                //if (referencedProject == null) {
+                //    // TODO log unknown project
+                //    continue;
+                //}
 
-                if (_solutionRoot.ContainsProject(referencedProject)) {
-                    continue;
-                }
+                //if (_solutionRoot.ContainsProject(referencedProject)) {
+                //    continue;
+                //}
 
-                var folder = GetSolutionFolder(referencedProject);
-                if (!folder.ContainsProject(referencedProject)) {
-                    folder.AddProject(referencedProject);
+                //var folder = GetSolutionFolder(referencedProject);
+                //if (!folder.ContainsProject(referencedProject)) {
+                //    folder.AddProject(referencedProject);
 
-                    if (depth > 0) {
-                        AddReferencedProjects(referencedProject, depth - 1);
-                    }
-                }
+                //    if (depth > 0) {
+                //        AddReferencedProjects(referencedProject, depth - 1);
+                //    }
+                //}
             }
         }
 

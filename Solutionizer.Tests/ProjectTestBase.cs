@@ -1,18 +1,19 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
 using NUnit.Framework;
-using Solutionizer.Infrastructure;
-using Solutionizer.Services;
+using Solutionizer.FileScanning;
 
 namespace Solutionizer.Tests {
     public class ProjectTestBase {
         private static readonly Random _random = new Randomizer(Environment.TickCount);
         protected string _testDataFolderName;
         protected string _testDataPath;
+        protected FileScanningViewModel _fileScanner;
 
         [SetUp]
         public void SetUp() {
-            Settings.Instance = new Settings {
+            Services.Settings.Instance = new Services.Settings {
                 SimplifyProjectTree = true
             };
 
@@ -23,7 +24,9 @@ namespace Solutionizer.Tests {
 
         [TearDown]
         public void TearDown() {
-            WaitForProjectLoaded();
+            if (_fileScanner != null) {
+                WaitForProjectLoaded(_fileScanner);
+            }
             Directory.Delete(_testDataPath, true);
         }
 
@@ -43,8 +46,8 @@ namespace Solutionizer.Tests {
             }
         }
 
-        protected void WaitForProjectLoaded() {
-            while (!Solutionizer.Infrastructure.ProjectRepository.Instance.AllProjectLoaded) {
+        protected void WaitForProjectLoaded(FileScanningViewModel fileScanner) {
+            while (!fileScanner.Projects.Values.All(p => p.IsLoaded)) {
                 System.Threading.Thread.Sleep(50);
             }
         }

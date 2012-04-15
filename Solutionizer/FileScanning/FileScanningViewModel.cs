@@ -1,23 +1,64 @@
 ﻿using System;
 using System.Collections.Concurrent;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
+using Caliburn.Micro;
 using Solutionizer.Models;
 
-namespace Solutionizer.Infrastructure {
-    public class ProjectRepository {
-        private static ProjectRepository _instance;
+namespace Solutionizer.FileScanning {
+    public sealed class FileScanningViewModel : Screen {
+        private string _progressText;
+        private readonly CancellationTokenSource _cancellationTokenSource;
+        private readonly CancellationToken _cancellationToken;
 
-        public static ProjectRepository Instance {
-            get { return _instance ?? (_instance = new ProjectRepository()); }
+        public FileScanningViewModel() {
+            DisplayName = "Scanning";
+
+            _cancellationTokenSource = new CancellationTokenSource();
+            _cancellationToken = _cancellationTokenSource.Token;
+        }
+
+        public string Path { get; set; }
+        public ProjectFolder ProjectFolder { get; private set; }
+        public IDictionary<string, Project> Projects { get { return _projects; } }
+
+        public string ProgressText {
+            get { return _progressText; }
+            set {
+                if (_progressText != value) {
+                    _progressText = value;
+                    NotifyOfPropertyChange(() => ProgressText);
+                }
+            }
+        }
+
+        public void Cancel() {
+            _cancellationTokenSource.Cancel();
         }
 
         private readonly ConcurrentDictionary<string, Project> _projects =
             new ConcurrentDictionary<string, Project>(StringComparer.InvariantCultureIgnoreCase);
+        
+        protected override void OnActivate() {
+            base.OnActivate();
+            Task.Factory
+                .StartNew(LoadProjects, _cancellationTokenSource.Token)
+                .ContinueWith(t => TryClose(true), TaskScheduler.Current);
+        }
+
+        public void LoadProjects() {
+            ProjectFolder = GetProjects(Path);
+        }
 
         public ProjectFolder GetProjects(string rootPath) {
             var projectFolder = CreateProjectFolder(rootPath, null);
+
+            if (_cancellationToken.IsCancellationRequested) {
+                return null;
+            }
 
             // load project details asynchronously
             foreach (var p in _projects.Values.ToList().Where(p => !p.IsLoaded)) {
@@ -29,12 +70,16 @@ namespace Solutionizer.Infrastructure {
         }
 
         private ProjectFolder CreateProjectFolder(string path, ProjectFolder parent) {
-            bool simplifyProjectTree = Services.Settings.Instance.SimplifyProjectTree;
+            if (_cancellationToken.IsCancellationRequested) {
+                return null;
+            }
+
+            var simplifyProjectTree = Services.Settings.Instance.SimplifyProjectTree;
 
             var projectFolder = new ProjectFolder(path, parent);
             foreach (var subdirectory in Directory.EnumerateDirectories(path)) {
                 var folder = CreateProjectFolder(subdirectory, projectFolder);
-                if (!folder.IsEmpty) {
+                if (folder != null && !folder.IsEmpty) {
                     if (simplifyProjectTree && folder.Folders.Count == 0 && folder.Projects.Count == 1) {
                         // if a subfolder contains a project only and no other folders, just add that project instead of the subfolder
                         var project = folder.Projects[0];
@@ -67,17 +112,8 @@ namespace Solutionizer.Infrastructure {
         }
 
         private Project CreateProject(string projectPath, ProjectFolder projectFolder) {
+            ProgressText = _projects.Count + " projects loaded";
             return _projects.GetOrAdd(projectPath, path => new Project(path, projectFolder));
-        }
-
-        public Project GetProject(string projectPath) {
-            Project project;
-            _projects.TryGetValue(projectPath, out project);
-            return project;
-        }
-
-        public bool AllProjectLoaded {
-            get { return _projects.Values.All(project => project.IsLoaded); }
         }
     }
 }

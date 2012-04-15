@@ -5,7 +5,7 @@ using System.Text;
 using Solutionizer.Extensions;
 using Solutionizer.Helper;
 using Solutionizer.Infrastructure;
-using Solutionizer.ViewModels;
+using Solutionizer.Solution;
 using Solutionizer.VisualStudio;
 
 namespace Solutionizer.Commands {
@@ -24,7 +24,7 @@ namespace Solutionizer.Commands {
             using (var writer = new StreamWriter(_solutionFileName, false, Encoding.UTF8)) {
                 WriteHeader(writer);
 
-                var projects = _solution.SolutionRoot.Items.Flatten<SolutionItem, SolutionProject, SolutionFolder>(p => p.Items);
+                var projects = _solution.SolutionItems.Flatten<SolutionItem, SolutionProject, SolutionFolder>(p => p.Items);
 
                 foreach (var project in projects) {
                     writer.WriteLine("Project(\"{0}\") = \"{1}\", \"{2}\", \"{3}\"", "{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}",
@@ -33,7 +33,7 @@ namespace Solutionizer.Commands {
                     writer.WriteLine("EndProject");
                 }
 
-                var folders = _solution.SolutionRoot.Items.Flatten<SolutionItem, SolutionFolder, SolutionFolder>(p => p.Items);
+                var folders = _solution.SolutionItems.Flatten<SolutionItem, SolutionFolder, SolutionFolder>(p => p.Items);
                 foreach (var folder in folders) {
                     writer.WriteLine("Project(\"{0}\") = \"{1}\", \"{2}\", \"{3}\"", "{2150E333-8FDC-42A3-9474-1A3956D46DE8}",
                                      folder.Name, folder.Name, folder.Guid.ToString("B").ToUpperInvariant());
@@ -73,7 +73,7 @@ namespace Solutionizer.Commands {
         }
 
         private void WriteNestedProjects(TextWriter writer) {
-            var folders = _solution.SolutionRoot.Items.Flatten<SolutionItem, SolutionFolder, SolutionFolder>(p => p.Items).ToList();
+            var folders = _solution.SolutionItems.Flatten<SolutionItem, SolutionFolder, SolutionFolder>(p => p.Items).ToList();
             if (folders.Count == 0) {
                 return;
             }
@@ -99,7 +99,7 @@ namespace Solutionizer.Commands {
                 return;
             }
 
-            var projects = _solution.SolutionRoot.Items.Flatten<SolutionItem, SolutionProject, SolutionFolder>(p => p.Items).ToList();
+            var projects = _solution.SolutionItems.Flatten<SolutionItem, SolutionProject, SolutionFolder>(p => p.Items).ToList();
             writer.WriteLine("\tGlobalSection({0}) = preSolution", "TeamFoundationVersionControl");
             writer.WriteLine("\t\tSccNumberOfProjects = {0}", projects.Count);
             writer.WriteLine("\t\tSccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}");

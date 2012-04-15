@@ -3,8 +3,10 @@ using System.IO;
 using System.Linq;
 using NUnit.Framework;
 using Solutionizer.Commands;
+using Solutionizer.FileScanning;
 using Solutionizer.Infrastructure;
-using Solutionizer.ViewModels;
+using Solutionizer.Models;
+using Solutionizer.Solution;
 using Solutionizer.VisualStudio;
 
 namespace Solutionizer.Tests {
@@ -13,12 +15,17 @@ namespace Solutionizer.Tests {
         [Test]
         public void CanAddSaveSolution() {
             CopyTestDataToPath("CsTestProject1.csproj", _testDataPath);
-            Solutionizer.Infrastructure.ProjectRepository.Instance.GetProjects(_testDataPath);
 
-            var project = Solutionizer.Infrastructure.ProjectRepository.Instance.GetProject(Path.Combine(_testDataPath, "CsTestProject1.csproj"));
-            project.Load();
+            _fileScanner = new FileScanningViewModel();
+            _fileScanner.Path = _testDataPath;
+            _fileScanner.LoadProjects();
 
-            var solution = new SolutionViewModel(_testDataPath);
+            WaitForProjectLoaded(_fileScanner);
+
+            Project project;
+            _fileScanner.Projects.TryGetValue(Path.Combine(_testDataPath, "CsTestProject1.csproj"), out project);
+
+            var solution = new SolutionViewModel(_testDataPath, _fileScanner.Projects);
             solution.AddProject(project);
 
             var targetPath = Path.Combine(_testDataPath, "test.sln");
@@ -33,17 +40,21 @@ namespace Solutionizer.Tests {
         public void CanAddSaveSolutionWithProjectReferences() {
             CopyTestDataToPath("CsTestProject1.csproj", Path.Combine(_testDataPath, "p1"));
             CopyTestDataToPath("CsTestProject2.csproj", Path.Combine(_testDataPath, "p2"));
-            Solutionizer.Infrastructure.ProjectRepository.Instance.GetProjects(_testDataPath);
-            WaitForProjectLoaded();
 
-            var project = Solutionizer.Infrastructure.ProjectRepository.Instance.GetProject(Path.Combine(_testDataPath, "p2", "CsTestProject2.csproj"));
-            project.Load();
+            _fileScanner = new FileScanningViewModel();
+            _fileScanner.Path = _testDataPath;
+            _fileScanner.LoadProjects();
 
-            var solution = new SolutionViewModel(_testDataPath);
+            WaitForProjectLoaded(_fileScanner);
+
+            Project project;
+            _fileScanner.Projects.TryGetValue(Path.Combine(_testDataPath, "p2", "CsTestProject2.csproj"), out project);
+
+            var solution = new SolutionViewModel(_testDataPath, _fileScanner.Projects);
             solution.AddProject(project);
 
             // we need to change the Guid of the reference folder
-            solution.SolutionRoot.Items.OfType<SolutionFolder>().First().Guid = new Guid("{95374152-F021-4ABB-B317-74A183A89F00}");
+            solution.SolutionItems.OfType<SolutionFolder>().First().Guid = new Guid("{95374152-F021-4ABB-B317-74A183A89F00}");
 
             var targetPath = Path.Combine(_testDataPath, "test.sln");
 
@@ -58,16 +69,21 @@ namespace Solutionizer.Tests {
             CopyTestDataToPath("CsTestProject1.csproj", Path.Combine(_testDataPath, "sub", "p1"));
             CopyTestDataToPath("CsTestProject2.csproj", Path.Combine(_testDataPath, "sub", "p2"));
             CopyTestDataToPath("CsTestProject3.csproj", Path.Combine(_testDataPath, "p3", "sub"));
-            Solutionizer.Infrastructure.ProjectRepository.Instance.GetProjects(_testDataPath);
 
-            var project = Solutionizer.Infrastructure.ProjectRepository.Instance.GetProject(Path.Combine(_testDataPath, "p3", "sub", "CsTestProject3.csproj"));
-            project.Load();
+            _fileScanner = new FileScanningViewModel();
+            _fileScanner.Path = _testDataPath;
+            _fileScanner.LoadProjects();
 
-            var solution = new SolutionViewModel(_testDataPath);
+            WaitForProjectLoaded(_fileScanner);
+
+            Project project;
+            _fileScanner.Projects.TryGetValue(Path.Combine(_testDataPath, "p3", "sub", "CsTestProject3.csproj"), out project);
+
+            var solution = new SolutionViewModel(_testDataPath, _fileScanner.Projects);
             solution.AddProject(project);
 
             // we need to change the Guid of the reference folder
-            var refFolder = solution.SolutionRoot.Items.OfType<SolutionFolder>().First();
+            var refFolder = solution.SolutionItems.OfType<SolutionFolder>().First();
             refFolder.Guid = new Guid("{95374152-F021-4ABB-B317-74A183A89F00}");
             refFolder.Items.OfType<SolutionFolder>().First().Guid = new Guid("{CE1BA3BF-4957-4CBC-9D45-3DC68106B311}");
 

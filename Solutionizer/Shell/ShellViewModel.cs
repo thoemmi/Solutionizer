@@ -1,6 +1,7 @@
 ﻿using System.Windows;
 using Caliburn.Micro;
 using Ookii.Dialogs.Wpf;
+using Solutionizer.FileScanning;
 using Solutionizer.Infrastructure;
 using Solutionizer.ProjectRepository;
 using Solutionizer.Settings;
@@ -14,7 +15,7 @@ namespace Solutionizer.Shell {
         private readonly Services.Settings _settings;
         private readonly IDialogManager _dialogManager;
         private readonly ProjectRepositoryViewModel _projectRepository = new ProjectRepositoryViewModel();
-        private readonly SolutionViewModel _solution = new SolutionViewModel();
+        private SolutionViewModel _solution;
 
         [ImportingConstructor]
         public ShellViewModel(Services.Settings settings, IDialogManager dialogManager) {
@@ -29,6 +30,12 @@ namespace Solutionizer.Shell {
 
         public SolutionViewModel Solution {
             get { return _solution; }
+            set {
+                if (_solution != value) {
+                    _solution = value;
+                    NotifyOfPropertyChange(() => Solution);
+                }
+            }
         }
 
         public Services.Settings Settings {
@@ -62,9 +69,17 @@ namespace Solutionizer.Shell {
         }
 
         private void LoadProjects(string path) {
-            _projectRepository.RootPath = path;
-            _projectRepository.RootFolder = Infrastructure.ProjectRepository.Instance.GetProjects(path);
-            //Solution = new SolutionViewModel(dlg.SelectedPath);
+            var fileScanningViewModel = new FileScanningViewModel();
+            fileScanningViewModel.Path = path;
+            _dialogManager.ShowDialog(fileScanningViewModel);
+
+            fileScanningViewModel.Deactivated += (sender, args) => {
+                if (fileScanningViewModel.ProjectFolder != null) {
+                    _projectRepository.RootPath = path;
+                    _projectRepository.RootFolder = fileScanningViewModel.ProjectFolder;
+                    Solution = new SolutionViewModel(path, fileScanningViewModel.Projects);
+                }
+            };
         }
     }
 }
