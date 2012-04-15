@@ -7,7 +7,7 @@
              d:DesignHeight="300" d:DesignWidth="300">
     <StackPanel Orientation="Vertical">
         <TextBlock>Loading projects...</TextBlock>
-        <WPFSpark:FluidProgressBar Width="300" Height="4" Foreground="{DynamicResource HighlightBrush}" Delay="0:0:0.15"/>
+        <WPFSpark:FluidProgressBar Width="300" Height="4" Foreground="{DynamicResource HighlightBrush}" Delay="0:0:0.15" Margin="-8 8"/>
         <TextBlock x:Name="ProgressText"/>
         <!--<TextBlock Margin="10">1 project found so far</TextBlock>-->
         <Button HorizontalAlignment="Right" x:Name="Cancel">Cancel</Button>
