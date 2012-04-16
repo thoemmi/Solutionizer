@@ -7,7 +7,7 @@
         xmlns:Behaviours="clr-namespace:MahApps.Metro.Behaviours;assembly=MahApps.Metro" 
         xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro" 
         Infrastructure:WindowStatePersistence.Settings="{Binding Settings}"  
-        TextOptions.TextHintingMode="Fixed" 
+        TextOptions.TextFormattingMode="Display"
         SnapsToDevicePixels="true" 
         Title="Solutionizer" 
         Background="white"
