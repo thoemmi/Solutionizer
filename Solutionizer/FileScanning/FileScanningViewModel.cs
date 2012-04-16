@@ -15,7 +15,7 @@ namespace Solutionizer.FileScanning {
         private readonly CancellationToken _cancellationToken;
 
         public FileScanningViewModel() {
-            DisplayName = "Scanning";
+            DisplayName = null;
 
             _cancellationTokenSource = new CancellationTokenSource();
             _cancellationToken = _cancellationTokenSource.Token;
