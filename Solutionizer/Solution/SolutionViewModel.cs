@@ -1,8 +1,13 @@
-﻿using System.Collections;
+﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
 using System.Linq;
+using System.Windows;
 using System.Windows.Input;
 using Caliburn.Micro;
+using Ookii.Dialogs.Wpf;
+using Solutionizer.Commands;
 using Solutionizer.Infrastructure;
 using Solutionizer.Models;
 using Solutionizer.ViewModels;
@@ -31,6 +36,25 @@ namespace Solutionizer.Solution {
             AddProject(project);
         }
 
+        public void Launch() {
+            var newFilename = Path.Combine(Path.GetTempPath(), DateTime.Now.ToString("yyyy-MM-dd_HHmmss")) + ".sln";
+            new SaveSolutionCommand(newFilename, _settings.VisualStudioVersion, this).Execute();
+            Process.Start(newFilename);
+            Application.Current.MainWindow.WindowState = WindowState.Minimized;
+        }
+
+        public void Save() {
+            var dlg = new VistaSaveFileDialog {
+                Filter = "Solution File (*.sln)|*.sln",
+                AddExtension = true,
+                DefaultExt = ".sln"
+            };
+            if (dlg.ShowDialog() == true) {
+                new SaveSolutionCommand(dlg.FileName, _settings.VisualStudioVersion, this).Execute();
+                IsDirty = false;
+            }
+        }
+
         public ICommand DropCommand {
             get { return _dropCommand; }
         }
@@ -41,7 +65,12 @@ namespace Solutionizer.Solution {
 
         public bool IsDirty {
             get { return _isDirty; }
-            set { _isDirty = value; }
+            set {
+                if (_isDirty != value) {
+                    _isDirty = value;
+                    NotifyOfPropertyChange(() => IsDirty);
+                }
+            }
         }
 
         public string RootPath {
@@ -50,10 +79,16 @@ namespace Solutionizer.Solution {
 
         public bool IsSccBound {
             get { return _isSccBound; }
+            set {
+                if (_isSccBound != value) {
+                    _isSccBound = value;
+                    NotifyOfPropertyChange(() => IsSccBound);
+                }
+            }
         }
 
         public void AddProject(Project project) {
-            _isSccBound |= project.IsSccBound;
+            IsSccBound |= project.IsSccBound;
 
             if (_solutionRoot.ContainsProject(project)) {
                 return;

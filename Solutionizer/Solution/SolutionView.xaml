@@ -47,6 +47,10 @@
             <RowDefinition Height="auto" />
             <RowDefinition />
         </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="auto"/>
+        </Grid.ColumnDefinitions>
 
         <TextBlock Margin="0 2">Selected projects:</TextBlock>
 
@@ -70,5 +74,10 @@
                 </Infrastructure:InputBindingTrigger>
             </i:Interaction.Triggers>
         </TreeView>
+
+        <StackPanel Grid.Column="1" Grid.Row="1" Margin="10 0 4 0">
+            <Button x:Name="Launch" Content="Launch" Margin="0 0 0 4" MinWidth="75"/>
+            <Button x:Name="Save" Content="Save"/>
+        </StackPanel>
     </Grid>
 </UserControl>
