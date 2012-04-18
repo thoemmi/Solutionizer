@@ -11,7 +11,7 @@ projects to create a solution file. This solution can be saved or launched direc
 - <strike>TFS support</strike> ![Check](check.png)
 - <strike>Metro theme</strike> ![Check](check.png)
 - Tooltips
-- <strike>Settings</strike> ![Check](check.png)
+- Settings
   - <strike>Persistence</strike> ![Check](check.png)
   - <strike>UI</strike> ![Check](check.png)
   - <strike>Saving and restoring of window size/position</strike> ![Check](check.png)
@@ -31,3 +31,5 @@ projects to create a solution file. This solution can be saved or launched direc
   - drag'n'drop
 - <strike>add option to add referened projects as "unloaded"</strike> Not possible. "Loaded" state is persisted in proprietary *.suo files.
 - Manual refresh of project repository
+- Including *.sln in project repository
+- multi-select tree view both in project repository and solution
