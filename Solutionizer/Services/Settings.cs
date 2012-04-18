@@ -1,14 +1,14 @@
 ﻿using System;
 using System.IO;
 using System.Reflection;
-using GalaSoft.MvvmLight;
+using Caliburn.Micro;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using Solutionizer.Infrastructure;
 using Formatting = Newtonsoft.Json.Formatting;
 
 namespace Solutionizer.Services {
-    public class Settings : ObservableObject {
+    public class Settings : PropertyChangedBase {
         private static Settings _instance;
         private bool _scanOnStartup = true;
         private bool _isFlatMode;
@@ -83,7 +83,7 @@ namespace Solutionizer.Services {
             set {
                 if (_isFlatMode != value) {
                     _isFlatMode = value;
-                    RaisePropertyChanged(() => IsFlatMode);
+                    NotifyOfPropertyChange(() => IsFlatMode);
                     IsDirty = true;
                 }
             }
@@ -94,7 +94,7 @@ namespace Solutionizer.Services {
             set {
                 if (_simplifyProjectTree != value) {
                     _simplifyProjectTree = value;
-                    RaisePropertyChanged(() => SimplifyProjectTree);
+                    NotifyOfPropertyChange(() => SimplifyProjectTree);
                     IsDirty = true;
                 }
             }
@@ -105,7 +105,7 @@ namespace Solutionizer.Services {
             set {
                 if (_rootPath != value) {
                     _rootPath = value;
-                    RaisePropertyChanged(() => RootPath);
+                    NotifyOfPropertyChange(() => RootPath);
                     IsDirty = true;
                 }
             }
@@ -117,7 +117,7 @@ namespace Solutionizer.Services {
             private set {
                 if (_isDirty != value) {
                     _isDirty = value;
-                    RaisePropertyChanged(() => IsDirty);
+                    NotifyOfPropertyChange(() => IsDirty);
                 }
             }
         }
@@ -127,7 +127,7 @@ namespace Solutionizer.Services {
             set {
                 if (_scanOnStartup != value) {
                     _scanOnStartup = value;
-                    RaisePropertyChanged(() => ScanOnStartup);
+                    NotifyOfPropertyChange(() => ScanOnStartup);
                     IsDirty = true;
                 }
             }
@@ -138,7 +138,7 @@ namespace Solutionizer.Services {
             set {
                 if (_windowSettings != value) {
                     _windowSettings = value;
-                    RaisePropertyChanged(() => WindowSettings);
+                    NotifyOfPropertyChange(() => WindowSettings);
                     IsDirty = true;
                 }
             }
@@ -149,7 +149,7 @@ namespace Solutionizer.Services {
             set {
                 if (_includeReferencedProjects != value) {
                     _includeReferencedProjects = value;
-                    RaisePropertyChanged(() => IncludeReferencedProjects);
+                    NotifyOfPropertyChange(() => IncludeReferencedProjects);
                     IsDirty = true;
                 }
             }
@@ -160,7 +160,7 @@ namespace Solutionizer.Services {
             set {
                 if (_referenceTreeDepth != value) {
                     _referenceTreeDepth = value;
-                    RaisePropertyChanged(() => ReferenceTreeDepth);
+                    NotifyOfPropertyChange(() => ReferenceTreeDepth);
                     IsDirty = true;
                 }
             }
@@ -171,7 +171,7 @@ namespace Solutionizer.Services {
             set {
                 if (_referenceFolderName != value) {
                     _referenceFolderName = value;
-                    RaisePropertyChanged(() => ReferenceFolderName);
+                    NotifyOfPropertyChange(() => ReferenceFolderName);
                     IsDirty = true;
                 }
             }
@@ -182,7 +182,7 @@ namespace Solutionizer.Services {
             set {
                 if (_tfsName != value) {
                     _tfsName = value;
-                    RaisePropertyChanged(() => TfsName);
+                    NotifyOfPropertyChange(() => TfsName);
                     IsDirty = true;
                 }
             }
@@ -194,7 +194,7 @@ namespace Solutionizer.Services {
             set {
                 if (_visualStudioVersion != value) {
                     _visualStudioVersion = value;
-                    RaisePropertyChanged(() => VisualStudioVersion);
+                    NotifyOfPropertyChange(() => VisualStudioVersion);
                     IsDirty = true;
                 }
             }

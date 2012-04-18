@@ -1,8 +1,8 @@
 using System;
-using GalaSoft.MvvmLight;
+using Caliburn.Micro;
 
 namespace Solutionizer.VisualStudio {
-    public abstract class SolutionItem : ViewModelBase {
+    public abstract class SolutionItem : PropertyChangedBase {
         private string _name;
         private readonly SolutionFolder _parent;
 
@@ -19,7 +19,7 @@ namespace Solutionizer.VisualStudio {
             set {
                 if (_name != value) {
                     _name = value;
-                    RaisePropertyChanged(() => Name);
+                    NotifyOfPropertyChange(() => Name);
                 }
             }
         }

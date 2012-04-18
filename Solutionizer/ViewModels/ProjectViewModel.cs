@@ -1,9 +1,9 @@
 ﻿using System;
-using GalaSoft.MvvmLight;
+using Caliburn.Micro;
 using Solutionizer.Models;
 
 namespace Solutionizer.ViewModels {
-    public class ProjectViewModel : ViewModelBase, IDisposable {
+    public class ProjectViewModel : PropertyChangedBase, IDisposable {
         private readonly Project _project;
         private readonly DirectoryViewModel _parent;
 
@@ -21,7 +21,7 @@ namespace Solutionizer.ViewModels {
 
         private void ProjectOnLoaded(object sender, EventArgs eventArgs) {
             _project.Loaded -= ProjectOnLoaded;
-            RaisePropertyChanged(() => IsLoaded);
+            NotifyOfPropertyChange(() => IsLoaded);
         }
 
         public Project Project {

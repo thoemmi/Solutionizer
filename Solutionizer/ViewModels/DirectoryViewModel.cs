@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using GalaSoft.MvvmLight;
+using Caliburn.Micro;
 using Solutionizer.Models;
 
 namespace Solutionizer.ViewModels {
-    public class DirectoryViewModel : ViewModelBase {
+    public class DirectoryViewModel : PropertyChangedBase {
         private readonly ProjectFolder _projectFolder;
         private readonly DirectoryViewModel _parent;
         private readonly List<DirectoryViewModel> _directories = new List<DirectoryViewModel>();
