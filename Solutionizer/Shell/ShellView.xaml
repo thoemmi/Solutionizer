@@ -50,7 +50,7 @@
                 VerticalAlignment="Top" 
                 FontWeight="Bold" FontSize="20" Margin="20,5,0,0"/>
 
-            <Controls:WindowCommands HorizontalAlignment="Right" VerticalAlignment="Top">
+            <Controls:WindowCommands HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0 2">
                 <Button x:Name="ShowSettings" Content="Settings" />
             </Controls:WindowCommands>
 
