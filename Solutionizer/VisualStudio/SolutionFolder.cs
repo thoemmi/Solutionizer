@@ -3,7 +3,6 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using Solutionizer.Infrastructure;
 using Solutionizer.Models;
-using Solutionizer.ViewModels;
 
 namespace Solutionizer.VisualStudio {
     public class SolutionFolder : SolutionItem {

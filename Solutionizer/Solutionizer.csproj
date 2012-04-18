@@ -90,7 +90,6 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="AppBootstrapper.cs" />
-    <Compile Include="Commands\CommandExecutor.cs" />
     <Compile Include="Commands\SaveSolutionCommand.cs" />
     <Compile Include="Converters\NullToCollapsedConverter.cs" />
     <Compile Include="FileScanning\FileScanningViewModel.cs" />
@@ -108,9 +107,6 @@
     <Compile Include="Solution\SolutionViewModel.cs" />
     <Compile Include="ViewModels\DirectoryViewModel.cs" />
     <Compile Include="ViewModels\ProjectViewModel.cs" />
-    <Compile Include="Views\FileSystemTreeView.xaml.cs">
-      <DependentUpon>FileSystemTreeView.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Converters\BusyToProgressStateConverter.cs" />
     <Compile Include="Converters\FilePathToImageSourceConverter.cs" />
     <Compile Include="Converters\Shell32IconExtension.cs" />
@@ -129,21 +125,14 @@
     <Compile Include="Infrastructure\WindowStatePersistence.cs" />
     <Compile Include="Models\Project.cs" />
     <Compile Include="Services\Settings.cs" />
-    <Compile Include="ViewModels\SolutionViewModel.cs" />
-    <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="Infrastructure\SortedObservableCollection.cs" />
-    <Compile Include="Views\MainView.xaml.cs">
-      <DependentUpon>MainView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\SolutionView.xaml.cs">
-      <DependentUpon>SolutionView.xaml</DependentUpon>
-    </Compile>
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="VisualStudio\SolutionFolder.cs" />
     <Compile Include="VisualStudio\SolutionItem.cs" />
+    <Compile Include="VisualStudio\SolutionItemComparer.cs" />
     <Compile Include="VisualStudio\SolutionProject.cs" />
     <Page Include="FileScanning\FileScanningView.xaml">
       <SubType>Designer</SubType>
@@ -166,18 +155,6 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Solution\SolutionView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\FileSystemTreeView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\MainView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\SolutionView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
