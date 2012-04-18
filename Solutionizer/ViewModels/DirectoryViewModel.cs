@@ -1,30 +1,27 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using Caliburn.Micro;
 using Solutionizer.Models;
 
 namespace Solutionizer.ViewModels {
-    public class DirectoryViewModel : PropertyChangedBase {
+    public class DirectoryViewModel : ItemViewModel {
         private readonly ProjectFolder _projectFolder;
-        private readonly DirectoryViewModel _parent;
         private readonly List<DirectoryViewModel> _directories = new List<DirectoryViewModel>();
         private readonly List<ProjectViewModel> _projects = new List<ProjectViewModel>();
 
-        public DirectoryViewModel(ProjectFolder projectFolder, DirectoryViewModel parent) {
+        public DirectoryViewModel(DirectoryViewModel parent, ProjectFolder projectFolder) : base(parent) {
             _projectFolder = projectFolder;
-            _parent = parent;
         }
 
-        public string Name {
+        public override string Name {
             get { return _projectFolder.Name; }
         }
 
-        public string Path {
+        public override string Path {
             get { return _projectFolder.FullPath; }
         }
 
-        public DirectoryViewModel Parent {
-            get { return _parent; }
+        public ProjectFolder ProjectFolder {
+            get { return _projectFolder; }
         }
 
         public List<DirectoryViewModel> Directories {
@@ -35,8 +32,8 @@ namespace Solutionizer.ViewModels {
             get { return _projects; }
         }
 
-        public IList<object> Children {
-            get { return _directories.Cast<object>().Concat(_projects).ToList(); }
+        public IList<ItemViewModel> Children {
+            get { return _directories.Cast<ItemViewModel>().Concat(_projects).ToList(); }
         }
     }
 }

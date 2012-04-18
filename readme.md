@@ -18,7 +18,7 @@ projects to create a solution file. This solution can be saved or launched direc
 - Separation of ViewModel for solution from the actual solution class
 - Installer
 - <strike>Removing of projects from the solution</strike>
-- Doubleclick on projects adds them to solution
+- <strike>Doubleclick on projects adds them to solution</strike>
 
 ### v.Next
 

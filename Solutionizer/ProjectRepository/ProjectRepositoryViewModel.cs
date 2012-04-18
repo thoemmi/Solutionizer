@@ -43,7 +43,7 @@ namespace Solutionizer.ProjectRepository {
         }
 
         private DirectoryViewModel CreateDirectoryViewModel(ProjectFolder projectFolder, DirectoryViewModel parent) {
-            var viewModel = new DirectoryViewModel(projectFolder, parent);
+            var viewModel = new DirectoryViewModel(parent, projectFolder);
             if (Services.Settings.Instance.IsFlatMode) {
                 foreach (var project in new[]{projectFolder}.Flatten(f => f.Projects, f => f.Folders)) {
                     viewModel.Projects.Add(CreateProjectViewModel(project, viewModel));
@@ -60,8 +60,7 @@ namespace Solutionizer.ProjectRepository {
         }
 
         private ProjectViewModel CreateProjectViewModel(Project project, DirectoryViewModel parent) {
-            return new ProjectViewModel(project, parent);
+            return new ProjectViewModel(parent, project);
         }
-
     }
 }

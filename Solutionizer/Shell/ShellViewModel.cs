@@ -3,9 +3,12 @@ using Caliburn.Micro;
 using Ookii.Dialogs.Wpf;
 using Solutionizer.FileScanning;
 using Solutionizer.Infrastructure;
+using Solutionizer.Models;
 using Solutionizer.ProjectRepository;
 using Solutionizer.Settings;
 using Solutionizer.Solution;
+using Solutionizer.ViewModels;
+using Solutionizer.Extensions;
 
 namespace Solutionizer.Shell {
     using System.ComponentModel.Composition;
@@ -80,6 +83,13 @@ namespace Solutionizer.Shell {
                     Solution = new SolutionViewModel(path, fileScanningViewModel.Projects);
                 }
             };
+        }
+
+        public void OnDoubleClick(ItemViewModel itemViewModel) {
+            var projectViewModel = itemViewModel as ProjectViewModel;
+            if (projectViewModel != null) {
+                _solution.AddProject(projectViewModel.Project);
+            }
         }
     }
 }

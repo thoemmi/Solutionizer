@@ -76,6 +76,7 @@
             ScrollViewer.CanContentScroll="true"
             x:Name="Nodes" Margin="0" Padding="0"
             Helper:DragDropHelper.IsDragSource="true" 
+            cal:Message.Attach="[Event MouseDoubleClick] = [Action OnDoubleClick(Nodes.SelectedItem)]"
             Helper:DragDropHelper.DragDropTemplate="{StaticResource ProjectItemDrag}" />
 
     </Grid>

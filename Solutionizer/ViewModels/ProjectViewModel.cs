@@ -1,15 +1,12 @@
 ﻿using System;
-using Caliburn.Micro;
 using Solutionizer.Models;
 
 namespace Solutionizer.ViewModels {
-    public class ProjectViewModel : PropertyChangedBase, IDisposable {
+    public class ProjectViewModel : ItemViewModel, IDisposable {
         private readonly Project _project;
-        private readonly DirectoryViewModel _parent;
 
-        public ProjectViewModel(Project project, DirectoryViewModel parent) {
+        public ProjectViewModel(DirectoryViewModel parent, Project project) : base(parent) {
             _project = project;
-            _parent = parent;
             if (!_project.IsLoaded) {
                 _project.Loaded += ProjectOnLoaded;
             }
@@ -28,15 +25,11 @@ namespace Solutionizer.ViewModels {
             get { return _project; }
         }
 
-        public DirectoryViewModel Parent {
-            get { return _parent; }
-        }
-
-        public string Name {
+        public override string Name {
             get { return _project.Name; }
         }
 
-        public string Path {
+        public override string Path {
             get { return _project.Filepath; }
         }
 
