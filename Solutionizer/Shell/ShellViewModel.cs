@@ -3,12 +3,10 @@ using Caliburn.Micro;
 using Ookii.Dialogs.Wpf;
 using Solutionizer.FileScanning;
 using Solutionizer.Infrastructure;
-using Solutionizer.Models;
 using Solutionizer.ProjectRepository;
 using Solutionizer.Settings;
 using Solutionizer.Solution;
 using Solutionizer.ViewModels;
-using Solutionizer.Extensions;
 
 namespace Solutionizer.Shell {
     using System.ComponentModel.Composition;
@@ -81,6 +79,7 @@ namespace Solutionizer.Shell {
                     _projectRepository.RootPath = path;
                     _projectRepository.RootFolder = fileScanningViewModel.ProjectFolder;
                     Solution = new SolutionViewModel(path, fileScanningViewModel.Projects);
+                    DisplayName = "Solutionizer - " + path;
                 }
             };
         }
