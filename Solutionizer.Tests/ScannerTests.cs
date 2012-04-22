@@ -1,13 +1,22 @@
 ﻿using System.IO;
 using NUnit.Framework;
 using Solutionizer.FileScanning;
+using Solutionizer.Services;
 
 namespace Solutionizer.Tests {
     [TestFixture]
     public class ScannerTests : ProjectTestBase {
+        private readonly ISettings _settings;
+
+        public ScannerTests() {
+            _settings= new Services.Settings {
+                SimplifyProjectTree = true
+            };
+        }
+
         [Test]
         public void CanScanEmptyDirectory() {
-            _fileScanner = new FileScanningViewModel();
+            _fileScanner = new FileScanningViewModel(_settings);
             _fileScanner.Path = _testDataPath;
             _fileScanner.LoadProjects();
 
@@ -21,7 +30,7 @@ namespace Solutionizer.Tests {
         public void EmptySubdirectoriesAreOmitted() {
             Directory.CreateDirectory(Path.Combine(_testDataPath, "YouShouldNotSeeMe"));
 
-            _fileScanner = new FileScanningViewModel();
+            _fileScanner = new FileScanningViewModel(_settings);
             _fileScanner.Path = _testDataPath;
             _fileScanner.LoadProjects();
 
@@ -36,7 +45,7 @@ namespace Solutionizer.Tests {
             CopyTestDataToPath("CsTestProject1.csproj", _testDataPath);
             CopyTestDataToPath("CsTestProject2.csproj", _testDataPath);
 
-            _fileScanner = new FileScanningViewModel();
+            _fileScanner = new FileScanningViewModel(_settings);
             _fileScanner.Path = _testDataPath;
             _fileScanner.LoadProjects();
 
@@ -50,7 +59,7 @@ namespace Solutionizer.Tests {
         public void CanReadProjectInRoot() {
             CopyTestDataToPath("CsTestProject1.csproj", _testDataPath);
 
-            _fileScanner = new FileScanningViewModel();
+            _fileScanner = new FileScanningViewModel(_settings);
             _fileScanner.Path = _testDataPath;
             _fileScanner.LoadProjects();
 
@@ -63,7 +72,7 @@ namespace Solutionizer.Tests {
             CopyTestDataToPath("CsTestProject1.csproj", Path.Combine(_testDataPath, "p1"));
             CopyTestDataToPath("CsTestProject2.csproj", Path.Combine(_testDataPath, "p2"));
 
-            _fileScanner = new FileScanningViewModel();
+            _fileScanner = new FileScanningViewModel(_settings);
             _fileScanner.Path = _testDataPath;
             _fileScanner.LoadProjects();
 
@@ -76,7 +85,7 @@ namespace Solutionizer.Tests {
         public void CanReadProjectInSubdirectory() {
             CopyTestDataToPath("CsTestProject1.csproj", Path.Combine(_testDataPath, "dir"));
 
-            _fileScanner = new FileScanningViewModel();
+            _fileScanner = new FileScanningViewModel(_settings);
             _fileScanner.Path = _testDataPath;
             _fileScanner.LoadProjects();
 

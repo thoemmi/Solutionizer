@@ -7,8 +7,7 @@ using Microsoft.TeamFoundation.VersionControl.Client;
 
 namespace Solutionizer.Helper {
     public static class TfsHelper {
-        public static bool TryGetTeamProjectCollection(string localPath, out Uri tfsName, out string tfsFolder) {
-            tfsName = Services.Settings.Instance.TfsName;
+        public static bool TryGetTeamProjectCollection(string localPath, ref Uri tfsName, out string tfsFolder) {
             tfsFolder = null;
             if (tfsName == null) {
                 var projectCollections = RegisteredTfsConnections.GetProjectCollections();
@@ -21,7 +20,6 @@ namespace Solutionizer.Helper {
                             return false;
                         }
                         tfsName = dlg.SelectedTeamProjectCollection.Uri;
-                        Services.Settings.Instance.TfsName = tfsName;
                     }
                 }
             }

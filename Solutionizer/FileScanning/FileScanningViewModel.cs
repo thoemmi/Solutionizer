@@ -7,14 +7,17 @@ using System.Threading;
 using System.Threading.Tasks;
 using Caliburn.Micro;
 using Solutionizer.Models;
+using Solutionizer.Services;
 
 namespace Solutionizer.FileScanning {
     public sealed class FileScanningViewModel : Screen {
+        private readonly ISettings _settings;
         private string _progressText;
         private readonly CancellationTokenSource _cancellationTokenSource;
         private readonly CancellationToken _cancellationToken;
 
-        public FileScanningViewModel() {
+        public FileScanningViewModel(ISettings settings) {
+            _settings = settings;
             DisplayName = null;
 
             _cancellationTokenSource = new CancellationTokenSource();
@@ -74,7 +77,7 @@ namespace Solutionizer.FileScanning {
                 return null;
             }
 
-            var simplifyProjectTree = Services.Settings.Instance.SimplifyProjectTree;
+            var simplifyProjectTree = _settings.SimplifyProjectTree;
 
             var projectFolder = new ProjectFolder(path, parent);
             foreach (var subdirectory in Directory.EnumerateDirectories(path)) {

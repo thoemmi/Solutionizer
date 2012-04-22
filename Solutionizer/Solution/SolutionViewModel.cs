@@ -10,6 +10,7 @@ using Ookii.Dialogs.Wpf;
 using Solutionizer.Commands;
 using Solutionizer.Infrastructure;
 using Solutionizer.Models;
+using Solutionizer.Services;
 using Solutionizer.ViewModels;
 using Solutionizer.VisualStudio;
 
@@ -22,11 +23,12 @@ namespace Solutionizer.Solution {
         private bool _isDirty;
         private readonly SolutionFolder _solutionRoot = new SolutionFolder(null);
         private SolutionItem _selectedItem;
-        private readonly Services.Settings _settings = Services.Settings.Instance;
+        private readonly ISettings _settings;
 
-        public SolutionViewModel(string rootPath, IDictionary<string, Project> projects) {
+        public SolutionViewModel(ISettings settings, string rootPath, IDictionary<string, Project> projects) {
             _rootPath = rootPath;
             _projects = projects;
+            _settings = settings;
             _dropCommand = new FixedRelayCommand<object>(OnDrop, obj => obj is ProjectViewModel);
         }
 
@@ -38,7 +40,7 @@ namespace Solutionizer.Solution {
 
         public void Launch() {
             var newFilename = Path.Combine(Path.GetTempPath(), DateTime.Now.ToString("yyyy-MM-dd_HHmmss")) + ".sln";
-            new SaveSolutionCommand(newFilename, _settings.VisualStudioVersion, this).Execute();
+            new SaveSolutionCommand(_settings, newFilename, _settings.VisualStudioVersion, this).Execute();
             Process.Start(newFilename);
             Application.Current.MainWindow.WindowState = WindowState.Minimized;
         }
@@ -50,7 +52,7 @@ namespace Solutionizer.Solution {
                 DefaultExt = ".sln"
             };
             if (dlg.ShowDialog() == true) {
-                new SaveSolutionCommand(dlg.FileName, _settings.VisualStudioVersion, this).Execute();
+                new SaveSolutionCommand(_settings, dlg.FileName, _settings.VisualStudioVersion, this).Execute();
                 IsDirty = false;
             }
         }

@@ -92,6 +92,8 @@
     <Compile Include="IShell.cs" />
     <Compile Include="Models\ProjectFolder.cs" />
     <Compile Include="ProjectRepository\ProjectRepositoryViewModel.cs" />
+    <Compile Include="Services\ISettings.cs" />
+    <Compile Include="Services\SettingsProvider.cs" />
     <Compile Include="Settings\SettingsViewModel.cs" />
     <Compile Include="Shell\DialogConductorViewModel.cs" />
     <Compile Include="Shell\ShellViewModel.cs" />

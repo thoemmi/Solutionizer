@@ -1,27 +1,30 @@
 ﻿using System;
 using System.Linq.Expressions;
 using Caliburn.Micro;
+using Solutionizer.Services;
 
 namespace Solutionizer.Settings {
     public sealed class SettingsViewModel : Screen {
+        private readonly ISettings _settings;
         private bool _scanOnStartup;
         private bool _simplifyProjectTree;
         private bool _includeReferencedProjects;
         private bool _isFlatMode;
         private string _referenceFolderName;
 
-        public SettingsViewModel() {
+        public SettingsViewModel(ISettings settings) {
+            _settings = settings;
             DisplayName = "Settings";
         }
 
         protected override void OnActivate() {
             base.OnActivate();
 
-            ScanOnStartup = Services.Settings.Instance.ScanOnStartup;
-            SimplifyProjectTree = Services.Settings.Instance.SimplifyProjectTree;
-            IncludeReferencedProjects = Services.Settings.Instance.IncludeReferencedProjects;
-            ReferenceFolderName = Services.Settings.Instance.ReferenceFolderName;
-            IsFlatMode = Services.Settings.Instance.IsFlatMode;
+            ScanOnStartup = _settings.ScanOnStartup;
+            SimplifyProjectTree = _settings.SimplifyProjectTree;
+            IncludeReferencedProjects = _settings.IncludeReferencedProjects;
+            ReferenceFolderName = _settings.ReferenceFolderName;
+            IsFlatMode = _settings.IsFlatMode;
         }
 
         public bool ScanOnStartup {
@@ -86,11 +89,11 @@ namespace Solutionizer.Settings {
         }
 
         public void Ok() {
-            Services.Settings.Instance.ScanOnStartup = ScanOnStartup;
-            Services.Settings.Instance.SimplifyProjectTree = SimplifyProjectTree;
-            Services.Settings.Instance.IncludeReferencedProjects = IncludeReferencedProjects;
-            Services.Settings.Instance.ReferenceFolderName = ReferenceFolderName;
-            Services.Settings.Instance.IsFlatMode = IsFlatMode;
+            _settings.ScanOnStartup = ScanOnStartup;
+            _settings.SimplifyProjectTree = SimplifyProjectTree;
+            _settings.IncludeReferencedProjects = IncludeReferencedProjects;
+            _settings.ReferenceFolderName = ReferenceFolderName;
+            _settings.IsFlatMode = IsFlatMode;
 
             TryClose(true);
         }
@@ -98,11 +101,11 @@ namespace Solutionizer.Settings {
         public bool CanOk {
             get {
                 return
-                    ScanOnStartup != Services.Settings.Instance.ScanOnStartup ||
-                    SimplifyProjectTree != Services.Settings.Instance.SimplifyProjectTree ||
-                    IncludeReferencedProjects != Services.Settings.Instance.IncludeReferencedProjects ||
-                    ReferenceFolderName != Services.Settings.Instance.ReferenceFolderName ||
-                    IsFlatMode != Services.Settings.Instance.IsFlatMode;
+                    ScanOnStartup != _settings.ScanOnStartup ||
+                    SimplifyProjectTree != _settings.SimplifyProjectTree ||
+                    IncludeReferencedProjects != _settings.IncludeReferencedProjects ||
+                    ReferenceFolderName != _settings.ReferenceFolderName ||
+                    IsFlatMode != _settings.IsFlatMode;
             }
         }
 

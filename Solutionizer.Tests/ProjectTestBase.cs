@@ -13,9 +13,9 @@ namespace Solutionizer.Tests {
 
         [SetUp]
         public void SetUp() {
-            Services.Settings.Instance = new Services.Settings {
-                SimplifyProjectTree = true
-            };
+            //Services.Settings.Instance = new Services.Settings {
+            //    SimplifyProjectTree = true
+            //};
 
             _testDataFolderName = "SolutionizerTest-" + DateTime.Now.ToString("o").Replace(':', '-') + "-" + _random.Next();
             _testDataPath = Path.Combine(Path.GetTempPath(), _testDataFolderName);

@@ -4,17 +4,19 @@ using System.Linq;
 using System.Text;
 using Solutionizer.Extensions;
 using Solutionizer.Helper;
-using Solutionizer.Infrastructure;
+using Solutionizer.Services;
 using Solutionizer.Solution;
 using Solutionizer.VisualStudio;
 
 namespace Solutionizer.Commands {
     public class SaveSolutionCommand {
+        private readonly ISettings _settings;
         private readonly string _solutionFileName;
         private readonly VisualStudioVersion _visualStudioVersion;
         private readonly SolutionViewModel _solution;
 
-        public SaveSolutionCommand(string solutionFileName, VisualStudioVersion visualStudioVersion, SolutionViewModel solution) {
+        public SaveSolutionCommand(ISettings settings, string solutionFileName, VisualStudioVersion visualStudioVersion, SolutionViewModel solution) {
+            _settings = settings;
             _solutionFileName = solutionFileName;
             _visualStudioVersion = visualStudioVersion;
             _solution = solution;
@@ -93,11 +95,12 @@ namespace Solutionizer.Commands {
                 return;
             }
 
-            Uri tfsName;
+            Uri tfsName = _settings.TfsName;
             string tfsFolder;
-            if (!TfsHelper.TryGetTeamProjectCollection(_solution.RootPath, out tfsName, out tfsFolder)) {
+            if (!TfsHelper.TryGetTeamProjectCollection(_solution.RootPath, ref tfsName, out tfsFolder)) {
                 return;
             }
+            _settings.TfsName = tfsName;
 
             var projects = _solution.SolutionItems.Flatten<SolutionItem, SolutionProject, SolutionFolder>(p => p.Items).ToList();
             writer.WriteLine("\tGlobalSection({0}) = preSolution", "TeamFoundationVersionControl");

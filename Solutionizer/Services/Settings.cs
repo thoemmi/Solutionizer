@@ -1,15 +1,11 @@
 ﻿using System;
 using System.IO;
-using System.Reflection;
 using Caliburn.Micro;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
-using Solutionizer.Infrastructure;
-using Formatting = Newtonsoft.Json.Formatting;
 
 namespace Solutionizer.Services {
-    public class Settings : PropertyChangedBase {
-        private static Settings _instance;
+    public class Settings : PropertyChangedBase, ISettings {
         private bool _scanOnStartup = true;
         private bool _isFlatMode;
         private bool _isDirty;
@@ -25,58 +21,6 @@ namespace Solutionizer.Services {
             Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
             "Visual Studio 2010",
             "Projects");
-
-        private static string SettingsPath {
-            get {
-                return Path.Combine(
-                    Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
-                    Assembly.GetEntryAssembly().GetName().Name,
-                    "settings.json");
-            }
-        }
-
-        public static Settings Instance {
-            set { _instance = value; }
-            get {
-                if (_instance == null) {
-                    try {
-                        if (File.Exists(SettingsPath)) {
-                            var fileData = File.ReadAllText(SettingsPath);
-                            _instance = JsonConvert.DeserializeObject<Settings>(fileData);
-                        } else {
-                            _instance = new Settings();
-                        }
-                        _instance.IsDirty = false;
-                    } catch (Exception ex) {
-                        // TODO logging
-                        _instance = new Settings();
-                        _instance.IsDirty = true;
-                    }
-                }
-                return _instance;
-            }
-        }
-
-        public void Save() {
-            if (!IsDirty) {
-                return;
-            }
-
-            var path = Path.GetDirectoryName(SettingsPath);
-            if (!Directory.Exists(path)) {
-                Directory.CreateDirectory(path);
-            }
-
-            try {
-                using (var textWriter = new StreamWriter(SettingsPath)) {
-                    textWriter.WriteLine(JsonConvert.SerializeObject(this, Formatting.Indented));
-                }
-            } catch (Exception e) {
-                // log exception
-            }
-
-            IsDirty = false;
-        }
 
         public bool IsFlatMode {
             get { return _isFlatMode; }
@@ -114,7 +58,7 @@ namespace Solutionizer.Services {
         [JsonIgnore]
         public bool IsDirty {
             get { return _isDirty; }
-            private set {
+            set {
                 if (_isDirty != value) {
                     _isDirty = value;
                     NotifyOfPropertyChange(() => IsDirty);
@@ -188,7 +132,7 @@ namespace Solutionizer.Services {
             }
         }
 
-        [JsonConverter(typeof(StringEnumConverter))]
+        [JsonConverter(typeof (StringEnumConverter))]
         public VisualStudioVersion VisualStudioVersion {
             get { return _visualStudioVersion; }
             set {
@@ -200,9 +144,7 @@ namespace Solutionizer.Services {
             }
         }
     }
-}
 
-namespace Solutionizer.Infrastructure {
     public class WindowSettings {
         public double Top { get; set; }
         public double Left { get; set; }

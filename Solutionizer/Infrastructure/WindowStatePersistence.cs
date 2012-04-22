@@ -1,4 +1,5 @@
 ﻿using System.Windows;
+using Solutionizer.Services;
 
 namespace Solutionizer.Infrastructure {
     public class WindowStatePersistence {

@@ -6,10 +6,12 @@ using System.ComponentModel.Composition.Primitives;
 using System.Linq;
 using Caliburn.Micro;
 using Solutionizer.Infrastructure;
+using Solutionizer.Services;
 
 namespace Solutionizer {
     public class AppBootstrapper : Bootstrapper<IShell> {
         private CompositionContainer _container;
+        private SettingsProvider _settingsProvider = new SettingsProvider();
 
         /// <summary>
         /// By default, we are configured to use MEF
@@ -25,7 +27,7 @@ namespace Solutionizer {
 
             batch.AddExportedValue<IWindowManager>(new WindowManager());
             batch.AddExportedValue<IEventAggregator>(new EventAggregator());
-            batch.AddExportedValue(Services.Settings.Instance);
+            batch.AddExportedValue(_settingsProvider.Settings);
             batch.AddExportedValue(_container);
             batch.AddExportedValue(catalog);
 
@@ -53,7 +55,7 @@ namespace Solutionizer {
         }
 
         protected override void OnExit(object sender, EventArgs e) {
-            Services.Settings.Instance.Save();
+            _settingsProvider.Save();
             base.OnExit(sender, e);
         }
     }

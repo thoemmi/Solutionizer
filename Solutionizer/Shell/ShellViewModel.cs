@@ -15,12 +15,13 @@ namespace Solutionizer.Shell {
     public sealed class ShellViewModel : Screen, IShell {
         private readonly Services.Settings _settings;
         private readonly IDialogManager _dialogManager;
-        private readonly ProjectRepositoryViewModel _projectRepository = new ProjectRepositoryViewModel();
+        private readonly ProjectRepositoryViewModel _projectRepository;
         private SolutionViewModel _solution;
 
         [ImportingConstructor]
         public ShellViewModel(Services.Settings settings, IDialogManager dialogManager) {
             _settings = settings;
+            _projectRepository = new ProjectRepositoryViewModel(settings);
             _dialogManager = dialogManager;
             DisplayName = "Solutionizer";
         }
@@ -62,7 +63,7 @@ namespace Solutionizer.Shell {
         }
 
         public void ShowSettings() {
-            _dialogManager.ShowDialog(new SettingsViewModel());
+            _dialogManager.ShowDialog(new SettingsViewModel(_settings));
         }
 
         public IDialogManager Dialogs {
@@ -70,7 +71,7 @@ namespace Solutionizer.Shell {
         }
 
         private void LoadProjects(string path) {
-            var fileScanningViewModel = new FileScanningViewModel();
+            var fileScanningViewModel = new FileScanningViewModel(_settings);
             fileScanningViewModel.Path = path;
             _dialogManager.ShowDialog(fileScanningViewModel);
 
@@ -78,7 +79,7 @@ namespace Solutionizer.Shell {
                 if (fileScanningViewModel.ProjectFolder != null) {
                     _projectRepository.RootPath = path;
                     _projectRepository.RootFolder = fileScanningViewModel.ProjectFolder;
-                    Solution = new SolutionViewModel(path, fileScanningViewModel.Projects);
+                    Solution = new SolutionViewModel(_settings, path, fileScanningViewModel.Projects);
                     DisplayName = "Solutionizer - " + path;
                 }
             };

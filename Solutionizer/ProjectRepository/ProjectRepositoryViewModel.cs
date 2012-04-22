@@ -2,14 +2,20 @@
 using System.Linq;
 using Caliburn.Micro;
 using Solutionizer.Models;
+using Solutionizer.Services;
 using Solutionizer.ViewModels;
 using Solutionizer.Extensions;
 
 namespace Solutionizer.ProjectRepository {
     public class ProjectRepositoryViewModel : PropertyChangedBase {
+        private readonly ISettings _settings;
         private string _rootPath;
         private ProjectFolder _rootFolder;
         private IList _nodes;
+
+        public ProjectRepositoryViewModel(ISettings settings) {
+            _settings = settings;
+        }
 
         public string RootPath {
             get { return _rootPath; }
@@ -44,7 +50,7 @@ namespace Solutionizer.ProjectRepository {
 
         private DirectoryViewModel CreateDirectoryViewModel(ProjectFolder projectFolder, DirectoryViewModel parent) {
             var viewModel = new DirectoryViewModel(parent, projectFolder);
-            if (Services.Settings.Instance.IsFlatMode) {
+            if (_settings.IsFlatMode) {
                 foreach (var project in new[]{projectFolder}.Flatten(f => f.Projects, f => f.Folders)) {
                     viewModel.Projects.Add(CreateProjectViewModel(project, viewModel));
                 }
