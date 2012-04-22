@@ -37,3 +37,5 @@ projects to create a solution file. This solution can be saved or launched direc
 - Manual refresh of project repository
 - Including *.sln in project repository
 - multi-select tree view both in project repository and solution
+- Extensibility
+ - custom plugins for project customization, e.g. coloring
