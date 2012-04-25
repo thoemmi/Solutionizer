@@ -1,26 +1,28 @@
 ﻿using System;
 using System.IO;
-using System.Reflection;
+using NLog;
 using Newtonsoft.Json;
 
 namespace Solutionizer.Services {
     public class SettingsProvider {
+        private static readonly Logger _log = LogManager.GetCurrentClassLogger();
+
+        private readonly string _dataFolder;
         private Settings _settings;
 
-        private static string SettingsPath {
-            get {
-                return Path.Combine(
-                    Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
-                    Assembly.GetEntryAssembly().GetName().Name,
-                    "settings.json");
-            }
+        public SettingsProvider(string dataFolder) {
+            _dataFolder = dataFolder;
+        }
+
+        private string SettingsPath {
+            get { return Path.Combine(_dataFolder, "settings.json"); }
         }
 
         public Settings Settings {
             get { return _settings ?? (_settings = Load()); }
         }
 
-        private static Settings Load() {
+        private Settings Load() {
             Settings settings;
             try {
                 if (File.Exists(SettingsPath)) {
@@ -30,8 +32,8 @@ namespace Solutionizer.Services {
                     settings = new Settings();
                 }
                 settings.IsDirty = false;
-            } catch (Exception) {
-                // TODO logging
+            } catch (Exception e) {
+                _log.ErrorException("Loading settings from " + SettingsPath + " failed", e);
                 settings = new Settings {
                     IsDirty = true
                 };
@@ -54,8 +56,8 @@ namespace Solutionizer.Services {
                 using (var textWriter = new StreamWriter(SettingsPath)) {
                     textWriter.WriteLine(JsonConvert.SerializeObject(_settings, Formatting.Indented));
                 }
-            } catch (Exception) {
-                // TODO log exception
+            } catch (Exception e) {
+                _log.ErrorException("Saving settings failed", e);
             }
 
             _settings.IsDirty = false;

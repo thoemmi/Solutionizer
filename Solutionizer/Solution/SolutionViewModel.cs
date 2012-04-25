@@ -6,6 +6,7 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Input;
 using Caliburn.Micro;
+using NLog;
 using Ookii.Dialogs.Wpf;
 using Solutionizer.Commands;
 using Solutionizer.Infrastructure;
@@ -16,6 +17,8 @@ using Solutionizer.VisualStudio;
 
 namespace Solutionizer.Solution {
     public class SolutionViewModel : PropertyChangedBase {
+        private static readonly Logger _log = NLog.LogManager.GetCurrentClassLogger();
+
         private readonly string _rootPath;
         private readonly IDictionary<string, Project> _projects;
         private readonly ICommand _dropCommand;
@@ -137,7 +140,8 @@ namespace Solutionizer.Solution {
             foreach (var projectReference in project.ProjectReferences) {
                 Project referencedProject;
                 if (!_projects.TryGetValue(projectReference, out referencedProject)) {
-                    // TODO log unknown project
+                    // TODO Present to user?
+                    _log.Warn("Project {0} references unknown project {1}", project.Name, projectReference);
                     continue;
                 }
 

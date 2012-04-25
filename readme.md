@@ -23,7 +23,9 @@ projects to create a solution file. This solution can be saved or launched direc
 - <strike>Add current root path to window title</strike> ![Check](check.png)
 - Icons (incl. app icon)
 - better style for buttons
-- Try to eliminate WPFSpark. MetroApps has ProgressIndicator providing the same functionality as WPFSpark's FluidProgressBar.
+- Logging
+- Abstract file system for unit tests
+- Try to eliminate WPFSpark. MetroApps has ProgressIndicator providing the same functionality as WPFSpark's FluidProgressBar
 
 ### v.Next
 
@@ -37,5 +39,6 @@ projects to create a solution file. This solution can be saved or launched direc
 - Manual refresh of project repository
 - Including *.sln in project repository
 - multi-select tree view both in project repository and solution
+- Show hints in UI if a project has unsolvable references
 - Extensibility
  - custom plugins for project customization, e.g. coloring
