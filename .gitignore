@@ -25,4 +25,5 @@ obj/
 [Rr]elease*/
 _ReSharper*/
 packages/
+build/
 [Tt]est[Rr]esult*
