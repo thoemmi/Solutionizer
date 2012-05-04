@@ -11,6 +11,7 @@ namespace Solutionizer.Settings {
         private bool _includeReferencedProjects;
         private bool _isFlatMode;
         private string _referenceFolderName;
+        private VisualStudioVersion _visualStudioVersion;
 
         public SettingsViewModel(ISettings settings) {
             _settings = settings;
@@ -25,6 +26,7 @@ namespace Solutionizer.Settings {
             IncludeReferencedProjects = _settings.IncludeReferencedProjects;
             ReferenceFolderName = _settings.ReferenceFolderName;
             IsFlatMode = _settings.IsFlatMode;
+            VisualStudioVersion = _settings.VisualStudioVersion;
         }
 
         public bool ScanOnStartup {
@@ -77,6 +79,16 @@ namespace Solutionizer.Settings {
             }
         }
 
+        public VisualStudioVersion VisualStudioVersion {
+            get { return _visualStudioVersion; }
+            set {
+                if (_visualStudioVersion != value) {
+                    _visualStudioVersion = value;
+                    NotifyOfPropertyChange(() => VisualStudioVersion);
+                }
+            }
+        }
+
         public override void NotifyOfPropertyChange(string propertyName) {
             base.NotifyOfPropertyChange(propertyName);
 
@@ -94,6 +106,7 @@ namespace Solutionizer.Settings {
             _settings.IncludeReferencedProjects = IncludeReferencedProjects;
             _settings.ReferenceFolderName = ReferenceFolderName;
             _settings.IsFlatMode = IsFlatMode;
+            _settings.VisualStudioVersion = VisualStudioVersion;
 
             TryClose(true);
         }
@@ -105,7 +118,8 @@ namespace Solutionizer.Settings {
                     SimplifyProjectTree != _settings.SimplifyProjectTree ||
                     IncludeReferencedProjects != _settings.IncludeReferencedProjects ||
                     ReferenceFolderName != _settings.ReferenceFolderName ||
-                    IsFlatMode != _settings.IsFlatMode;
+                    IsFlatMode != _settings.IsFlatMode ||
+                    VisualStudioVersion != _settings.VisualStudioVersion;
             }
         }
 
