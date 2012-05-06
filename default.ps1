@@ -25,10 +25,7 @@ task CreateAssemblyInfo {
 
     $version = "$majorVersion.$minorVersion.$patchVersion.$revisionCount"
     $fileversion = "$majorVersion.$minorVersion.$patchVersion.$revisionCount"
-    $asmInfo = "using System;
-using System.Reflection;
-using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
+    $asmInfo = "using System.Reflection;
 
 [assembly: AssemblyVersion(""$majorVersion.$minorVersion.0"")]
 [assembly: AssemblyInformationalVersion(""$majorVersion.$minorVersion.$patchVersion.$revisionCount-$commitVersion"")]
@@ -41,7 +38,7 @@ using System.Runtime.InteropServices;
 
 task Compile -depends CreateAssemblyInfo {
     Write-Host "Building $solution_file" -ForegroundColor Green
-    Exec { msbuild "$solution_file" /v:quiet /p:OutDir=$build_artifacts_dir }
+    Exec { msbuild "$solution_file" /v:minimal /p:OutDir=$build_artifacts_dir }
 }
 
 Task Clean {
@@ -53,5 +50,5 @@ Task Clean {
     mkdir $build_artifacts_dir | out-null
     
     Write-Host "Cleaning $solution_file" -ForegroundColor Green
-    Exec { msbuild $solution_file /t:Clean /p:Configuration=Release /v:quiet } 
+    Exec { msbuild $solution_file /t:Clean /p:Configuration=Release /v:minimal } 
 }
