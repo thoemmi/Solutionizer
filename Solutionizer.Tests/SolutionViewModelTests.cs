@@ -21,16 +21,15 @@ namespace Solutionizer.Tests {
         public void CanAddProject() {
             CopyTestDataToPath("CsTestProject1.csproj", _testDataPath);
 
-            _fileScanner = new FileScanningViewModel(_settings);
-            _fileScanner.Path = _testDataPath;
-            _fileScanner.LoadProjects();
+            _scanningCommand = new ScanningCommand(_testDataPath, true);
+            _scanningCommand.Start().Wait();
 
-            WaitForProjectLoaded(_fileScanner);
+            WaitForProjectLoaded(_scanningCommand);
 
             Project project;
-            _fileScanner.Projects.TryGetValue(Path.Combine(_testDataPath, "CsTestProject1.csproj"), out project);
+            _scanningCommand.Projects.TryGetValue(Path.Combine(_testDataPath, "CsTestProject1.csproj"), out project);
 
-            var sut = new SolutionViewModel(_settings, _testDataPath, _fileScanner.Projects);
+            var sut = new SolutionViewModel(_settings, _testDataPath, _scanningCommand.Projects);
             sut.AddProject(project);
 
             Assert.AreEqual(1, sut.SolutionItems.Count);
@@ -43,16 +42,15 @@ namespace Solutionizer.Tests {
             CopyTestDataToPath("CsTestProject1.csproj", Path.Combine(_testDataPath, "p1"));
             CopyTestDataToPath("CsTestProject2.csproj", Path.Combine(_testDataPath, "p2"));
 
-            _fileScanner = new FileScanningViewModel(_settings);
-            _fileScanner.Path = _testDataPath;
-            _fileScanner.LoadProjects();
+            _scanningCommand = new ScanningCommand(_testDataPath, true);
+            _scanningCommand.Start().Wait();
 
-            WaitForProjectLoaded(_fileScanner);
+            WaitForProjectLoaded(_scanningCommand);
 
             Project project;
-            _fileScanner.Projects.TryGetValue(Path.Combine(_testDataPath, "p2", "CsTestProject2.csproj"), out project);
+            _scanningCommand.Projects.TryGetValue(Path.Combine(_testDataPath, "p2", "CsTestProject2.csproj"), out project);
 
-            var sut = new SolutionViewModel(_settings, _testDataPath, _fileScanner.Projects);
+            var sut = new SolutionViewModel(_settings, _testDataPath, _scanningCommand.Projects);
             sut.AddProject(project);
 
             Assert.AreEqual(2, sut.SolutionItems.Count);

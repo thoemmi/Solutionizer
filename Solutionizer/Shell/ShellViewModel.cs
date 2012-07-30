@@ -71,15 +71,14 @@ namespace Solutionizer.Shell {
         }
 
         private void LoadProjects(string path) {
-            var fileScanningViewModel = new FileScanningViewModel(_settings);
-            fileScanningViewModel.Path = path;
+            var fileScanningViewModel = new FileScanningViewModel(_settings, path);
             _dialogManager.ShowDialog(fileScanningViewModel);
 
             fileScanningViewModel.Deactivated += (sender, args) => {
-                if (fileScanningViewModel.ProjectFolder != null) {
+                if (fileScanningViewModel.Result != null) {
                     _projectRepository.RootPath = path;
-                    _projectRepository.RootFolder = fileScanningViewModel.ProjectFolder;
-                    Solution = new SolutionViewModel(_settings, path, fileScanningViewModel.Projects);
+                    _projectRepository.RootFolder = fileScanningViewModel.Result.ProjectFolder;
+                    Solution = new SolutionViewModel(_settings, path, fileScanningViewModel.Result.Projects);
                     DisplayName = "Solutionizer - " + path;
                 }
             };

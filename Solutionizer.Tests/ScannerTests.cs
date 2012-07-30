@@ -1,43 +1,32 @@
 ﻿using System.IO;
 using NUnit.Framework;
 using Solutionizer.FileScanning;
-using Solutionizer.Services;
 
 namespace Solutionizer.Tests {
     [TestFixture]
     public class ScannerTests : ProjectTestBase {
-        private readonly ISettings _settings;
-
-        public ScannerTests() {
-            _settings= new Services.Settings {
-                SimplifyProjectTree = true
-            };
-        }
-
         [Test]
         public void CanScanEmptyDirectory() {
-            _fileScanner = new FileScanningViewModel(_settings);
-            _fileScanner.Path = _testDataPath;
-            _fileScanner.LoadProjects();
+            _scanningCommand = new ScanningCommand(_testDataPath, true);
+            var scanResult = _scanningCommand.Start().Result;
 
-            Assert.AreEqual(_testDataPath, _fileScanner.ProjectFolder.FullPath);
-            Assert.AreEqual(_testDataFolderName, _fileScanner.ProjectFolder.Name);
-            Assert.IsEmpty(_fileScanner.ProjectFolder.Folders);
-            Assert.IsEmpty(_fileScanner.ProjectFolder.Projects);
+            Assert.AreEqual(_testDataPath, scanResult.ProjectFolder.FullPath);
+            Assert.AreEqual(_testDataFolderName, scanResult.ProjectFolder.Name);
+            Assert.IsEmpty(scanResult.ProjectFolder.Folders);
+            Assert.IsEmpty(scanResult.ProjectFolder.Projects);
         }
 
         [Test]
         public void EmptySubdirectoriesAreOmitted() {
             Directory.CreateDirectory(Path.Combine(_testDataPath, "YouShouldNotSeeMe"));
 
-            _fileScanner = new FileScanningViewModel(_settings);
-            _fileScanner.Path = _testDataPath;
-            _fileScanner.LoadProjects();
+            _scanningCommand = new ScanningCommand(_testDataPath, true);
+            var scanResult = _scanningCommand.Start().Result;
 
-            Assert.AreEqual(_testDataPath, _fileScanner.ProjectFolder.FullPath);
-            Assert.AreEqual(_testDataFolderName, _fileScanner.ProjectFolder.Name);
-            Assert.IsEmpty(_fileScanner.ProjectFolder.Folders);
-            Assert.IsEmpty(_fileScanner.ProjectFolder.Projects);
+            Assert.AreEqual(_testDataPath, scanResult.ProjectFolder.FullPath);
+            Assert.AreEqual(_testDataFolderName, scanResult.ProjectFolder.Name);
+            Assert.IsEmpty(scanResult.ProjectFolder.Folders);
+            Assert.IsEmpty(scanResult.ProjectFolder.Projects);
         }
 
         [Test]
@@ -45,26 +34,24 @@ namespace Solutionizer.Tests {
             CopyTestDataToPath("CsTestProject1.csproj", _testDataPath);
             CopyTestDataToPath("CsTestProject2.csproj", _testDataPath);
 
-            _fileScanner = new FileScanningViewModel(_settings);
-            _fileScanner.Path = _testDataPath;
-            _fileScanner.LoadProjects();
+            _scanningCommand = new ScanningCommand(_testDataPath, true);
+            var scanResult = _scanningCommand.Start().Result;
 
-            Assert.AreEqual(_testDataPath, _fileScanner.ProjectFolder.FullPath);
-            Assert.AreEqual(_testDataFolderName, _fileScanner.ProjectFolder.Name);
-            Assert.IsEmpty(_fileScanner.ProjectFolder.Folders);
-            Assert.AreEqual(2, _fileScanner.ProjectFolder.Projects.Count);
+            Assert.AreEqual(_testDataPath, scanResult.ProjectFolder.FullPath);
+            Assert.AreEqual(_testDataFolderName, scanResult.ProjectFolder.Name);
+            Assert.IsEmpty(scanResult.ProjectFolder.Folders);
+            Assert.AreEqual(2, scanResult.ProjectFolder.Projects.Count);
         }
 
         [Test]
         public void CanReadProjectInRoot() {
             CopyTestDataToPath("CsTestProject1.csproj", _testDataPath);
 
-            _fileScanner = new FileScanningViewModel(_settings);
-            _fileScanner.Path = _testDataPath;
-            _fileScanner.LoadProjects();
+            _scanningCommand = new ScanningCommand(_testDataPath, true);
+            var scanResult = _scanningCommand.Start().Result;
 
-            Assert.AreEqual("CsTestProject1", _fileScanner.ProjectFolder.Projects[0].Name);
-            Assert.AreEqual(Path.Combine(_testDataPath, "CsTestProject1.csproj"), _fileScanner.ProjectFolder.Projects[0].Filepath);
+            Assert.AreEqual("CsTestProject1", scanResult.ProjectFolder.Projects[0].Name);
+            Assert.AreEqual(Path.Combine(_testDataPath, "CsTestProject1.csproj"), scanResult.ProjectFolder.Projects[0].Filepath);
         }
 
         [Test]
@@ -72,24 +59,22 @@ namespace Solutionizer.Tests {
             CopyTestDataToPath("CsTestProject1.csproj", Path.Combine(_testDataPath, "p1"));
             CopyTestDataToPath("CsTestProject2.csproj", Path.Combine(_testDataPath, "p2"));
 
-            _fileScanner = new FileScanningViewModel(_settings);
-            _fileScanner.Path = _testDataPath;
-            _fileScanner.LoadProjects();
+            _scanningCommand = new ScanningCommand(_testDataPath, true);
+            var scanResult = _scanningCommand.Start().Result;
 
-            Assert.AreEqual(_testDataPath, _fileScanner.ProjectFolder.FullPath);
-            Assert.AreEqual(_testDataFolderName, _fileScanner.ProjectFolder.Name);
-            Assert.AreEqual(2, _fileScanner.ProjectFolder.Projects.Count);
+            Assert.AreEqual(_testDataPath, scanResult.ProjectFolder.FullPath);
+            Assert.AreEqual(_testDataFolderName, scanResult.ProjectFolder.Name);
+            Assert.AreEqual(2, scanResult.ProjectFolder.Projects.Count);
         }
 
         [Test]
         public void CanReadProjectInSubdirectory() {
             CopyTestDataToPath("CsTestProject1.csproj", Path.Combine(_testDataPath, "dir"));
 
-            _fileScanner = new FileScanningViewModel(_settings);
-            _fileScanner.Path = _testDataPath;
-            _fileScanner.LoadProjects();
+            _scanningCommand = new ScanningCommand(_testDataPath, true);
+            var scanResult = _scanningCommand.Start().Result;
 
-            Assert.AreEqual(Path.Combine(_testDataPath, "dir", "CsTestProject1.csproj"), _fileScanner.ProjectFolder.Projects[0].Filepath);
+            Assert.AreEqual(Path.Combine(_testDataPath, "dir", "CsTestProject1.csproj"), scanResult.ProjectFolder.Projects[0].Filepath);
         }
     }
 }

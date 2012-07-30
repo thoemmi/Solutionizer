@@ -9,7 +9,7 @@ namespace Solutionizer.Tests {
         private static readonly Random _random = new Randomizer(Environment.TickCount);
         protected string _testDataFolderName;
         protected string _testDataPath;
-        protected FileScanningViewModel _fileScanner;
+        protected ScanningCommand _scanningCommand;
 
         [SetUp]
         public void SetUp() {
@@ -24,8 +24,8 @@ namespace Solutionizer.Tests {
 
         [TearDown]
         public void TearDown() {
-            if (_fileScanner != null) {
-                WaitForProjectLoaded(_fileScanner);
+            if (_scanningCommand != null) {
+                WaitForProjectLoaded(_scanningCommand);
             }
             Directory.Delete(_testDataPath, true);
         }
@@ -46,8 +46,8 @@ namespace Solutionizer.Tests {
             }
         }
 
-        protected void WaitForProjectLoaded(FileScanningViewModel fileScanner) {
-            while (!fileScanner.Projects.Values.All(p => p.IsLoaded)) {
+        protected void WaitForProjectLoaded(ScanningCommand scanningCommand) {
+            while (!_scanningCommand.Projects.Values.All(p => p.IsLoaded)) {
                 System.Threading.Thread.Sleep(50);
             }
         }

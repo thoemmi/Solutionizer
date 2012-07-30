@@ -10,50 +10,55 @@ using Solutionizer.Models;
 using Solutionizer.Services;
 
 namespace Solutionizer.FileScanning {
-    public sealed class FileScanningViewModel : Screen {
-        private readonly ISettings _settings;
-        private string _progressText;
+    public class ScanResult {
+        public ScanResult(ProjectFolder projectFolder, IDictionary<string, Project> projects) {
+            Projects = projects;
+            ProjectFolder = projectFolder;
+        }
+
+        public ProjectFolder ProjectFolder { get; private set; }
+        public IDictionary<string, Project> Projects { get; private set; }
+    }
+
+    public class ScanningCommand {
         private readonly CancellationTokenSource _cancellationTokenSource;
         private readonly CancellationToken _cancellationToken;
 
-        public FileScanningViewModel(ISettings settings) {
-            _settings = settings;
-            DisplayName = null;
+        private readonly bool _simplifyProjectTree;
+        private readonly string _path;
 
+        public IDictionary<string, Project> Projects { get { return _projects; } }
+
+        public event EventHandler ProjectCountChanged;
+
+        private void InvokeProjectCountChanged() {
+            var handler = ProjectCountChanged;
+            if (handler != null) {
+                handler(this,EventArgs.Empty);
+            }
+        }
+
+        private readonly ConcurrentDictionary<string, Project> _projects =
+            new ConcurrentDictionary<string, Project>(StringComparer.InvariantCultureIgnoreCase);
+
+        public ScanningCommand(string path, bool simplifyProjectTree) {
+            _path = path;
+            _simplifyProjectTree = simplifyProjectTree;
             _cancellationTokenSource = new CancellationTokenSource();
             _cancellationToken = _cancellationTokenSource.Token;
         }
 
-        public string Path { get; set; }
-        public ProjectFolder ProjectFolder { get; private set; }
-        public IDictionary<string, Project> Projects { get { return _projects; } }
-
-        public string ProgressText {
-            get { return _progressText; }
-            set {
-                if (_progressText != value) {
-                    _progressText = value;
-                    NotifyOfPropertyChange(() => ProgressText);
-                }
-            }
+        public Task<ScanResult> Start() {
+            return Task<ScanResult>.Factory.StartNew(LoadProjects, _cancellationTokenSource.Token);
         }
 
         public void Cancel() {
             _cancellationTokenSource.Cancel();
         }
 
-        private readonly ConcurrentDictionary<string, Project> _projects =
-            new ConcurrentDictionary<string, Project>(StringComparer.InvariantCultureIgnoreCase);
-        
-        protected override void OnActivate() {
-            base.OnActivate();
-            Task.Factory
-                .StartNew(LoadProjects, _cancellationTokenSource.Token)
-                .ContinueWith(t => TryClose(true), TaskScheduler.Current);
-        }
-
-        public void LoadProjects() {
-            ProjectFolder = GetProjects(Path);
+        private ScanResult LoadProjects() {
+            var projectFolder = GetProjects(_path);
+            return new ScanResult(projectFolder, _projects);
         }
 
         public ProjectFolder GetProjects(string rootPath) {
@@ -77,13 +82,11 @@ namespace Solutionizer.FileScanning {
                 return null;
             }
 
-            var simplifyProjectTree = _settings.SimplifyProjectTree;
-
             var projectFolder = new ProjectFolder(path, parent);
             foreach (var subdirectory in Directory.EnumerateDirectories(path)) {
                 var folder = CreateProjectFolder(subdirectory, projectFolder);
                 if (folder != null && !folder.IsEmpty) {
-                    if (simplifyProjectTree && folder.Folders.Count == 0 && folder.Projects.Count == 1) {
+                    if (_simplifyProjectTree && folder.Folders.Count == 0 && folder.Projects.Count == 1) {
                         // if a subfolder contains a project only and no other folders, just add that project instead of the subfolder
                         var project = folder.Projects[0];
                         project.Parent = projectFolder;
@@ -98,7 +101,7 @@ namespace Solutionizer.FileScanning {
             }
 
             // if the folder contains no project but one subfolder, skip the subfolder and add its content instead
-            if (simplifyProjectTree && projectFolder.Projects.Count == 0 && projectFolder.Folders.Count == 1) {
+            if (_simplifyProjectTree && projectFolder.Projects.Count == 0 && projectFolder.Folders.Count == 1) {
                 var subfolder = projectFolder.Folders[0];
                 projectFolder.Folders.Clear();
                 foreach (var folder in subfolder.Folders) {
@@ -115,8 +118,55 @@ namespace Solutionizer.FileScanning {
         }
 
         private Project CreateProject(string projectPath, ProjectFolder projectFolder) {
-            ProgressText = _projects.Count + " projects loaded";
-            return _projects.GetOrAdd(projectPath, path => new Project(path, projectFolder));
+            return _projects.GetOrAdd(projectPath, path => {
+                InvokeProjectCountChanged();
+                return new Project(path, projectFolder);
+            });
+        }
+    }
+
+    public sealed class FileScanningViewModel : Screen {
+        private readonly ISettings _settings;
+        private string _progressText;
+        private readonly ScanningCommand _scanningCommand;
+
+        public FileScanningViewModel(ISettings settings, string path) {
+            _settings = settings;
+            DisplayName = null;
+
+            _scanningCommand = new ScanningCommand(path, _settings.SimplifyProjectTree);
+        }
+
+        private void OnProjectCountChanged(object sender, EventArgs eventArgs) {
+            ProgressText = _scanningCommand.Projects.Count + " projects loaded";
+        }
+
+        public string ProgressText {
+            get { return _progressText; }
+            set {
+                if (_progressText != value) {
+                    _progressText = value;
+                    NotifyOfPropertyChange(() => ProgressText);
+                }
+            }
+        }
+
+        public void Cancel() {
+            _scanningCommand.Cancel();
+        }
+
+        public ScanResult Result { get; private set; }
+        
+        protected override void OnActivate() {
+            base.OnActivate();
+            _scanningCommand.ProjectCountChanged += OnProjectCountChanged;
+            _scanningCommand.Start().ContinueWith(t => {
+                Result = t.Result;  TryClose(true); }, TaskScheduler.Current);
+        }
+
+        protected override void OnDeactivate(bool close) {
+            _scanningCommand.ProjectCountChanged -= OnProjectCountChanged;
+            base.OnDeactivate(close);
         }
     }
 }
