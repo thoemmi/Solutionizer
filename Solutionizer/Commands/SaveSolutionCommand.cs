@@ -65,9 +65,9 @@ namespace Solutionizer.Commands {
                     writer.WriteLine("Microsoft Visual Studio Solution File, Format Version 11.00");
                     writer.WriteLine("# Visual Studio 2010");
                     break;
-                case VisualStudioVersion.VS11:
+                case VisualStudioVersion.VS2012:
                     writer.WriteLine("Microsoft Visual Studio Solution File, Format Version 12.00");
-                    writer.WriteLine("# Visual Studio 11");
+                    writer.WriteLine("# Visual Studio 2012");
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();

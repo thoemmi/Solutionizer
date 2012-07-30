@@ -19,8 +19,8 @@
                     <DataTrigger Binding="{Binding}" Value="VS2010">
                         <Setter TargetName="PART_Text" Property="Text" Value="Visual Studio 2010" />
                     </DataTrigger>
-                    <DataTrigger Binding="{Binding}" Value="VS11">
-                        <Setter TargetName="PART_Text" Property="Text" Value="Visual Studio 11" />
+                    <DataTrigger Binding="{Binding}" Value="VS2012">
+                        <Setter TargetName="PART_Text" Property="Text" Value="Visual Studio 2012" />
                     </DataTrigger>
                 </DataTemplate.Triggers>
             </DataTemplate>
