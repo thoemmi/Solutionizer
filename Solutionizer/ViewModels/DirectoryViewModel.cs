@@ -33,7 +33,7 @@ namespace Solutionizer.ViewModels {
         }
 
         public IList<ItemViewModel> Children {
-            get { return _directories.Cast<ItemViewModel>().Concat(_projects).ToList(); }
+            get { return _directories.Cast<ItemViewModel>().OrderBy(d => d.Name).Concat(_projects.OrderBy(p => p.Name)).ToList(); }
         }
     }
 }
