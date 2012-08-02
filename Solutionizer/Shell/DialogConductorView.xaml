@@ -4,12 +4,12 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:Converters="clr-namespace:Solutionizer.Converters"
-             xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro" mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300">
+             xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro" xmlns:Shell="clr-namespace:Solutionizer.Shell" mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300" d:DataContext="{d:DesignInstance Shell:DialogConductorViewModel}">
     <UserControl.Resources>
         <Converters:NullToCollapsedConverter x:Key="NullToCollapsedConverter"/>
     </UserControl.Resources>
-    <Grid Visibility="{Binding ActiveItem, Mode=TwoWay, Converter={StaticResource NullToCollapsedConverter}}"
+    <Grid Visibility="{Binding ActiveItem, Converter={StaticResource NullToCollapsedConverter}}"
 	      Background="#3f000000">
         <Controls:WindowCommands HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0 2"/>
         <StackPanel HorizontalAlignment="Center" Background="white" VerticalAlignment="Center">
