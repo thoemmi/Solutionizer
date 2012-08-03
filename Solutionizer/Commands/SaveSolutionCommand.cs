@@ -6,7 +6,7 @@ using Solutionizer.Extensions;
 using Solutionizer.Helper;
 using Solutionizer.Services;
 using Solutionizer.Solution;
-using Solutionizer.VisualStudio;
+using Solutionizer.ViewModels;
 
 namespace Solutionizer.Commands {
     public class SaveSolutionCommand {

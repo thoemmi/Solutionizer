@@ -13,7 +13,6 @@ using Solutionizer.Infrastructure;
 using Solutionizer.Models;
 using Solutionizer.Services;
 using Solutionizer.ViewModels;
-using Solutionizer.VisualStudio;
 
 namespace Solutionizer.Solution {
     public class SolutionViewModel : PropertyChangedBase {

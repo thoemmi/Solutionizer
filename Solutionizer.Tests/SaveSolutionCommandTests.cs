@@ -7,7 +7,7 @@ using Solutionizer.FileScanning;
 using Solutionizer.Models;
 using Solutionizer.Services;
 using Solutionizer.Solution;
-using Solutionizer.VisualStudio;
+using Solutionizer.ViewModels;
 
 namespace Solutionizer.Tests {
     [TestFixture]

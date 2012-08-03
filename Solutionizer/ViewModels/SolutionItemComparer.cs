@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace Solutionizer.VisualStudio {
+namespace Solutionizer.ViewModels {
     public class SolutionItemComparer : IComparer<SolutionItem> {
         public int Compare(SolutionItem x, SolutionItem y) {
             var xIsFolder = x is SolutionFolder;
