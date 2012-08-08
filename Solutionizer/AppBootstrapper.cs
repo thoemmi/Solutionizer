@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.ComponentModel.Composition.Hosting;
 using System.ComponentModel.Composition.Primitives;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -74,6 +75,8 @@ namespace Solutionizer {
             LogManager.Configuration = config;
 
             Caliburn.Micro.LogManager.GetLog = type => new NLogLogger(type);
+
+            PresentationTraceSources.DataBindingSource.Listeners.Add(new NLogTraceListener());
         }
 
         private void CurrentDomainOnUnhandledException(object sender, UnhandledExceptionEventArgs args) {
