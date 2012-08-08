@@ -32,6 +32,8 @@ namespace Solutionizer {
 
             ConfigureLogging();
 
+            AppDomain.CurrentDomain.UnhandledException += CurrentDomainOnUnhandledException;
+
             var catalog = new AggregateCatalog(
                 AssemblySource.Instance.Select(x => new AssemblyCatalog(x)).OfType<ComposablePartCatalog>()
                 );
@@ -72,6 +74,10 @@ namespace Solutionizer {
             LogManager.Configuration = config;
 
             Caliburn.Micro.LogManager.GetLog = type => new NLogLogger(type);
+        }
+
+        private void CurrentDomainOnUnhandledException(object sender, UnhandledExceptionEventArgs args) {
+            LogManager.GetCurrentClassLogger().ErrorException("Aaaarrrggghhh", args.ExceptionObject as Exception);
         }
 
         protected override object GetInstance(Type serviceType, string key) {
