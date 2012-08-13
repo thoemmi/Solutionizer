@@ -21,14 +21,14 @@ task CreateAssemblyInfo {
     $revisionCount = $matches['revision']
     $commitVersion = $matches['commit']
 
-    Write-Host "Current version: $majorVersion.$minorVersion.$patchVersion.$revisionCount-$commitVersion"
+    Write-Host "Current version: $majorVersion.$minorVersion.$patchVersion.$revisionCount ($commitVersion)"
 
     $version = "$majorVersion.$minorVersion.$patchVersion.$revisionCount"
     $fileversion = "$majorVersion.$minorVersion.$patchVersion.$revisionCount"
     $asmInfo = "using System.Reflection;
 
 [assembly: AssemblyVersion(""$majorVersion.$minorVersion.0"")]
-[assembly: AssemblyInformationalVersion(""$majorVersion.$minorVersion.$patchVersion.$revisionCount-$commitVersion"")]
+[assembly: AssemblyInformationalVersion(""$majorVersion.$minorVersion.$patchVersion.$revisionCount ($commitVersion)"")]
 [assembly: AssemblyFileVersion(""$majorVersion.$minorVersion.$patchVersion.$revisionCount"")]"
 
     $file = Join-Path $build_dir "CommonAssemblyInfo.cs"
