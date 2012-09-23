@@ -152,7 +152,7 @@ namespace Solutionizer.Solution {
                 if (!folder.ContainsProject(referencedProject)) {
                     folder.AddProject(referencedProject);
 
-                    if (depth > 0) {
+                    if (depth > 1) {
                         AddReferencedProjects(referencedProject, depth - 1);
                     }
                 }
