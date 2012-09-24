@@ -11,7 +11,6 @@
     </UserControl.Resources>
     <Grid Visibility="{Binding ActiveItem, Converter={StaticResource NullToCollapsedConverter}}"
 	      Background="#3f000000">
-        <Controls:WindowCommands HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0 2"/>
         <StackPanel HorizontalAlignment="Center" Background="white" VerticalAlignment="Center">
             <StackPanel.Effect>
                 <DropShadowEffect BlurRadius="10" ShadowDepth="0" />
