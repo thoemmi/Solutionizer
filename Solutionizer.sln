@@ -1,6 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 11
+# Visual Studio 2012
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Solutionizer", "Solutionizer\Solutionizer.csproj", "{71143B63-1F26-4870-BA9E-DD559AE3F473}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Solutionizer.Tests", "Solutionizer.Tests\Solutionizer.Tests.csproj", "{CB91BE0C-11DB-4712-8F6D-711AFDD4F872}"
