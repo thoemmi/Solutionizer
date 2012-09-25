@@ -30,7 +30,7 @@
         </ResourceDictionary>
 
     </Window.Resources>
-
+    <Window.TaskbarItemInfo><TaskbarItemInfo/></Window.TaskbarItemInfo>
     <i:Interaction.Behaviors>
         <Behaviours:BorderlessWindowBehavior/>
     </i:Interaction.Behaviors>

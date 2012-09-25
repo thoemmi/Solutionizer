@@ -5,7 +5,10 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Shell;
 using Caliburn.Micro;
+using NLog;
 using Solutionizer.Models;
 using Solutionizer.Services;
 
@@ -21,6 +24,8 @@ namespace Solutionizer.FileScanning {
     }
 
     public class ScanningCommand {
+        private static readonly Logger _log = NLog.LogManager.GetCurrentClassLogger();
+
         private readonly CancellationTokenSource _cancellationTokenSource;
         private readonly CancellationToken _cancellationToken;
 
@@ -57,8 +62,23 @@ namespace Solutionizer.FileScanning {
         }
 
         private ScanResult LoadProjects() {
-            var projectFolder = GetProjects(_path);
-            return new ScanResult(projectFolder, _projects);
+            SetTaskbarItemProgressState(TaskbarItemProgressState.Indeterminate);
+            try {
+                var projectFolder = GetProjects(_path);
+                return new ScanResult(projectFolder, _projects);
+            }
+            finally {
+                SetTaskbarItemProgressState(TaskbarItemProgressState.None);
+            }
+        }
+
+        private static void SetTaskbarItemProgressState(TaskbarItemProgressState state) {
+            // HACK speaking to Application.Current and Application.Current.MainWindow inside a ViewModel is not acceptable, but oh my
+            try {
+                Application.Current.Dispatcher.BeginInvoke((System.Action)(() => Application.Current.MainWindow.TaskbarItemInfo.ProgressState = state));
+            } catch (Exception e) {
+                _log.ErrorException("Setting TaskbarItemInfo to " + state + " failed", e);
+            }
         }
 
         public ProjectFolder GetProjects(string rootPath) {
