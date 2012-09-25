@@ -12,7 +12,7 @@
         Title="Solutionizer" 
         Background="white"
         UseLayoutRounding="True" 
-        x:Name="_window"
+        x:Name="_window" Icon="/Solutionizer;component/Logo.ico"
         >
     <Window.Resources>
         <ResourceDictionary>
