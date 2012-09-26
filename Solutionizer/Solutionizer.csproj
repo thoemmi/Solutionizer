@@ -116,7 +116,6 @@
     <Compile Include="ViewModels\DirectoryViewModel.cs" />
     <Compile Include="ViewModels\ItemViewModel.cs" />
     <Compile Include="ViewModels\ProjectViewModel.cs" />
-    <Compile Include="Converters\BusyToProgressStateConverter.cs" />
     <Compile Include="Converters\FilePathToImageSourceConverter.cs" />
     <Compile Include="Converters\Shell32IconExtension.cs" />
     <Compile Include="Extensions\DependencyObjectExtensions.cs" />
