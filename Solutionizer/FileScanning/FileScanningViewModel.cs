@@ -127,6 +127,7 @@ namespace Solutionizer.FileScanning {
 
     public sealed class FileScanningViewModel : Screen {
         private readonly ISettings _settings;
+        private string _loadingText;
         private string _progressText;
         private readonly ScanningCommand _scanningCommand;
 
@@ -134,6 +135,7 @@ namespace Solutionizer.FileScanning {
             _settings = settings;
             DisplayName = null;
 
+            _loadingText = "Loading projects from " + path.ToLowerInvariant();
             _scanningCommand = new ScanningCommand(path, _settings.SimplifyProjectTree);
         }
 
@@ -147,6 +149,16 @@ namespace Solutionizer.FileScanning {
                 if (_progressText != value) {
                     _progressText = value;
                     NotifyOfPropertyChange(() => ProgressText);
+                }
+            }
+        }
+
+        public string LoadingText {
+            get { return _loadingText; }
+            set {
+                if (_loadingText != value) {
+                    _loadingText = value;
+                    NotifyOfPropertyChange(() => LoadingText);
                 }
             }
         }
