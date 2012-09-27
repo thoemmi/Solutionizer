@@ -6,6 +6,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Caliburn.Micro;
+using NLog;
 using Solutionizer.Models;
 using Solutionizer.Services;
 
@@ -21,6 +22,7 @@ namespace Solutionizer.FileScanning {
     }
 
     public class ScanningCommand {
+        private static readonly Logger _log = NLog.LogManager.GetCurrentClassLogger();
         private readonly CancellationTokenSource _cancellationTokenSource;
         private readonly CancellationToken _cancellationToken;
 
@@ -57,11 +59,20 @@ namespace Solutionizer.FileScanning {
         }
 
         private ScanResult LoadProjects() {
-            var projectFolder = GetProjects(_path);
+            ProjectFolder projectFolder = null;
+            try {
+                projectFolder = GetProjects(_path);
+            } catch (Exception ex) {
+                _log.ErrorException("Loading projects from " + _path + " failed", ex);
+            }
             return new ScanResult(projectFolder, _projects);
         }
 
         public ProjectFolder GetProjects(string rootPath) {
+            if (!Directory.Exists(rootPath)) {
+                return null;
+            }
+
             var projectFolder = CreateProjectFolder(rootPath, null);
 
             if (_cancellationToken.IsCancellationRequested) {
