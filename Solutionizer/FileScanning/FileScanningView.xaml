@@ -3,11 +3,11 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:WPFSpark="clr-namespace:WPFSpark;assembly=WPFSpark" mc:Ignorable="d" 
+             xmlns:Controls="clr-namespace:Solutionizer.Controls" mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <StackPanel Orientation="Vertical">
         <TextBlock x:Name="LoadingText"/>
-        <WPFSpark:FluidProgressBar Width="300" Height="4" Foreground="{DynamicResource HighlightBrush}" Delay="0:0:0.15" Margin="-8 8"/>
+        <Controls:FluidProgressBar Width="300" Height="4" Foreground="{DynamicResource AccentColorBrush}" Delay="0:0:0.15" Margin="-8 8"/>
         <TextBlock x:Name="ProgressText"/>
         <!--<TextBlock Margin="10">1 project found so far</TextBlock>-->
         <Button HorizontalAlignment="Right" x:Name="Cancel">Cancel</Button>

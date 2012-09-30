@@ -83,9 +83,6 @@
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
-    <Reference Include="WPFSpark">
-      <HintPath>..\packages\WPFSpark.1.1\lib\net40\WPFSpark.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml">
@@ -97,6 +94,9 @@
     </Compile>
     <Compile Include="AppBootstrapper.cs" />
     <Compile Include="Commands\SaveSolutionCommand.cs" />
+    <Compile Include="Controls\FluidProgressBar.xaml.cs">
+      <DependentUpon>FluidProgressBar.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Converters\NullToCollapsedConverter.cs" />
     <Compile Include="FileScanning\FileScanningViewModel.cs" />
     <Compile Include="Helper\GridHelper.cs" />
@@ -142,6 +142,10 @@
     <Compile Include="ViewModels\SolutionItem.cs" />
     <Compile Include="ViewModels\SolutionItemComparer.cs" />
     <Compile Include="ViewModels\SolutionProject.cs" />
+    <Page Include="Controls\FluidProgressBar.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="FileScanning\FileScanningView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
