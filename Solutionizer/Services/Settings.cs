@@ -102,6 +102,7 @@ namespace Solutionizer.Services {
         public int ReferenceTreeDepth {
             get { return _referenceTreeDepth; }
             set {
+                value = Math.Max(1, value);
                 if (_referenceTreeDepth != value) {
                     _referenceTreeDepth = value;
                     NotifyOfPropertyChange(() => ReferenceTreeDepth);

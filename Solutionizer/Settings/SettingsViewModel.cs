@@ -11,6 +11,7 @@ namespace Solutionizer.Settings {
         private bool _includeReferencedProjects;
         private bool _isFlatMode;
         private string _referenceFolderName;
+        private int _referenceTreeDepth;
         private VisualStudioVersion _visualStudioVersion;
 
         public SettingsViewModel(ISettings settings) {
@@ -25,6 +26,7 @@ namespace Solutionizer.Settings {
             SimplifyProjectTree = _settings.SimplifyProjectTree;
             IncludeReferencedProjects = _settings.IncludeReferencedProjects;
             ReferenceFolderName = _settings.ReferenceFolderName;
+            ReferenceTreeDepth = _settings.ReferenceTreeDepth;
             IsFlatMode = _settings.IsFlatMode;
             VisualStudioVersion = _settings.VisualStudioVersion;
         }
@@ -69,6 +71,16 @@ namespace Solutionizer.Settings {
             }
         }
 
+        public int ReferenceTreeDepth {
+            get { return _referenceTreeDepth; }
+            set {
+                if (_referenceTreeDepth != value) {
+                    _referenceTreeDepth = value;
+                    NotifyOfPropertyChange(() => ReferenceTreeDepth);
+                }
+            }
+        }
+
         public bool IsFlatMode {
             get { return _isFlatMode; }
             set {
@@ -105,6 +117,7 @@ namespace Solutionizer.Settings {
             _settings.SimplifyProjectTree = SimplifyProjectTree;
             _settings.IncludeReferencedProjects = IncludeReferencedProjects;
             _settings.ReferenceFolderName = ReferenceFolderName;
+            _settings.ReferenceTreeDepth = ReferenceTreeDepth;
             _settings.IsFlatMode = IsFlatMode;
             _settings.VisualStudioVersion = VisualStudioVersion;
 
@@ -118,6 +131,7 @@ namespace Solutionizer.Settings {
                     SimplifyProjectTree != _settings.SimplifyProjectTree ||
                     IncludeReferencedProjects != _settings.IncludeReferencedProjects ||
                     ReferenceFolderName != _settings.ReferenceFolderName ||
+                    ReferenceTreeDepth != _settings.ReferenceTreeDepth ||
                     IsFlatMode != _settings.IsFlatMode ||
                     VisualStudioVersion != _settings.VisualStudioVersion;
             }

@@ -5,6 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:Helper="clr-namespace:Solutionizer.Helper" xmlns:System="clr-namespace:System;assembly=mscorlib"
              xmlns:Services="clr-namespace:Solutionizer.Services" mc:Ignorable="d" 
+             xmlns:Settings="clr-namespace:Solutionizer.Settings" d:DataContext="{d:DesignInstance Settings:SettingsViewModel}"
              d:DesignHeight="300" d:DesignWidth="300">
     <StackPanel>
         <StackPanel.Resources>
@@ -26,7 +27,7 @@
             </DataTemplate>
         </StackPanel.Resources>
 
-        <Grid Helper:GridHelper.RowCount="6">
+        <Grid Helper:GridHelper.RowCount="7">
             <CheckBox 
                 x:Name="ScanOnStartup" 
                 Margin="0 0 0 8" 
@@ -58,15 +59,36 @@
                     Width="200"/>
             </StackPanel>
             
+            <StackPanel 
+                Orientation="Horizontal" 
+                Grid.Row="4" 
+                IsEnabled="{Binding IncludeReferencedProjects}" 
+                Margin="20 0 0 8" >
+                <TextBlock 
+                    VerticalAlignment="Center" 
+                    Margin="0 0 8 0"
+                    Text="Tree depth:"/>
+                <ComboBox SelectedItem="{Binding ReferenceTreeDepth}" Width="60">
+                    <ComboBox.Items>
+                        <System:Int32>1</System:Int32>
+                        <System:Int32>2</System:Int32>
+                        <System:Int32>3</System:Int32>
+                        <System:Int32>4</System:Int32>
+                        <System:Int32>5</System:Int32>
+                        <System:Int32>6</System:Int32>
+                    </ComboBox.Items>
+                </ComboBox>
+            </StackPanel>
+            
             <CheckBox 
                 x:Name="IsFlatMode" 
                 Margin="0 0 0 8" 
-                Grid.Row="4" 
+                Grid.Row="5" 
                 Content="Show projects as flat list."/>
             
             <StackPanel 
                 Orientation="Horizontal" 
-                Grid.Row="5" 
+                Grid.Row="6" 
                 Margin="0 0 0 8">
                 <TextBlock 
                     VerticalAlignment="Center" 
