@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using Caliburn.Micro;
+using Microsoft.Win32;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 
@@ -14,13 +15,26 @@ namespace Solutionizer.Services {
         private int _referenceTreeDepth = 6;
         private bool _simplifyProjectTree;
         private Uri _tfsName;
-        private VisualStudioVersion _visualStudioVersion = VisualStudioVersion.VS2010;
+        private VisualStudioVersion _visualStudioVersion;
         private string _referenceFolderName = "_References";
 
         private string _rootPath = Path.Combine(
             Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
             "Visual Studio 2010",
             "Projects");
+
+        public Settings() {
+            _visualStudioVersion = DetectVisualStudioVersion();
+        }
+
+        private VisualStudioVersion DetectVisualStudioVersion() {
+            using (var key = Registry.ClassesRoot.OpenSubKey("VisualStudio.DTE.11.0")) {
+                if (key != null) {
+                    return VisualStudioVersion.VS2012;
+                }
+            }
+            return VisualStudioVersion.VS2010;
+        }
 
         public bool IsFlatMode {
             get { return _isFlatMode; }
