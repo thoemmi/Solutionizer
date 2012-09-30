@@ -17,23 +17,47 @@ namespace Solutionizer.Services {
         private Uri _tfsName;
         private VisualStudioVersion _visualStudioVersion;
         private string _referenceFolderName = "_References";
-
-        private string _rootPath = Path.Combine(
-            Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
-            "Visual Studio 2010",
-            "Projects");
+        private string _rootPath;
 
         public Settings() {
             _visualStudioVersion = DetectVisualStudioVersion();
+            _rootPath = GetDefaultProjectsLocation(_visualStudioVersion);
         }
 
-        private VisualStudioVersion DetectVisualStudioVersion() {
+        private static VisualStudioVersion DetectVisualStudioVersion() {
             using (var key = Registry.ClassesRoot.OpenSubKey("VisualStudio.DTE.11.0")) {
                 if (key != null) {
                     return VisualStudioVersion.VS2012;
                 }
             }
             return VisualStudioVersion.VS2010;
+        }
+        
+        private static string GetDefaultProjectsLocation(VisualStudioVersion visualStudioVersion) {
+            RegistryKey key = null;
+            string location = null;
+            try {
+                if (visualStudioVersion == VisualStudioVersion.VS2012) {
+                    key = Registry.CurrentUser.OpenSubKey(@"Software\Microsoft\VisualStudio\11.0");
+                }
+                if (key == null) {
+                    key = Registry.CurrentUser.OpenSubKey(@"Software\Microsoft\VisualStudio\10.0");
+                }
+                if (key != null) {
+                    location = key.GetValue("DefaultNewProjectLocation") as string;
+                }
+                if (String.IsNullOrEmpty(location)) {
+                    location = Path.Combine(
+                        Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
+                        "Visual Studio 2010",
+                        "Projects");
+                }
+                return location;
+            } finally {
+                if (key != null) {
+                    key.Close();
+                }
+            }
         }
 
         public bool IsFlatMode {
