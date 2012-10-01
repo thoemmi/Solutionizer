@@ -20,6 +20,16 @@ task CreateAssemblyInfo {
     $patchVersion = $matches['patch']
     $revisionCount = $matches['revision']
     $commitVersion = $matches['commit']
+	
+    if ($majorVersion -eq $null) {
+        $majorVersion = "0"
+    }
+    if ($minorVersion -eq $null) {
+        $minorVersion = "0"
+    }
+    if ($patchVersion -eq $null) {
+        $patchVersion = "0"
+    }
 
     Write-Host "Current version: $majorVersion.$minorVersion.$patchVersion.$revisionCount ($commitVersion)"
 
