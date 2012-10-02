@@ -15,6 +15,7 @@ namespace Solutionizer.Models {
         private bool _isSccBound;
         private List<string> _projectReferences;
         private List<string> _assemblyReferences;
+        private List<string> _brokenProjectReferences;
 
         public Project(string filepath) : this(filepath, null) {}
 
@@ -98,6 +99,7 @@ namespace Solutionizer.Models {
             _isSccBound = isSccBound;
             _projectReferences = projectReferences;
             _assemblyReferences = assemblyReferences;
+            _brokenProjectReferences = new List<string>();
         }
 
 
@@ -131,6 +133,14 @@ namespace Solutionizer.Models {
 
         public List<string> AssemblyReferences {
             get { return _assemblyReferences; }
+        }
+
+        public List<string> BrokenProjectReferences {
+            get { return _brokenProjectReferences; }
+        }
+
+        public bool HasBrokenProjectReferences {
+            get { return _brokenProjectReferences != null && _brokenProjectReferences.Count > 0; }
         }
     }
 }

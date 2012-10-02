@@ -100,7 +100,10 @@ namespace Solutionizer.FileScanning {
             // load project details asynchronously
             foreach (var p in _projects.Values.ToList().Where(p => !p.IsLoaded)) {
                 var project = p;
-                Task.Factory.StartNew(project.Load);
+                Task.Factory.StartNew(() => {
+                    project.Load();
+                    project.BrokenProjectReferences.AddRange(project.ProjectReferences.Where(path => !_projects.ContainsKey(path)));
+                });
             }
 
             return projectFolder;

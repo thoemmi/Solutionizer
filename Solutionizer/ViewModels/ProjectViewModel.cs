@@ -36,5 +36,13 @@ namespace Solutionizer.ViewModels {
         public bool IsLoaded {
             get { return _project.IsLoaded; }
         }
+
+        public bool HasBrokenProjectReferences {
+            get { return _project.HasBrokenProjectReferences; }
+        }
+
+        public string BrokenProjectReferences {
+            get { return _project.BrokenProjectReferences != null ? String.Join(",\n", _project.BrokenProjectReferences) : String.Empty; }
+        }
     }
 }
