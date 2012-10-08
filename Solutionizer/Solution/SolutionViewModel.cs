@@ -47,6 +47,10 @@ namespace Solutionizer.Solution {
             Application.Current.MainWindow.WindowState = WindowState.Minimized;
         }
 
+        public bool CanLaunch {
+            get { return _solutionRoot.Items.Any(); }
+        }
+
         public void Save() {
             var dlg = new VistaSaveFileDialog {
                 Filter = "Solution File (*.sln)|*.sln",
@@ -57,6 +61,20 @@ namespace Solutionizer.Solution {
                 new SaveSolutionCommand(_settings, dlg.FileName, _settings.VisualStudioVersion, this).Execute();
                 IsDirty = false;
             }
+        }
+
+        public bool CanSave {
+            get { return _solutionRoot.Items.Any(); }
+        }
+
+        public void Clear() {
+            _solutionRoot.Items.Clear();
+            SelectedItem = null;
+            Refresh();
+        }
+
+        public bool CanClear {
+            get { return _solutionRoot.Items.Any(); }
         }
 
         public ICommand DropCommand {
@@ -108,6 +126,8 @@ namespace Solutionizer.Solution {
             if (_settings.IncludeReferencedProjects) {
                 AddReferencedProjects(project, _settings.ReferenceTreeDepth);
             }
+
+            Refresh();
         }
 
         private static bool RemoveProject(SolutionFolder solutionFolder, Project project) {
@@ -203,6 +223,8 @@ namespace Solutionizer.Solution {
                     }
                     SelectedItem = index >= 0 ? parentFolder.Items[index] : parentFolder;
                 }
+
+                Refresh();
             }
         }
     }
