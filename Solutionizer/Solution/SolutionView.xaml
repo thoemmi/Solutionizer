@@ -77,7 +77,8 @@
 
         <StackPanel Grid.Column="1" Grid.Row="1" Margin="10 0 4 0">
             <Button x:Name="Launch" Content="Launch" Margin="0 0 0 4" MinWidth="75"/>
-            <Button x:Name="Save" Content="Save"/>
+            <Button x:Name="Save" Content="Save" Margin="0 0 0 14" MinWidth="75"/>
+            <Button x:Name="Clear" Content="Clear" Margin="0 0 0 4" MinWidth="75"/>
         </StackPanel>
     </Grid>
 </UserControl>
