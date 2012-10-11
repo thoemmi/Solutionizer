@@ -1,7 +1,7 @@
-<Grid
+﻿<Grid
   xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
   xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" Background="transparent">
-  <Viewbox HorizontalAlignment="Left" VerticalAlignment="Top" Width="512" Height="512">
+  <Viewbox HorizontalAlignment="center" VerticalAlignment="center" Width="512" Height="512">
   <Grid>
   <Path 
 	 Stroke="White"	
@@ -11,7 +11,7 @@
     Stretch="Uniform"
     Data="F1 M27.021,0L35.918,3.592 35.918,32.407 26.938,36 12.653,21.796 3.592,28.817 0,27.021 0,8.979 3.592,7.265 12.653,14.367 27.021,0z M3.592,12.653L3.592,23.592 8.98,18.041 3.592,12.653z M17.633,18.041L26.939,25.389 26.939,10.693 17.633,18.041z"/>
   <Path 
-    Fill="black" VerticalAlignment="Center" HorizontalAlignment="Center" 
+    Fill="#68217A" VerticalAlignment="Center" HorizontalAlignment="Center" 
     Height="37"
     Stretch="Uniform"
     Data="F1 M27.021,0L35.918,3.592 35.918,32.407 26.938,36 12.653,21.796 3.592,28.817 0,27.021 0,8.979 3.592,7.265 12.653,14.367 27.021,0z M3.592,12.653L3.592,23.592 8.98,18.041 3.592,12.653z M17.633,18.041L26.939,25.389 26.939,10.693 17.633,18.041z"/>
