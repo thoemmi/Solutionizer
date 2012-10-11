@@ -98,7 +98,7 @@
       <DependentUpon>FluidProgressBar.xaml</DependentUpon>
     </Compile>
     <Compile Include="Converters\NullToCollapsedConverter.cs" />
-    <Compile Include="FileScanning\FileScanningViewModel.cs" />
+    <Compile Include="ViewModels\FileScanningViewModel.cs" />
     <Compile Include="Helper\GridHelper.cs" />
     <Compile Include="Infrastructure\BindableSelectedItemBehavior .cs" />
     <Compile Include="Infrastructure\DragMoveWindowBehavior.cs" />
@@ -106,13 +106,13 @@
     <Compile Include="Infrastructure\InputBindingTrigger.cs" />
     <Compile Include="IShell.cs" />
     <Compile Include="Models\ProjectFolder.cs" />
-    <Compile Include="ProjectRepository\ProjectRepositoryViewModel.cs" />
+    <Compile Include="ViewModels\ProjectRepositoryViewModel.cs" />
     <Compile Include="Services\ISettings.cs" />
     <Compile Include="Services\SettingsProvider.cs" />
-    <Compile Include="Settings\SettingsViewModel.cs" />
-    <Compile Include="Shell\DialogConductorViewModel.cs" />
-    <Compile Include="Shell\ShellViewModel.cs" />
-    <Compile Include="Solution\SolutionViewModel.cs" />
+    <Compile Include="ViewModels\SettingsViewModel.cs" />
+    <Compile Include="ViewModels\DialogConductorViewModel.cs" />
+    <Compile Include="ViewModels\ShellViewModel.cs" />
+    <Compile Include="ViewModels\SolutionViewModel.cs" />
     <Compile Include="ViewModels\DirectoryViewModel.cs" />
     <Compile Include="ViewModels\ItemViewModel.cs" />
     <Compile Include="ViewModels\ProjectViewModel.cs" />
@@ -146,27 +146,27 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="FileScanning\FileScanningView.xaml">
+    <Page Include="Views\FileScanningView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="ProjectRepository\ProjectRepositoryView.xaml">
+    <Page Include="Views\ProjectRepositoryView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Settings\SettingsView.xaml">
+    <Page Include="Views\SettingsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Shell\DialogConductorView.xaml">
+    <Page Include="Views\DialogConductorView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Shell\ShellView.xaml">
+    <Page Include="Views\ShellView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Solution\SolutionView.xaml">
+    <Page Include="Views\SolutionView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -200,6 +200,7 @@
   <ItemGroup>
     <Resource Include="Resources\warning.png" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

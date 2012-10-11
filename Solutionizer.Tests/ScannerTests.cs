@@ -1,6 +1,6 @@
 ﻿using System.IO;
 using NUnit.Framework;
-using Solutionizer.FileScanning;
+using Solutionizer.ViewModels;
 
 namespace Solutionizer.Tests {
     [TestFixture]

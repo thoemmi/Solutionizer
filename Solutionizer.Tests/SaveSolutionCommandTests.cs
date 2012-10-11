@@ -3,10 +3,8 @@ using System.IO;
 using System.Linq;
 using NUnit.Framework;
 using Solutionizer.Commands;
-using Solutionizer.FileScanning;
 using Solutionizer.Models;
 using Solutionizer.Services;
-using Solutionizer.Solution;
 using Solutionizer.ViewModels;
 
 namespace Solutionizer.Tests {
@@ -15,7 +13,7 @@ namespace Solutionizer.Tests {
         private readonly ISettings _settings;
 
         public SaveSolutionCommandTests() {
-            _settings = new Services.Settings {
+            _settings = new Settings {
                 SimplifyProjectTree = true
             };
         }

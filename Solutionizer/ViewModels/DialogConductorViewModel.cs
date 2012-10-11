@@ -4,7 +4,7 @@ using System.ComponentModel.Composition;
 using Caliburn.Micro;
 using Solutionizer.Infrastructure;
 
-namespace Solutionizer.Shell {
+namespace Solutionizer.ViewModels {
     [Export(typeof (IDialogManager)), PartCreationPolicy(CreationPolicy.NonShared)]
     public class DialogConductorViewModel : PropertyChangedBase, IDialogManager, IConductActiveItem {
         public void ShowDialog(IScreen dialogModel) {
