@@ -40,7 +40,7 @@ namespace Solutionizer.ViewModels {
         public IList Nodes {
             get { return _nodes; }
             private set {
-                if (_nodes != value) {
+                if (!ReferenceEquals(_nodes, value)) {
                     _nodes = value;
                     NotifyOfPropertyChange(() => Nodes);
                 }
