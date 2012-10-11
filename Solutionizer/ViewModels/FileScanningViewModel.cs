@@ -12,7 +12,7 @@ using NLog;
 using Solutionizer.Models;
 using Solutionizer.Services;
 
-namespace Solutionizer.FileScanning {
+namespace Solutionizer.ViewModels {
     public class ScanResult {
         public ScanResult(ProjectFolder projectFolder, IDictionary<string, Project> projects) {
             Projects = projects;

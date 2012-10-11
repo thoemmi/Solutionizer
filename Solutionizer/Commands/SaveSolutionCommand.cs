@@ -1,11 +1,11 @@
 ﻿using System;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
 using Solutionizer.Extensions;
 using Solutionizer.Helper;
 using Solutionizer.Services;
-using Solutionizer.Solution;
 using Solutionizer.ViewModels;
 
 namespace Solutionizer.Commands {
@@ -116,18 +116,19 @@ namespace Solutionizer.Commands {
         }
 
         private void WriteTeamFoundationProject(TextWriter w, int n, SolutionProject project, string tfsFolder, string tfsName) {
-            string directoryName = Path.GetDirectoryName(project.Filepath);
-            string str1 = directoryName.Length > _solution.RootPath.Length
-                              ? directoryName.Substring(_solution.RootPath.Length).Replace("\\", "/") : string.Empty;
-            string str2 = tfsFolder + str1;
-            if (string.IsNullOrEmpty(str2)) {
+            var projectFolder = Path.GetDirectoryName(project.Filepath);
+            Debug.Assert(projectFolder != null, "projectFolder != null");
+            var relativeFolder = projectFolder.Length > _solution.RootPath.Length
+                              ? projectFolder.Substring(_solution.RootPath.Length).Replace("\\", "/") : string.Empty;
+            var relativeProjectPath = tfsFolder + relativeFolder;
+            if (string.IsNullOrEmpty(relativeProjectPath)) {
                 return;
             }
             w.WriteLine("\t\tSccProjectUniqueName{0} = {1}", n, FileSystem.GetRelativePath(_solutionFileName, project.Filepath).Replace("\\", "\\\\"));
             w.WriteLine("\t\tSccProjectTopLevelParentUniqueName{0} = {1}", n, Path.GetFileName(_solutionFileName));
-            w.WriteLine("\t\tSccProjectName{0} = {1}", n, str2);
+            w.WriteLine("\t\tSccProjectName{0} = {1}", n, relativeProjectPath);
             w.WriteLine("\t\tSccAuxPath{0} = {1}", n, tfsName);
-            w.WriteLine("\t\tSccLocalPath{0} = {1}", n, directoryName.Replace("\\", "\\\\"));
+            w.WriteLine("\t\tSccLocalPath{0} = {1}", n, projectFolder.Replace("\\", "\\\\"));
             w.WriteLine("\t\tSccProvider{0} = {{4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}}", n);
         }
     }

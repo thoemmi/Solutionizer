@@ -1,11 +1,11 @@
-﻿<UserControl x:Class="Solutionizer.Shell.DialogConductorView"
+﻿<UserControl x:Class="Solutionizer.Views.DialogConductorView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:Converters="clr-namespace:Solutionizer.Converters"
-             xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro" xmlns:Shell="clr-namespace:Solutionizer.Shell" mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300" d:DataContext="{d:DesignInstance Shell:DialogConductorViewModel}">
+             xmlns:ViewModels="clr-namespace:Solutionizer.ViewModels" mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300" d:DataContext="{d:DesignInstance ViewModels:DialogConductorViewModel}">
     <UserControl.Resources>
         <Converters:NullToCollapsedConverter x:Key="NullToCollapsedConverter"/>
     </UserControl.Resources>

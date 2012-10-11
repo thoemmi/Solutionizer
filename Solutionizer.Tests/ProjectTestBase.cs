@@ -2,7 +2,7 @@
 using System.IO;
 using System.Linq;
 using NUnit.Framework;
-using Solutionizer.FileScanning;
+using Solutionizer.ViewModels;
 
 namespace Solutionizer.Tests {
     public class ProjectTestBase {
