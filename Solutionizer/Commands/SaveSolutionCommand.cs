@@ -5,7 +5,6 @@ using System.Text;
 using Solutionizer.Extensions;
 using Solutionizer.Helper;
 using Solutionizer.Services;
-using Solutionizer.Solution;
 using Solutionizer.ViewModels;
 
 namespace Solutionizer.Commands {

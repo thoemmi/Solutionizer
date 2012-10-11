@@ -3,7 +3,7 @@ using System.Linq.Expressions;
 using Caliburn.Micro;
 using Solutionizer.Services;
 
-namespace Solutionizer.Settings {
+namespace Solutionizer.ViewModels {
     public sealed class SettingsViewModel : Screen {
         private readonly ISettings _settings;
         private bool _scanOnStartup;
