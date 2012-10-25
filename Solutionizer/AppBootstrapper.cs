@@ -7,6 +7,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Threading.Tasks;
 using Caliburn.Micro;
 using Caliburn.Micro.Logging.NLog;
 using NLog;
@@ -33,7 +34,14 @@ namespace Solutionizer {
 
             ConfigureLogging();
 
-            AppDomain.CurrentDomain.UnhandledException += CurrentDomainOnUnhandledException;
+            AppDomain.CurrentDomain.FirstChanceException += (sender, args) =>
+                LogManager.GetCurrentClassLogger().ErrorException("FirstChanceException", args.Exception);
+            AppDomain.CurrentDomain.UnhandledException += (sender, args) => 
+                LogManager.GetCurrentClassLogger().ErrorException("UnhandledException", args.ExceptionObject as Exception);
+            Application.DispatcherUnhandledException += (sender, args) =>
+                LogManager.GetCurrentClassLogger().ErrorException("DispatcherUnhandledException", args.Exception);
+            TaskScheduler.UnobservedTaskException += (sender, args) =>
+                LogManager.GetCurrentClassLogger().ErrorException("UnobservedTaskException", args.Exception);
 
             var catalog = new AggregateCatalog(
                 AssemblySource.Instance.Select(x => new AssemblyCatalog(x)).OfType<ComposablePartCatalog>()
@@ -77,10 +85,6 @@ namespace Solutionizer {
             Caliburn.Micro.LogManager.GetLog = type => new NLogLogger(type);
 
             PresentationTraceSources.DataBindingSource.Listeners.Add(new NLogTraceListener());
-        }
-
-        private void CurrentDomainOnUnhandledException(object sender, UnhandledExceptionEventArgs args) {
-            LogManager.GetCurrentClassLogger().ErrorException("Aaaarrrggghhh", args.ExceptionObject as Exception);
         }
 
         protected override object GetInstance(Type serviceType, string key) {
