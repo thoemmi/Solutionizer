@@ -5,14 +5,14 @@
         <AssemblyInfoName Condition="'$(AssemblyInfoName)'==''">$(ProjectDir)CommonAssemblyInfo.cs</AssemblyInfoName>
     </PropertyGroup>
 
-    <Target Name="_getVersion" Outputs="VersionString;SemanticVersionString">
+    <Target Name="GetGitVersion" Outputs="VersionString;SemanticVersionString">
         <!-- set default version -->
         <PropertyGroup>
             <VersionString Condition="'$(VersionString)'==''">0.0.0.0</VersionString>
             <SemanticVersionString Condition="'$(SemanticVersionString)'==''">0.0.0.0</SemanticVersionString>
         </PropertyGroup>
 
-        <Exec Command="git describe --tags --long > $(ProjectDir)version.txt" Outputs="$(ProjectDir)version.txt" WorkingDirectory="$(SolutionDir)" IgnoreExitCode="true">
+        <Exec Command='git describe --tags --long > "$(ProjectDir)version.txt"' Outputs="$(ProjectDir)version.txt" WorkingDirectory="$(SolutionDir)" IgnoreExitCode="true">
             <Output TaskParameter="ExitCode" PropertyName="ExitCode" />
         </Exec>
         <Message Importance="high" Text="Calling git failed with exit code $(ExitCode)" Condition="'$(ExitCode)'!='0'" />
@@ -31,7 +31,7 @@
     </Target>
 
     <Target Name="CreateCommonVersionInfo" BeforeTargets="CoreCompile">
-        <CallTarget Targets="_getVersion"/>
+        <CallTarget Targets="GetGitVersion"/>
         <CallTarget Targets="CreateVersionInfoFile" />
     </Target>
 
