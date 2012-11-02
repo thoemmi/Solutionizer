@@ -25,8 +25,6 @@ namespace Solutionizer.Tests {
             _scanningCommand = new ScanningCommand(_testDataPath, true);
             _scanningCommand.Start().Wait();
 
-            WaitForProjectLoaded(_scanningCommand);
-
             Project project;
             _scanningCommand.Projects.TryGetValue(Path.Combine(_testDataPath, "CsTestProject1.csproj"), out project);
 
@@ -48,8 +46,6 @@ namespace Solutionizer.Tests {
 
             _scanningCommand = new ScanningCommand(_testDataPath, true);
             _scanningCommand.Start().Wait();
-
-            WaitForProjectLoaded(_scanningCommand);
 
             Project project;
             _scanningCommand.Projects.TryGetValue(Path.Combine(_testDataPath, "p2", "CsTestProject2.csproj"), out project);
@@ -76,8 +72,6 @@ namespace Solutionizer.Tests {
 
             _scanningCommand = new ScanningCommand(_testDataPath, true);
             _scanningCommand.Start().Wait();
-
-            WaitForProjectLoaded(_scanningCommand);
 
             Project project;
             _scanningCommand.Projects.TryGetValue(Path.Combine(_testDataPath, "p3", "sub", "CsTestProject3.csproj"), out project);

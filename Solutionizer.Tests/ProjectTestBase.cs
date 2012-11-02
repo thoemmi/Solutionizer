@@ -24,9 +24,6 @@ namespace Solutionizer.Tests {
 
         [TearDown]
         public void TearDown() {
-            if (_scanningCommand != null) {
-                WaitForProjectLoaded(_scanningCommand);
-            }
             Directory.Delete(_testDataPath, true);
         }
 
@@ -43,12 +40,6 @@ namespace Solutionizer.Tests {
             Assert.NotNull(stream);
             using (var input = new StreamReader(stream)) {
                 return input.ReadToEnd();
-            }
-        }
-
-        protected void WaitForProjectLoaded(ScanningCommand scanningCommand) {
-            while (!_scanningCommand.Projects.Values.All(p => p.IsLoaded)) {
-                System.Threading.Thread.Sleep(50);
             }
         }
     }

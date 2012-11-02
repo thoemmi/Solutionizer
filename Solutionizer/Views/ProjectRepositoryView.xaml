@@ -31,7 +31,6 @@
             <StackPanel Orientation="Horizontal" Margin="1">
                 <Grid Width="16" Height="16"  Margin="0 0 4 0">
                     <Image Height="16" Width="16" Source="{Binding Path=Path, Converter={StaticResource FilePathToImageSource}}"/>
-                    <Image Width="10" Height="13" x:Name="_waitImage" Source="/Resources/wait.png" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0 0 -1 -1"/>
                     <Image Width="16" Height="16" Source="/Resources/warning.png" HorizontalAlignment="Right" VerticalAlignment="Bottom" Visibility="{Binding Path=HasBrokenProjectReferences, Converter={StaticResource BooleanToVisibility}}">
                         <Image.ToolTip>
                             <StackPanel>
@@ -43,11 +42,6 @@
                 </Grid>
                 <TextBlock Text="{Binding Name}" />
             </StackPanel>
-            <DataTemplate.Triggers>
-                <DataTrigger Binding="{Binding Path=IsLoaded}" Value="true">
-                    <Setter TargetName="_waitImage" Property="Visibility" Value="Hidden"/>
-                </DataTrigger>
-            </DataTemplate.Triggers>
         </DataTemplate>
 
         <DataTemplate x:Key="ProjectItemDrag">

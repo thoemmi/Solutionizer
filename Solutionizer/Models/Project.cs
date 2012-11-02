@@ -8,7 +8,6 @@ namespace Solutionizer.Models {
         private readonly string _filepath;
         private ProjectFolder _parent;
         private readonly string _name;
-        private bool _isLoaded;
         private string _assemblyName;
         private string _targetFilePath;
         private Guid _guid;
@@ -25,30 +24,13 @@ namespace Solutionizer.Models {
             _name = Path.GetFileNameWithoutExtension(_filepath);
         }
 
-        public event EventHandler Loaded;
-
-        protected void OnLoaded() {
-            var handler = Loaded;
-            if (handler != null) {
-                handler(this, EventArgs.Empty);
-            }
-        }
-
         public void Load() {
-            if (!_isLoaded) {
-                try {
-                    LoadInternal();
-                }
-                catch (XmlException) {
-                    // log exception
-                }
-                _isLoaded = true;
-                OnLoaded();
+            try {
+                LoadInternal();
             }
-        }
-
-        public bool IsLoaded {
-            get { return _isLoaded; }
+            catch (XmlException) {
+                // log exception
+            }
         }
 
         public ProjectFolder Parent {

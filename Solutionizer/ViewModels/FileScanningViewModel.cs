@@ -98,7 +98,7 @@ namespace Solutionizer.ViewModels {
             }
 
             // load project details asynchronously
-            Parallel.ForEach(_projects.Values.ToList().Where(p => !p.IsLoaded), project => {
+            Parallel.ForEach(_projects.Values, project => {
                 project.Load();
                 project.BrokenProjectReferences.AddRange(project.ProjectReferences.Where(path => !_projects.ContainsKey(path)));
             });
