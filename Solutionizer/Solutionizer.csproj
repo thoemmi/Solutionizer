@@ -90,9 +90,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="..\CommonAssemblyInfo.cs">
-      <Link>CommonAssemblyInfo.cs</Link>
-    </Compile>
     <Compile Include="AppBootstrapper.cs" />
     <Compile Include="Commands\SaveSolutionCommand.cs" />
     <Compile Include="Controls\FluidProgressBar.xaml.cs">

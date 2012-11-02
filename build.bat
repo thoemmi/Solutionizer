@@ -1,6 +1,8 @@
 @echo off
 
-SET DIR=%~dp0%
+set config=%1
+if "%config%" == "" (
+   set config=Debug
+)
 
-%windir%\System32\WindowsPowerShell\v1.0\powershell.exe -NoProfile -ExecutionPolicy unrestricted -Command "& '%DIR%psake.ps1' '%DIR%default.ps1' %*"
-
+%WINDIR%\Microsoft.NET\Framework\v4.0.30319\msbuild Solutionizer.sln /p:Configuration="%config%"
