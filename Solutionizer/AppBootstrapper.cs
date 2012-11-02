@@ -8,6 +8,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 using Caliburn.Micro;
 using Caliburn.Micro.Logging.NLog;
 using NLog;
@@ -66,7 +67,7 @@ namespace Solutionizer {
                 ArchiveFileName = "log_{#####}.xml",
                 ArchiveNumbering = ArchiveNumberingMode.Sequence,
                 ArchiveAboveSize = 1024*1024,
-                Layout = new Log4JXmlEventLayout()
+                Layout = new Log4JXmlEventLayoutExtended()
             };
 
             var config = new LoggingConfiguration();
@@ -110,6 +111,22 @@ namespace Solutionizer {
         protected override void OnExit(object sender, EventArgs e) {
             _settingsProvider.Save();
             base.OnExit(sender, e);
+        }
+
+        public class Log4JXmlEventLayoutExtended : Log4JXmlEventLayout {
+            protected override string GetFormattedMessage(LogEventInfo logEvent) {
+                string s = base.GetFormattedMessage(logEvent);
+                if (logEvent.Exception == null) {
+                    return s;
+                }
+                s = s.Replace("<log4j:event", "<log4j:event xmlns:log4j=\"http://nlog-project.org/dummynamespace/\"");
+                var element = XDocument.Parse(s);
+                var messageElement = element.Descendants().Single(e => e.Name.LocalName == "message");
+                messageElement.Value += Environment.NewLine + logEvent.Exception;
+                s = element.ToString();
+                s = s.Replace(" xmlns:log4j=\"http://nlog-project.org/dummynamespace/\"", string.Empty);
+                return s;
+            }
         }
     }
 }
