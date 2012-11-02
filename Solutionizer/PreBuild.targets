@@ -1,0 +1,100 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+
+    <PropertyGroup>
+        <AssemblyInfoName Condition="'$(AssemblyInfoName)'==''">$(ProjectDir)CommonAssemblyInfo.cs</AssemblyInfoName>
+    </PropertyGroup>
+
+    <Target Name="_getVersion" Outputs="VersionString;SemanticVersionString">
+        <!-- set default version -->
+        <PropertyGroup>
+            <VersionString Condition="'$(VersionString)'==''">0.0.0.0</VersionString>
+            <SemanticVersionString Condition="'$(SemanticVersionString)'==''">0.0.0.0</SemanticVersionString>
+        </PropertyGroup>
+
+        <Exec Command="git describe --tags --long > $(ProjectDir)version.txt" Outputs="$(ProjectDir)version.txt" WorkingDirectory="$(SolutionDir)" IgnoreExitCode="true">
+            <Output TaskParameter="ExitCode" PropertyName="ExitCode" />
+        </Exec>
+        <Message Importance="high" Text="Calling git failed with exit code $(ExitCode)" Condition="'$(ExitCode)'!='0'" />
+
+        <ReadLinesFromFile File="$(ProjectDir)version.txt" Condition="'$(ExitCode)'=='0'">
+            <Output TaskParameter="Lines" ItemName="OutputLines"/>
+        </ReadLinesFromFile>
+        <Message Importance="normal" Text="Git output: @(OutputLines)" Condition="'$(ExitCode)'=='0'"/>
+        <Delete Condition="Exists('$(ProjectDir)version.txt')" Files="$(ProjectDir)version.txt"/>
+
+        <CreateVersionString VersionString="@(OutputLines)" Condition="'$(ExitCode)'=='0'">
+            <Output TaskParameter="Version" PropertyName="VersionString"/>
+            <Output TaskParameter="Commit" PropertyName="Commit"/>
+            <Output TaskParameter="SemanticVersion" PropertyName="SemanticVersionString"/>
+        </CreateVersionString>
+    </Target>
+
+    <Target Name="CreateCommonVersionInfo" BeforeTargets="CoreCompile">
+        <CallTarget Targets="_getVersion"/>
+        <CallTarget Targets="CreateVersionInfoFile" />
+    </Target>
+
+    <Target Name="CreateVersionInfoFile">
+        <Message Importance="Normal" Text="VersionString '$(VersionString)', SemanticVersionString '$(SemanticVersionString)'" />
+        
+        <!-- read old AssemblyInfo -->
+        <CreateProperty
+            Condition="Exists('$(AssemblyInfoName)')"
+            Value="$([System.IO.File]::ReadAllText('$(AssemblyInfoName)'))">
+            <Output TaskParameter="Value" PropertyName="OldLines"/>
+        </CreateProperty>
+
+        <!-- create content for new AssemblyInfo -->
+        <CreateProperty Value='using System.Reflection%3B
+
+// full version: $(VersionString)-$(Commit)
+
+[assembly: AssemblyVersion("$(VersionString)")]
+[assembly: AssemblyInformationalVersion("$(SemanticVersionString)")] 
+[assembly: AssemblyFileVersion("$(VersionString)")]' >
+            <Output TaskParameter="Value" PropertyName="NewLines"/>
+        </CreateProperty>
+
+        <Message Importance="normal" Text="$(AssemblyInfoName) is up-to-date" Condition="'$(OldLines)'=='$(NewLines)'"/>
+
+        <!-- write new assembly info if changed -->
+        <Message Importance="high" Text="Updating $(AssemblyInfoName)" Condition="'$(OldLines)'!='$(NewLines)'"/>
+        <WriteLinesToFile Overwrite="true" File="$(AssemblyInfoName)" Encoding="UTF-8" Lines="$(NewLines)" Condition="'$(OldLines)'!='$(NewLines)'"/>
+    </Target>
+
+    <UsingTask
+      TaskName="CreateVersionString"
+      TaskFactory="CodeTaskFactory"
+      AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.v4.0.dll" >
+        <ParameterGroup>
+            <VersionString ParameterType="System.String" Required="true" />
+            <Version ParameterType="System.String" Output="true" />
+            <Commit ParameterType="System.String" Output="true" />
+            <SemanticVersion ParameterType="System.String" Output="true" />
+        </ParameterGroup>
+        <Task>
+            <!--<Reference Include="" />-->
+            <Using Namespace="System"/>
+            <Using Namespace="System.IO"/>
+            <Using Namespace="System.Text.RegularExpressions" />
+            <Code Type="Fragment" Language="cs">
+                <![CDATA[
+          var match = Regex.Match(VersionString, @"^v(?<major>\d+)\.(?<minor>\d+)(\.(?<patch>\d+))?-(?<revision>\d+)-(?<commit>[a-z0-9]+)$");
+          int major, minor, patch, revision;
+          Int32.TryParse(match.Groups["major"].Value, out major);
+          Int32.TryParse(match.Groups["minor"].Value, out minor);
+          Int32.TryParse(match.Groups["patch"].Value, out patch);
+          Int32.TryParse(match.Groups["revision"].Value, out revision);
+          _Version = new Version(major, minor, patch, revision).ToString();
+          _SemanticVersion = major + "." + minor + "." + patch;
+          _Commit = match.Groups["commit"].Value;
+          if (revision != 0) {
+            _SemanticVersion += "-beta" + revision;
+          }
+        ]]>
+            </Code>
+        </Task>
+    </UsingTask>
+
+</Project>

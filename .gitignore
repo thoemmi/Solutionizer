@@ -27,4 +27,4 @@ _ReSharper*/
 packages/
 build/
 [Tt]est[Rr]esult*
-/CommonAssemblyInfo.cs
+CommonAssemblyInfo.cs
