@@ -34,12 +34,19 @@ namespace Solutionizer.ViewModels {
 
         public IDictionary<string, Project> Projects { get { return _projects; } }
 
-        public event EventHandler ProjectCountChanged;
+        private string _progressText;
+        public event EventHandler ProgressTextChanged;
 
-        private void InvokeProjectCountChanged() {
-            var handler = ProjectCountChanged;
-            if (handler != null) {
-                handler(this,EventArgs.Empty);
+        public string ProgressText {
+            get { return _progressText; }
+            private set {
+                if (_progressText != value) {
+                    _progressText = value;
+                    var handler = ProgressTextChanged;
+                    if (handler != null) {
+                        handler(this, EventArgs.Empty);
+                    }
+                }
             }
         }
 
@@ -97,6 +104,8 @@ namespace Solutionizer.ViewModels {
                 return null;
             }
 
+            ProgressText = "Analyzing project dependencies";
+
             // load project details asynchronously
             Parallel.ForEach(_projects.Values, project => {
                 project.Load();
@@ -148,7 +157,7 @@ namespace Solutionizer.ViewModels {
 
         private Project CreateProject(string projectPath, ProjectFolder projectFolder) {
             return _projects.GetOrAdd(projectPath, path => {
-                InvokeProjectCountChanged();
+                ProgressText = _projects.Count + " projects loaded";
                 return new Project(path, projectFolder);
             });
         }
@@ -168,8 +177,8 @@ namespace Solutionizer.ViewModels {
             _scanningCommand = new ScanningCommand(path, _settings.SimplifyProjectTree);
         }
 
-        private void OnProjectCountChanged(object sender, EventArgs eventArgs) {
-            ProgressText = _scanningCommand.Projects.Count + " projects loaded";
+        private void OnProgressTextChanged(object sender, EventArgs eventArgs) {
+            ProgressText = _scanningCommand.ProgressText;
         }
 
         public string ProgressText {
@@ -200,13 +209,13 @@ namespace Solutionizer.ViewModels {
         
         protected override void OnActivate() {
             base.OnActivate();
-            _scanningCommand.ProjectCountChanged += OnProjectCountChanged;
+            _scanningCommand.ProgressTextChanged += OnProgressTextChanged;
             _scanningCommand.Start().ContinueWith(t => {
                 Result = t.Result;  TryClose(true); }, TaskScheduler.Current);
         }
 
         protected override void OnDeactivate(bool close) {
-            _scanningCommand.ProjectCountChanged -= OnProjectCountChanged;
+            _scanningCommand.ProgressTextChanged -= OnProgressTextChanged;
             base.OnDeactivate(close);
         }
     }
