@@ -9,6 +9,7 @@ using Caliburn.Micro;
 using NLog;
 using Ookii.Dialogs.Wpf;
 using Solutionizer.Commands;
+using Solutionizer.Helper;
 using Solutionizer.Infrastructure;
 using Solutionizer.Models;
 using Solutionizer.Services;
@@ -40,13 +41,30 @@ namespace Solutionizer.ViewModels {
         }
 
         public void Launch() {
+            LaunchInternal(false);
+        }
+
+        public void LaunchAsAdmin() {
+            LaunchInternal(true);
+        }
+
+        private void LaunchInternal(bool asAdmin) {
             var newFilename = Path.Combine(Path.GetTempPath(), DateTime.Now.ToString("yyyy-MM-dd_HHmmss")) + ".sln";
             new SaveSolutionCommand(_settings, newFilename, _settings.VisualStudioVersion, this).Execute();
-            Process.Start(newFilename);
+            var exePath = VisualStudioHelper.GetVisualStudioExecutable(_settings.VisualStudioVersion);
+            var psi = new ProcessStartInfo(exePath, newFilename);
+            if (asAdmin) {
+                psi.Verb = "runas";
+            }
+            Process.Start(psi);
             Application.Current.MainWindow.WindowState = WindowState.Minimized;
         }
 
         public bool CanLaunch {
+            get { return _solutionRoot.Items.Any(); }
+        }
+
+        public bool CanLaunchAsAdmin {
             get { return _solutionRoot.Items.Any(); }
         }
 

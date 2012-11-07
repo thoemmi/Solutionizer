@@ -14,16 +14,18 @@ namespace Solutionizer.Helper {
             return VisualStudioVersion.VS2010;
         }
 
+        private static string GetVersionKey(VisualStudioVersion visualStudioVersion) {
+            if (visualStudioVersion == VisualStudioVersion.VS2012) {
+                return "11.0";
+            }
+            return "10.0";
+        }
+
         public static string GetDefaultProjectsLocation(VisualStudioVersion visualStudioVersion) {
             RegistryKey key = null;
             string location = null;
             try {
-                if (visualStudioVersion == VisualStudioVersion.VS2012) {
-                    key = Registry.CurrentUser.OpenSubKey(@"Software\Microsoft\VisualStudio\11.0");
-                }
-                if (key == null) {
-                    key = Registry.CurrentUser.OpenSubKey(@"Software\Microsoft\VisualStudio\10.0");
-                }
+                key = Registry.CurrentUser.OpenSubKey(@"Software\Microsoft\VisualStudio\" + GetVersionKey(visualStudioVersion));
                 if (key != null) {
                     location = key.GetValue("DefaultNewProjectLocation") as string;
                 }
@@ -39,6 +41,16 @@ namespace Solutionizer.Helper {
                 if (key != null) {
                     key.Close();
                 }
+            }
+        }
+
+        public static string GetVisualStudioExecutable(VisualStudioVersion visualStudioVersion) {
+            var regPath = String.Format(@"Software\{0}Microsoft\VisualStudio\{1}", 
+                Environment.Is64BitOperatingSystem ? @"Wow6432Node\" : String.Empty,
+                GetVersionKey(visualStudioVersion));
+            using (var key = Registry.LocalMachine.OpenSubKey(regPath)) {
+                var installPath = key.GetValue("InstallDir") as string;
+                return Path.Combine(installPath, "devenv.exe");
             }
         }
     }

@@ -77,6 +77,16 @@
 
         <StackPanel Grid.Column="1" Grid.Row="1" Margin="10 0 4 0">
             <Button x:Name="Launch" Content="Launch" Margin="0 0 0 4" MinWidth="75"/>
+            <Button x:Name="LaunchAsAdmin" Margin="0 0 0 4" MinWidth="75">
+                <Grid HorizontalAlignment="Stretch">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Image Width="16" Height="16" Source="{Converters:Shell32Icon FileName='user32.dll',IconIndex=6}" Margin="0 0 4 0"/>
+                    <TextBlock Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center">LAUNCH</TextBlock>
+                </Grid>
+            </Button>
             <Button x:Name="Save" Content="Save" Margin="0 0 0 14" MinWidth="75"/>
             <Button x:Name="Clear" Content="Clear" Margin="0 0 0 4" MinWidth="75"/>
         </StackPanel>
