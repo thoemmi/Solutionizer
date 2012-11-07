@@ -13,6 +13,7 @@ namespace Solutionizer.ViewModels {
         private string _referenceFolderName;
         private int _referenceTreeDepth;
         private VisualStudioVersion _visualStudioVersion;
+        private bool _showLaunchElevatedButton;
 
         public SettingsViewModel(ISettings settings) {
             _settings = settings;
@@ -29,6 +30,7 @@ namespace Solutionizer.ViewModels {
             ReferenceTreeDepth = _settings.ReferenceTreeDepth;
             IsFlatMode = _settings.IsFlatMode;
             VisualStudioVersion = _settings.VisualStudioVersion;
+            ShowLaunchElevatedButton = _settings.ShowLaunchElevatedButton;
         }
 
         public bool ScanOnStartup {
@@ -101,6 +103,16 @@ namespace Solutionizer.ViewModels {
             }
         }
 
+        public bool ShowLaunchElevatedButton {
+            get { return _showLaunchElevatedButton; }
+            set {
+                if (_showLaunchElevatedButton != value) {
+                    _showLaunchElevatedButton = value;
+                    NotifyOfPropertyChange(() => ShowLaunchElevatedButton);
+                }
+            }
+        }
+
         public override void NotifyOfPropertyChange(string propertyName) {
             base.NotifyOfPropertyChange(propertyName);
 
@@ -120,6 +132,7 @@ namespace Solutionizer.ViewModels {
             _settings.ReferenceTreeDepth = ReferenceTreeDepth;
             _settings.IsFlatMode = IsFlatMode;
             _settings.VisualStudioVersion = VisualStudioVersion;
+            _settings.ShowLaunchElevatedButton = ShowLaunchElevatedButton;
 
             TryClose(true);
         }
@@ -133,7 +146,8 @@ namespace Solutionizer.ViewModels {
                     ReferenceFolderName != _settings.ReferenceFolderName ||
                     ReferenceTreeDepth != _settings.ReferenceTreeDepth ||
                     IsFlatMode != _settings.IsFlatMode ||
-                    VisualStudioVersion != _settings.VisualStudioVersion;
+                    VisualStudioVersion != _settings.VisualStudioVersion ||
+                    ShowLaunchElevatedButton != _settings.ShowLaunchElevatedButton;
             }
         }
 

@@ -28,7 +28,7 @@
             </DataTemplate>
         </StackPanel.Resources>
 
-        <Grid Helper:GridHelper.RowCount="7">
+        <Grid Helper:GridHelper.RowCount="8">
             <CheckBox 
                 x:Name="ScanOnStartup" 
                 Margin="0 0 0 8" 
@@ -100,6 +100,12 @@
                     Width="200" 
                     ItemsSource="{Binding Source={StaticResource PossibleValues}}"/>
             </StackPanel>
+
+            <CheckBox 
+                x:Name="ShowLaunchElevatedButton" 
+                Margin="0 0 0 8" 
+                Grid.Row="7" 
+                Content="Show &quot;Launch Elevated&quot; button."/>
         </Grid>
 
         <StackPanel
@@ -109,12 +115,12 @@
             HorizontalAlignment="Right">
             
             <Button 
-                MinWidth="75"
+                MinWidth="80"
                 x:Name="Ok" 
                 Content="OK"/>
             <Button 
                 Margin="8 0 0 0"
-                MinWidth="75"
+                MinWidth="80"
                 x:Name="Cancel" 
                 Content="Cancel"/>
         </StackPanel>

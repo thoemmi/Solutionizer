@@ -14,5 +14,6 @@ namespace Solutionizer.Services {
         string ReferenceFolderName { get; set; }
         Uri TfsName { get; set; }
         VisualStudioVersion VisualStudioVersion { get; set; }
+        bool ShowLaunchElevatedButton { get; set; }
     }
 }

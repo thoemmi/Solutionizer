@@ -97,6 +97,7 @@
       <DependentUpon>FluidProgressBar.xaml</DependentUpon>
     </Compile>
     <Compile Include="Converters\NullToCollapsedConverter.cs" />
+    <Compile Include="Helper\VisualStudioHelper.cs" />
     <Compile Include="ViewModels\FileScanningViewModel.cs" />
     <Compile Include="Helper\GridHelper.cs" />
     <Compile Include="Infrastructure\BindableSelectedItemBehavior .cs" />
