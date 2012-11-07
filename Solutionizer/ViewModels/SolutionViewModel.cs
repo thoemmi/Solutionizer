@@ -32,6 +32,11 @@ namespace Solutionizer.ViewModels {
             _projects = projects;
             _settings = settings;
             _dropCommand = new FixedRelayCommand<object>(OnDrop, obj => obj is ProjectViewModel);
+            _settings.PropertyChanged += (sender, args) => {
+                if (args.PropertyName == "ShowLaunchElevatedButton") {
+                    NotifyOfPropertyChange(() => ShowLaunchElevatedButton);
+                }
+            };
         }
 
         private void OnDrop(object node) {
@@ -44,16 +49,16 @@ namespace Solutionizer.ViewModels {
             LaunchInternal(false);
         }
 
-        public void LaunchAsAdmin() {
+        public void LaunchElevated() {
             LaunchInternal(true);
         }
 
-        private void LaunchInternal(bool asAdmin) {
+        private void LaunchInternal(bool elevated) {
             var newFilename = Path.Combine(Path.GetTempPath(), DateTime.Now.ToString("yyyy-MM-dd_HHmmss")) + ".sln";
             new SaveSolutionCommand(_settings, newFilename, _settings.VisualStudioVersion, this).Execute();
             var exePath = VisualStudioHelper.GetVisualStudioExecutable(_settings.VisualStudioVersion);
             var psi = new ProcessStartInfo(exePath, newFilename);
-            if (asAdmin) {
+            if (elevated) {
                 psi.Verb = "runas";
             }
             Process.Start(psi);
@@ -64,7 +69,7 @@ namespace Solutionizer.ViewModels {
             get { return _solutionRoot.Items.Any(); }
         }
 
-        public bool CanLaunchAsAdmin {
+        public bool CanLaunchElevated {
             get { return _solutionRoot.Items.Any(); }
         }
 
@@ -225,6 +230,10 @@ namespace Solutionizer.ViewModels {
                     NotifyOfPropertyChange(() => SelectedItem);
                 }
             }
+        }
+
+        public bool ShowLaunchElevatedButton {
+            get { return _settings.ShowLaunchElevatedButton; }
         }
 
         public void RemoveSolutionItem() {

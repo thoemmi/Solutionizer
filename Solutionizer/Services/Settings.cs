@@ -17,6 +17,7 @@ namespace Solutionizer.Services {
         private VisualStudioVersion _visualStudioVersion;
         private string _referenceFolderName = "_References";
         private string _rootPath;
+        private bool _showLaunchElevatedButton;
 
         public Settings() {
             _visualStudioVersion = VisualStudioHelper.DetectVersion();
@@ -141,6 +142,17 @@ namespace Solutionizer.Services {
                 if (_visualStudioVersion != value) {
                     _visualStudioVersion = value;
                     NotifyOfPropertyChange(() => VisualStudioVersion);
+                    IsDirty = true;
+                }
+            }
+        }
+
+        public bool ShowLaunchElevatedButton {
+            get { return _showLaunchElevatedButton; }
+            set {
+                if (_showLaunchElevatedButton != value) {
+                    _showLaunchElevatedButton = value;
+                    NotifyOfPropertyChange(() => ShowLaunchElevatedButton);
                     IsDirty = true;
                 }
             }
