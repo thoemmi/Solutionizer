@@ -109,12 +109,12 @@
             HorizontalAlignment="Right">
             
             <Button 
-                MinWidth="75"
+                MinWidth="80"
                 x:Name="Ok" 
                 Content="OK"/>
             <Button 
                 Margin="8 0 0 0"
-                MinWidth="75"
+                MinWidth="80"
                 x:Name="Cancel" 
                 Content="Cancel"/>
         </StackPanel>
