@@ -31,6 +31,10 @@ namespace Solutionizer {
         /// By default, we are configured to use MEF
         /// </summary>
         protected override void Configure() {
+            if (!Directory.Exists(_dataFolder)) {
+                Directory.CreateDirectory(_dataFolder);
+            }
+
             _settingsProvider = new SettingsProvider(_dataFolder);
 
             ConfigureLogging();
