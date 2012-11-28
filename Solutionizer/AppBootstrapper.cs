@@ -23,9 +23,15 @@ namespace Solutionizer {
         private CompositionContainer _container;
         private SettingsProvider _settingsProvider;
 
-        private static readonly string _dataFolder = Path.Combine(
-            Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
-            Assembly.GetEntryAssembly().GetName().Name);
+        private static readonly string _dataFolder;
+
+        static AppBootstrapper() {
+            if (!Execute.InDesignMode) {
+                _dataFolder = Path.Combine(
+                    Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+                    Assembly.GetEntryAssembly().GetName().Name);
+            }
+        }
 
         /// <summary>
         /// By default, we are configured to use MEF
