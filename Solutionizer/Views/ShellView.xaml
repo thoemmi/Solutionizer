@@ -7,7 +7,8 @@
         xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:ViewModels="clr-namespace:Solutionizer.ViewModels" mc:Ignorable="d"
+        xmlns:ViewModels="clr-namespace:Solutionizer.ViewModels"
+        xmlns:cal="clr-namespace:Caliburn.Micro;assembly=Caliburn.Micro" mc:Ignorable="d"
         Infrastructure:WindowStatePersistence.Settings="{Binding Settings}"  
         TextOptions.TextFormattingMode="Display"
         SnapsToDevicePixels="true" 
@@ -42,16 +43,28 @@
             <i:Interaction.Behaviors>
                 <Infrastructure:DragMoveWindowBehavior/>
             </i:Interaction.Behaviors>
-
-            <TextBlock 
-                Text="{Binding Title, ElementName=_window}"
-                TextWrapping="Wrap" 
-                VerticalAlignment="Top" 
-                FontWeight="Bold" FontSize="20" Margin="20,5,0,0"/>
-
+            <StackPanel Orientation="Horizontal" >
+                <TextBlock 
+                    Text="{Binding Title, ElementName=_window}"
+                    VerticalAlignment="Top"
+                    FontWeight="Bold" FontSize="20" Margin="20,5,0,0"/>
+                <TextBlock x:Name="RootPath"
+                    cal:Message.Attach="[Event PreviewMouseDown] = [Action SelectRootPath()]"
+                    VerticalAlignment="Top"
+                    FontWeight="Bold" FontSize="20" Margin="0 5 0 0" Padding="5 0 5 0">
+                    <TextBlock.Style>
+                       <Style TargetType="TextBlock">
+                           <Style.Triggers>
+                               <Trigger Property ="IsMouseOver" Value="True">
+                                    <Setter Property= "Background" Value="{DynamicResource GrayBrush8}"/>
+                               </Trigger>
+                           </Style.Triggers>
+                        </Style>
+                   </TextBlock.Style>
+                </TextBlock>
+            </StackPanel>
             <Rectangle HorizontalAlignment="Left" Width="10" StrokeThickness="0" Margin="0 10 0 0" Fill="{DynamicResource HighlightBrush}"/>
         </Grid>
-
         <Grid Grid.Row="1">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
@@ -78,10 +91,10 @@
             x:Name="Dialogs" 
             VerticalContentAlignment="Stretch"
             HorizontalContentAlignment="Stretch"/>
-        
+
         <Controls:WindowCommands HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0 2">
+            <Button x:Name="ChangeRoot" Content="Change Root..." cal:Message.Attach="SelectRootPath()" />
             <Button x:Name="ShowSettings" Content="Settings" />
         </Controls:WindowCommands>
-
     </Grid>
 </Window>

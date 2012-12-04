@@ -5,14 +5,15 @@
              xmlns:Converters="clr-namespace:Solutionizer.Converters" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:ViewModels="clr-namespace:Solutionizer.ViewModels" xmlns:Helper="clr-namespace:Solutionizer.Helper"
-             xmlns:cal="http://www.caliburnproject.org" 
+             xmlns:cal="http://www.caliburnproject.org"
+             xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <UserControl.Resources>
         <Converters:FilePathToImageSourceConverter x:Key="FilePathToImageSource"/>
         <BooleanToVisibilityConverter x:Key="BooleanToVisibility"/>
 
-        <HierarchicalDataTemplate DataType="{x:Type ViewModels:DirectoryViewModel}" ItemsSource ="{Binding Children}">
+        <HierarchicalDataTemplate DataType="{x:Type ViewModels:DirectoryViewModel}" ItemsSource ="{Binding Children}" >
             <StackPanel Orientation="Horizontal" Margin="1">
                 <Image Width="16" Height="16" x:Name="nodeImg" Source="{Converters:Shell32Icon FileName='shell32.dll',IconIndex=3}" Margin="0 0 4 0"/>
                 <TextBlock>
@@ -50,7 +51,6 @@
                 <TextBlock Text="{Binding Name}" />
             </StackPanel>
         </DataTemplate>
-
     </UserControl.Resources>
     <Grid >
         <Grid.ColumnDefinitions>
@@ -62,14 +62,11 @@
             <RowDefinition Height="auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
-        <Image Height="16" Width="16" Source="{Converters:Shell32Icon FileName='shell32.dll',IconIndex=3}" Margin="4 0"/>
-        <TextBlock 
-                        Grid.Column="1"
-                        x:Name="RootPath" 
-                        VerticalAlignment="Center"/>
-        <Button Grid.Column="2" Margin="3 0 0 0" cal:Message.Attach="SelectRootPath()" >
-            <Image Height="16" Width="16" Source="{Converters:Shell32Icon FileName='shell32.dll',IconIndex=3}" />
-        </Button>
+        <TextBox Grid.ColumnSpan="3" 
+                 Margin="3 3 3 5" VerticalContentAlignment="Center"
+                 Name="Filter" 
+                 Controls:TextboxHelper.Watermark="Filter..."
+                 Controls:TextboxHelper.ClearTextButton="True" />
         <TreeView 
             Grid.Row="1"
             Grid.ColumnSpan="3"

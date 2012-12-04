@@ -11,6 +11,7 @@ namespace Solutionizer.ViewModels {
         private readonly IDialogManager _dialogManager;
         private readonly ProjectRepositoryViewModel _projectRepository;
         private SolutionViewModel _solution;
+        private string _rootPath;
 
         [ImportingConstructor]
         public ShellViewModel(Services.Settings settings, IDialogManager dialogManager) {
@@ -18,6 +19,16 @@ namespace Solutionizer.ViewModels {
             _projectRepository = new ProjectRepositoryViewModel(settings);
             _dialogManager = dialogManager;
             DisplayName = "Solutionizer";
+        }
+
+        public string RootPath {
+            get { return _rootPath; }
+            set {
+                if (_rootPath != value) {
+                    _rootPath = value;
+                    NotifyOfPropertyChange(() => RootPath);
+                }
+            }
         }
 
         public ProjectRepositoryViewModel ProjectRepository {
@@ -73,7 +84,8 @@ namespace Solutionizer.ViewModels {
                     _projectRepository.RootPath = path;
                     _projectRepository.RootFolder = fileScanningViewModel.Result.ProjectFolder;
                     Solution = new SolutionViewModel(_settings, path, fileScanningViewModel.Result.Projects);
-                    DisplayName = "Solutionizer - " + path;
+                    DisplayName = "Solutionizer - ";
+                    RootPath = path;
                 }
             };
         }
