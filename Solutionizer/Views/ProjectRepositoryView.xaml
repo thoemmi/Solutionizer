@@ -59,19 +59,10 @@
             <ColumnDefinition Width="auto" />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
-        <Image Height="16" Width="16" Source="{Converters:Shell32Icon FileName='shell32.dll',IconIndex=3}" Margin="4 0"/>
-        <TextBlock 
-                        Grid.Column="1"
-                        x:Name="RootPath" 
-                        VerticalAlignment="Center"/>
-        <Button Grid.Column="2" Margin="3 0 0 0" cal:Message.Attach="SelectRootPath()" >
-            <Image Height="16" Width="16" Source="{Converters:Shell32Icon FileName='shell32.dll',IconIndex=3}" />
-        </Button>
         <TreeView 
-            Grid.Row="1"
+            Grid.Row="0"
             Grid.ColumnSpan="3"
             BorderThickness="0"
             VirtualizingStackPanel.IsVirtualizing="True"
