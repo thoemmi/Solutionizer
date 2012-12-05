@@ -39,30 +39,34 @@
             <RowDefinition Height="auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <Grid>
+        <Grid Background="White">
             <i:Interaction.Behaviors>
                 <Infrastructure:DragMoveWindowBehavior/>
             </i:Interaction.Behaviors>
-            <StackPanel Orientation="Horizontal" >
-                <TextBlock 
-                    Text="{Binding Title, ElementName=_window}"
-                    VerticalAlignment="Top"
-                    FontWeight="Bold" FontSize="20" Margin="20,5,0,0"/>
-                <TextBlock x:Name="RootPath"
-                    cal:Message.Attach="[Event PreviewMouseDown] = [Action SelectRootPath()]"
-                    VerticalAlignment="Top"
-                    FontWeight="Bold" FontSize="20" Margin="0 5 0 0" Padding="5 0 5 0">
-                    <TextBlock.Style>
-                       <Style TargetType="TextBlock">
-                           <Style.Triggers>
-                               <Trigger Property ="IsMouseOver" Value="True">
-                                    <Setter Property= "Background" Value="{DynamicResource GrayBrush8}"/>
-                               </Trigger>
-                           </Style.Triggers>
-                        </Style>
-                   </TextBlock.Style>
-                </TextBlock>
-            </StackPanel>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <TextBlock 
+                Text="{Binding Title, ElementName=_window}"
+                VerticalAlignment="Top"
+                FontWeight="Bold" FontSize="20" Margin="20,5,0,0"/>
+            <TextBlock x:Name="RootPath"
+                Grid.Column="1"
+                cal:Message.Attach="[Event PreviewMouseDown] = [Action SelectRootPath()]"
+                VerticalAlignment="Top"
+                FontWeight="Bold" FontSize="20" Margin="0 5 0 0" Padding="5 0 5 0">
+                <TextBlock.Style>
+                    <Style TargetType="TextBlock">
+                        <Style.Triggers>
+                            <Trigger Property ="IsMouseOver" Value="True">
+                                <Setter Property= "Background" Value="{DynamicResource GrayBrush8}"/>
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </TextBlock.Style>
+            </TextBlock>
             <Rectangle HorizontalAlignment="Left" Width="10" StrokeThickness="0" Margin="0 10 0 0" Fill="{DynamicResource HighlightBrush}"/>
         </Grid>
         <Grid Grid.Row="1">

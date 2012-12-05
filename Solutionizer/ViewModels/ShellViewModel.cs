@@ -84,7 +84,7 @@ namespace Solutionizer.ViewModels {
                     _projectRepository.RootPath = path;
                     _projectRepository.RootFolder = fileScanningViewModel.Result.ProjectFolder;
                     Solution = new SolutionViewModel(_settings, path, fileScanningViewModel.Result.Projects);
-                    DisplayName = "Solutionizer - ";
+                    DisplayName = "Solutionizer -";
                     RootPath = path;
                 }
             };
