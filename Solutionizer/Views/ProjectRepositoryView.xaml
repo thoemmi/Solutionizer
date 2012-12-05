@@ -5,7 +5,8 @@
              xmlns:Converters="clr-namespace:Solutionizer.Converters" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:ViewModels="clr-namespace:Solutionizer.ViewModels" xmlns:Helper="clr-namespace:Solutionizer.Helper"
-             xmlns:cal="http://www.caliburnproject.org" 
+             xmlns:cal="http://www.caliburnproject.org"
+             xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <UserControl.Resources>
@@ -62,14 +63,11 @@
             <RowDefinition Height="auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
-        <Image Height="16" Width="16" Source="{Converters:Shell32Icon FileName='shell32.dll',IconIndex=3}" Margin="4 0"/>
-        <TextBlock 
-                        Grid.Column="1"
-                        x:Name="RootPath" 
-                        VerticalAlignment="Center"/>
-        <Button Grid.Column="2" Margin="3 0 0 0" cal:Message.Attach="SelectRootPath()" >
-            <Image Height="16" Width="16" Source="{Converters:Shell32Icon FileName='shell32.dll',IconIndex=3}" />
-        </Button>
+        <TextBox Grid.ColumnSpan="3" 
+                 Margin="3 3 3 5" VerticalContentAlignment="Center"
+                 Name="Filter" 
+                 Controls:TextboxHelper.Watermark="Filter..."
+                 Controls:TextboxHelper.ClearTextButton="True" />
         <TreeView 
             Grid.Row="1"
             Grid.ColumnSpan="3"
@@ -80,7 +78,17 @@
             x:Name="Nodes" Margin="0" Padding="0"
             Helper:DragDropHelper.IsDragSource="true" 
             cal:Message.Attach="[Event MouseDoubleClick] = [Action OnDoubleClick(Nodes.SelectedItem)]"
-            Helper:DragDropHelper.DragDropTemplate="{StaticResource ProjectItemDrag}" />
-
+            Helper:DragDropHelper.DragDropTemplate="{StaticResource ProjectItemDrag}">
+            <TreeView.ItemContainerStyle>
+                <Style TargetType="TreeViewItem">
+                    <Setter Property="Visibility" Value="Collapsed"/>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding RelativeSource={RelativeSource Self}, Path=Header.IsVisible }" Value="True">
+                            <Setter Property="Visibility" Value="Visible"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </TreeView.ItemContainerStyle>
+            </TreeView>
     </Grid>
 </UserControl>

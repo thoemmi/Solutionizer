@@ -15,5 +15,7 @@ namespace Solutionizer.ViewModels {
         public abstract string Name { get; }
 
         public abstract string Path { get; }
+
+        public abstract void Filter(string filter);
     }
 }

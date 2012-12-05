@@ -4,6 +4,7 @@ using Solutionizer.Models;
 namespace Solutionizer.ViewModels {
     public class ProjectViewModel : ItemViewModel {
         private readonly Project _project;
+        private bool _isVisible = true;
 
         public ProjectViewModel(DirectoryViewModel parent, Project project) : base(parent) {
             _project = project;
@@ -19,6 +20,20 @@ namespace Solutionizer.ViewModels {
 
         public override string Path {
             get { return _project.Filepath; }
+        }
+
+        public bool IsVisible {
+            get { return _isVisible; }
+            private set {
+                if (_isVisible != value) {
+                    _isVisible = value;
+                    NotifyOfPropertyChange(() => IsVisible);
+                }
+            }
+        }
+
+        public override void Filter(string filter) {
+            IsVisible = String.IsNullOrEmpty(filter) || Name.ToUpperInvariant().Contains(filter.ToUpperInvariant());
         }
 
         public bool HasBrokenProjectReferences {
