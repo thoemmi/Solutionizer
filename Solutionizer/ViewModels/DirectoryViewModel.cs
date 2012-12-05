@@ -7,6 +7,7 @@ namespace Solutionizer.ViewModels {
         private readonly ProjectFolder _projectFolder;
         private readonly List<DirectoryViewModel> _directories = new List<DirectoryViewModel>();
         private readonly List<ProjectViewModel> _projects = new List<ProjectViewModel>();
+        private bool _isVisible = true;
 
         public DirectoryViewModel(DirectoryViewModel parent, ProjectFolder projectFolder) : base(parent) {
             _projectFolder = projectFolder;
@@ -30,6 +31,26 @@ namespace Solutionizer.ViewModels {
 
         public List<ProjectViewModel> Projects {
             get { return _projects; }
+        }
+
+        public bool IsVisible {
+            get { return _isVisible; }
+            private set {
+                if (_isVisible != value) {
+                    _isVisible = value;
+                    NotifyOfPropertyChange(() => IsVisible);
+                }
+            }
+        }
+
+        public override void Filter(string filter) {
+            foreach (var directory in _directories) {
+                directory.Filter(filter);
+            }
+            foreach (var project in _projects) {
+                project.Filter(filter);
+            }
+            IsVisible = string.IsNullOrWhiteSpace(filter) || _directories.Any(d => d.IsVisible) || _projects.Any(p => p.IsVisible);
         }
 
         public IList<ItemViewModel> Children {
