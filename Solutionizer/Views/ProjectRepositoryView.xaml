@@ -5,7 +5,8 @@
              xmlns:Converters="clr-namespace:Solutionizer.Converters" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:ViewModels="clr-namespace:Solutionizer.ViewModels" xmlns:Helper="clr-namespace:Solutionizer.Helper"
-             xmlns:cal="http://www.caliburnproject.org" 
+             xmlns:cal="http://www.caliburnproject.org"
+             xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <UserControl.Resources>
@@ -59,10 +60,16 @@
             <ColumnDefinition Width="auto" />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
+            <RowDefinition Height="auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
+        <TextBox Grid.ColumnSpan="3" 
+                 Margin="3 3 3 5" VerticalContentAlignment="Center"
+                 Name="Filter" 
+                 Controls:TextboxHelper.Watermark="Filter..."
+                 Controls:TextboxHelper.ClearTextButton="True" />
         <TreeView 
-            Grid.Row="0"
+            Grid.Row="1"
             Grid.ColumnSpan="3"
             BorderThickness="0"
             VirtualizingStackPanel.IsVirtualizing="True"
@@ -71,7 +78,17 @@
             x:Name="Nodes" Margin="0" Padding="0"
             Helper:DragDropHelper.IsDragSource="true" 
             cal:Message.Attach="[Event MouseDoubleClick] = [Action OnDoubleClick(Nodes.SelectedItem)]"
-            Helper:DragDropHelper.DragDropTemplate="{StaticResource ProjectItemDrag}" />
-
+            Helper:DragDropHelper.DragDropTemplate="{StaticResource ProjectItemDrag}">
+            <TreeView.ItemContainerStyle>
+                <Style TargetType="TreeViewItem">
+                    <Setter Property="Visibility" Value="Collapsed"/>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding RelativeSource={RelativeSource Self}, Path=Header.IsVisible }" Value="True">
+                            <Setter Property="Visibility" Value="Visible"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </TreeView.ItemContainerStyle>
+            </TreeView>
     </Grid>
 </UserControl>

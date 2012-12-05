@@ -11,6 +11,7 @@ namespace Solutionizer.ViewModels {
         private string _rootPath;
         private ProjectFolder _rootFolder;
         private IList _nodes;
+        private string _filter;
 
         public ProjectRepositoryViewModel(ISettings settings) {
             _settings = settings;
@@ -43,6 +44,25 @@ namespace Solutionizer.ViewModels {
                 if (!ReferenceEquals(_nodes, value)) {
                     _nodes = value;
                     NotifyOfPropertyChange(() => Nodes);
+                }
+            }
+        }
+
+        public string Filter {
+            get { return _filter; }
+            set {
+                if (_filter != value) {
+                    _filter = value;
+                    NotifyOfPropertyChange(() => Filter);
+                    UpdateFilter();
+                }
+            }
+        }
+
+        private void UpdateFilter() {
+            if (_nodes != null) {
+                foreach (var item in _nodes.Cast<ItemViewModel>()) {
+                    item.Filter(_filter);
                 }
             }
         }
