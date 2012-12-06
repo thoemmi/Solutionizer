@@ -9,8 +9,8 @@ using System.Windows;
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Thomas Freudenberg")]
-[assembly: AssemblyProduct("SolutionPicker")]
-[assembly: AssemblyCopyright("Copyright © Thomas Freudenberg 2011")]
+[assembly: AssemblyProduct("Solutionizer")]
+[assembly: AssemblyCopyright("Copyright © Thomas Freudenberg 2010-2012")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
