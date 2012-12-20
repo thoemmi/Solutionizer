@@ -62,11 +62,6 @@ namespace Solutionizer.Models {
                 assemblyReferences.Add(include.ToLowerInvariant());
             }
 
-            var outputPath = xmlDocument.GetElementsByTagName("OutputPath")[0].FirstChild.Value;
-            var outputType = xmlDocument.GetElementsByTagName("OutputType")[0].FirstChild.Value;
-            var path = assemblyName + ((outputType == "WinExe") ? ".exe" : ".dll");
-            var targetFilePath = Path.Combine(Path.GetFullPath(Path.Combine(directoryName, outputPath)), path);
-
             var isSccBound = false;
             var elementsByTagName = xmlDocument.GetElementsByTagName("SccProjectName");
             if (elementsByTagName.Count > 0) {
