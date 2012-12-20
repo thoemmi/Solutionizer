@@ -35,7 +35,7 @@ namespace Solutionizer.Commands {
                     writer.WriteLine("EndProject");
                 }
 
-                var folders = _solution.SolutionItems.Flatten<SolutionItem, SolutionFolder, SolutionFolder>(p => p.Items);
+                var folders = _solution.SolutionItems.Flatten<SolutionItem, SolutionFolder, SolutionFolder>(p => p.Items).Where(f => f.Items.Any());
                 foreach (var folder in folders) {
                     writer.WriteLine("Project(\"{0}\") = \"{1}\", \"{2}\", \"{3}\"", "{2150E333-8FDC-42A3-9474-1A3956D46DE8}",
                                      folder.Name, folder.Name, folder.Guid.ToString("B").ToUpperInvariant());
@@ -76,7 +76,7 @@ namespace Solutionizer.Commands {
 
         private void WriteNestedProjects(TextWriter writer) {
             var folders = _solution.SolutionItems.Flatten<SolutionItem, SolutionFolder, SolutionFolder>(p => p.Items).ToList();
-            if (folders.Count == 0) {
+            if (folders.Count == 0 || !folders.SelectMany(f => f.Items).Any()) {
                 return;
             }
 
