@@ -58,7 +58,8 @@ namespace Solutionizer.Commands {
         private void WriteSolutionConfigurationPlatforms(TextWriter writer, IEnumerable<SolutionProject> projects) {
             writer.WriteLine("\tGlobalSection(SolutionConfigurationPlatforms) = preSolution");
             foreach (var configuration in projects.SelectMany(p => p.Configurations).Distinct()) {
-                writer.WriteLine("\t\t{0} = {0}", configuration);
+                var fixedConfigurationNameBecauseOfA3YearsOldBugInVisualStudio = configuration.Replace("AnyCPU", "Any CPU");
+                writer.WriteLine("\t\t{0} = {0}", fixedConfigurationNameBecauseOfA3YearsOldBugInVisualStudio);
             }
             writer.WriteLine("\tEndGlobalSection");
         }
@@ -71,9 +72,9 @@ namespace Solutionizer.Commands {
                     // there's a bug in Visual Studio since 2010 beta, that in sln files the platform is called "Any CPU" instead of "AnyCPU"
                     // http://connect.microsoft.com/VisualStudio/feedback/details/503935/msbuild-inconsistent-platform-for-any-cpu-between-solution-and-project
                     var fixedConfigurationNameBecauseOfA3YearsOldBugInVisualStudio = configuration.Replace("AnyCPU", "Any CPU");
-                    writer.WriteLine("\t\t{0}.{1}.ActiveCfg = {2}", guid, configuration, fixedConfigurationNameBecauseOfA3YearsOldBugInVisualStudio);
+                    writer.WriteLine("\t\t{0}.{1}.ActiveCfg = {1}", guid,  fixedConfigurationNameBecauseOfA3YearsOldBugInVisualStudio);
                     if (!_settings.DontBuildReferencedProjects || String.IsNullOrEmpty(project.Parent.Name)) {
-                        writer.WriteLine("\t\t{0}.{1}.Build.0 = {2}", guid, configuration, fixedConfigurationNameBecauseOfA3YearsOldBugInVisualStudio);
+                        writer.WriteLine("\t\t{0}.{1}.Build.0 = {1}", guid,  fixedConfigurationNameBecauseOfA3YearsOldBugInVisualStudio);
                     }
                 }
             }
