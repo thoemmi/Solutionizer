@@ -40,7 +40,7 @@ namespace Solutionizer.Models {
         private void LoadInternal() {
             var directoryName = Path.GetDirectoryName(_filepath);
 
-            var p = new Microsoft.Build.Evaluation.Project(_filepath);
+            var p = Microsoft.Build.Evaluation.ProjectCollection.GlobalProjectCollection.LoadProject(_filepath);
             _projectReferences = p
                 .Items
                 .Where(item => item.ItemType == "ProjectReference")
