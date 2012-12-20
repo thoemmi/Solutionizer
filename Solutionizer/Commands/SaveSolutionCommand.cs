@@ -69,7 +69,9 @@ namespace Solutionizer.Commands {
                 var guid = project.Guid.ToString("B").ToUpperInvariant();
                 foreach (var configuration in project.Configurations) {
                     writer.WriteLine("\t\t{0}.{1}.ActiveCfg = {1}", guid, configuration);
-                    writer.WriteLine("\t\t{0}.{1}.Build.0 = {1}", guid, configuration);
+                    if (!_settings.DontBuildReferencedProjects || String.IsNullOrEmpty(project.Parent.Name)) {
+                        writer.WriteLine("\t\t{0}.{1}.Build.0 = {1}", guid, configuration);
+                    }
                 }
             }
             writer.WriteLine("\tEndGlobalSection");
