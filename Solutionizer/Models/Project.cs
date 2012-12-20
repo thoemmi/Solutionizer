@@ -55,7 +55,9 @@ namespace Solutionizer.Models {
                 .Select(property => property.EvaluatedValue == "SAK")
                 .SingleOrDefault();
 
-            _configurations = p.ConditionedProperties["Configuration"];
+            var configurations = p.ConditionedProperties["Configuration"];
+            var platforms = p.ConditionedProperties["Platform"];
+            _configurations = configurations.SelectMany(configuration => platforms.Select(platform => configuration + "|" + platform)).ToList();
 
             _brokenProjectReferences = new List<string>();
         }
