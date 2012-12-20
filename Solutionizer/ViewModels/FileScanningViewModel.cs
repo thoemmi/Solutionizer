@@ -73,7 +73,9 @@ namespace Solutionizer.ViewModels {
             try {
                 ProjectFolder projectFolder = null;
                 try {
+                    var sp = System.Diagnostics.Stopwatch.StartNew();
                     projectFolder = GetProjects(_path);
+                    _log.Debug("Loading project took {0}", sp.Elapsed);
                 } catch (Exception ex) {
                     _log.ErrorException("Loading projects from " + _path + " failed", ex);
                 }
