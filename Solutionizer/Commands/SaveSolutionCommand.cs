@@ -68,9 +68,12 @@ namespace Solutionizer.Commands {
             foreach (var project in projects) {
                 var guid = project.Guid.ToString("B").ToUpperInvariant();
                 foreach (var configuration in project.Configurations) {
-                    writer.WriteLine("\t\t{0}.{1}.ActiveCfg = {1}", guid, configuration);
+                    // there's a bug in Visual Studio since 2010 beta, that in sln files the platform is called "Any CPU" instead of "AnyCPU"
+                    // http://connect.microsoft.com/VisualStudio/feedback/details/503935/msbuild-inconsistent-platform-for-any-cpu-between-solution-and-project
+                    var fixedConfigurationNameBecauseOfA3YearsOldBugInVisualStudio = configuration.Replace("AnyCPU", "Any CPU");
+                    writer.WriteLine("\t\t{0}.{1}.ActiveCfg = {2}", guid, configuration, fixedConfigurationNameBecauseOfA3YearsOldBugInVisualStudio);
                     if (!_settings.DontBuildReferencedProjects || String.IsNullOrEmpty(project.Parent.Name)) {
-                        writer.WriteLine("\t\t{0}.{1}.Build.0 = {1}", guid, configuration);
+                        writer.WriteLine("\t\t{0}.{1}.Build.0 = {2}", guid, configuration, fixedConfigurationNameBecauseOfA3YearsOldBugInVisualStudio);
                     }
                 }
             }
