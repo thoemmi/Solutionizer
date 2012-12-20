@@ -9,11 +9,9 @@ namespace Solutionizer.Models {
         private ProjectFolder _parent;
         private readonly string _name;
         private string _assemblyName;
-        private string _targetFilePath;
         private Guid _guid;
         private bool _isSccBound;
         private List<string> _projectReferences;
-        private List<string> _assemblyReferences;
         private List<string> _brokenProjectReferences;
 
         public Project(string filepath) : this(filepath, null) {}
@@ -77,10 +75,8 @@ namespace Solutionizer.Models {
 
             _assemblyName = assemblyName;
             _guid = guid;
-            _targetFilePath = targetFilePath;
             _isSccBound = isSccBound;
             _projectReferences = projectReferences;
-            _assemblyReferences = assemblyReferences;
             _brokenProjectReferences = new List<string>();
         }
 
@@ -97,10 +93,6 @@ namespace Solutionizer.Models {
             get { return _assemblyName; }
         }
 
-        public string TargetFilePath {
-            get { return _targetFilePath; }
-        }
-
         public Guid Guid {
             get { return _guid; }
         }
@@ -111,10 +103,6 @@ namespace Solutionizer.Models {
 
         public List<string> ProjectReferences {
             get { return _projectReferences; }
-        }
-
-        public List<string> AssemblyReferences {
-            get { return _assemblyReferences; }
         }
 
         public List<string> BrokenProjectReferences {
