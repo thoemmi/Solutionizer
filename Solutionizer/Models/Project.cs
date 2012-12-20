@@ -14,6 +14,7 @@ namespace Solutionizer.Models {
         private bool _isSccBound;
         private List<string> _projectReferences;
         private List<string> _brokenProjectReferences;
+        private List<string> _configurations;
 
         public Project(string filepath) : this(filepath, null) {}
 
@@ -54,6 +55,8 @@ namespace Solutionizer.Models {
                 .Select(property => property.EvaluatedValue == "SAK")
                 .SingleOrDefault();
 
+            _configurations = p.ConditionedProperties["Configuration"];
+
             _brokenProjectReferences = new List<string>();
         }
 
@@ -87,6 +90,10 @@ namespace Solutionizer.Models {
 
         public bool HasBrokenProjectReferences {
             get { return _brokenProjectReferences != null && _brokenProjectReferences.Count > 0; }
+        }
+
+        public List<string> Configurations {
+            get { return _configurations; }
         }
     }
 }
