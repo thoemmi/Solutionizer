@@ -86,7 +86,7 @@
                 IsEnabled="{Binding IncludeReferencedProjects}"
                 Grid.Row="5" 
                 Margin="20 0 0 8"
-                Content="Exclude referenced projects in build configurations."/>
+                Content="Exclude referenced projects from build configurations."/>
             
             <CheckBox 
                 x:Name="IsFlatMode" 
