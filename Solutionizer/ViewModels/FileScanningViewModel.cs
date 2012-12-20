@@ -109,12 +109,20 @@ namespace Solutionizer.ViewModels {
             ProgressText = "Analyzing project dependencies";
 
             // load project details asynchronously
-            Parallel.ForEach(_projects.Values, project => {
-                project.Load();
-                project.BrokenProjectReferences.AddRange(project.ProjectReferences.Where(path => !_projects.ContainsKey(path)));
-            });
+            var options = new ParallelOptions { CancellationToken = _cancellationToken };
+            try {
+                Parallel.ForEach(_projects.Values, options, project => {
+                    project.Load();
+                    project.BrokenProjectReferences.AddRange(project.ProjectReferences.Where(path => !_projects.ContainsKey(path)));
+                });
+            } catch (OperationCanceledException) {
+            }
 
-            return projectFolder;
+            if (_cancellationToken.IsCancellationRequested) {
+                return null;
+            } else {
+                return projectFolder;
+            }
         }
 
         private ProjectFolder CreateProjectFolder(string path, ProjectFolder parent) {
