@@ -12,6 +12,7 @@ namespace Solutionizer.Services {
         private WindowSettings _windowSettings;
         private bool _includeReferencedProjects = true;
         private int _referenceTreeDepth = 6;
+        private bool _dontBuildReferencedProjects;
         private bool _simplifyProjectTree;
         private Uri _tfsName;
         private VisualStudioVersion _visualStudioVersion;
@@ -119,6 +120,17 @@ namespace Solutionizer.Services {
                 if (_referenceFolderName != value) {
                     _referenceFolderName = value;
                     NotifyOfPropertyChange(() => ReferenceFolderName);
+                    IsDirty = true;
+                }
+            }
+        }
+
+        public bool DontBuildReferencedProjects {
+            get { return _dontBuildReferencedProjects; }
+            set {
+                if (_dontBuildReferencedProjects != value) {
+                    _dontBuildReferencedProjects = value;
+                    NotifyOfPropertyChange(() => DontBuildReferencedProjects);
                     IsDirty = true;
                 }
             }

@@ -12,6 +12,7 @@ namespace Solutionizer.ViewModels {
         private bool _isFlatMode;
         private string _referenceFolderName;
         private int _referenceTreeDepth;
+        private bool _dontBuildReferencedProjects;
         private VisualStudioVersion _visualStudioVersion;
         private bool _showLaunchElevatedButton;
 
@@ -28,6 +29,7 @@ namespace Solutionizer.ViewModels {
             IncludeReferencedProjects = _settings.IncludeReferencedProjects;
             ReferenceFolderName = _settings.ReferenceFolderName;
             ReferenceTreeDepth = _settings.ReferenceTreeDepth;
+            DontBuildReferencedProjects = _settings.DontBuildReferencedProjects;
             IsFlatMode = _settings.IsFlatMode;
             VisualStudioVersion = _settings.VisualStudioVersion;
             ShowLaunchElevatedButton = _settings.ShowLaunchElevatedButton;
@@ -83,6 +85,16 @@ namespace Solutionizer.ViewModels {
             }
         }
 
+        public bool DontBuildReferencedProjects {
+            get { return _dontBuildReferencedProjects; }
+            set {
+                if (_dontBuildReferencedProjects != value) {
+                    _dontBuildReferencedProjects = value;
+                    NotifyOfPropertyChange(() => DontBuildReferencedProjects);
+                }
+            }
+        }
+
         public bool IsFlatMode {
             get { return _isFlatMode; }
             set {
@@ -130,6 +142,7 @@ namespace Solutionizer.ViewModels {
             _settings.IncludeReferencedProjects = IncludeReferencedProjects;
             _settings.ReferenceFolderName = ReferenceFolderName;
             _settings.ReferenceTreeDepth = ReferenceTreeDepth;
+            _settings.DontBuildReferencedProjects = DontBuildReferencedProjects;
             _settings.IsFlatMode = IsFlatMode;
             _settings.VisualStudioVersion = VisualStudioVersion;
             _settings.ShowLaunchElevatedButton = ShowLaunchElevatedButton;
@@ -145,6 +158,7 @@ namespace Solutionizer.ViewModels {
                     IncludeReferencedProjects != _settings.IncludeReferencedProjects ||
                     ReferenceFolderName != _settings.ReferenceFolderName ||
                     ReferenceTreeDepth != _settings.ReferenceTreeDepth ||
+                    DontBuildReferencedProjects != _settings.DontBuildReferencedProjects ||
                     IsFlatMode != _settings.IsFlatMode ||
                     VisualStudioVersion != _settings.VisualStudioVersion ||
                     ShowLaunchElevatedButton != _settings.ShowLaunchElevatedButton;
