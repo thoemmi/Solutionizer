@@ -28,7 +28,7 @@
             </DataTemplate>
         </StackPanel.Resources>
 
-        <Grid Helper:GridHelper.RowCount="8">
+        <Grid Helper:GridHelper.RowCount="9">
             <CheckBox 
                 x:Name="ScanOnStartup" 
                 Margin="0 0 0 8" 
@@ -80,16 +80,23 @@
                     </ComboBox.Items>
                 </ComboBox>
             </StackPanel>
+
+            <CheckBox
+                x:Name="DontBuildReferencedProjects"
+                IsEnabled="{Binding IncludeReferencedProjects}"
+                Grid.Row="5" 
+                Margin="20 0 0 8"
+                Content="Exclude referenced projects from build configurations."/>
             
             <CheckBox 
                 x:Name="IsFlatMode" 
                 Margin="0 0 0 8" 
-                Grid.Row="5" 
+                Grid.Row="6" 
                 Content="Show projects as flat list."/>
             
             <StackPanel 
                 Orientation="Horizontal" 
-                Grid.Row="6" 
+                Grid.Row="7" 
                 Margin="0 0 0 8">
                 <TextBlock 
                     VerticalAlignment="Center" 
@@ -104,7 +111,7 @@
             <CheckBox 
                 x:Name="ShowLaunchElevatedButton" 
                 Margin="0 0 0 8" 
-                Grid.Row="7" 
+                Grid.Row="8" 
                 Content="Show &quot;Launch Elevated&quot; button."/>
         </Grid>
 

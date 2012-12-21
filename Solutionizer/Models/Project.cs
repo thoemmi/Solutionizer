@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
+using System.Threading.Tasks;
 using System.Xml;
 
 namespace Solutionizer.Models {
@@ -9,12 +11,11 @@ namespace Solutionizer.Models {
         private ProjectFolder _parent;
         private readonly string _name;
         private string _assemblyName;
-        private string _targetFilePath;
         private Guid _guid;
         private bool _isSccBound;
         private List<string> _projectReferences;
-        private List<string> _assemblyReferences;
         private List<string> _brokenProjectReferences;
+        private Task<List<string>> _taskLoadConfigurations;
 
         public Project(string filepath) : this(filepath, null) {}
 
@@ -39,8 +40,7 @@ namespace Solutionizer.Models {
         }
 
         private void LoadInternal() {
-            var projectReferences = new List<string>();
-            var assemblyReferences = new List<string>();
+            _brokenProjectReferences = new List<string>();
 
             var xmlDocument = new XmlDocument();
             xmlDocument.Load(_filepath);
@@ -51,9 +51,13 @@ namespace Solutionizer.Models {
             var assemblyName = xmlDocument.GetElementsByTagName("AssemblyName")[0].FirstChild.Value;
             var guid = Guid.Parse(xmlDocument.GetElementsByTagName("ProjectGuid")[0].FirstChild.Value);
             var directoryName = Path.GetDirectoryName(_filepath);
+
+            var projectReferences = new List<string>();
             foreach (XmlNode xmlNode in xmlDocument.GetElementsByTagName("ProjectReference")) {
                 projectReferences.Add(Path.GetFullPath(Path.Combine(directoryName, xmlNode.Attributes["Include"].Value)));
             }
+
+            var assemblyReferences = new List<string>();
             foreach (XmlNode xmlNode2 in xmlDocument.GetElementsByTagName("Reference")) {
                 var include = xmlNode2.Attributes["Include"].Value;
                 var num = include.IndexOf(',');
@@ -64,11 +68,6 @@ namespace Solutionizer.Models {
                 assemblyReferences.Add(include.ToLowerInvariant());
             }
 
-            var outputPath = xmlDocument.GetElementsByTagName("OutputPath")[0].FirstChild.Value;
-            var outputType = xmlDocument.GetElementsByTagName("OutputType")[0].FirstChild.Value;
-            var path = assemblyName + ((outputType == "WinExe") ? ".exe" : ".dll");
-            var targetFilePath = Path.Combine(Path.GetFullPath(Path.Combine(directoryName, outputPath)), path);
-
             var isSccBound = false;
             var elementsByTagName = xmlDocument.GetElementsByTagName("SccProjectName");
             if (elementsByTagName.Count > 0) {
@@ -77,13 +76,19 @@ namespace Solutionizer.Models {
 
             _assemblyName = assemblyName;
             _guid = guid;
-            _targetFilePath = targetFilePath;
             _isSccBound = isSccBound;
             _projectReferences = projectReferences;
-            _assemblyReferences = assemblyReferences;
-            _brokenProjectReferences = new List<string>();
+
+            _taskLoadConfigurations = Task<List<string>>.Factory.StartNew(LoadConfigurationsWithMicrosoftBuild);
         }
 
+        private List<string> LoadConfigurationsWithMicrosoftBuild() {
+            var p = Microsoft.Build.Evaluation.ProjectCollection.GlobalProjectCollection.LoadProject(_filepath);
+            var configurations = p.ConditionedProperties["Configuration"];
+            var platforms = p.ConditionedProperties["Platform"];
+
+            return configurations.SelectMany(configuration => platforms.Select(platform => configuration + "|" + platform)).ToList();
+        }
 
         public string Filepath {
             get { return _filepath; }
@@ -95,10 +100,6 @@ namespace Solutionizer.Models {
 
         public string AssemblyName {
             get { return _assemblyName; }
-        }
-
-        public string TargetFilePath {
-            get { return _targetFilePath; }
         }
 
         public Guid Guid {
@@ -113,16 +114,16 @@ namespace Solutionizer.Models {
             get { return _projectReferences; }
         }
 
-        public List<string> AssemblyReferences {
-            get { return _assemblyReferences; }
-        }
-
         public List<string> BrokenProjectReferences {
             get { return _brokenProjectReferences; }
         }
 
         public bool HasBrokenProjectReferences {
             get { return _brokenProjectReferences != null && _brokenProjectReferences.Count > 0; }
+        }
+
+        public IList<string> Configurations {
+            get { return _taskLoadConfigurations.Result; }
         }
     }
 }
