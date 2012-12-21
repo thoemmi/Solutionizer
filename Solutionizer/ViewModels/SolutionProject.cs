@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+
 namespace Solutionizer.ViewModels {
     public class SolutionProject : SolutionItem {
         //public Project Project { get; set; }
@@ -5,5 +7,7 @@ namespace Solutionizer.ViewModels {
         }
 
         public string Filepath { get; set; }
+
+        public IList<string> Configurations { get; set; }
     }
 }

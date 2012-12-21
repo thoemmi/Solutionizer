@@ -36,7 +36,8 @@ namespace Solutionizer.ViewModels {
             _items.Add(new SolutionProject(this) {
                 Guid = project.Guid,
                 Name = project.Name,
-                Filepath = project.Filepath
+                Filepath = project.Filepath,
+                Configurations = project.Configurations
             });
         }
     }

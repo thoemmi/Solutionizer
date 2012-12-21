@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -26,7 +27,7 @@ namespace Solutionizer.Commands {
             using (var writer = new StreamWriter(_solutionFileName, false, Encoding.UTF8)) {
                 WriteHeader(writer);
 
-                var projects = _solution.SolutionItems.Flatten<SolutionItem, SolutionProject, SolutionFolder>(p => p.Items);
+                var projects = _solution.SolutionItems.Flatten<SolutionItem, SolutionProject, SolutionFolder>(p => p.Items).ToList();
 
                 foreach (var project in projects) {
                     writer.WriteLine("Project(\"{0}\") = \"{1}\", \"{2}\", \"{3}\"", "{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}",
@@ -43,13 +44,35 @@ namespace Solutionizer.Commands {
                 }
 
                 writer.WriteLine("Global");
-                WriteTfsInformation(writer);
+                WriteTfsInformation(writer, projects);
+                WriteSolutionConfigurationPlatforms(writer, projects);
+                WriteProjectConfigurationPlatforms(writer, projects);
                 WriteSolutionProperties(writer);
                 WriteNestedProjects(writer);
                 writer.WriteLine("EndGlobal");
 
                 _solution.IsDirty = false;
             }
+        }
+
+        private void WriteSolutionConfigurationPlatforms(TextWriter writer, IEnumerable<SolutionProject> projects) {
+            writer.WriteLine("\tGlobalSection(SolutionConfigurationPlatforms) = preSolution");
+            foreach (var configuration in projects.SelectMany(p => p.Configurations).Distinct()) {
+                writer.WriteLine("\t\t{0} = {0}", configuration);
+            }
+            writer.WriteLine("\tEndGlobalSection");
+        }
+
+        private void WriteProjectConfigurationPlatforms(TextWriter writer, IEnumerable<SolutionProject> projects) {
+            writer.WriteLine("\tGlobalSection(ProjectConfigurationPlatforms) = postSolution");
+            foreach (var project in projects) {
+                var guid = project.Guid.ToString("B").ToUpperInvariant();
+                foreach (var configuration in project.Configurations) {
+                    writer.WriteLine("\t\t{0}.{1}.ActiveCfg = {1}", guid, configuration);
+                    writer.WriteLine("\t\t{0}.{1}.Build.0 = {1}", guid, configuration);
+                }
+            }
+            writer.WriteLine("\tEndGlobalSection");
         }
 
         private void WriteSolutionProperties(TextWriter writer) {
@@ -90,7 +113,7 @@ namespace Solutionizer.Commands {
             writer.WriteLine("\tEndGlobalSection");
         }
 
-        private void WriteTfsInformation(TextWriter writer) {
+        private void WriteTfsInformation(TextWriter writer, ICollection<SolutionProject> projects) {
             if (!_solution.IsSccBound) {
                 return;
             }
@@ -102,7 +125,6 @@ namespace Solutionizer.Commands {
             }
             _settings.TfsName = tfsName;
 
-            var projects = _solution.SolutionItems.Flatten<SolutionItem, SolutionProject, SolutionFolder>(p => p.Items).ToList();
             writer.WriteLine("\tGlobalSection({0}) = preSolution", "TeamFoundationVersionControl");
             writer.WriteLine("\t\tSccNumberOfProjects = {0}", projects.Count);
             writer.WriteLine("\t\tSccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}");
