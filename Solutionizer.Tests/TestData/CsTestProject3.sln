@@ -12,6 +12,24 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "sub", "sub", "{CE1BA3BF-4957-4CBC-9D45-3DC68106B311}"
 EndProject
 Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{702753C5-4F7B-43E2-8844-8F931845D821}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{702753C5-4F7B-43E2-8844-8F931845D821}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{702753C5-4F7B-43E2-8844-8F931845D821}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{702753C5-4F7B-43E2-8844-8F931845D821}.Release|Any CPU.Build.0 = Release|Any CPU
+		{717B4B8E-714C-4A52-A61B-F5BC4E655131}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{717B4B8E-714C-4A52-A61B-F5BC4E655131}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{717B4B8E-714C-4A52-A61B-F5BC4E655131}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{717B4B8E-714C-4A52-A61B-F5BC4E655131}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5CC52991-689A-476E-B9F6-3448C3E598F6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5CC52991-689A-476E-B9F6-3448C3E598F6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5CC52991-689A-476E-B9F6-3448C3E598F6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5CC52991-689A-476E-B9F6-3448C3E598F6}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection

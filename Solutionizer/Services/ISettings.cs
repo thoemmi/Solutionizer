@@ -15,5 +15,6 @@ namespace Solutionizer.Services {
         Uri TfsName { get; set; }
         VisualStudioVersion VisualStudioVersion { get; set; }
         bool ShowLaunchElevatedButton { get; set; }
+        bool DontBuildReferencedProjects { get; set; }
     }
 }
