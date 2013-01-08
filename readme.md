@@ -16,4 +16,3 @@ Solutionizer depends on following libraries:
 - [Json.NET](http://james.newtonking.com/projects/json-net.aspx)
 - [NLog](http://nlog-project.org/)
 - [Ookii Dialogs WPF library](http://www.ookii.org/software/dialogs/)
-- [WPFSpark](https://wpfspark.codeplex.com/)
