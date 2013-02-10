@@ -61,13 +61,13 @@ namespace Solutionizer.Infrastructure {
                     }
                 }
                 window.Closing += (sender, args) => {
-                    if (window.WindowState == WindowState.Maximized) {
+                    if (window.WindowState != WindowState.Normal) {
                         setting.WindowSettings = new WindowSettings {
                             Top = window.RestoreBounds.Top,
                             Left = window.RestoreBounds.Left,
                             Width = window.RestoreBounds.Width,
                             Height = window.RestoreBounds.Height,
-                            Maximized = true
+                            Maximized = window.WindowState == WindowState.Maximized
                         };
                     } else {
                         setting.WindowSettings = new WindowSettings {
