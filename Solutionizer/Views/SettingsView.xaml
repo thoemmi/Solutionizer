@@ -28,7 +28,7 @@
             </DataTemplate>
         </StackPanel.Resources>
 
-        <Grid Helper:GridHelper.RowCount="9">
+        <Grid Helper:GridHelper.RowCount="10">
             <CheckBox 
                 x:Name="ScanOnStartup" 
                 Margin="0 0 0 8" 
@@ -113,6 +113,12 @@
                 Margin="0 0 0 8" 
                 Grid.Row="8" 
                 Content="Show &quot;Launch Elevated&quot; button."/>
+
+            <CheckBox 
+                x:Name="ShowProjectCount" 
+                Margin="0 0 0 8" 
+                Grid.Row="9" 
+                Content="Show number of contained projects behind the directory name."/>
         </Grid>
 
         <StackPanel
