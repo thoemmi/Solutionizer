@@ -16,5 +16,6 @@ namespace Solutionizer.Services {
         VisualStudioVersion VisualStudioVersion { get; set; }
         bool ShowLaunchElevatedButton { get; set; }
         bool DontBuildReferencedProjects { get; set; }
+        bool ShowProjectCount { get; set; }
     }
 }

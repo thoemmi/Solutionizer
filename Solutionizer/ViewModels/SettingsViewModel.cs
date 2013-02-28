@@ -15,6 +15,7 @@ namespace Solutionizer.ViewModels {
         private bool _dontBuildReferencedProjects;
         private VisualStudioVersion _visualStudioVersion;
         private bool _showLaunchElevatedButton;
+        private bool _showProjectCount;
 
         public SettingsViewModel(ISettings settings) {
             _settings = settings;
@@ -33,6 +34,7 @@ namespace Solutionizer.ViewModels {
             IsFlatMode = _settings.IsFlatMode;
             VisualStudioVersion = _settings.VisualStudioVersion;
             ShowLaunchElevatedButton = _settings.ShowLaunchElevatedButton;
+            ShowProjectCount = _settings.ShowProjectCount;
         }
 
         public bool ScanOnStartup {
@@ -125,6 +127,16 @@ namespace Solutionizer.ViewModels {
             }
         }
 
+        public bool ShowProjectCount {
+            get { return _showProjectCount; }
+            set {
+                if (_showProjectCount != value) {
+                    _showProjectCount = value;
+                    NotifyOfPropertyChange(() => ShowProjectCount);
+                }
+            }
+        }
+
         public override void NotifyOfPropertyChange(string propertyName) {
             base.NotifyOfPropertyChange(propertyName);
 
@@ -146,6 +158,7 @@ namespace Solutionizer.ViewModels {
             _settings.IsFlatMode = IsFlatMode;
             _settings.VisualStudioVersion = VisualStudioVersion;
             _settings.ShowLaunchElevatedButton = ShowLaunchElevatedButton;
+            _settings.ShowProjectCount = ShowProjectCount;
 
             TryClose(true);
         }
@@ -161,7 +174,8 @@ namespace Solutionizer.ViewModels {
                     DontBuildReferencedProjects != _settings.DontBuildReferencedProjects ||
                     IsFlatMode != _settings.IsFlatMode ||
                     VisualStudioVersion != _settings.VisualStudioVersion ||
-                    ShowLaunchElevatedButton != _settings.ShowLaunchElevatedButton;
+                    ShowLaunchElevatedButton != _settings.ShowLaunchElevatedButton ||
+                    ShowProjectCount != _settings.ShowProjectCount;
             }
         }
 
