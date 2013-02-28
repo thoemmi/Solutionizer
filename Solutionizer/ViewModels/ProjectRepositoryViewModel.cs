@@ -1,9 +1,9 @@
 ﻿using System.Collections;
 using System.Linq;
 using Caliburn.Micro;
+using Solutionizer.Extensions;
 using Solutionizer.Models;
 using Solutionizer.Services;
-using Solutionizer.Extensions;
 
 namespace Solutionizer.ViewModels {
     public class ProjectRepositoryViewModel : PropertyChangedBase {
@@ -15,6 +15,12 @@ namespace Solutionizer.ViewModels {
 
         public ProjectRepositoryViewModel(ISettings settings) {
             _settings = settings;
+
+            _settings.PropertyChanged += (sender, args) => {
+                if (args.PropertyName == "ShowProjectCount") {
+                    NotifyOfPropertyChange(() => ShowProjectCount);
+                }
+            };
         }
 
         public string RootPath {
@@ -67,10 +73,14 @@ namespace Solutionizer.ViewModels {
             }
         }
 
+        public bool ShowProjectCount {
+            get { return _settings.ShowProjectCount; }
+        }
+
         private DirectoryViewModel CreateDirectoryViewModel(ProjectFolder projectFolder, DirectoryViewModel parent) {
             var viewModel = new DirectoryViewModel(parent, projectFolder);
             if (_settings.IsFlatMode) {
-                foreach (var project in new[]{projectFolder}.Flatten(f => f.Projects, f => f.Folders)) {
+                foreach (var project in new[] { projectFolder }.Flatten(f => f.Projects, f => f.Folders)) {
                     viewModel.Projects.Add(CreateProjectViewModel(project, viewModel));
                 }
             } else {

@@ -43,6 +43,10 @@ namespace Solutionizer.ViewModels {
             }
         }
 
+        public int ProjectCount {
+            get { return _projects.Count(_ =>_.IsVisible) + _directories.Where(_ => _.IsVisible).Select(_ => _.ProjectCount).Sum(); }
+        }
+
         public override void Filter(string filter) {
             foreach (var directory in _directories) {
                 directory.Filter(filter);
@@ -50,6 +54,7 @@ namespace Solutionizer.ViewModels {
             foreach (var project in _projects) {
                 project.Filter(filter);
             }
+            NotifyOfPropertyChange(() => ProjectCount);
             IsVisible = string.IsNullOrWhiteSpace(filter) || _directories.Any(d => d.IsVisible) || _projects.Any(p => p.IsVisible);
         }
 
