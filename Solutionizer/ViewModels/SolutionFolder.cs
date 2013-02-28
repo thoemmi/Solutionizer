@@ -10,6 +10,7 @@ namespace Solutionizer.ViewModels {
             new SortedObservableCollection<SolutionItem>(new SolutionItemComparer());
 
         public SolutionFolder(SolutionFolder parent) : base(parent) {
+            _items.CollectionChanged += (sender, args) => NotifyOfPropertyChange(() => ProjectCount);
         }
 
         public ObservableCollection<SolutionItem> Items {
@@ -18,6 +19,10 @@ namespace Solutionizer.ViewModels {
 
         public bool ContainsProject(Project project) {
             return _items.OfType<SolutionProject>().Any(p => p.Guid == project.Guid);
+        }
+
+        public int ProjectCount {
+            get { return _items.OfType<SolutionProject>().Count() + _items.OfType<SolutionFolder>().Select(_ => _.ProjectCount).Sum(); }
         }
 
         public SolutionFolder GetOrCreateSubfolder(string folderName) {

@@ -36,6 +36,9 @@ namespace Solutionizer.ViewModels {
                 if (args.PropertyName == "ShowLaunchElevatedButton") {
                     NotifyOfPropertyChange(() => ShowLaunchElevatedButton);
                 }
+                if (args.PropertyName == "ShowProjectCount") {
+                    NotifyOfPropertyChange(() => ShowProjectCount);
+                }
             };
         }
 
@@ -130,6 +133,11 @@ namespace Solutionizer.ViewModels {
                 }
             }
         }
+
+        public bool ShowProjectCount {
+            get { return _settings.ShowProjectCount; }
+        }
+
 
         public void AddProject(Project project) {
             IsSccBound |= project.IsSccBound;
