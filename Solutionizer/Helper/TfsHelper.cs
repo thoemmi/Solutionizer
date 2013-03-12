@@ -98,13 +98,20 @@ namespace Solutionizer.Helper {
                 var versionControlServer = projectCollection.GetService(_versionControlServerType);
                 workspaceArray = versionControlServer.QueryWorkspaces(null, versionControlServer.AuthorizedUser, Environment.MachineName);
             } catch (Exception ex) {
-                if (ex.GetType().Name == "TeamFoundationServerUnauthorizedException") {
-                    fallbackCredentialsProvider.GetCredentials(tfsName, null);
-                    var projectCollection = GetTeamProjectCollection(tfsName, fallbackCredentialsProvider);
-                    var versionControlServer = projectCollection.GetService(_versionControlServerType);
-                    workspaceArray = versionControlServer.QueryWorkspaces(null, versionControlServer.AuthorizedUser, Environment.MachineName);
-                } else {
-                    throw;
+                switch (ex.GetType().Name) {
+                    case "TeamFoundationServiceUnavailableException":
+                        _log.InfoException("TFS is not available", ex);
+                        workspaceArray = null;
+                        break;
+                    case "TeamFoundationServerUnauthorizedException": 
+                        fallbackCredentialsProvider.GetCredentials(tfsName, null);
+                        var projectCollection = GetTeamProjectCollection(tfsName, fallbackCredentialsProvider);
+                        var versionControlServer = projectCollection.GetService(_versionControlServerType);
+                        workspaceArray = versionControlServer.QueryWorkspaces(null, versionControlServer.AuthorizedUser, Environment.MachineName);
+                        break;
+                    default:
+                        _log.ErrorException("Querying workspaces failed", ex);
+                        throw;
                 }
             }
 
