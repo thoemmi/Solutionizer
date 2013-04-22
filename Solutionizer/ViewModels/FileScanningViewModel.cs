@@ -221,7 +221,9 @@ namespace Solutionizer.ViewModels {
             base.OnActivate();
             _scanningCommand.ProgressTextChanged += OnProgressTextChanged;
             _scanningCommand.Start().ContinueWith(t => {
-                Result = t.Result;  TryClose(true); }, TaskScheduler.Current);
+                Result = t.IsCompleted ? t.Result : null;
+                TryClose(true); 
+            }, TaskScheduler.Current);
         }
 
         protected override void OnDeactivate(bool close) {
