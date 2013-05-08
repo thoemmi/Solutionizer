@@ -71,7 +71,7 @@ namespace Solutionizer.Models {
             var isSccBound = false;
             var elementsByTagName = xmlDocument.GetElementsByTagName("SccProjectName");
             if (elementsByTagName.Count > 0) {
-                isSccBound = !string.IsNullOrEmpty(elementsByTagName[0].FirstChild.Value);
+                isSccBound = elementsByTagName[0].ChildNodes.Count > 0 && !string.IsNullOrEmpty(elementsByTagName[0].FirstChild.Value);
             }
 
             _assemblyName = assemblyName;
