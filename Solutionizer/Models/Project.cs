@@ -86,7 +86,7 @@ namespace Solutionizer.Models {
             var p = Microsoft.Build.Evaluation.ProjectCollection.GlobalProjectCollection.LoadProject(_filepath);
             var configurations = p.ConditionedProperties["Configuration"];
             var platforms = p.ConditionedProperties["Platform"];
-
+            Microsoft.Build.Evaluation.ProjectCollection.GlobalProjectCollection.UnloadProject(p);
             return configurations.SelectMany(configuration => platforms.Select(platform => configuration + "|" + platform)).ToList();
         }
 
