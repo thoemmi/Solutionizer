@@ -10,7 +10,13 @@ namespace Solutionizer.ViewModels {
             new SortedObservableCollection<SolutionItem>(new SolutionItemComparer());
 
         public SolutionFolder(SolutionFolder parent) : base(parent) {
-            _items.CollectionChanged += (sender, args) => NotifyOfPropertyChange(() => ProjectCount);
+            _items.CollectionChanged += (sender, args) => {
+                var folder = this;
+                do {
+                    folder.NotifyOfPropertyChange(() => ProjectCount);
+                    folder = folder.Parent;
+                } while (folder != null);
+            };
         }
 
         public ObservableCollection<SolutionItem> Items {
