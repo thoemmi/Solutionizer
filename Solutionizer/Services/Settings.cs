@@ -194,5 +194,6 @@ namespace Solutionizer.Services {
     public enum VisualStudioVersion {
         VS2010,
         VS2012,
+        VS2013,
     }
 }
