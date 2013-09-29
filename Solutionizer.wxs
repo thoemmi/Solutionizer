@@ -1,0 +1,140 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi" xmlns:util="http://schemas.microsoft.com/wix/UtilExtension">
+
+  <?define UpgradeGuid="{C3666D56-FBED-4ADE-AD5E-94298DE449F4}" ?>
+  <?define ProductVersion="!(bind.FileVersion.SOLUTIONIZER_EXE)" ?>
+  
+  <Product 
+    Name="Solutionizer" 
+    Id="*" 
+    UpgradeCode="$(var.UpgradeGuid)" 
+    Version="$(var.ProductVersion)" 
+    Manufacturer="Thomas Freudenberg" Language="1033">
+    
+    <Package 
+      InstallerVersion="300" 
+      Compressed="yes" 
+      InstallScope="perUser"/>
+    
+    <Media 
+      Id="1" 
+      Cabinet="media1.cab" 
+      EmbedCab="yes"/>
+
+    <Property Id="ARPHELPLINK" Value="https://github.com/thoemmi/Solutionizer/issues" />
+    <Property Id="ARPCONTACT" Value="Thomas Freudenberg" />
+    <Property Id="ARPURLINFOABOUT" Value="https://github.com/thoemmi/Solutionizer" />
+    <Property Id="ARPPRODUCTICON" Value="icon" />
+
+    <!-- start application after install -->
+    <Property Id="WIXUI_EXITDIALOGOPTIONALCHECKBOXTEXT" Value="Launch Solutionizer" />
+    <Property Id="WixShellExecTarget" Value="[#SOLUTIONIZER_EXE]" />
+    <CustomAction Id="LaunchApplication" BinaryKey="WixCA" DllEntry="WixShellExec" Impersonate="yes" />
+
+    <Upgrade Id="$(var.UpgradeGuid)">
+      <UpgradeVersion 
+        Minimum="$(var.ProductVersion)" 
+        OnlyDetect="yes" 
+        Property="NEWERVERSIONDETECTED"/>
+      <UpgradeVersion 
+        Minimum="0.0.0" 
+        Maximum="$(var.ProductVersion)" 
+        IncludeMinimum="yes" 
+        IncludeMaximum="no"
+        Property="OLDERVERSIONBEINGUPGRADED"/>
+    </Upgrade>
+    <Condition Message="A newer version of this software is already installed.">NOT NEWERVERSIONDETECTED</Condition>
+
+    <PropertyRef Id="NETFRAMEWORK40FULL"/>
+    <Condition Message="This setup requires the full .NET Framework 4.0 installed.">
+      <![CDATA[Installed OR NETFRAMEWORK40FULL]]>
+    </Condition>
+
+    <Directory Id='TARGETDIR' Name='SourceDir'>
+      <Directory Id='LocalAppDataFolder' Name='AppData'>
+        <Directory Id='INSTALLLOCATION' Name='Solutionizer'>
+          <Component Id="Solutionizer.exe" Guid="{279C60A9-74DE-4365-9BCC-D68F318FA493}">
+            <RemoveFolder Id='INSTALLLOCATION' On='uninstall' />
+            <File Id="SOLUTIONIZER_EXE" Name="Solutionizer.exe" Source="Solutionizer/bin/Debug/Solutionizer.exe">
+              <Shortcut Id="startmenuFoobar10" Directory="ProgramMenuFolder" Name="Solutionizer"
+                                WorkingDirectory='INSTALLLOCATION'/>           
+            </File>
+            <File Id="SOLUTIONIZER_EXE_CONFIG" Name="Solutionizer.exe.config" Source="Solutionizer/bin/Debug/Solutionizer.exe.config" />
+            <RegistryValue Root='HKCU' Key='SOFTWARE\ThomasFreudenberg\Solutionizer' Name='Solutionizer.exe' Type='integer' Value='1' KeyPath='yes'/>
+          </Component>
+          <Component Id="Caliburn.Micro.dll" Guid="{5E69534F-EBED-490F-B518-8D09D8EF6EC7}">
+            <File Id="Caliburn.Micro.dll" Name="Caliburn.Micro.dll" Source="Solutionizer/bin/Debug/Caliburn.Micro.dll"/>
+            <RegistryValue Root='HKCU' Key='SOFTWARE\ThomasFreudenberg\Solutionizer' Name='Caliburn.Micro.dll' Type='integer' Value='1' KeyPath='yes'/>
+          </Component>
+          <Component Id="Caliburn.Micro.Logging.dll" Guid="{02890B5E-8E5B-4209-B8F9-2DDDEF725BA2}">
+            <File Id="Caliburn.Micro.Logging.dll" Name="Caliburn.Micro.Logging.dll" Source="Solutionizer/bin/Debug/Caliburn.Micro.Logging.dll"/>
+            <RegistryValue Root='HKCU' Key='SOFTWARE\ThomasFreudenberg\Solutionizer' Name='Caliburn.Micro.Logging.dll' Type='integer' Value='1' KeyPath='yes'/>
+          </Component>
+          <Component Id="Caliburn.Micro.Logging.NLog.dll" Guid="{D2AAE2A9-6797-4041-9171-F5891EA82301}">
+            <File Id="Caliburn.Micro.Logging.NLog.dll" Name="Caliburn.Micro.Logging.NLog.dll" Source="Solutionizer/bin/Debug/Caliburn.Micro.Logging.NLog.dll"/>
+            <RegistryValue Root='HKCU' Key='SOFTWARE\ThomasFreudenberg\Solutionizer' Name='Caliburn.Micro.Logging.NLog.dll' Type='integer' Value='1' KeyPath='yes'/>
+          </Component>
+          <Component Id="MahApps.Metro.dll" Guid="{FCB59AD0-66C8-4674-B649-F38072F12959}">
+            <File Id="MahApps.Metro.dll" Name="MahApps.Metro.dll" Source="Solutionizer/bin/Debug/MahApps.Metro.dll"/>
+            <RegistryValue Root="HKCU" Key="SOFTWARE\ThomasFreudenberg\Solutionizer" Name="MahApps.Metro.dll" Type="integer" Value="1" KeyPath="yes"/>
+          </Component>
+          <Component Id="Newtonsoft.Json.dll" Guid="{56A3B853-A07B-4923-B64E-4F5CBE211334}">
+            <File Id="Newtonsoft.Json.dll" Name="Newtonsoft.Json.dll" Source="Solutionizer/bin/Debug/Newtonsoft.Json.dll"/>
+            <RegistryValue Root="HKCU" Key="SOFTWARE\ThomasFreudenberg\Solutionizer" Name="Newtonsoft.Json.dll" Type="integer" Value="1" KeyPath="yes"/>
+          </Component>
+          <Component Id="NLog.dll" Guid="{B4B12FEA-DA1C-4622-9DF5-1B7F31F54708}">
+            <File Id="NLog.dll" Name="NLog.dll" Source="Solutionizer/bin/Debug/NLog.dll"/>
+            <RegistryValue Root="HKCU" Key="SOFTWARE\ThomasFreudenberg\Solutionizer" Name="NLog.dll" Type="integer" Value="1" KeyPath="yes"/>
+          </Component>
+          <Component Id="Ookii.Dialogs.Wpf.dll" Guid="{D955369E-EB80-414F-9259-DA8583BFBF2B}">
+            <File Id="Ookii.Dialogs.Wpf.dll" Name="Ookii.Dialogs.Wpf.dll" Source="Solutionizer/bin/Debug/Ookii.Dialogs.Wpf.dll"/>
+            <RegistryValue Root="HKCU" Key="SOFTWARE\ThomasFreudenberg\Solutionizer" Name="Ookii.Dialogs.Wpf.dll" Type="integer" Value="1" KeyPath="yes"/>
+          </Component>
+          <Component Id="System.Windows.Interactivity.dll" Guid="{293D4BDC-9A9E-422B-AE9E-D427AFF8DA50}">
+            <File Id="System.Windows.Interactivity.dll" Name="System.Windows.Interactivity.dll" Source="Solutionizer/bin/Debug/System.Windows.Interactivity.dll"/>
+            <RegistryValue Root="HKCU" Key="SOFTWARE\ThomasFreudenberg\Solutionizer" Name="System.Windows.Interactivity.dll" Type="integer" Value="1" KeyPath="yes"/>
+          </Component>
+        </Directory>
+      </Directory>
+      
+      <Directory Id="ProgramMenuFolder" />
+    </Directory>
+
+    <Feature Id="Complete">
+      <ComponentRef Id="Solutionizer.exe"/>
+      <ComponentRef Id="Caliburn.Micro.dll"/>
+      <ComponentRef Id="Caliburn.Micro.Logging.dll"/>
+      <ComponentRef Id="Caliburn.Micro.Logging.NLog.dll"/>
+      <ComponentRef Id="MahApps.Metro.dll"/>
+      <ComponentRef Id="Newtonsoft.Json.dll"/>
+      <ComponentRef Id="NLog.dll"/>
+      <ComponentRef Id="Ookii.Dialogs.Wpf.dll"/>
+      <ComponentRef Id="System.Windows.Interactivity.dll"/>
+    </Feature>
+
+    <!-- no downgrade -->
+    <CustomAction 
+      Id="PreventDowngrading"
+      Error="There is already a newer version installed." />
+
+    <InstallExecuteSequence>
+      <RemoveExistingProducts After="InstallValidate"/>
+    </InstallExecuteSequence>
+
+    <WixVariable Id='WixUILicenseRtf' Value='Assets\MS-PL.rtf'/>
+    <WixVariable Id="WixUIBannerBmp" Value="Assets\setup_banner.bmp" />
+    <WixVariable Id="WixUIDialogBmp" Value="Assets\setup_dialog.bmp" />
+
+    <UI>
+      <UIRef Id="WixUI_Minimal" />
+      <UIRef Id="WixUI_ErrorProgressText" />
+      <Publish
+        Dialog="ExitDialog"
+        Control="Finish"
+        Event="DoAction"
+        Value="LaunchApplication">WIXUI_EXITDIALOGOPTIONALCHECKBOX = 1 and NOT Installed</Publish>
+    </UI>
+    
+    <Icon Id="icon" SourceFile="Assets\logo.ico"/>
+  </Product>
+</Wix>

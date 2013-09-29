@@ -28,3 +28,4 @@ packages/
 build/
 [Tt]est[Rr]esult*
 CommonAssemblyInfo.cs
+publish/
