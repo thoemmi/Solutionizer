@@ -84,7 +84,7 @@ namespace Solutionizer.Infrastructure {
                     } else {
                         // The object is not under this TreeViewItem
                         // so collapse it.
-                        subContainer.IsExpanded = false;
+                        //subContainer.IsExpanded = false;
                     }
                 }
             }
