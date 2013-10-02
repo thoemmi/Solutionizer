@@ -59,26 +59,26 @@
 
         <TextBlock Margin="0 2">Selected projects:</TextBlock>
 
-        <TreeView 
-            x:Name="SolutionItems"
-            Grid.Row="1"
-            VirtualizingStackPanel.IsVirtualizing="True"
-            VirtualizingStackPanel.VirtualizationMode="Recycling" 
-            Helper:DragDropHelper.IsDropTarget="True" 
-            Helper:DragDropHelper.DropCommand="{Binding DropCommand}"
-            Margin="3 3 0 3">
-            <i:Interaction.Behaviors>
-                <Infrastructure:BindableSelectedItemBehavior SelectedItem="{Binding SelectedItem}" />
-            </i:Interaction.Behaviors>
-            <i:Interaction.Triggers>
-                <Infrastructure:InputBindingTrigger>
-                    <Infrastructure:InputBindingTrigger.InputBinding>
-                        <KeyBinding Key="Delete"/>
-                    </Infrastructure:InputBindingTrigger.InputBinding>
-                    <cal:ActionMessage MethodName="RemoveSolutionItem"/>
-                </Infrastructure:InputBindingTrigger>
-            </i:Interaction.Triggers>
-        </TreeView>
+        <Border Grid.Row="1" Margin="0" Padding="2" BorderThickness="1" BorderBrush="{DynamicResource {x:Static SystemColors.ActiveBorderBrushKey}}">
+            <TreeView 
+                x:Name="SolutionItems"
+                VirtualizingStackPanel.IsVirtualizing="True"
+                VirtualizingStackPanel.VirtualizationMode="Recycling" 
+                Helper:DragDropHelper.IsDropTarget="True" 
+                Helper:DragDropHelper.DropCommand="{Binding DropCommand}">
+                <i:Interaction.Behaviors>
+                    <Infrastructure:BindableSelectedItemBehavior SelectedItem="{Binding SelectedItem}" />
+                </i:Interaction.Behaviors>
+                <i:Interaction.Triggers>
+                    <Infrastructure:InputBindingTrigger>
+                        <Infrastructure:InputBindingTrigger.InputBinding>
+                            <KeyBinding Key="Delete"/>
+                        </Infrastructure:InputBindingTrigger.InputBinding>
+                        <cal:ActionMessage MethodName="RemoveSolutionItem"/>
+                    </Infrastructure:InputBindingTrigger>
+                </i:Interaction.Triggers>
+            </TreeView>
+        </Border>
 
         <StackPanel Grid.Column="1" Grid.Row="1" Margin="10 0 4 0">
             <Button x:Name="Launch" Content="Launch" Margin="0 0 0 4" MinWidth="80"/>

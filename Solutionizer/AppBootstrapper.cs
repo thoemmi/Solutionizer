@@ -136,12 +136,12 @@ namespace Solutionizer {
                 if (logEvent.Exception == null) {
                     return s;
                 }
-                s = s.Replace("<log4j:event", "<log4j:event xmlns:log4j=\"http://nlog-project.org/dummynamespace/\"");
+                s = s.Replace("<log4j:event", "<log4j:event xmlns:log4j=\"http://nlog-project.org/dummynamespace/\" xmlns:nlog=\"http://nlog-project.org/dummynamespace/\"");
                 var element = XDocument.Parse(s);
                 var messageElement = element.Descendants().Single(e => e.Name.LocalName == "message");
                 messageElement.Value += Environment.NewLine + logEvent.Exception;
                 s = element.ToString();
-                s = s.Replace(" xmlns:log4j=\"http://nlog-project.org/dummynamespace/\"", string.Empty);
+                s = s.Replace(" xmlns:log4j=\"http://nlog-project.org/dummynamespace/\" xmlns:nlog=\"http://nlog-project.org/dummynamespace/\"", string.Empty);
                 return s;
             }
         }
