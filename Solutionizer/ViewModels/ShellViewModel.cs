@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System.Linq;
+using System.Windows;
 using Caliburn.Micro;
 using Ookii.Dialogs.Wpf;
 using Solutionizer.Infrastructure;
@@ -9,14 +10,19 @@ namespace Solutionizer.ViewModels {
     public sealed class ShellViewModel : Screen, IShell {
         private readonly Services.Settings _settings;
         private readonly IDialogManager _dialogManager;
+        private readonly UpdateManager _updateManager;
         private readonly ProjectRepositoryViewModel _projectRepository;
         private SolutionViewModel _solution;
         private string _rootPath;
+        private bool _areUpdatesAvailable;
 
         [ImportingConstructor]
         public ShellViewModel(Services.Settings settings, IDialogManager dialogManager) {
             _settings = settings;
             _projectRepository = new ProjectRepositoryViewModel(settings);
+            _updateManager = new UpdateManager();
+            _updateManager.UpdatesAvailable +=
+                (sender, args) => AreUpdatesAvailable = _updateManager.Releases != null && _updateManager.Releases.Any();
             _dialogManager = dialogManager;
             DisplayName = "Solutionizer";
         }
@@ -55,6 +61,8 @@ namespace Solutionizer.ViewModels {
             if (_settings.ScanOnStartup) {
                 LoadProjects(_settings.RootPath);
             }
+
+            _updateManager.LoadCompletedEventHandler();
         }
 
         public void SelectRootPath() {
@@ -71,8 +79,22 @@ namespace Solutionizer.ViewModels {
             _dialogManager.ShowDialog(new SettingsViewModel(_settings));
         }
 
+        public void ShowUpdate() {
+            _dialogManager.ShowDialog(new UpdateViewModel(_updateManager));
+        }
+
         public IDialogManager Dialogs {
             get { return _dialogManager; }
+        }
+
+        public bool AreUpdatesAvailable {
+            get { return _areUpdatesAvailable; }
+            set {
+                if (_areUpdatesAvailable != value) {
+                    _areUpdatesAvailable = value;
+                    NotifyOfPropertyChange(() => AreUpdatesAvailable);
+                }
+            }
         }
 
         private void LoadProjects(string path) {

@@ -94,6 +94,10 @@
             <File Id="System.Windows.Interactivity.dll" Name="System.Windows.Interactivity.dll" Source="Solutionizer/bin/Debug/System.Windows.Interactivity.dll"/>
             <RegistryValue Root="HKCU" Key="SOFTWARE\ThomasFreudenberg\Solutionizer" Name="System.Windows.Interactivity.dll" Type="integer" Value="1" KeyPath="yes"/>
           </Component>
+          <Component Id="RestSharp.dll" Guid="{22824CC0-E2F7-4C10-ABF3-82C486BBA89F}">
+            <File Id="RestSharp.dll" Name="RestSharp.dll" Source="Solutionizer/bin/Debug/RestSharp.dll"/>
+            <RegistryValue Root="HKCU" Key="SOFTWARE\ThomasFreudenberg\Solutionizer" Name="RestSharp.dll" Type="integer" Value="1" KeyPath="yes"/>
+          </Component>
         </Directory>
       </Directory>
       
@@ -110,6 +114,7 @@
       <ComponentRef Id="NLog.dll"/>
       <ComponentRef Id="Ookii.Dialogs.Wpf.dll"/>
       <ComponentRef Id="System.Windows.Interactivity.dll"/>
+      <ComponentRef Id="RestSharp.dll"/>
     </Feature>
 
     <!-- no downgrade -->

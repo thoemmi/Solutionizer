@@ -74,6 +74,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Ookii.Dialogs.1.0\lib\net35\Ookii.Dialogs.Wpf.dll</HintPath>
     </Reference>
+    <Reference Include="RestSharp">
+      <HintPath>..\packages\RestSharp.104.2.0\lib\net4\RestSharp.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Drawing" />
@@ -102,8 +105,18 @@
     <Compile Include="Controls\FluidProgressBar.xaml.cs">
       <DependentUpon>FluidProgressBar.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Converters\MarkdownToFlowDocumentConverter.cs" />
     <Compile Include="Converters\NullToCollapsedConverter.cs" />
+    <Compile Include="Helper\HtmlToXamlConverter.cs" />
+    <Compile Include="Helper\Markdown.cs" />
     <Compile Include="Helper\VisualStudioHelper.cs" />
+    <Compile Include="Helper\WebBrowserHelper.cs" />
+    <Compile Include="Infrastructure\ReleaseInfoReader.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Infrastructure\UpdateManager.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="ViewModels\FileScanningViewModel.cs" />
     <Compile Include="Helper\GridHelper.cs" />
     <Compile Include="Infrastructure\BindableSelectedItemBehavior .cs" />
@@ -148,6 +161,7 @@
     <Compile Include="ViewModels\SolutionItem.cs" />
     <Compile Include="ViewModels\SolutionItemComparer.cs" />
     <Compile Include="ViewModels\SolutionProject.cs" />
+    <Compile Include="ViewModels\UpdateViewModel.cs" />
     <Page Include="Controls\FluidProgressBar.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -173,6 +187,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\SolutionView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\UpdateView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

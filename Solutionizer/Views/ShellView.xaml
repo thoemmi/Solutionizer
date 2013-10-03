@@ -25,6 +25,9 @@
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.AnimatedSingleRowTabControl.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/Blue.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/BaseLight.xaml" />
+        <ResourceDictionary>
+          <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"></BooleanToVisibilityConverter>
+        </ResourceDictionary>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
 
@@ -97,6 +100,7 @@
             HorizontalContentAlignment="Stretch"/>
 
         <Controls:WindowCommands HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0 2">
+            <Button x:Name="ShowUpdate" Content="Update" Visibility="{Binding AreUpdatesAvailable, Converter={StaticResource BooleanToVisibilityConverter}}" />
             <Button x:Name="ChangeRoot" Content="Change Root..." cal:Message.Attach="SelectRootPath()" />
             <Button x:Name="ShowSettings" Content="Settings" />
         </Controls:WindowCommands>
