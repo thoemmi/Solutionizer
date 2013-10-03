@@ -80,7 +80,7 @@ namespace Solutionizer.ViewModels {
         }
 
         public void ShowUpdate() {
-            _dialogManager.ShowDialog(new UpdateViewModel(_updateManager));
+            _dialogManager.ShowDialog(new UpdateViewModel(_updateManager, _dialogManager));
         }
 
         public IDialogManager Dialogs {

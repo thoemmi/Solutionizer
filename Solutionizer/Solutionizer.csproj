@@ -162,7 +162,11 @@
     <Compile Include="ViewModels\SolutionItem.cs" />
     <Compile Include="ViewModels\SolutionItemComparer.cs" />
     <Compile Include="ViewModels\SolutionProject.cs" />
+    <Compile Include="ViewModels\UpdateDownloadViewModel.cs" />
     <Compile Include="ViewModels\UpdateViewModel.cs" />
+    <Compile Include="Views\UpdateDownloadView.xaml.cs">
+      <DependentUpon>UpdateDownloadView.xaml</DependentUpon>
+    </Compile>
     <Page Include="Controls\FluidProgressBar.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -188,6 +192,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\SolutionView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\UpdateDownloadView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

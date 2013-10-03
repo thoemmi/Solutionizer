@@ -1,15 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Solutionizer.Infrastructure {
     public class UpdateManager {
+        private IReleaseProvider _reader;
         private IReadOnlyCollection<ReleaseInfo> _releases;
 
         public async Task LoadCompletedEventHandler() {
-            var reader = new FakeReleaseInfoReader();
-            _releases = await reader.GetReleaseInfosAsync();
+            //_reader = new FakeReleaseProvider();
+            _reader = new GithubReleaseProvider();
+            _releases = await _reader.GetReleaseInfosAsync();
             if (_releases.Any()) {
                 OnUpdatesAvailable();
             }
@@ -26,6 +29,10 @@ namespace Solutionizer.Infrastructure {
             if (handler != null) {
                 handler(this, EventArgs.Empty);
             }
+        }
+
+        public Task<string> DownloadReleaseAsync(ReleaseInfo releaseInfo, Action<int> downloadProgressCallback, CancellationToken cancellationToken) {
+            return _reader.DownloadReleasePackage(releaseInfo, downloadProgressCallback, cancellationToken);
         }
     }
 }

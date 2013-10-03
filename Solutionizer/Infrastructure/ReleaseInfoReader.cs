@@ -1,13 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Net;
 using System.Text.RegularExpressions;
+using System.Threading;
 using System.Threading.Tasks;
+using NLog;
 using RestSharp;
 
 namespace Solutionizer.Infrastructure {
-    public interface IReleaseInfoReader {
+    public interface IReleaseProvider {
         Task<IReadOnlyCollection<ReleaseInfo>> GetReleaseInfosAsync();
+        Task<string> DownloadReleasePackage(ReleaseInfo releaseInfo, Action<int> downloadProgressCallback, CancellationToken cancellationToken);
     }
 
     public class ReleaseInfo {
@@ -23,11 +28,13 @@ namespace Solutionizer.Infrastructure {
         public Version Version { get; set; }
     }
 
-    public abstract class ReleaseInfoReaderBase : IReleaseInfoReader {
+    public abstract class ReleaseProviderBase : IReleaseProvider {
         public async Task<IReadOnlyCollection<ReleaseInfo>> GetReleaseInfosAsync() {
             var releases = await GetReleasesAsync();
             return releases.Select(r => r.ToReleaseInfo()).ToList();
         }
+
+        public abstract Task<string> DownloadReleasePackage(ReleaseInfo releaseInfo, Action<int> downloadProgressCallback, CancellationToken cancellationToken);
 
         public class Release {
             public string Url { get; set; }
@@ -90,7 +97,7 @@ namespace Solutionizer.Infrastructure {
         protected abstract Task<IEnumerable<Release>> GetReleasesAsync();
     }
 
-    public class FakeReleaseInfoReader : ReleaseInfoReaderBase {
+    public class FakeReleaseProvider : ReleaseProviderBase {
         protected override Task<IEnumerable<Release>> GetReleasesAsync() {
             return Task.Run(() => {
                 const string jsonString = @"
@@ -148,15 +155,50 @@ namespace Solutionizer.Infrastructure {
                 return releases;
             });
         }
+
+        public override Task<string> DownloadReleasePackage(ReleaseInfo releaseInfo, Action<int> downloadProgressCallback, CancellationToken cancellationToken) {
+            return Task.Run(() => {
+                for (var i = 0; i < 50; ++i) {
+                    if (downloadProgressCallback != null) {
+                        downloadProgressCallback(i*2);
+                    }
+                    if (cancellationToken.IsCancellationRequested) {
+                        return null;
+                    }
+                    Thread.Sleep(100);
+                }
+                return String.Empty;
+            });
+        }
     }
 
-    public class GithubReleaseInfoReader : ReleaseInfoReaderBase {
+    public class GithubReleaseProvider : ReleaseProviderBase {
+        private static readonly Logger _log = NLog.LogManager.GetCurrentClassLogger();
+
         protected override async Task<IEnumerable<Release>> GetReleasesAsync() {
             var client = new RestClient("https://api.github.com");
             var request = new RestRequest("repos/thoemmi/Solutionizer/releases");
             request.AddHeader("Accept", "application/vnd.github.manifold-preview");
             var response = await client.ExecuteGetTaskAsync<List<Release>>(request);
             return response.Data;
+        }
+
+        public override async Task<string> DownloadReleasePackage(ReleaseInfo releaseInfo, Action<int> downloadProgressCallback, CancellationToken cancellationToken) {
+            var destination = Path.Combine(Path.GetTempPath(), releaseInfo.Filename);
+            if (File.Exists(destination)) {
+                File.Delete(destination);
+                Thread.Sleep(100);
+            }
+            using (var webClient = new WebClient()) {
+                webClient.Headers.Add("Accept", "application/octet-stream");
+                if (downloadProgressCallback != null) {
+                    webClient.DownloadProgressChanged += (sender, args) => downloadProgressCallback(args.ProgressPercentage);
+                }
+                cancellationToken.Register(webClient.CancelAsync);
+                _log.Debug("Downloading release from {0} to {1}", releaseInfo.DownloadUrl, destination);
+                await webClient.DownloadFileTaskAsync(releaseInfo.DownloadUrl, destination);
+            }
+            return destination;
         }
     }
 }
