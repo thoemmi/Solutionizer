@@ -1,4 +1,5 @@
 ﻿using System.Collections.ObjectModel;
+using System.Linq;
 using Caliburn.Micro;
 using Solutionizer.Infrastructure;
 
@@ -13,6 +14,18 @@ namespace Solutionizer.ViewModels {
 
         public ObservableCollection<ReleaseInfo> Releases {
             get { return _releases; }
+        }
+
+        public bool CanUpdate {
+            get { return _releases.Any(); }
+        }
+
+        public void Update() {
+            TryClose(true);
+        }
+
+        public void Cancel() {
+            TryClose(false);
         }
     }
 }

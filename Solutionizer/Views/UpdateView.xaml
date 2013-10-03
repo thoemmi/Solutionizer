@@ -22,12 +22,8 @@
       <Setter Property="PagePadding" Value="0" />
     </Style>
   </UserControl.Resources>
-    <Grid>
-      <Grid.RowDefinitions>
-        <RowDefinition Height="Auto" />
-        <RowDefinition Height="Auto" />
-      </Grid.RowDefinitions>
-      <ItemsControl Grid.Row="0" ItemsSource="{Binding Releases}">
+    <StackPanel>
+      <ItemsControl ItemsSource="{Binding Releases}">
       <ItemsControl.ItemTemplate>
         <DataTemplate DataType="Infrastructure:ReleaseInfo">
             <Grid Margin="0 0 0 10">
@@ -62,5 +58,22 @@
         </DataTemplate>
       </ItemsControl.ItemTemplate>
     </ItemsControl>
-  </Grid>
+
+    <StackPanel
+            Margin="0 16 0 0"
+            Orientation="Horizontal"
+            HorizontalAlignment="Right">
+
+      <Button 
+                MinWidth="80"
+                x:Name="Update" 
+                Content="Update"/>
+      <Button 
+                Margin="8 0 0 0"
+                MinWidth="80"
+                x:Name="Cancel" 
+                Content="Cancel"/>
+    </StackPanel>
+
+  </StackPanel>
 </UserControl>
