@@ -45,8 +45,8 @@ namespace Solutionizer {
 
             ConfigureLogging();
 
-            AppDomain.CurrentDomain.FirstChanceException += (sender, args) =>
-                LogManager.GetCurrentClassLogger().ErrorException("FirstChanceException", args.Exception);
+            //AppDomain.CurrentDomain.FirstChanceException += (sender, args) =>
+            //    LogManager.GetCurrentClassLogger().ErrorException("FirstChanceException", args.Exception);
             AppDomain.CurrentDomain.UnhandledException += (sender, args) => 
                 LogManager.GetCurrentClassLogger().ErrorException("UnhandledException", args.ExceptionObject as Exception);
             Application.DispatcherUnhandledException += (sender, args) =>
@@ -77,7 +77,7 @@ namespace Solutionizer {
                 ArchiveFileName = "log_{#####}.xml",
                 ArchiveNumbering = ArchiveNumberingMode.Sequence,
                 ArchiveAboveSize = 1024*1024,
-                Layout = new Log4JXmlEventLayoutExtended()
+                Layout = new Log4JXmlEventLayout()
             };
 
             var config = new LoggingConfiguration();
@@ -92,7 +92,7 @@ namespace Solutionizer {
             if (Debugger.IsAttached) {
                 var udpTarget = new NetworkTarget {
                     Address = "udp4://localhost:962",
-                    Layout = new Log4JXmlEventLayoutExtended()
+                    Layout = new Log4JXmlEventLayout()
                 };
                 config.AddTarget("udp", udpTarget);
                 config.LoggingRules.Add(new LoggingRule("*", LogLevel.Debug, udpTarget));
@@ -128,22 +128,6 @@ namespace Solutionizer {
         protected override void OnExit(object sender, EventArgs e) {
             _settingsProvider.Save();
             base.OnExit(sender, e);
-        }
-
-        public class Log4JXmlEventLayoutExtended : Log4JXmlEventLayout {
-            protected override string GetFormattedMessage(LogEventInfo logEvent) {
-                string s = base.GetFormattedMessage(logEvent);
-                if (logEvent.Exception == null) {
-                    return s;
-                }
-                s = s.Replace("<log4j:event", "<log4j:event xmlns:log4j=\"http://nlog-project.org/dummynamespace/\" xmlns:nlog=\"http://nlog-project.org/dummynamespace/\"");
-                var element = XDocument.Parse(s);
-                var messageElement = element.Descendants().Single(e => e.Name.LocalName == "message");
-                messageElement.Value += Environment.NewLine + logEvent.Exception;
-                s = element.ToString();
-                s = s.Replace(" xmlns:log4j=\"http://nlog-project.org/dummynamespace/\" xmlns:nlog=\"http://nlog-project.org/dummynamespace/\"", string.Empty);
-                return s;
-            }
         }
     }
 }
