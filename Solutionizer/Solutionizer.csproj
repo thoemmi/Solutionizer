@@ -111,6 +111,7 @@
     <Compile Include="Helper\Markdown.cs" />
     <Compile Include="Helper\VisualStudioHelper.cs" />
     <Compile Include="Helper\WebBrowserHelper.cs" />
+    <Compile Include="Infrastructure\HyperlinkNavigateBehavior.cs" />
     <Compile Include="Infrastructure\ReleaseInfoReader.cs">
       <SubType>Code</SubType>
     </Compile>
