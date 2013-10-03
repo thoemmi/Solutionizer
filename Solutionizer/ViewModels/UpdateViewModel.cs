@@ -1,18 +1,18 @@
-﻿using System;
-using System.Linq;
+﻿using System.Collections.ObjectModel;
 using Caliburn.Micro;
 using Solutionizer.Infrastructure;
 
 namespace Solutionizer.ViewModels {
     public class UpdateViewModel : Screen {
+        private readonly ObservableCollection<ReleaseInfo> _releases;
+
         public UpdateViewModel(UpdateManager updateManager) {
             DisplayName = "Updates";
-
-            ReleaseNotes = String.Join("\n\n", updateManager.Releases.Select(r => r.ReleaseNotes));
+            _releases = new ObservableCollection<ReleaseInfo>(updateManager.Releases);
         }
 
-        public string ReleaseNotes {
-            get; private set;
+        public ObservableCollection<ReleaseInfo> Releases {
+            get { return _releases; }
         }
     }
 }

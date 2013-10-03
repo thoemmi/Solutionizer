@@ -5,9 +5,11 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:ViewModels="clr-namespace:Solutionizer.ViewModels"
              xmlns:Converters="clr-namespace:Solutionizer.Converters"
+             xmlns:Infrastructure="clr-namespace:Solutionizer.Infrastructure"
+             xmlns:gl="clr-namespace:System.Globalization;assembly=mscorlib"
              mc:Ignorable="d" 
              d:DataContext="{d:DesignInstance ViewModels:UpdateViewModel}"
-             d:DesignHeight="300" d:DesignWidth="300">
+             d:DesignHeight="300" d:DesignWidth="300" MaxWidth="500">
   <UserControl.Resources>
     <Converters:MarkdownToFlowDocumentConverter x:Key="MarkdownToFlowDocumentConverter"/>
 
@@ -15,6 +17,7 @@
       <Setter Property="FontFamily" Value="Segoe UI" />
       <Setter Property="TextAlignment" Value="Left" />
       <Setter Property="FontSize" Value="12" />
+      <Setter Property="PagePadding" Value="0" />
     </Style>
   </UserControl.Resources>
     <Grid>
@@ -22,7 +25,36 @@
         <RowDefinition Height="Auto" />
         <RowDefinition Height="Auto" />
       </Grid.RowDefinitions>
-      <TextBlock>Updates</TextBlock>
-    <FlowDocumentScrollViewer Margin="0" Grid.Row="1" Document="{Binding Path=ReleaseNotes, Converter={StaticResource MarkdownToFlowDocumentConverter}}" />
+      <ItemsControl Grid.Row="0" ItemsSource="{Binding Releases}">
+      <ItemsControl.ItemTemplate>
+        <DataTemplate DataType="Infrastructure:ReleaseInfo">
+            <Grid Margin="0 0 0 10">
+              <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+              </Grid.ColumnDefinitions>
+              <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+              </Grid.RowDefinitions>
+              
+              <TextBlock Margin="0 0 0 4">
+                <Hyperlink NavigateUri="{Binding HtmlUrl}"><Run FontWeight="Bold" FontSize="14" Text="{Binding Path=Name}" /></Hyperlink>
+              </TextBlock>
+
+            <TextBlock Foreground="{DynamicResource MenuItemDisabledBrush}" Grid.Column="1" HorizontalAlignment="Right">
+                <Run Text="Version "/><TextBlock Text="{Binding Version}"/><Run Text=", published"/>
+                <Run Text="{Binding PublishedAt, StringFormat=d, ConverterCulture={x:Static gl:CultureInfo.CurrentCulture}}" />
+              </TextBlock>
+              
+              <FlowDocumentScrollViewer 
+                Grid.Row="1" Grid.ColumnSpan="2"
+                VerticalScrollBarVisibility="Hidden"
+                HorizontalScrollBarVisibility="Hidden"
+                Document="{Binding Path=ReleaseNotes, Converter={StaticResource MarkdownToFlowDocumentConverter}}" />
+            </Grid>
+        </DataTemplate>
+      </ItemsControl.ItemTemplate>
+    </ItemsControl>
   </Grid>
 </UserControl>
