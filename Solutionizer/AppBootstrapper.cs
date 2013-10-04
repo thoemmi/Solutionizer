@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.ComponentModel.Composition.Hosting;
-using System.ComponentModel.Composition.Primitives;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -70,12 +69,11 @@ namespace Solutionizer {
 
             var config = new LoggingConfiguration();
             config.AddTarget("file", fileTarget);
+            SetLoggingRulesForTarget(config, fileTarget);
 
             var debuggerTarget = new DebuggerTarget();
             config.AddTarget("debugger", debuggerTarget);
-
-            config.LoggingRules.Add(new LoggingRule("*", LogLevel.Debug, fileTarget));
-            config.LoggingRules.Add(new LoggingRule("*", LogLevel.Debug, debuggerTarget));
+            SetLoggingRulesForTarget(config, debuggerTarget);
 
             if (Debugger.IsAttached) {
                 var udpTarget = new NetworkTarget {
@@ -83,15 +81,25 @@ namespace Solutionizer {
                     Layout = new Log4JXmlEventLayout()
                 };
                 config.AddTarget("udp", udpTarget);
-                config.LoggingRules.Add(new LoggingRule("*", LogLevel.Debug, udpTarget));
+                SetLoggingRulesForTarget(config, udpTarget);
             }
 
             LogManager.Configuration = config;
 
             Caliburn.Micro.LogManager.GetLog = type => new NLogLogger(type);
 
-            PresentationTraceSources.DataBindingSource.Listeners.Add(new NLogTraceListener());
+            //PresentationTraceSources.DataBindingSource.Listeners.Add(new NLogTraceListener());
         }
+
+        private static void SetLoggingRulesForTarget(LoggingConfiguration config, Target target) {
+            config.LoggingRules.Add(new LoggingRule("Action", LogLevel.Warn, target) { Final = true });
+            config.LoggingRules.Add(new LoggingRule("ActionMessage", LogLevel.Warn, target) { Final = true });
+            config.LoggingRules.Add(new LoggingRule("ViewModelBinder", LogLevel.Warn, target) { Final = true });
+            config.LoggingRules.Add(new LoggingRule("Screen", LogLevel.Warn, target) { Final = true });
+            config.LoggingRules.Add(new LoggingRule("ConventionManager", LogLevel.Warn, target) { Final = true });
+            config.LoggingRules.Add(new LoggingRule("*", LogLevel.Debug, target));
+        }
+
 
         protected override object GetInstance(Type serviceType, string key) {
             string contract = string.IsNullOrEmpty(key) ? AttributedModelServices.GetContractName(serviceType) : key;
