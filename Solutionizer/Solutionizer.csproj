@@ -112,6 +112,7 @@
     <Compile Include="Helper\VisualStudioHelper.cs" />
     <Compile Include="Helper\WebBrowserHelper.cs" />
     <Compile Include="Infrastructure\AppEnvironment.cs" />
+    <Compile Include="Infrastructure\ContextMenuOnLeftClickBehavior.cs" />
     <Compile Include="Infrastructure\HyperlinkNavigateBehavior.cs" />
     <Compile Include="Infrastructure\ReleaseInfoReader.cs">
       <SubType>Code</SubType>
