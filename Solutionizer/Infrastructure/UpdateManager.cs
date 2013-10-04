@@ -18,8 +18,8 @@ namespace Solutionizer.Infrastructure {
 
         public UpdateManager(ISettings settings, Version currentVersion) {
             _currentVersion = currentVersion;
-            _reader = new FakeReleaseProvider();
-            //_reader = new GithubReleaseProvider(settings);
+            //_reader = new FakeReleaseProvider();
+            _reader = new GithubReleaseProvider(settings);
 
             _releases = LoadReleases();
             _releases.ForEach(r => r.IsNew = r.Version > _currentVersion);
