@@ -20,6 +20,7 @@ namespace Solutionizer.Services {
         private string _rootPath;
         private bool _showLaunchElevatedButton;
         private bool _showProjectCount;
+        private string _lastUpdateCheck;
 
         public Settings() {
             _visualStudioVersion = VisualStudioHelper.DetectVersion();
@@ -177,6 +178,17 @@ namespace Solutionizer.Services {
                 if (_showProjectCount != value) {
                     _showProjectCount = value;
                     NotifyOfPropertyChange(() => ShowProjectCount);
+                    IsDirty = true;
+                }
+            }
+        }
+
+        public string LastUpdateCheck {
+            get { return _lastUpdateCheck; }
+            set {
+                if (value != _lastUpdateCheck) {
+                    _lastUpdateCheck = value;
+                    NotifyOfPropertyChange(() => LastUpdateCheck);
                     IsDirty = true;
                 }
             }

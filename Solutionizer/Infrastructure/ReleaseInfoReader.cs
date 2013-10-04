@@ -8,10 +8,13 @@ using System.Threading;
 using System.Threading.Tasks;
 using NLog;
 using RestSharp;
+using RestSharp.Deserializers;
+using Solutionizer.Services;
 
 namespace Solutionizer.Infrastructure {
     public interface IReleaseProvider {
         Task<IReadOnlyCollection<ReleaseInfo>> GetReleaseInfosAsync();
+
         Task<string> DownloadReleasePackage(ReleaseInfo releaseInfo, Action<int> downloadProgressCallback, CancellationToken cancellationToken);
     }
 
@@ -150,7 +153,7 @@ namespace Solutionizer.Infrastructure {
         ]
 }]";
 
-                var deserializer = new RestSharp.Deserializers.JsonDeserializer();
+                var deserializer = new JsonDeserializer();
                 IEnumerable<Release> releases = deserializer.Deserialize<List<Release>>(new RestResponse { Content = jsonString });
                 return releases;
             });
@@ -173,13 +176,26 @@ namespace Solutionizer.Infrastructure {
     }
 
     public class GithubReleaseProvider : ReleaseProviderBase {
-        private static readonly Logger _log = NLog.LogManager.GetCurrentClassLogger();
+        private static readonly Logger _log = LogManager.GetCurrentClassLogger();
+
+        private readonly ISettings _settings;
+
+        public GithubReleaseProvider(ISettings settings) {
+            _settings = settings;
+        }
 
         protected override async Task<IEnumerable<Release>> GetReleasesAsync() {
             var client = new RestClient("https://api.github.com");
             var request = new RestRequest("repos/thoemmi/Solutionizer/releases");
             request.AddHeader("Accept", "application/vnd.github.manifold-preview");
+            if (!String.IsNullOrWhiteSpace(_settings.LastUpdateCheck)) {
+                request.AddHeader("If-Modified-Since", _settings.LastUpdateCheck);
+            }
             var response = await client.ExecuteGetTaskAsync<List<Release>>(request);
+            var lastModifiedPartameter = response.Headers.FirstOrDefault(p => p.Name == "Last-Modified");
+            if (lastModifiedPartameter != null) {
+                _settings.LastUpdateCheck = (string) lastModifiedPartameter.Value;
+            }
             return response.Data;
         }
 

@@ -17,5 +17,6 @@ namespace Solutionizer.Services {
         bool ShowLaunchElevatedButton { get; set; }
         bool DontBuildReferencedProjects { get; set; }
         bool ShowProjectCount { get; set; }
+        string LastUpdateCheck { get; set; }
     }
 }

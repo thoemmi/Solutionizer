@@ -20,7 +20,7 @@ namespace Solutionizer.ViewModels {
         public ShellViewModel(Services.Settings settings, IDialogManager dialogManager) {
             _settings = settings;
             _projectRepository = new ProjectRepositoryViewModel(settings);
-            _updateManager = new UpdateManager();
+            _updateManager = new UpdateManager(_settings);
             _updateManager.UpdatesAvailable +=
                 (sender, args) => AreUpdatesAvailable = _updateManager.Releases != null && _updateManager.Releases.Any();
             _dialogManager = dialogManager;

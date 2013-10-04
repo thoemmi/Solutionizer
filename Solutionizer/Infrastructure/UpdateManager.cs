@@ -3,16 +3,22 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Solutionizer.Services;
 
 namespace Solutionizer.Infrastructure {
     public class UpdateManager {
-        private IReleaseProvider _reader;
-        private IReadOnlyCollection<ReleaseInfo> _releases;
+        private readonly ISettings _settings;
+        private readonly IReleaseProvider _reader;
+        private readonly List<ReleaseInfo> _releases = new List<ReleaseInfo>();
+
+        public UpdateManager(ISettings settings) {
+            _settings = settings;
+            //_reader = new FakeReleaseProvider();
+            _reader = new GithubReleaseProvider(_settings);
+        }
 
         public async Task LoadCompletedEventHandler() {
-            //_reader = new FakeReleaseProvider();
-            _reader = new GithubReleaseProvider();
-            _releases = await _reader.GetReleaseInfosAsync();
+            _releases.AddRange(await _reader.GetReleaseInfosAsync());
             if (_releases.Any()) {
                 OnUpdatesAvailable();
             }
