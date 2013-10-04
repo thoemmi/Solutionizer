@@ -74,7 +74,7 @@
                 </TextBlock>
 
               <TextBlock Foreground="{DynamicResource MenuItemDisabledBrush}" Grid.Row="0" Grid.Column="1" HorizontalAlignment="Right" Margin="0 0 4 0">
-                  <Run Text="Version "/><TextBlock Text="{Binding Version}"/><Run Text=", published"/>
+                  <Run Text="Version "/><TextBlock Text="{Binding Version}"/><TextBlock Text=" (Prerelease)" Visibility="{Binding IsPrerelease, Converter={StaticResource BooleanToVisibilityConverter}}"/><Run Text=", published"/>
                   <Run Text="{Binding PublishedAt, StringFormat=d, ConverterCulture={x:Static gl:CultureInfo.CurrentCulture}}" />
                 </TextBlock>
               

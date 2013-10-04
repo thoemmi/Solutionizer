@@ -33,7 +33,7 @@
       </Grid.RowDefinitions>
 
     <ScrollViewer VerticalScrollBarVisibility="Auto" VerticalAlignment="Stretch">
-      <Grid Helper:GridHelper.RowCount="10">
+      <Grid Helper:GridHelper.RowCount="11">
             <CheckBox 
                 x:Name="ScanOnStartup" 
                 Margin="0 0 0 8" 
@@ -124,7 +124,13 @@
                 Margin="0 0 0 8" 
                 Grid.Row="9" 
                 Content="Show number of contained projects behind the directory name."/>
-        </Grid>
+        
+            <CheckBox 
+                x:Name="IncludePrereleaseUpdates" 
+                Margin="0 0 0 8" 
+                Grid.Row="10" 
+                Content="Include pre-release versions for updates."/>
+      </Grid>
       </ScrollViewer>
 
         <StackPanel

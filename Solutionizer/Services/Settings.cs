@@ -21,6 +21,7 @@ namespace Solutionizer.Services {
         private bool _showLaunchElevatedButton;
         private bool _showProjectCount;
         private string _lastUpdateCheck;
+        private bool _includePrereleaseUpdates;
 
         public Settings() {
             _visualStudioVersion = VisualStudioHelper.DetectVersion();
@@ -189,6 +190,17 @@ namespace Solutionizer.Services {
                 if (value != _lastUpdateCheck) {
                     _lastUpdateCheck = value;
                     NotifyOfPropertyChange(() => LastUpdateCheck);
+                    IsDirty = true;
+                }
+            }
+        }
+
+        public bool IncludePrereleaseUpdates {
+            get { return _includePrereleaseUpdates; }
+            set {
+                if (_includePrereleaseUpdates != value) {
+                    _includePrereleaseUpdates = value;
+                    NotifyOfPropertyChange(() => IncludePrereleaseUpdates);
                     IsDirty = true;
                 }
             }

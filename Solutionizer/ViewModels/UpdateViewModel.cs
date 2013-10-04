@@ -5,11 +5,13 @@ using System.Threading.Tasks;
 using System.Windows.Data;
 using Caliburn.Micro;
 using Solutionizer.Infrastructure;
+using Solutionizer.Services;
 
 namespace Solutionizer.ViewModels {
     public class UpdateViewModel : Screen {
         private readonly UpdateManager _updateManager;
         private readonly IDialogManager _dialogManager;
+        private readonly ISettings _settings;
         private readonly bool _checkForUpdates;
         private readonly ObservableCollection<ReleaseInfo> _releases = new ObservableCollection<ReleaseInfo>();
         private bool _isUpdating = true;
@@ -17,9 +19,10 @@ namespace Solutionizer.ViewModels {
         private bool _canUpdate = false;
         private bool _showOldReleases;
 
-        public UpdateViewModel(UpdateManager updateManager, IDialogManager dialogManager, bool checkForUpdates) {
+        public UpdateViewModel(UpdateManager updateManager, IDialogManager dialogManager, ISettings settings, bool checkForUpdates) {
             _updateManager = updateManager;
             _dialogManager = dialogManager;
+            _settings = settings;
             _checkForUpdates = checkForUpdates;
             DisplayName = checkForUpdates ? "Check for Updates" : "Available Updates";
             _releases = new ObservableCollection<ReleaseInfo>();
@@ -41,6 +44,7 @@ namespace Solutionizer.ViewModels {
             }
 
             var releases = _updateManager.Releases
+                .Where(r => _settings.IncludePrereleaseUpdates || !r.IsPrerelease)
                 .OrderByDescending(r => r.Version)
                 .SkipWhile(r => String.IsNullOrWhiteSpace(r.DownloadUrl)).ToList();
 

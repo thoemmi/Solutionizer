@@ -23,7 +23,7 @@ namespace Solutionizer.ViewModels {
             _projectRepository = new ProjectRepositoryViewModel(settings);
             _updateManager = new UpdateManager(_settings, AppEnvironment.CurrentVersion);
             _updateManager.UpdatesAvailable +=
-                (sender, args) => AreUpdatesAvailable = _updateManager.Releases != null && _updateManager.Releases.Any();
+                (sender, args) => AreUpdatesAvailable = _updateManager.Releases != null && _updateManager.Releases.Any(r => r.IsNew && (_settings.IncludePrereleaseUpdates || !r.IsPrerelease));
             _dialogManager = dialogManager;
             DisplayName = "Solutionizer";
         }
@@ -81,7 +81,7 @@ namespace Solutionizer.ViewModels {
         }
 
         public void ShowUpdate(bool checkForUpdates) {
-            _dialogManager.ShowDialog(new UpdateViewModel(_updateManager, _dialogManager, checkForUpdates));
+            _dialogManager.ShowDialog(new UpdateViewModel(_updateManager, _dialogManager, _settings, checkForUpdates));
         }
 
         public IDialogManager Dialogs {
