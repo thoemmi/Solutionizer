@@ -108,6 +108,7 @@
                 <ContextMenu>
                   <MenuItem Header="Settings" cal:Message.Attach="ShowSettings()"/>
                   <MenuItem Header="Check for updates" cal:Message.Attach="ShowUpdate('true')"/>
+                  <MenuItem Header="About" cal:Message.Attach="ShowAbout()"/>
                 </ContextMenu>
               </Button.ContextMenu>
               <Viewbox Height="14" Width="14" RenderTransformOrigin="0.5, 0.5" x:Name="_gear">

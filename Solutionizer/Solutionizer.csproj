@@ -121,6 +121,7 @@
     <Compile Include="Infrastructure\UpdateManager.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="ViewModels\AboutViewModel.cs" />
     <Compile Include="ViewModels\FileScanningViewModel.cs" />
     <Compile Include="Helper\GridHelper.cs" />
     <Compile Include="Infrastructure\BindableSelectedItemBehavior .cs" />
@@ -168,6 +169,10 @@
     <Compile Include="ViewModels\UpdateDownloadViewModel.cs" />
     <Compile Include="ViewModels\UpdateViewModel.cs" />
     <Page Include="Controls\FluidProgressBar.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\AboutView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
