@@ -8,8 +8,8 @@
              xmlns:ViewModels="clr-namespace:Solutionizer.ViewModels"
              d:DataContext="{d:DesignInstance ViewModels:SettingsViewModel}"
              d:DesignHeight="300" d:DesignWidth="300">
-    <StackPanel>
-        <StackPanel.Resources>
+    <Grid>
+        <Grid.Resources>
             <ObjectDataProvider MethodName="GetValues" ObjectType="{x:Type System:Enum}" x:Key="PossibleValues">
                 <ObjectDataProvider.MethodParameters>
                     <x:Type TypeName="Services:VisualStudioVersion" />
@@ -26,9 +26,14 @@
                     </DataTrigger>
                 </DataTemplate.Triggers>
             </DataTemplate>
-        </StackPanel.Resources>
+        </Grid.Resources>
+      <Grid.RowDefinitions>
+        <RowDefinition Height="*" />
+        <RowDefinition Height="Auto" />
+      </Grid.RowDefinitions>
 
-        <Grid Helper:GridHelper.RowCount="10">
+    <ScrollViewer VerticalScrollBarVisibility="Auto" VerticalAlignment="Stretch">
+      <Grid Helper:GridHelper.RowCount="10">
             <CheckBox 
                 x:Name="ScanOnStartup" 
                 Margin="0 0 0 8" 
@@ -120,6 +125,7 @@
                 Grid.Row="9" 
                 Content="Show number of contained projects behind the directory name."/>
         </Grid>
+      </ScrollViewer>
 
         <StackPanel
             Margin="0 16 0 0"
@@ -137,5 +143,5 @@
                 x:Name="Cancel" 
                 Content="Cancel"/>
         </StackPanel>
-    </StackPanel>
+    </Grid>
 </UserControl>
