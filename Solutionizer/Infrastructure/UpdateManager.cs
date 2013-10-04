@@ -18,8 +18,8 @@ namespace Solutionizer.Infrastructure {
 
         public UpdateManager(ISettings settings, Version currentVersion) {
             _currentVersion = currentVersion;
-            //_reader = new FakeReleaseProvider();
-            _reader = new GithubReleaseProvider(settings);
+            _reader = new FakeReleaseProvider();
+            //_reader = new GithubReleaseProvider(settings);
 
             _releases = LoadReleases();
             _releases.ForEach(r => r.IsNew = r.Version > _currentVersion);
@@ -33,6 +33,12 @@ namespace Solutionizer.Infrastructure {
                 _log.ErrorException("Getting release informations failed", ex);
                 return;
             }
+
+            // remove re-published versions
+            foreach (var release in newReleases) {
+                _releases.RemoveAll(r => r.Version == release.Version);
+            }
+
             _releases.AddRange(newReleases);
             _releases.ForEach(r => r.IsNew = r.Version > _currentVersion);
             SaveReleases();

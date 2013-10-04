@@ -7,6 +7,7 @@ using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 using NLog;
 using RestSharp;
 using RestSharp.Deserializers;
@@ -29,6 +30,7 @@ namespace Solutionizer.Infrastructure {
         public string HtmlUrl { get; set; }
         public string TagName { get; set; }
         public bool IsPrerelease { get; set; }
+        [JsonConverter(typeof(VersionConverter))]
         public Version Version { get; set; }
         [JsonIgnore]
         public bool IsNew { get; set; }
@@ -79,8 +81,11 @@ namespace Solutionizer.Infrastructure {
                     int major, minor, patch;
                     Int32.TryParse(match.Groups["major"].Value, out major);
                     Int32.TryParse(match.Groups["minor"].Value, out minor);
-                    Int32.TryParse(match.Groups["patch"].Value, out patch);
-                    r.Version = new Version(major, minor, patch);
+                    if (Int32.TryParse(match.Groups["patch"].Value, out patch)) {
+                        r.Version = new Version(major, minor, patch);
+                    } else {
+                        r.Version = new Version(major, minor);
+                    }
                 }
 
                 return r;
@@ -129,7 +134,7 @@ namespace Solutionizer.Infrastructure {
         ""upload_url"":""https://uploads.github.com/repos/thoemmi/Solutionizer/releases/1904/assets{?name}"",
         ""html_url"":""https://github.com/thoemmi/Solutionizer/releases/v0.1.1"",
         ""id"":1904,
-        ""tag_name"":""v0.1.1"",
+        ""tag_name"":""v0.2.1"",
         ""target_commitish"":""master"",
         ""name"":""Vanilla"",
         ""body"":""This is a release for testing. **Don't use it!**

@@ -57,8 +57,15 @@
                   <RowDefinition Height="Auto" />
                   <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
+                
+                <Rectangle 
+                  Grid.RowSpan="2" 
+                  HorizontalAlignment="Left" Width="4" 
+                  StrokeThickness="0"
+                  Fill="{DynamicResource HighlightBrush}"
+                  Visibility="{Binding IsNew, Converter={StaticResource BooleanToVisibilityConverter}}"/>
               
-                <TextBlock Margin="0 0 0 4">
+                <TextBlock Grid.Row="0" Grid.Column="0" Margin="10 0 0 4">
                   <Hyperlink NavigateUri="{Binding HtmlUrl}">
                     <i:Interaction.Behaviors>
                         <Infrastructure:HyperlinkNavigateBehavior/>
@@ -66,13 +73,13 @@
                     <Run FontWeight="Bold" FontSize="14" Text="{Binding Path=Name}"/></Hyperlink>
                 </TextBlock>
 
-              <TextBlock Foreground="{DynamicResource MenuItemDisabledBrush}" Grid.Column="1" HorizontalAlignment="Right">
+              <TextBlock Foreground="{DynamicResource MenuItemDisabledBrush}" Grid.Row="0" Grid.Column="1" HorizontalAlignment="Right" Margin="0 0 4 0">
                   <Run Text="Version "/><TextBlock Text="{Binding Version}"/><Run Text=", published"/>
                   <Run Text="{Binding PublishedAt, StringFormat=d, ConverterCulture={x:Static gl:CultureInfo.CurrentCulture}}" />
                 </TextBlock>
               
-                <FlowDocumentScrollViewer 
-                  Grid.Row="1" Grid.ColumnSpan="2"
+                <FlowDocumentScrollViewer Margin="10 0 0 0"
+                  Grid.Row="1" Grid.ColumnSpan="2" Grid.Column="0"
                   VerticalScrollBarVisibility="Hidden"
                   HorizontalScrollBarVisibility="Hidden"
                   Document="{Binding Path=ReleaseNotes, Converter={StaticResource MarkdownToFlowDocumentConverter}}" />
