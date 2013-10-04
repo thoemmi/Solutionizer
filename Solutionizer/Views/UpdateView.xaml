@@ -7,13 +7,14 @@
              xmlns:Converters="clr-namespace:Solutionizer.Converters"
              xmlns:Infrastructure="clr-namespace:Solutionizer.Infrastructure"
              xmlns:gl="clr-namespace:System.Globalization;assembly=mscorlib"
-             xmlns:cal="http://www.caliburnproject.org"
              xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+             xmlns:Controls="clr-namespace:Solutionizer.Controls"
              mc:Ignorable="d" 
              d:DataContext="{d:DesignInstance ViewModels:UpdateViewModel}"
              d:DesignHeight="300" d:DesignWidth="300" MaxWidth="500">
   <UserControl.Resources>
     <Converters:MarkdownToFlowDocumentConverter x:Key="MarkdownToFlowDocumentConverter"/>
+    <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
 
     <Style TargetType="FlowDocument" >
       <Setter Property="FontFamily" Value="Segoe UI" />
@@ -22,58 +23,80 @@
       <Setter Property="PagePadding" Value="0" />
     </Style>
   </UserControl.Resources>
-    <StackPanel>
-      <ItemsControl ItemsSource="{Binding Releases}">
-      <ItemsControl.ItemTemplate>
-        <DataTemplate DataType="Infrastructure:ReleaseInfo">
-            <Grid Margin="0 0 0 10">
-              <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="*" />
-              </Grid.ColumnDefinitions>
-              <Grid.RowDefinitions>
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-              </Grid.RowDefinitions>
-              
-              <TextBlock Margin="0 0 0 4">
-                <Hyperlink NavigateUri="{Binding HtmlUrl}">
-                  <i:Interaction.Behaviors>
-                      <Infrastructure:HyperlinkNavigateBehavior/>
-                  </i:Interaction.Behaviors>
-                  <Run FontWeight="Bold" FontSize="14" Text="{Binding Path=Name}"/></Hyperlink>
-              </TextBlock>
+  <Grid>
+    <Grid.RowDefinitions>
+      <RowDefinition Height="Auto" />
+      <RowDefinition Height="Auto" />
+      <RowDefinition Height="*" />
+      <RowDefinition Height="auto" />
+    </Grid.RowDefinitions>
 
-            <TextBlock Foreground="{DynamicResource MenuItemDisabledBrush}" Grid.Column="1" HorizontalAlignment="Right">
-                <Run Text="Version "/><TextBlock Text="{Binding Version}"/><Run Text=", published"/>
-                <Run Text="{Binding PublishedAt, StringFormat=d, ConverterCulture={x:Static gl:CultureInfo.CurrentCulture}}" />
-              </TextBlock>
-              
-              <FlowDocumentScrollViewer 
-                Grid.Row="1" Grid.ColumnSpan="2"
-                VerticalScrollBarVisibility="Hidden"
-                HorizontalScrollBarVisibility="Hidden"
-                Document="{Binding Path=ReleaseNotes, Converter={StaticResource MarkdownToFlowDocumentConverter}}" />
-            </Grid>
-        </DataTemplate>
-      </ItemsControl.ItemTemplate>
-    </ItemsControl>
-
-    <StackPanel
-            Margin="0 16 0 0"
-            Orientation="Horizontal"
-            HorizontalAlignment="Right">
-
-      <Button 
-                MinWidth="80"
-                x:Name="Update" 
-                Content="Update"/>
-      <Button 
-                Margin="8 0 0 0"
-                MinWidth="80"
-                x:Name="Cancel" 
-                Content="Cancel"/>
+    <StackPanel Orientation="Horizontal" Visibility="{Binding IsUpdating, Converter={StaticResource BooleanToVisibilityConverter}}">
+      <Controls:CircularProgressAnimation IsActive="True" Width="14" Height="14" DotDiameter="2" Margin="0 0 4 0"/>
+      <TextBlock>Checking for updates...</TextBlock>
     </StackPanel>
 
-  </StackPanel>
+    <TextBlock Grid.Row="0" Text="You have the latest version installed." Visibility="{Binding IsUpToDate, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+    <TextBlock Grid.Row="0" Text="An update is available." Visibility="{Binding CanUpdate, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+    
+    <TextBlock 
+      Grid.Row="1" 
+      Margin="0 4"
+      Text="{Binding Source={x:Static Infrastructure:AppEnvironment.CurrentVersion}, StringFormat=Current version is {0}.}" />
+
+    <ScrollViewer VerticalScrollBarVisibility="Auto" VerticalAlignment="Stretch" Grid.Row="2">
+      <ItemsControl ItemsSource="{Binding Releases}">
+        <ItemsControl.ItemTemplate>
+          <DataTemplate DataType="Infrastructure:ReleaseInfo">
+              <Grid Margin="0 0 0 10">
+                <Grid.ColumnDefinitions>
+                  <ColumnDefinition Width="Auto" />
+                  <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                  <RowDefinition Height="Auto" />
+                  <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+              
+                <TextBlock Margin="0 0 0 4">
+                  <Hyperlink NavigateUri="{Binding HtmlUrl}">
+                    <i:Interaction.Behaviors>
+                        <Infrastructure:HyperlinkNavigateBehavior/>
+                    </i:Interaction.Behaviors>
+                    <Run FontWeight="Bold" FontSize="14" Text="{Binding Path=Name}"/></Hyperlink>
+                </TextBlock>
+
+              <TextBlock Foreground="{DynamicResource MenuItemDisabledBrush}" Grid.Column="1" HorizontalAlignment="Right">
+                  <Run Text="Version "/><TextBlock Text="{Binding Version}"/><Run Text=", published"/>
+                  <Run Text="{Binding PublishedAt, StringFormat=d, ConverterCulture={x:Static gl:CultureInfo.CurrentCulture}}" />
+                </TextBlock>
+              
+                <FlowDocumentScrollViewer 
+                  Grid.Row="1" Grid.ColumnSpan="2"
+                  VerticalScrollBarVisibility="Hidden"
+                  HorizontalScrollBarVisibility="Hidden"
+                  Document="{Binding Path=ReleaseNotes, Converter={StaticResource MarkdownToFlowDocumentConverter}}" />
+              </Grid>
+          </DataTemplate>
+        </ItemsControl.ItemTemplate>
+      </ItemsControl>
+    </ScrollViewer>
+    
+    <StackPanel
+      Grid.Row="3"
+      Margin="0 16 0 0"
+      Orientation="Horizontal"
+      HorizontalAlignment="Right">
+      <Button 
+        MinWidth="80"
+        x:Name="Update" 
+        Content="Update"/>
+      <Button 
+        Margin="8 0 0 0"
+        MinWidth="80"
+        x:Name="Cancel" 
+        Content="Cancel"/>
+    </StackPanel>
+
+  </Grid>
 </UserControl>

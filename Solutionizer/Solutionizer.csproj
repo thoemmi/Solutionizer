@@ -102,6 +102,7 @@
     <Compile Include="AppBootstrapper.cs" />
     <Compile Include="Commands\SaveSolutionCommand.cs" />
     <Compile Include="CommonAssemblyInfo.cs" />
+    <Compile Include="Controls\CircularProgressAnimation.cs" />
     <Compile Include="Controls\FluidProgressBar.xaml.cs">
       <DependentUpon>FluidProgressBar.xaml</DependentUpon>
     </Compile>

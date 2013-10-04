@@ -25,7 +25,7 @@ namespace Solutionizer.Infrastructure {
             _releases.ForEach(r => r.IsNew = r.Version > _currentVersion);
         }
 
-        public async Task LoadCompletedEventHandler() {
+        public async Task CheckForUpdatesAsync() {
             IReadOnlyCollection<ReleaseInfo> newReleases;
             try {
                 newReleases = await _reader.GetReleaseInfosAsync();

@@ -95,12 +95,10 @@
 
         <ContentControl 
             Grid.RowSpan="2"
-            x:Name="Dialogs" 
-            VerticalContentAlignment="Stretch"
-            HorizontalContentAlignment="Stretch"/>
+            x:Name="Dialogs" />
 
         <Controls:WindowCommands HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0 2">
-            <Button x:Name="ShowUpdate" Content="Update available" Visibility="{Binding AreUpdatesAvailable, Converter={StaticResource BooleanToVisibilityConverter}}" />
+            <Button Content="Update available" cal:Message.Attach="ShowUpdate('false')" Visibility="{Binding AreUpdatesAvailable, Converter={StaticResource BooleanToVisibilityConverter}}"/>
             <Button x:Name="ChangeRoot" Content="Change Root..." cal:Message.Attach="SelectRootPath()" />
             <Button>
               <i:Interaction.Behaviors>
@@ -109,6 +107,7 @@
               <Button.ContextMenu>
                 <ContextMenu>
                   <MenuItem Header="Settings" cal:Message.Attach="ShowSettings()"/>
+                  <MenuItem Header="Check for updates" cal:Message.Attach="ShowUpdate('true')"/>
                 </ContextMenu>
               </Button.ContextMenu>
               <Viewbox Height="14" Width="14" RenderTransformOrigin="0.5, 0.5" x:Name="_gear">

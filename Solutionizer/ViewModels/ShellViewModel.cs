@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using System.Threading.Tasks;
 using System.Windows;
 using Caliburn.Micro;
 using Ookii.Dialogs.Wpf;
@@ -62,8 +63,7 @@ namespace Solutionizer.ViewModels {
                 LoadProjects(_settings.RootPath);
             }
 
-            // ReSharper disable once CSharpWarnings::CS4014 - we don't care about the result
-            _updateManager.LoadCompletedEventHandler();
+            Task.Run(() => _updateManager.CheckForUpdatesAsync());
         }
 
         public void SelectRootPath() {
@@ -80,8 +80,8 @@ namespace Solutionizer.ViewModels {
             _dialogManager.ShowDialog(new SettingsViewModel(_settings));
         }
 
-        public void ShowUpdate() {
-            _dialogManager.ShowDialog(new UpdateViewModel(_updateManager, _dialogManager));
+        public void ShowUpdate(bool checkForUpdates) {
+            _dialogManager.ShowDialog(new UpdateViewModel(_updateManager, _dialogManager, checkForUpdates));
         }
 
         public IDialogManager Dialogs {
