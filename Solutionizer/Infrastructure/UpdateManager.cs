@@ -10,31 +10,33 @@ using Solutionizer.Services;
 
 namespace Solutionizer.Infrastructure {
     public class UpdateManager {
+        private readonly Version _currentVersion;
         private static readonly Logger _log = LogManager.GetCurrentClassLogger();
 
-        private readonly ISettings _settings;
         private readonly IReleaseProvider _reader;
         private readonly List<ReleaseInfo> _releases = new List<ReleaseInfo>();
 
-        public UpdateManager(ISettings settings) {
-            _settings = settings;
+        public UpdateManager(ISettings settings, Version currentVersion) {
+            _currentVersion = currentVersion;
             //_reader = new FakeReleaseProvider();
-            _reader = new GithubReleaseProvider(_settings);
+            _reader = new GithubReleaseProvider(settings);
 
             _releases = LoadReleases();
+            _releases.ForEach(r => r.IsNew = r.Version > _currentVersion);
         }
 
         public async Task LoadCompletedEventHandler() {
-            IReadOnlyCollection<ReleaseInfo> readOnlyCollection;
+            IReadOnlyCollection<ReleaseInfo> newReleases;
             try {
-                readOnlyCollection = await _reader.GetReleaseInfosAsync();
+                newReleases = await _reader.GetReleaseInfosAsync();
             } catch (Exception ex) {
                 _log.ErrorException("Getting release informations failed", ex);
                 return;
             }
-            _releases.AddRange(readOnlyCollection);
+            _releases.AddRange(newReleases);
+            _releases.ForEach(r => r.IsNew = r.Version > _currentVersion);
             SaveReleases();
-            if (_releases.Any()) {
+            if (_releases.Any(r => r.IsNew)) {
                 OnUpdatesAvailable();
             }
         }

@@ -20,7 +20,7 @@ namespace Solutionizer.ViewModels {
         public ShellViewModel(Services.Settings settings, IDialogManager dialogManager) {
             _settings = settings;
             _projectRepository = new ProjectRepositoryViewModel(settings);
-            _updateManager = new UpdateManager(_settings);
+            _updateManager = new UpdateManager(_settings, AppEnvironment.CurrentVersion);
             _updateManager.UpdatesAvailable +=
                 (sender, args) => AreUpdatesAvailable = _updateManager.Releases != null && _updateManager.Releases.Any();
             _dialogManager = dialogManager;
@@ -62,6 +62,7 @@ namespace Solutionizer.ViewModels {
                 LoadProjects(_settings.RootPath);
             }
 
+            // ReSharper disable once CSharpWarnings::CS4014 - we don't care about the result
             _updateManager.LoadCompletedEventHandler();
         }
 

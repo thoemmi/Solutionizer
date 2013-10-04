@@ -100,7 +100,7 @@
             HorizontalContentAlignment="Stretch"/>
 
         <Controls:WindowCommands HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0 2">
-            <Button x:Name="ShowUpdate" Content="Update" Visibility="{Binding AreUpdatesAvailable, Converter={StaticResource BooleanToVisibilityConverter}}" />
+            <Button x:Name="ShowUpdate" Content="Update available" Visibility="{Binding AreUpdatesAvailable, Converter={StaticResource BooleanToVisibilityConverter}}" />
             <Button x:Name="ChangeRoot" Content="Change Root..." cal:Message.Attach="SelectRootPath()" />
             <Button x:Name="ShowSettings" Content="Settings" />
         </Controls:WindowCommands>

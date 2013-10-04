@@ -203,8 +203,10 @@ namespace Solutionizer.Services {
         public bool Maximized { get; set; }
     }
 
+    // ReSharper disable InconsistentNaming
     public enum VisualStudioVersion {
         VS2010,
         VS2012,
     }
+    // ReSharper restore InconsistentNaming
 }

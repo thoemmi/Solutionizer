@@ -16,7 +16,7 @@ namespace Solutionizer.ViewModels {
             DisplayName = "Updates";
             _releases = new ObservableCollection<ReleaseInfo>(
                 updateManager.Releases
-                    .OrderByDescending(r => r.PublishedAt)
+                    .OrderByDescending(r => r.Version)
                     .SkipWhile(r => String.IsNullOrWhiteSpace(r.DownloadUrl)));
         }
 

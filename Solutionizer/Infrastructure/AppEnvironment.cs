@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Reflection;
 
 namespace Solutionizer.Infrastructure {
@@ -6,14 +7,16 @@ namespace Solutionizer.Infrastructure {
         private static string _dataFolder;
 
         public static string DataFolder {
-            get {
-                return _dataFolder ?? (_dataFolder = GetDataFolder());
-            }
+            get { return _dataFolder ?? (_dataFolder = GetDataFolder()); }
+        }
+
+        public static Version CurrentVersion {
+            get { return Assembly.GetEntryAssembly().GetName().Version; }
         }
 
         private static string GetDataFolder() {
             var dataFolder = Path.Combine(
-                System.Environment.GetFolderPath(System.Environment.SpecialFolder.LocalApplicationData),
+                Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
                 Assembly.GetEntryAssembly().GetName().Name);
 
             if (!Directory.Exists(dataFolder)) {

@@ -6,6 +6,7 @@ using System.Net;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
 using NLog;
 using RestSharp;
 using RestSharp.Deserializers;
@@ -29,6 +30,8 @@ namespace Solutionizer.Infrastructure {
         public string TagName { get; set; }
         public bool IsPrerelease { get; set; }
         public Version Version { get; set; }
+        [JsonIgnore]
+        public bool IsNew { get; set; }
     }
 
     public abstract class ReleaseProviderBase : IReleaseProvider {
