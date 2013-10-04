@@ -1,12 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
+using NLog;
 using Solutionizer.Services;
 
 namespace Solutionizer.Infrastructure {
     public class UpdateManager {
+        private static readonly Logger _log = LogManager.GetCurrentClassLogger();
+
         private readonly ISettings _settings;
         private readonly IReleaseProvider _reader;
         private readonly List<ReleaseInfo> _releases = new List<ReleaseInfo>();
@@ -15,13 +20,47 @@ namespace Solutionizer.Infrastructure {
             _settings = settings;
             //_reader = new FakeReleaseProvider();
             _reader = new GithubReleaseProvider(_settings);
+
+            _releases = LoadReleases();
         }
 
         public async Task LoadCompletedEventHandler() {
-            _releases.AddRange(await _reader.GetReleaseInfosAsync());
+            IReadOnlyCollection<ReleaseInfo> readOnlyCollection;
+            try {
+                readOnlyCollection = await _reader.GetReleaseInfosAsync();
+            } catch (Exception ex) {
+                _log.ErrorException("Getting release informations failed", ex);
+                return;
+            }
+            _releases.AddRange(readOnlyCollection);
+            SaveReleases();
             if (_releases.Any()) {
                 OnUpdatesAvailable();
             }
+        }
+
+        private List<ReleaseInfo> LoadReleases() {
+            if (File.Exists(ReleasesPath)) {
+                var fileData = File.ReadAllText(ReleasesPath);
+                return JsonConvert.DeserializeObject<List<ReleaseInfo>>(fileData);
+            } else {
+                return new List<ReleaseInfo>();
+            }
+        }
+
+        private void SaveReleases() {
+            try {
+                using (var textWriter = new StreamWriter(ReleasesPath)) {
+                    textWriter.WriteLine(JsonConvert.SerializeObject(_releases, Formatting.Indented));
+                }
+            }
+            catch (Exception e) {
+                _log.ErrorException("Saving settings failed", e);
+            }
+        }
+
+        private string ReleasesPath {
+            get { return Path.Combine(AppEnvironment.DataFolder, "releases.json"); }
         }
 
         public IReadOnlyCollection<ReleaseInfo> Releases {

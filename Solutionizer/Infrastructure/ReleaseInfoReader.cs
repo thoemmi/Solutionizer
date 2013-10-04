@@ -196,7 +196,7 @@ namespace Solutionizer.Infrastructure {
             if (lastModifiedPartameter != null) {
                 _settings.LastUpdateCheck = (string) lastModifiedPartameter.Value;
             }
-            return response.Data;
+            return response.Data ?? Enumerable.Empty<Release>();
         }
 
         public override async Task<string> DownloadReleasePackage(ReleaseInfo releaseInfo, Action<int> downloadProgressCallback, CancellationToken cancellationToken) {

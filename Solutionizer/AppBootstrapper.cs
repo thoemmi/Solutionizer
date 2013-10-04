@@ -6,15 +6,14 @@ using System.ComponentModel.Composition.Primitives;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Reflection;
 using System.Threading.Tasks;
-using System.Xml.Linq;
 using Caliburn.Micro;
 using Caliburn.Micro.Logging.NLog;
 using NLog;
 using NLog.Config;
 using NLog.Layouts;
 using NLog.Targets;
+using Solutionizer.Infrastructure;
 using Solutionizer.Services;
 using LogManager = NLog.LogManager;
 
@@ -23,13 +22,8 @@ namespace Solutionizer {
         private CompositionContainer _container;
         private SettingsProvider _settingsProvider;
 
-        private static readonly string _dataFolder;
-
         static AppBootstrapper() {
             if (!Execute.InDesignMode) {
-                _dataFolder = Path.Combine(
-                    Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
-                    Assembly.GetEntryAssembly().GetName().Name);
             }
         }
 
@@ -37,11 +31,7 @@ namespace Solutionizer {
         /// By default, we are configured to use MEF
         /// </summary>
         protected override void Configure() {
-            if (!Directory.Exists(_dataFolder)) {
-                Directory.CreateDirectory(_dataFolder);
-            }
-
-            _settingsProvider = new SettingsProvider(_dataFolder);
+            _settingsProvider = new SettingsProvider();
 
             ConfigureLogging();
 
@@ -54,9 +44,7 @@ namespace Solutionizer {
             TaskScheduler.UnobservedTaskException += (sender, args) =>
                 LogManager.GetCurrentClassLogger().ErrorException("UnobservedTaskException", args.Exception);
 
-            var catalog = new AggregateCatalog(
-                AssemblySource.Instance.Select(x => new AssemblyCatalog(x)).OfType<ComposablePartCatalog>()
-                );
+            var catalog = new AggregateCatalog(AssemblySource.Instance.Select(x => new AssemblyCatalog(x)));
 
             _container = new CompositionContainer(catalog);
 
@@ -73,7 +61,7 @@ namespace Solutionizer {
 
         private static void ConfigureLogging() {
             var fileTarget = new FileTarget {
-                FileName = Path.Combine(_dataFolder, "log.xml"),
+                FileName = Path.Combine(AppEnvironment.DataFolder, "log.xml"),
                 ArchiveFileName = "log_{#####}.xml",
                 ArchiveNumbering = ArchiveNumberingMode.Sequence,
                 ArchiveAboveSize = 1024*1024,
