@@ -89,6 +89,8 @@
       </ItemsControl>
     </ScrollViewer>
     
+    <CheckBox Grid.Row="3" VerticalAlignment="Center" Margin="0 16 0 0" IsChecked="{Binding ShowOldReleases}">Show old releases</CheckBox>
+    
     <StackPanel
       Grid.Row="3"
       Margin="0 16 0 0"

@@ -15,6 +15,7 @@ namespace Solutionizer.ViewModels {
         private bool _isUpdating = true;
         private bool _isUpToDate = false;
         private bool _canUpdate = false;
+        private bool _showOldReleases;
 
         public UpdateViewModel(UpdateManager updateManager, IDialogManager dialogManager, bool checkForUpdates) {
             _updateManager = updateManager;
@@ -22,6 +23,9 @@ namespace Solutionizer.ViewModels {
             _checkForUpdates = checkForUpdates;
             DisplayName = "Updates";
             _releases = new ObservableCollection<ReleaseInfo>();
+
+            var collectionView = CollectionViewSource.GetDefaultView(Releases);
+            collectionView.Filter = item => ((ReleaseInfo)item).IsNew;
 
             BindingOperations.EnableCollectionSynchronization(_releases, _releases);
         }
@@ -78,6 +82,23 @@ namespace Solutionizer.ViewModels {
                 if (_isUpToDate != value) {
                     _isUpToDate = value;
                     NotifyOfPropertyChange(() => IsUpToDate);
+                }
+            }
+        }
+
+        public bool ShowOldReleases {
+            get { return _showOldReleases; }
+            set {
+                if (_showOldReleases != value) {
+                    _showOldReleases = value;
+                    NotifyOfPropertyChange(() => ShowOldReleases);
+
+                    var collectionView = CollectionViewSource.GetDefaultView(Releases);
+                    if (_showOldReleases) {
+                        collectionView.Filter = null;
+                    } else {
+                        collectionView.Filter = item => ((ReleaseInfo) item).IsNew;
+                    }
                 }
             }
         }
