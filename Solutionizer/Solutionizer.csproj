@@ -167,9 +167,6 @@
     <Compile Include="ViewModels\SolutionProject.cs" />
     <Compile Include="ViewModels\UpdateDownloadViewModel.cs" />
     <Compile Include="ViewModels\UpdateViewModel.cs" />
-    <Compile Include="Views\UpdateDownloadView.xaml.cs">
-      <DependentUpon>UpdateDownloadView.xaml</DependentUpon>
-    </Compile>
     <Page Include="Controls\FluidProgressBar.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
