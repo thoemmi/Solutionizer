@@ -89,23 +89,32 @@
       </ItemsControl>
     </ScrollViewer>
     
-    <CheckBox Grid.Row="3" VerticalAlignment="Center" Margin="0 16 0 0" IsChecked="{Binding ShowOldReleases}">Show old releases</CheckBox>
-    
-    <StackPanel
+    <Grid
       Grid.Row="3"
       Margin="0 16 0 0"
-      Orientation="Horizontal"
-      HorizontalAlignment="Right">
+      HorizontalAlignment="Stretch">
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="*"/>
+        <ColumnDefinition Width="Auto"/>
+        <ColumnDefinition Width="Auto"/>
+      </Grid.ColumnDefinitions>
+      <CheckBox 
+        Grid.Column="0"
+        VerticalAlignment="Center" 
+        IsChecked="{Binding ShowOldReleases}">Show old releases</CheckBox>
       <Button 
+        Grid.Column="1"
+        Margin="8 0 0 0"
         MinWidth="80"
         x:Name="Update" 
         Content="Update"/>
       <Button 
+        Grid.Column="2"
         Margin="8 0 0 0"
         MinWidth="80"
         x:Name="Cancel" 
         Content="Cancel"/>
-    </StackPanel>
+    </Grid>
 
   </Grid>
 </UserControl>
