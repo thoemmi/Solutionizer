@@ -21,7 +21,7 @@ namespace Solutionizer.ViewModels {
             _updateManager = updateManager;
             _dialogManager = dialogManager;
             _checkForUpdates = checkForUpdates;
-            DisplayName = "Updates";
+            DisplayName = checkForUpdates ? "Check for Updates" : "Available Updates";
             _releases = new ObservableCollection<ReleaseInfo>();
 
             var collectionView = CollectionViewSource.GetDefaultView(Releases);
