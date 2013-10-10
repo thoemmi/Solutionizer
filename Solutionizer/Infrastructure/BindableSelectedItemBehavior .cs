@@ -35,9 +35,9 @@ namespace Solutionizer.Infrastructure {
                 }
 
                 // Expand the current container
-                if (container is TreeViewItem && !((TreeViewItem) container).IsExpanded) {
-                    container.SetValue(TreeViewItem.IsExpandedProperty, true);
-                }
+                //if (container is TreeViewItem && !((TreeViewItem) container).IsExpanded) {
+                //    container.SetValue(TreeViewItem.IsExpandedProperty, true);
+                //}
 
                 // Try to generate the ItemsPresenter and the ItemsPanel.
                 // by calling ApplyTemplate.  Note that in the 
