@@ -18,6 +18,6 @@ namespace Solutionizer.Services {
         bool DontBuildReferencedProjects { get; set; }
         bool ShowProjectCount { get; set; }
         bool IncludePrereleaseUpdates { get; set; }
-        string LastUpdateCheck { get; set; }
+        string LastUpdateCheckETag { get; set; }
     }
 }

@@ -20,8 +20,9 @@ namespace Solutionizer.Services {
         private string _rootPath;
         private bool _showLaunchElevatedButton;
         private bool _showProjectCount;
-        private string _lastUpdateCheck;
+        private string _lastUpdateCheckETag;
         private bool _includePrereleaseUpdates;
+        private string _someOtherProperty;
 
         public Settings() {
             _visualStudioVersion = VisualStudioHelper.DetectVersion();
@@ -184,12 +185,23 @@ namespace Solutionizer.Services {
             }
         }
 
-        public string LastUpdateCheck {
-            get { return _lastUpdateCheck; }
+        public string LastUpdateCheckETag {
+            get { return _lastUpdateCheckETag; }
             set {
-                if (value != _lastUpdateCheck) {
-                    _lastUpdateCheck = value;
-                    NotifyOfPropertyChange(() => LastUpdateCheck);
+                if (value != _lastUpdateCheckETag) {
+                    _lastUpdateCheckETag = value;
+                    NotifyOfPropertyChange(() => LastUpdateCheckETag);
+                    IsDirty = true;
+                }
+            }
+        }
+
+        public string SomeOtherProperty {
+            get { return _someOtherProperty; }
+            set {
+                if (value != _someOtherProperty) {
+                    _someOtherProperty = value;
+                    NotifyOfPropertyChange(() => SomeOtherProperty);
                     IsDirty = true;
                 }
             }

@@ -196,13 +196,13 @@ namespace Solutionizer.Infrastructure {
             var client = new RestClient("https://api.github.com");
             var request = new RestRequest("repos/thoemmi/Solutionizer/releases");
             request.AddHeader("Accept", "application/vnd.github.manifold-preview");
-            if (!String.IsNullOrWhiteSpace(_settings.LastUpdateCheck)) {
-                request.AddHeader("If-Modified-Since", _settings.LastUpdateCheck);
+            if (!String.IsNullOrWhiteSpace(_settings.LastUpdateCheckETag)) {
+                request.AddHeader("If-None-Match", "\"" + _settings.LastUpdateCheckETag + "\"");
             }
             var response = await client.ExecuteGetTaskAsync<List<Release>>(request);
-            var lastModifiedPartameter = response.Headers.FirstOrDefault(p => p.Name == "Last-Modified");
-            if (lastModifiedPartameter != null) {
-                _settings.LastUpdateCheck = (string) lastModifiedPartameter.Value;
+            var eTagParameter = response.Headers.FirstOrDefault(p => p.Name == "ETag");
+            if (eTagParameter != null) {
+                _settings.LastUpdateCheckETag = ((string)eTagParameter.Value).Trim('\"');
             }
             return response.Data ?? Enumerable.Empty<Release>();
         }
