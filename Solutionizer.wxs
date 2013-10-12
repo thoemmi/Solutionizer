@@ -123,7 +123,7 @@
       Error="There is already a newer version installed." />
 
     <InstallExecuteSequence>
-      <RemoveExistingProducts After="InstallValidate"/>
+      <RemoveExistingProducts After="InstallFinalize"/>
     </InstallExecuteSequence>
 
     <WixVariable Id='WixUILicenseRtf' Value='Assets\MS-PL.rtf'/>
