@@ -2,20 +2,16 @@
 using System.IO;
 using NLog;
 using Newtonsoft.Json;
+using Solutionizer.Infrastructure;
 
 namespace Solutionizer.Services {
     public class SettingsProvider {
         private static readonly Logger _log = LogManager.GetCurrentClassLogger();
 
-        private readonly string _dataFolder;
         private Settings _settings;
 
-        public SettingsProvider(string dataFolder) {
-            _dataFolder = dataFolder;
-        }
-
         private string SettingsPath {
-            get { return Path.Combine(_dataFolder, "settings.json"); }
+            get { return Path.Combine(AppEnvironment.DataFolder, "settings.json"); }
         }
 
         public Settings Settings {
@@ -45,11 +41,6 @@ namespace Solutionizer.Services {
         public void Save() {
             if (_settings == null || !_settings.IsDirty) {
                 return;
-            }
-
-            var path = Path.GetDirectoryName(SettingsPath);
-            if (!Directory.Exists(path)) {
-                Directory.CreateDirectory(path);
             }
 
             try {

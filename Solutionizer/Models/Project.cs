@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 using System.Xml;
 
@@ -14,8 +15,9 @@ namespace Solutionizer.Models {
         private Guid _guid;
         private bool _isSccBound;
         private List<string> _projectReferences;
-        private List<string> _brokenProjectReferences;
-        private Task<List<string>> _taskLoadConfigurations;
+        private readonly List<string> _brokenProjectReferences = new List<string>();
+        private readonly List<string> _errors = new List<string>();
+        private Task<IList<string>> _taskLoadConfigurations;
 
         public Project(string filepath) : this(filepath, null) {}
 
@@ -40,8 +42,6 @@ namespace Solutionizer.Models {
         }
 
         private void LoadInternal() {
-            _brokenProjectReferences = new List<string>();
-
             var xmlDocument = new XmlDocument();
             xmlDocument.Load(_filepath);
             if (xmlDocument.DocumentElement.NamespaceURI != "http://schemas.microsoft.com/developer/msbuild/2003") {
@@ -79,15 +79,24 @@ namespace Solutionizer.Models {
             _isSccBound = isSccBound;
             _projectReferences = projectReferences;
 
-            _taskLoadConfigurations = Task<List<string>>.Factory.StartNew(LoadConfigurationsWithMicrosoftBuild);
+            _taskLoadConfigurations = Task<IList<string>>.Factory.StartNew(LoadConfigurationsWithMicrosoftBuild);
         }
 
-        private List<string> LoadConfigurationsWithMicrosoftBuild() {
-            var p = Microsoft.Build.Evaluation.ProjectCollection.GlobalProjectCollection.LoadProject(_filepath);
-            var configurations = p.ConditionedProperties["Configuration"];
-            var platforms = p.ConditionedProperties["Platform"];
-            Microsoft.Build.Evaluation.ProjectCollection.GlobalProjectCollection.UnloadProject(p);
-            return configurations.SelectMany(configuration => platforms.Select(platform => configuration + "|" + platform)).ToList();
+        private IList<string> LoadConfigurationsWithMicrosoftBuild() {
+            Microsoft.Build.Evaluation.Project p = null;
+            try {
+                p = Microsoft.Build.Evaluation.ProjectCollection.GlobalProjectCollection.LoadProject(_filepath);
+                var configurations = p.ConditionedProperties["Configuration"];
+                var platforms = p.ConditionedProperties["Platform"];
+                return configurations.SelectMany(configuration => platforms.Select(platform => configuration + "|" + platform)).ToList();
+            } catch (Exception ex) {
+                _errors.Add(ex.Message);
+                return new string[0];
+            } finally {
+                if (p != null) {
+                    Microsoft.Build.Evaluation.ProjectCollection.GlobalProjectCollection.UnloadProject(p);
+                }
+            }
         }
 
         public string Filepath {
@@ -118,8 +127,8 @@ namespace Solutionizer.Models {
             get { return _brokenProjectReferences; }
         }
 
-        public bool HasBrokenProjectReferences {
-            get { return _brokenProjectReferences != null && _brokenProjectReferences.Count > 0; }
+        public List<string> Errors {
+            get { return _errors; }
         }
 
         public IList<string> Configurations {

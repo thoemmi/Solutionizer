@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using Solutionizer.Models;
 
 namespace Solutionizer.ViewModels {
@@ -36,12 +37,23 @@ namespace Solutionizer.ViewModels {
             IsVisible = String.IsNullOrEmpty(filter) || Name.ToUpperInvariant().Contains(filter.ToUpperInvariant());
         }
 
+        public bool HasIssues {
+            get { return HasErrors || HasBrokenProjectReferences; }
+        }
+
+        public bool HasErrors {
+            get { return _project.Errors.Any(); }
+        }
+
         public bool HasBrokenProjectReferences {
-            get { return _project.HasBrokenProjectReferences; }
+            get { return _project.BrokenProjectReferences.Any(); }
         }
 
         public string BrokenProjectReferences {
-            get { return _project.BrokenProjectReferences != null ? String.Join(",\n", _project.BrokenProjectReferences) : String.Empty; }
+            get { return String.Join(",\n", _project.BrokenProjectReferences); }
+        }
+        public string Errors {
+            get { return String.Join(",\n", _project.Errors); }
         }
     }
 }

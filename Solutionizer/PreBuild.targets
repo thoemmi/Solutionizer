@@ -90,7 +90,7 @@
           _SemanticVersion = major + "." + minor + "." + patch;
           _Commit = match.Groups["commit"].Value;
           if (revision != 0) {
-            _SemanticVersion += "-beta" + revision;
+            _SemanticVersion += "-beta." + revision;
           }
         ]]>
             </Code>

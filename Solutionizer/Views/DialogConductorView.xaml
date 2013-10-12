@@ -6,23 +6,30 @@
              xmlns:Converters="clr-namespace:Solutionizer.Converters"
              xmlns:ViewModels="clr-namespace:Solutionizer.ViewModels" mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300" d:DataContext="{d:DesignInstance ViewModels:DialogConductorViewModel}">
-    <UserControl.Resources>
-        <Converters:NullToCollapsedConverter x:Key="NullToCollapsedConverter"/>
-    </UserControl.Resources>
-    <Grid Visibility="{Binding ActiveItem, Converter={StaticResource NullToCollapsedConverter}}"
+  <UserControl.Resources>
+    <Converters:NullToCollapsedConverter x:Key="NullToCollapsedConverter"/>
+  </UserControl.Resources>
+    <Grid Visibility="{Binding ActiveItem, Converter={StaticResource NullToCollapsedConverter}}" 
 	      Background="#3f000000">
-        <StackPanel HorizontalAlignment="Center" Background="white" VerticalAlignment="Center">
-            <StackPanel.Effect>
-                <DropShadowEffect BlurRadius="10" ShadowDepth="0" />
-            </StackPanel.Effect>
-            <TextBlock 
-                x:Name="ActiveItem_DisplayName"
-                Visibility="{Binding Path=ActiveItem.DisplayName, Converter={StaticResource NullToCollapsedConverter}}"
-                FontWeight="Bold"
-                FontSize="20"
-                Margin="16 8"/>
-            <ContentControl x:Name="ActiveItem" MinWidth="240"
-                                               Margin="16 8" />
-        </StackPanel>
+      <Grid HorizontalAlignment="Center" Background="white" VerticalAlignment="Center">
+        <Grid.RowDefinitions>
+          <RowDefinition Height="Auto" />
+          <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Grid.Effect>
+          <DropShadowEffect BlurRadius="10" ShadowDepth="0" />
+        </Grid.Effect>
+        <TextBlock 
+        x:Name="ActiveItem_DisplayName"
+          Visibility="{Binding Path=ActiveItem.DisplayName, Converter={StaticResource NullToCollapsedConverter}}"
+          FontWeight="Bold"
+          FontSize="20"
+          Margin="16 8"/>
+        <ContentControl 
+          x:Name="ActiveItem" 
+          MinWidth="240" 
+          Grid.Row="1"
+          Margin="16 8" />
     </Grid>
+  </Grid>
 </UserControl>
