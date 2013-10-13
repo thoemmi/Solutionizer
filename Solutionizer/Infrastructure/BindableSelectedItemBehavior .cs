@@ -35,9 +35,9 @@ namespace Solutionizer.Infrastructure {
                 }
 
                 // Expand the current container
-                if (container is TreeViewItem && !((TreeViewItem) container).IsExpanded) {
-                    container.SetValue(TreeViewItem.IsExpandedProperty, true);
-                }
+                //if (container is TreeViewItem && !((TreeViewItem) container).IsExpanded) {
+                //    container.SetValue(TreeViewItem.IsExpandedProperty, true);
+                //}
 
                 // Try to generate the ItemsPresenter and the ItemsPanel.
                 // by calling ApplyTemplate.  Note that in the 
@@ -84,7 +84,7 @@ namespace Solutionizer.Infrastructure {
                     } else {
                         // The object is not under this TreeViewItem
                         // so collapse it.
-                        subContainer.IsExpanded = false;
+                        //subContainer.IsExpanded = false;
                     }
                 }
             }

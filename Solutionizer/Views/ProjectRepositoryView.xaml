@@ -11,6 +11,10 @@
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <UserControl.Resources>
+    <ResourceDictionary>
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.xaml" />
+        <ResourceDictionary>
         <Converters:FilePathToImageSourceConverter x:Key="FilePathToImageSource"/>
         <BooleanToVisibilityConverter x:Key="BooleanToVisibility"/>
 
@@ -33,11 +37,14 @@
             <StackPanel Orientation="Horizontal" Margin="1">
                 <Grid Width="16" Height="16"  Margin="0 0 4 0">
                     <Image Height="16" Width="16" Source="{Binding Path=Path, Converter={StaticResource FilePathToImageSource}}"/>
-                    <Image Width="16" Height="16" Source="/Resources/warning.png" HorizontalAlignment="Right" VerticalAlignment="Bottom" Visibility="{Binding Path=HasBrokenProjectReferences, Converter={StaticResource BooleanToVisibility}}">
+                    <Image Width="16" Height="16" Source="/Resources/warning.png" HorizontalAlignment="Right" VerticalAlignment="Bottom" Visibility="{Binding Path=HasIssues, Converter={StaticResource BooleanToVisibility}}">
                         <Image.ToolTip>
-                            <StackPanel>
-                                <TextBlock>This project has unknown references:</TextBlock>
-                                <TextBlock Text="{Binding Path=BrokenProjectReferences}"/>
+                            <StackPanel MaxWidth="800px">
+                                <TextBlock Visibility="{Binding Path=HasErrors, Converter={StaticResource BooleanToVisibility}}" FontWeight="Bold">Errors:</TextBlock>
+                                <TextBlock Visibility="{Binding Path=HasErrors, Converter={StaticResource BooleanToVisibility}}" Text="{Binding Path=Errors}" TextWrapping="Wrap"/>
+
+                                <TextBlock Visibility="{Binding Path=HasBrokenProjectReferences, Converter={StaticResource BooleanToVisibility}}" FontWeight="Bold">This project has unknown references:</TextBlock>
+                                <TextBlock Visibility="{Binding Path=HasBrokenProjectReferences, Converter={StaticResource BooleanToVisibility}}" Text="{Binding Path=BrokenProjectReferences}" TextWrapping="Wrap"/>
                             </StackPanel>
                         </Image.ToolTip>
                     </Image>
@@ -52,8 +59,11 @@
                 <TextBlock Text="{Binding Name}" />
             </StackPanel>
         </DataTemplate>
+        </ResourceDictionary>
+      </ResourceDictionary.MergedDictionaries>
+      </ResourceDictionary>
 
-    </UserControl.Resources>
+  </UserControl.Resources>
     <Grid >
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="auto" />
@@ -72,7 +82,6 @@
         <TreeView 
             Grid.Row="1"
             Grid.ColumnSpan="3"
-            BorderThickness="0"
             VirtualizingStackPanel.IsVirtualizing="True"
             VirtualizingStackPanel.VirtualizationMode="Recycling"
             ScrollViewer.CanContentScroll="true"
@@ -81,7 +90,7 @@
             cal:Message.Attach="[Event MouseDoubleClick] = [Action OnDoubleClick(Nodes.SelectedItem)]"
             Helper:DragDropHelper.DragDropTemplate="{StaticResource ProjectItemDrag}">
             <TreeView.ItemContainerStyle>
-                <Style TargetType="TreeViewItem">
+                <Style TargetType="TreeViewItem" BasedOn="{StaticResource MetroTreeViewItem}">
                     <Setter Property="Visibility" Value="Collapsed"/>
                     <Style.Triggers>
                         <DataTrigger Binding="{Binding RelativeSource={RelativeSource Self}, Path=Header.IsVisible }" Value="True">

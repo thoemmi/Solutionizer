@@ -20,6 +20,9 @@ namespace Solutionizer.Services {
         private string _rootPath;
         private bool _showLaunchElevatedButton;
         private bool _showProjectCount;
+        private string _lastUpdateCheckETag;
+        private bool _includePrereleaseUpdates;
+        private string _someOtherProperty;
 
         public Settings() {
             _visualStudioVersion = VisualStudioHelper.DetectVersion();
@@ -181,6 +184,39 @@ namespace Solutionizer.Services {
                 }
             }
         }
+
+        public string LastUpdateCheckETag {
+            get { return _lastUpdateCheckETag; }
+            set {
+                if (value != _lastUpdateCheckETag) {
+                    _lastUpdateCheckETag = value;
+                    NotifyOfPropertyChange(() => LastUpdateCheckETag);
+                    IsDirty = true;
+                }
+            }
+        }
+
+        public string SomeOtherProperty {
+            get { return _someOtherProperty; }
+            set {
+                if (value != _someOtherProperty) {
+                    _someOtherProperty = value;
+                    NotifyOfPropertyChange(() => SomeOtherProperty);
+                    IsDirty = true;
+                }
+            }
+        }
+
+        public bool IncludePrereleaseUpdates {
+            get { return _includePrereleaseUpdates; }
+            set {
+                if (_includePrereleaseUpdates != value) {
+                    _includePrereleaseUpdates = value;
+                    NotifyOfPropertyChange(() => IncludePrereleaseUpdates);
+                    IsDirty = true;
+                }
+            }
+        }
     }
 
     public class WindowSettings {
@@ -191,8 +227,10 @@ namespace Solutionizer.Services {
         public bool Maximized { get; set; }
     }
 
+    // ReSharper disable InconsistentNaming
     public enum VisualStudioVersion {
         VS2010,
         VS2012,
     }
+    // ReSharper restore InconsistentNaming
 }

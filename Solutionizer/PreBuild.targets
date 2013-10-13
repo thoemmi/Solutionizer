@@ -5,7 +5,7 @@
         <AssemblyInfoName Condition="'$(AssemblyInfoName)'==''">$(ProjectDir)CommonAssemblyInfo.cs</AssemblyInfoName>
     </PropertyGroup>
 
-    <Target Name="GetGitVersion" Outputs="VersionString;SemanticVersionString">
+    <Target Name="GetGitVersion">
         <!-- set default version -->
         <PropertyGroup>
             <VersionString Condition="'$(VersionString)'==''">0.0.0.0</VersionString>
@@ -30,7 +30,7 @@
         </CreateVersionString>
     </Target>
 
-    <Target Name="CreateCommonVersionInfo" BeforeTargets="CoreCompile">
+    <Target Name="CreateCommonVersionInfo" BeforeTargets="CoreCompile" Inputs="$(ProjectDir)..\.git\logs\HEAD" Outputs="$(AssemblyInfoName)">
         <CallTarget Targets="GetGitVersion"/>
         <CallTarget Targets="CreateVersionInfoFile" />
     </Target>
@@ -46,9 +46,10 @@
         </CreateProperty>
 
         <!-- create content for new AssemblyInfo -->
-        <CreateProperty Value='using System.Reflection%3B
-
+        <CreateProperty Value='// Generated: $([System.DateTime]::UtcNow.ToString("R"))
 // full version: $(VersionString)-$(Commit)
+
+using System.Reflection%3B
 
 [assembly: AssemblyVersion("$(VersionString)")]
 [assembly: AssemblyInformationalVersion("$(SemanticVersionString)")] 
@@ -90,7 +91,7 @@
           _SemanticVersion = major + "." + minor + "." + patch;
           _Commit = match.Groups["commit"].Value;
           if (revision != 0) {
-            _SemanticVersion += "-beta" + revision;
+            _SemanticVersion += "-beta." + revision;
           }
         ]]>
             </Code>

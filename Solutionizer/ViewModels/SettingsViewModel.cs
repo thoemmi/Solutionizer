@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq.Expressions;
+using System.Runtime.CompilerServices;
 using Caliburn.Micro;
 using Solutionizer.Services;
 
@@ -16,6 +17,7 @@ namespace Solutionizer.ViewModels {
         private VisualStudioVersion _visualStudioVersion;
         private bool _showLaunchElevatedButton;
         private bool _showProjectCount;
+        private bool _includePrereleaseUpdates;
 
         public SettingsViewModel(ISettings settings) {
             _settings = settings;
@@ -35,6 +37,7 @@ namespace Solutionizer.ViewModels {
             VisualStudioVersion = _settings.VisualStudioVersion;
             ShowLaunchElevatedButton = _settings.ShowLaunchElevatedButton;
             ShowProjectCount = _settings.ShowProjectCount;
+            IncludePrereleaseUpdates = _settings.IncludePrereleaseUpdates;
         }
 
         public bool ScanOnStartup {
@@ -137,7 +140,16 @@ namespace Solutionizer.ViewModels {
             }
         }
 
-        public override void NotifyOfPropertyChange(string propertyName) {
+        public bool IncludePrereleaseUpdates {
+            get { return _includePrereleaseUpdates; }
+            set {
+                if (value.Equals(_includePrereleaseUpdates)) return;
+                _includePrereleaseUpdates = value;
+                NotifyOfPropertyChange(() => IncludePrereleaseUpdates);
+            }
+        }
+
+        public override void NotifyOfPropertyChange([CallerMemberName] string propertyName = "") {
             base.NotifyOfPropertyChange(propertyName);
 
             // if any property changed that is not CanOk, we want the UI to evaluate that property
@@ -159,6 +171,7 @@ namespace Solutionizer.ViewModels {
             _settings.VisualStudioVersion = VisualStudioVersion;
             _settings.ShowLaunchElevatedButton = ShowLaunchElevatedButton;
             _settings.ShowProjectCount = ShowProjectCount;
+            _settings.IncludePrereleaseUpdates = IncludePrereleaseUpdates;
 
             TryClose(true);
         }
@@ -175,7 +188,8 @@ namespace Solutionizer.ViewModels {
                     IsFlatMode != _settings.IsFlatMode ||
                     VisualStudioVersion != _settings.VisualStudioVersion ||
                     ShowLaunchElevatedButton != _settings.ShowLaunchElevatedButton ||
-                    ShowProjectCount != _settings.ShowProjectCount;
+                    ShowProjectCount != _settings.ShowProjectCount ||
+                    IncludePrereleaseUpdates != _settings.IncludePrereleaseUpdates;
             }
         }
 
