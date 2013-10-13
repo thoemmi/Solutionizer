@@ -24,6 +24,9 @@
                     <DataTrigger Binding="{Binding}" Value="VS2012">
                         <Setter TargetName="PART_Text" Property="Text" Value="Visual Studio 2012" />
                     </DataTrigger>
+                    <DataTrigger Binding="{Binding}" Value="VS2013">
+                        <Setter TargetName="PART_Text" Property="Text" Value="Visual Studio 2013" />
+                    </DataTrigger>
                 </DataTemplate.Triggers>
             </DataTemplate>
         </Grid.Resources>

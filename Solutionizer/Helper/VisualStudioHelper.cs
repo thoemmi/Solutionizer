@@ -6,6 +6,11 @@ using Solutionizer.Services;
 namespace Solutionizer.Helper {
     public static class VisualStudioHelper {
         public static VisualStudioVersion DetectVersion() {
+            using (var key = Registry.ClassesRoot.OpenSubKey("VisualStudio.DTE.12.0")) {
+                if (key != null) {
+                    return VisualStudioVersion.VS2013;
+                }
+            }
             using (var key = Registry.ClassesRoot.OpenSubKey("VisualStudio.DTE.11.0")) {
                 if (key != null) {
                     return VisualStudioVersion.VS2012;
@@ -15,8 +20,11 @@ namespace Solutionizer.Helper {
         }
 
         private static string GetVersionKey(VisualStudioVersion visualStudioVersion) {
-            if (visualStudioVersion == VisualStudioVersion.VS2012) {
-                return "11.0";
+            switch (visualStudioVersion) {
+                case VisualStudioVersion.VS2012:
+                    return "11.0";
+                case VisualStudioVersion.VS2013:
+                    return "12.0";
             }
             return "10.0";
         }
