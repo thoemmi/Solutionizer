@@ -30,7 +30,7 @@
         </CreateVersionString>
     </Target>
 
-    <Target Name="CreateCommonVersionInfo" BeforeTargets="CoreCompile" Inputs="$(ProjectDir)..\.git\logs\HEAD" Outputs="$(AssemblyInfoName)">
+    <Target Name="CreateCommonVersionInfo" BeforeTargets="CoreCompile">
         <CallTarget Targets="GetGitVersion"/>
         <CallTarget Targets="CreateVersionInfoFile" />
     </Target>
@@ -56,8 +56,15 @@ using System.Reflection%3B
 [assembly: AssemblyFileVersion("$(VersionString)")]' >
             <Output TaskParameter="Value" PropertyName="NewLines"/>
         </CreateProperty>
+      
+      <RemoveComments Text="$(OldLines)">
+        <Output TaskParameter="CleanedText" PropertyName="OldLinesWithoutComments"/>
+      </RemoveComments>
+      <RemoveComments Text="$(NewLines)">
+        <Output TaskParameter="CleanedText" PropertyName="NewLinesWithoutComments"/>
+      </RemoveComments>
 
-        <Message Importance="normal" Text="$(AssemblyInfoName) is up-to-date" Condition="'$(OldLines)'=='$(NewLines)'"/>
+        <Message Importance="normal" Text="$(AssemblyInfoName) is up-to-date" Condition="'$(OldLinesWithoutComments)'=='$(NewLinesWithoutComments)'"/>
 
         <!-- write new assembly info if changed -->
         <Message Importance="high" Text="Updating $(AssemblyInfoName)" Condition="'$(OldLines)'!='$(NewLines)'"/>
@@ -98,4 +105,21 @@ using System.Reflection%3B
         </Task>
     </UsingTask>
 
+  <UsingTask 
+    TaskName="RemoveComments" 
+    TaskFactory="CodeTaskFactory"
+    AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.v4.0.dll">
+    <ParameterGroup>
+      <Text ParameterType="System.String" Required="true" />
+      <CleanedText ParameterType="System.String" Output="true" />
+    </ParameterGroup>
+    <Task>
+      <Code Type="Fragment" Language="cs">
+                <![CDATA[
+                CleanedText = String.Join(System.Environment.NewLine, Text.Split("\r\n".ToCharArray()).Where(line => !line.TrimStart().StartsWith("//")));
+        ]]>
+              </Code>
+
+            </Task>
+  </UsingTask>
 </Project>
