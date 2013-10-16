@@ -11,10 +11,6 @@
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <UserControl.Resources>
-    <ResourceDictionary>
-    <ResourceDictionary.MergedDictionaries>
-        <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.xaml" />
-        <ResourceDictionary>
         <Converters:FilePathToImageSourceConverter x:Key="FilePathToImageSource"/>
         <BooleanToVisibilityConverter x:Key="BooleanToVisibility"/>
 
@@ -59,10 +55,6 @@
                 <TextBlock Text="{Binding Name}" />
             </StackPanel>
         </DataTemplate>
-        </ResourceDictionary>
-      </ResourceDictionary.MergedDictionaries>
-      </ResourceDictionary>
-
   </UserControl.Resources>
     <Grid >
         <Grid.ColumnDefinitions>

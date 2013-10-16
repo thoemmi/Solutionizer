@@ -30,7 +30,7 @@
   </i:Interaction.Behaviors>
   
   <Controls:MetroWindow.WindowCommands>
-    <Controls:WindowCommands HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0 2">
+    <Controls:WindowCommands HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0">
       <Button Content="Update available" cal:Message.Attach="ShowUpdate('false')" Visibility="{Binding AreUpdatesAvailable, Converter={StaticResource BooleanToVisibilityConverter}}"/>
       
       <!--<Button x:Name="ChangeRoot" Content="Change Root..." cal:Message.Attach="SelectRootPath()" />-->
@@ -63,10 +63,7 @@
                 <Controls:MetroContentControl 
                   IsTabStop="False"
                   FocusVisualStyle="{x:Null}">
-                  <Grid>
-                    <Grid.Background>
-                      <SolidColorBrush Color="{DynamicResource WhiteColor}" />
-                    </Grid.Background>
+                  <Grid Background="{DynamicResource WhiteBrush}">
                   
                     <ContentPresenter 
                       Grid.Row="0" 
