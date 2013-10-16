@@ -88,7 +88,7 @@ namespace Solutionizer {
 
             Caliburn.Micro.LogManager.GetLog = type => new NLogLogger(type);
 
-            //PresentationTraceSources.DataBindingSource.Listeners.Add(new NLogTraceListener());
+            PresentationTraceSources.DataBindingSource.Listeners.Add(new NLogTraceListener());
         }
 
         private static void SetLoggingRulesForTarget(LoggingConfiguration config, Target target) {
