@@ -32,9 +32,6 @@
   <Controls:MetroWindow.WindowCommands>
     <Controls:WindowCommands HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0">
       <Button Content="Update available" cal:Message.Attach="ShowUpdate('false')" Visibility="{Binding AreUpdatesAvailable, Converter={StaticResource BooleanToVisibilityConverter}}"/>
-      
-      <!--<Button x:Name="ChangeRoot" Content="Change Root..." cal:Message.Attach="SelectRootPath()" />-->
-      
       <Button ToolTip="Tools and Options">
         <i:Interaction.Behaviors>
           <Infrastructure:ContextMenuOnLeftClickBehavior/>
@@ -64,12 +61,21 @@
                   IsTabStop="False"
                   FocusVisualStyle="{x:Null}">
                   <Grid Background="{DynamicResource WhiteBrush}">
-                  
-                    <ContentPresenter 
-                      Grid.Row="0" 
-                      Content="{Binding WindowCommands, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Controls:MetroWindow}}}"
-                      x:Name="PART_WindowCommands"
-                      Panel.ZIndex="1" VerticalAlignment="Top" HorizontalAlignment="Right" />
+
+                    <Grid VerticalAlignment="Top" HorizontalAlignment="Right" Panel.ZIndex="100">
+                      <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="Auto" />
+                      </Grid.ColumnDefinitions>
+                      <ContentPresenter 
+                        Content="{Binding WindowCommands, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Controls:MetroWindow}}}"
+                        x:Name="PART_WindowCommands"
+                        Panel.ZIndex="1" VerticalAlignment="Top" HorizontalAlignment="Right" />
+                      <Controls:WindowButtonCommands 
+                        x:Name="PART_WindowButtonCommands"
+                        Panel.ZIndex="1"
+                        Grid.Column="1" />
+                    </Grid>
 
                     <ContentPresenter Grid.Row="0" />
 
