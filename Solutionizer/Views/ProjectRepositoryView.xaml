@@ -69,6 +69,7 @@
         <TextBox Grid.ColumnSpan="3" 
                  Margin="3 3 3 5" VerticalContentAlignment="Center"
                  Name="Filter" 
+                 ToolTip="Enter text to filter projects"
                  Controls:TextboxHelper.Watermark="Filter..."
                  Controls:TextboxHelper.ClearTextButton="True" />
         <TreeView 

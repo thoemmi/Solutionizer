@@ -37,102 +37,112 @@
 
     <ScrollViewer VerticalScrollBarVisibility="Auto" VerticalAlignment="Stretch">
       <Grid Helper:GridHelper.RowCount="11">
-            <CheckBox 
-                x:Name="ScanOnStartup" 
-                Margin="0 0 0 8" 
-                Content="Scan projects on start-up"/>
+        <CheckBox 
+          x:Name="ScanOnStartup" 
+          Margin="0 0 0 8" 
+          Content="Scan projects on start-up"
+          ToolTip="If checked, the last used folder will be scanned for projects."/>
+          
+        <CheckBox 
+          x:Name="SimplifyProjectTree" 
+          Margin="0 0 0 8" 
+          Grid.Row="1" 
+          Content="Hide empty folders in hierarchy"
+          ToolTip="If checked, folders containing no projects but subfolders only will be hidden."/>
             
-            <CheckBox 
-                x:Name="SimplifyProjectTree" 
-                Margin="0 0 0 8" 
-                Grid.Row="1" 
-                Content="Skip empty folders in hierarchy"/>
-            
-            <CheckBox 
-                x:Name="IncludeReferencedProjects" 
-                Margin="0 0 0 8" 
-                Grid.Row="2" 
-                Content="Add referenced projects automatically"/>
-            
-            <StackPanel 
-                Orientation="Horizontal" 
-                Grid.Row="3" 
-                IsEnabled="{Binding IncludeReferencedProjects}" 
-                Margin="20 0 0 8" >
-                <TextBlock 
-                    VerticalAlignment="Center" 
-                    Margin="0 0 8 0"
-                    Text="Folder name:"/>
-                <TextBox 
-                    x:Name="ReferenceFolderName" 
-                    Width="200"/>
-            </StackPanel>
-            
-            <StackPanel 
-                Orientation="Horizontal" 
-                Grid.Row="4" 
-                IsEnabled="{Binding IncludeReferencedProjects}" 
-                Margin="20 0 0 8" >
-                <TextBlock 
-                    VerticalAlignment="Center" 
-                    Margin="0 0 8 0"
-                    Text="Tree depth:"/>
-                <ComboBox SelectedItem="{Binding ReferenceTreeDepth}" Width="60">
-                    <ComboBox.Items>
-                        <System:Int32>1</System:Int32>
-                        <System:Int32>2</System:Int32>
-                        <System:Int32>3</System:Int32>
-                        <System:Int32>4</System:Int32>
-                        <System:Int32>5</System:Int32>
-                        <System:Int32>6</System:Int32>
-                    </ComboBox.Items>
-                </ComboBox>
-            </StackPanel>
+        <CheckBox 
+          x:Name="IncludeReferencedProjects" 
+          Margin="0 0 0 8" 
+          Grid.Row="2" 
+          Content="Add referenced projects automatically"
+          ToolTip="If checked, referenced projects will be&#x0a;added to the solution automatically."/>
 
-            <CheckBox
-                x:Name="DontBuildReferencedProjects"
-                IsEnabled="{Binding IncludeReferencedProjects}"
-                Grid.Row="5" 
-                Margin="20 0 0 8"
-                Content="Exclude referenced projects from build configurations."/>
+        <StackPanel 
+          Orientation="Horizontal" 
+          Grid.Row="3" 
+          IsEnabled="{Binding IncludeReferencedProjects}" 
+          Margin="20 0 0 8" >
+          <TextBlock 
+            VerticalAlignment="Center" 
+            Margin="0 0 8 0"
+            Text="Folder name:"/>
+          <TextBox 
+            x:Name="ReferenceFolderName" 
+            Width="200"
+            ToolTip="Specify the name of the solution folder, where referenced projects&#x0a;should be added to. The folder structure will be preserved&#x0a;underneath this folder."/>
+        </StackPanel>
             
-            <CheckBox 
-                x:Name="IsFlatMode" 
-                Margin="0 0 0 8" 
-                Grid.Row="6" 
-                Content="Show projects as flat list."/>
-            
-            <StackPanel 
-                Orientation="Horizontal" 
-                Grid.Row="7" 
-                Margin="0 0 0 8">
-                <TextBlock 
-                    VerticalAlignment="Center" 
-                    Margin="0 0 8 0"
-                    Text="Visual Studio version:"/>
-                <ComboBox 
-                    SelectedValue="{Binding VisualStudioVersion}" 
-                    Width="200" 
-                    ItemsSource="{Binding Source={StaticResource PossibleValues}}"/>
-            </StackPanel>
+        <StackPanel 
+          Orientation="Horizontal" 
+          Grid.Row="4" 
+          IsEnabled="{Binding IncludeReferencedProjects}" 
+          Margin="20 0 0 8" >
+          <TextBlock 
+            VerticalAlignment="Center" 
+            Margin="0 0 8 0"
+            Text="Tree depth:"/>
+          <ComboBox SelectedItem="{Binding ReferenceTreeDepth}" Width="60" ToolTip="Specifies the depth of referenced projects&#x0a;which should be added to the solution.">
+            <ComboBox.Items>
+              <System:Int32>1</System:Int32>
+              <System:Int32>2</System:Int32>
+              <System:Int32>3</System:Int32>
+              <System:Int32>4</System:Int32>
+              <System:Int32>5</System:Int32>
+              <System:Int32>6</System:Int32>
+            </ComboBox.Items>
+          </ComboBox>
+        </StackPanel>
 
-            <CheckBox 
-                x:Name="ShowLaunchElevatedButton" 
-                Margin="0 0 0 8" 
-                Grid.Row="8" 
-                Content="Show &quot;Launch Elevated&quot; button."/>
+        <CheckBox
+          x:Name="DontBuildReferencedProjects"
+          IsEnabled="{Binding IncludeReferencedProjects}"
+          Grid.Row="5" 
+          Margin="20 0 0 8"
+          Content="Exclude referenced projects from build configurations."
+          ToolTip="If checked, referenced projects won't be build&#x0a;automatically in the resulting solution."/>
 
-            <CheckBox 
-                x:Name="ShowProjectCount" 
-                Margin="0 0 0 8" 
-                Grid.Row="9" 
-                Content="Show number of contained projects behind the directory name."/>
-        
-            <CheckBox 
-                x:Name="IncludePrereleaseUpdates" 
-                Margin="0 0 0 8" 
-                Grid.Row="10" 
-                Content="Include pre-release versions for updates."/>
+        <CheckBox 
+          x:Name="IsFlatMode" 
+          Margin="0 0 0 8" 
+          Grid.Row="6" 
+          Content="Show projects as flat list."
+          ToolTip="If checked, the porjects will be presented&#x0a;in a flat list instead of a tree view."/>
+
+        <StackPanel 
+          Orientation="Horizontal" 
+          Grid.Row="7" 
+          Margin="0 0 0 8">
+          <TextBlock 
+            VerticalAlignment="Center" 
+            Margin="0 0 8 0"
+            Text="Visual Studio version:"/>
+          <ComboBox 
+            SelectedValue="{Binding VisualStudioVersion}" 
+            Width="200" 
+            ItemsSource="{Binding Source={StaticResource PossibleValues}}"
+            ToolTip="Specifies the target version of Visual Studio."/>
+        </StackPanel>
+
+        <CheckBox 
+          x:Name="ShowLaunchElevatedButton" 
+          Margin="0 0 0 8" 
+          Grid.Row="8" 
+          Content="Show &quot;Launch Elevated&quot; button."
+          ToolTip="This button allows to open the created solution&#x0a;inside an elevated instance of Visual Studio."/>
+
+        <CheckBox 
+          x:Name="ShowProjectCount" 
+          Margin="0 0 0 8" 
+          Grid.Row="9" 
+          Content="Show number of contained projects behind the directory name."
+          ToolTip="If checked, the number of contained projects&#x0a;will be displayed behind folders."/>
+
+        <CheckBox 
+          x:Name="IncludePrereleaseUpdates" 
+          Margin="0 0 0 8" 
+          Grid.Row="10" 
+          Content="Include pre-release versions for updates."
+          ToolTip="If checked, auto-update will also check for pre-release versions."/>
       </Grid>
       </ScrollViewer>
 
