@@ -16,7 +16,7 @@
         ResizeMode="CanResizeWithGrip"
         UseLayoutRounding="True" 
         GlowBrush="{DynamicResource GrayBrush1}"
-        x:Name="_window" Icon="/Solutionizer;component/Logo.ico" d:DataContext="{d:DesignInstance ViewModels:ShellViewModel}">
+        Icon="/Solutionizer;component/Logo.ico" d:DataContext="{d:DesignInstance ViewModels:ShellViewModel}">
 
   <Window.Resources>
     <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
@@ -135,7 +135,7 @@
       </Grid.ColumnDefinitions>
       
       <TextBlock 
-        Text="{Binding Title, ElementName=_window}"
+        Text="{Binding DisplayName}"
         VerticalAlignment="Top"
         FontWeight="Bold" FontSize="20" Margin="20,5,0,0"/>
       

@@ -115,6 +115,11 @@ namespace Solutionizer.ViewModels {
         }
 
         private void LoadProjects(string path) {
+            var oldDisplayName = DisplayName;
+            var oldRootPath = RootPath;
+            DisplayName = "Solutionizer -";
+            RootPath = path;
+
             var fileScanningViewModel = new FileScanningViewModel(_settings, path);
             _dialogManager.ShowDialog(fileScanningViewModel);
 
@@ -123,8 +128,9 @@ namespace Solutionizer.ViewModels {
                     _projectRepository.RootPath = path;
                     _projectRepository.RootFolder = fileScanningViewModel.Result.ProjectFolder;
                     Solution = new SolutionViewModel(_settings, path, fileScanningViewModel.Result.Projects);
-                    DisplayName = "Solutionizer -";
-                    RootPath = path;
+                } else {
+                    DisplayName = oldDisplayName;
+                    RootPath = oldRootPath;
                 }
             };
         }
