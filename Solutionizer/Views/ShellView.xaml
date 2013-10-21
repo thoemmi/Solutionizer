@@ -12,7 +12,7 @@
         Infrastructure:WindowStatePersistence.Settings="{Binding Settings}"  
         TextOptions.TextFormattingMode="Display"
         SnapsToDevicePixels="true" 
-        Title="Solutionizer" ShowTitleBar="False"
+        Title="{Binding Title}" ShowTitleBar="False"
         ResizeMode="CanResizeWithGrip"
         UseLayoutRounding="True" 
         GlowBrush="{DynamicResource GrayBrush1}"

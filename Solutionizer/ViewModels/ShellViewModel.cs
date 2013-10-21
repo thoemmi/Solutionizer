@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using Caliburn.Micro;
@@ -16,6 +17,7 @@ namespace Solutionizer.ViewModels {
         private SolutionViewModel _solution;
         private string _rootPath;
         private bool _areUpdatesAvailable;
+        private string _title = "Solutionizer";
 
         [ImportingConstructor]
         public ShellViewModel(Services.Settings settings, IDialogManager dialogManager) {
@@ -34,7 +36,17 @@ namespace Solutionizer.ViewModels {
                 if (_rootPath != value) {
                     _rootPath = value;
                     NotifyOfPropertyChange(() => RootPath);
+                    Title = String.IsNullOrEmpty(_rootPath) ? "Solutionizer" : "Solutionizer - " + _rootPath;
                 }
+            }
+        }
+
+        public string Title {
+            get { return _title; }
+            set {
+                if (value == _title) return;
+                _title = value;
+                NotifyOfPropertyChange(() => Title);
             }
         }
 
