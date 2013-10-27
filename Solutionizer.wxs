@@ -98,6 +98,10 @@
             <File Id="RestSharp.dll" Name="RestSharp.dll" Source="Solutionizer/bin/Debug/RestSharp.dll"/>
             <RegistryValue Root="HKCU" Key="SOFTWARE\ThomasFreudenberg\Solutionizer" Name="RestSharp.dll" Type="integer" Value="1" KeyPath="yes"/>
           </Component>
+          <Component Id="Autofac.dll" Guid="{4B38CAEB-C3A3-4FE5-A293-0CAF827E605C}">
+            <File Id="Autofac.dll" Name="RestSharp.dll" Source="Solutionizer/bin/Debug/Autofac.dll"/>
+            <RegistryValue Root="HKCU" Key="SOFTWARE\ThomasFreudenberg\Solutionizer" Name="Autofac.dll" Type="integer" Value="1" KeyPath="yes"/>
+          </Component>
         </Directory>
       </Directory>
       
@@ -115,6 +119,7 @@
       <ComponentRef Id="Ookii.Dialogs.Wpf.dll"/>
       <ComponentRef Id="System.Windows.Interactivity.dll"/>
       <ComponentRef Id="RestSharp.dll"/>
+      <ComponentRef Id="Autofac.dll"/>
     </Feature>
 
     <!-- no downgrade -->

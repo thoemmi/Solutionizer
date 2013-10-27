@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.Composition;
-using System.ComponentModel.Composition.Hosting;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Autofac;
 using Caliburn.Micro;
 using Caliburn.Micro.Logging.NLog;
 using NLog;
@@ -15,11 +14,12 @@ using NLog.Targets;
 using Solutionizer.Infrastructure;
 using Solutionizer.Services;
 using LogManager = NLog.LogManager;
+using PropertyChangedBase = Solutionizer.Infrastructure.PropertyChangedBase;
 
 namespace Solutionizer {
     public class AppBootstrapper : Bootstrapper<IShell> {
-        private CompositionContainer _container;
         private SettingsProvider _settingsProvider;
+        private IContainer _container;
 
         static AppBootstrapper() {
             if (!Execute.InDesignMode) {
@@ -43,19 +43,35 @@ namespace Solutionizer {
             TaskScheduler.UnobservedTaskException += (sender, args) =>
                 LogManager.GetCurrentClassLogger().ErrorException("UnobservedTaskException", args.Exception);
 
-            var catalog = new AggregateCatalog(AssemblySource.Instance.Select(x => new AssemblyCatalog(x)));
+            _container = CreateContainer();}
 
-            _container = new CompositionContainer(catalog);
+        private IContainer CreateContainer() {
+            var builder = new ContainerBuilder();
 
-            var batch = new CompositionBatch();
+            builder.RegisterType<WindowManager>().As<IWindowManager>();
+            builder.RegisterType<EventAggregator>().As<IEventAggregator>();
+            builder.RegisterInstance(_settingsProvider.Settings);
 
-            batch.AddExportedValue<IWindowManager>(new WindowManager());
-            batch.AddExportedValue<IEventAggregator>(new EventAggregator());
-            batch.AddExportedValue(_settingsProvider.Settings);
-            batch.AddExportedValue(_container);
-            batch.AddExportedValue(catalog);
+            builder
+                .RegisterAssemblyTypes(GetType().Assembly)
+                .Where(t => ShouldRegister(t))
+                .AsImplementedInterfaces();
 
-            _container.Compose(batch);
+            var container = builder.Build();
+            return container;
+        }
+
+        private static bool ShouldRegister(Type t) {
+            if (typeof (IScreen).IsAssignableFrom(t)) {
+                return true;
+            }
+            if (typeof (PropertyChangedBase).IsAssignableFrom(t)) {
+                return true;
+            }
+            if (typeof (Caliburn.Micro.PropertyChangedBase).IsAssignableFrom(t)) {
+                return true;
+            }
+            return false;
         }
 
         private static void ConfigureLogging() {
@@ -102,23 +118,16 @@ namespace Solutionizer {
 
 
         protected override object GetInstance(Type serviceType, string key) {
-            string contract = string.IsNullOrEmpty(key) ? AttributedModelServices.GetContractName(serviceType) : key;
-            var exports = _container.GetExportedValues<object>(contract);
-
-            var export = exports.FirstOrDefault();
-            if (export != null) {
-                return export;
-            }
-
-            throw new Exception(string.Format("Could not locate any instances of contract {0}.", contract));
+            return _container.Resolve(serviceType);
         }
 
         protected override IEnumerable<object> GetAllInstances(Type serviceType) {
-            return _container.GetExportedValues<object>(AttributedModelServices.GetContractName(serviceType));
+            var type = typeof (IEnumerable<>).MakeGenericType(serviceType);
+            return (IEnumerable<object>) _container.Resolve(type);
         }
 
         protected override void BuildUp(object instance) {
-            _container.SatisfyImportsOnce(instance);
+            _container.InjectProperties(instance);
         }
 
         protected override void OnExit(object sender, EventArgs e) {

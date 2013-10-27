@@ -1,12 +1,10 @@
 ﻿using System;
 using System.Collections;
-using System.ComponentModel.Composition;
 using Caliburn.Micro;
 using Solutionizer.Infrastructure;
 using PropertyChangedBase = Caliburn.Micro.PropertyChangedBase;
 
 namespace Solutionizer.ViewModels {
-    [Export(typeof (IDialogManager)), PartCreationPolicy(CreationPolicy.NonShared)]
     public class DialogConductorViewModel : PropertyChangedBase, IDialogManager, IConductActiveItem {
         public void ShowDialog(IScreen dialogModel) {
             ActivateItem(dialogModel);

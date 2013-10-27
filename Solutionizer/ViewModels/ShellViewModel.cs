@@ -5,12 +5,11 @@ using System.Windows;
 using Caliburn.Micro;
 using Ookii.Dialogs.Wpf;
 using Solutionizer.Infrastructure;
-using System.ComponentModel.Composition;
+using Solutionizer.Services;
 
 namespace Solutionizer.ViewModels {
-    [Export(typeof(IShell))]
     public sealed class ShellViewModel : Screen, IShell {
-        private readonly Services.Settings _settings;
+        private readonly ISettings _settings;
         private readonly IDialogManager _dialogManager;
         private readonly UpdateManager _updateManager;
         private readonly ProjectRepositoryViewModel _projectRepository;
@@ -19,8 +18,7 @@ namespace Solutionizer.ViewModels {
         private bool _areUpdatesAvailable;
         private string _title = "Solutionizer";
 
-        [ImportingConstructor]
-        public ShellViewModel(Services.Settings settings, IDialogManager dialogManager) {
+        public ShellViewModel(ISettings settings, IDialogManager dialogManager) {
             _settings = settings;
             _projectRepository = new ProjectRepositoryViewModel(settings);
             _updateManager = new UpdateManager(_settings, AppEnvironment.CurrentVersion);
@@ -64,7 +62,7 @@ namespace Solutionizer.ViewModels {
             }
         }
 
-        public Services.Settings Settings {
+        public ISettings Settings {
             get { return _settings; }
         }
 
