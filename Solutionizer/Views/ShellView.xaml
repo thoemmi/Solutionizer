@@ -15,7 +15,6 @@
         Title="{Binding Title}" ShowTitleBar="False"
         ResizeMode="CanResizeWithGrip"
         UseLayoutRounding="True" 
-        GlowBrush="{DynamicResource GrayBrush1}"
         Icon="/Solutionizer;component/Logo.ico" d:DataContext="{d:DesignInstance ViewModels:ShellViewModel}">
 
   <Window.Resources>
@@ -25,8 +24,7 @@
   <Window.TaskbarItemInfo><TaskbarItemInfo/></Window.TaskbarItemInfo>
   
   <i:Interaction.Behaviors>
-    <Behaviours:BorderlessWindowBehavior />
-    <Behaviours:GlowWindowBehavior />
+    <Behaviours:BorderlessWindowBehavior AllowsTransparency="False" EnableDWMDropShadow="True" ResizeWithGrip="True" />
   </i:Interaction.Behaviors>
   
   <Controls:MetroWindow.WindowCommands>
@@ -57,46 +55,37 @@
           <ControlTemplate TargetType="{x:Type Controls:MetroWindow}">
             <Grid Background="{TemplateBinding Background}">
               <AdornerDecorator>
-                <Controls:MetroContentControl 
-                  IsTabStop="False"
-                  FocusVisualStyle="{x:Null}">
-                  <Grid Background="{DynamicResource WhiteBrush}">
+                <Grid Background="{DynamicResource WhiteBrush}">
 
-                    <Grid VerticalAlignment="Top" HorizontalAlignment="Right" Panel.ZIndex="100">
-                      <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto" />
-                        <ColumnDefinition Width="Auto" />
-                      </Grid.ColumnDefinitions>
-                      <ContentPresenter 
-                        Content="{Binding WindowCommands, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Controls:MetroWindow}}}"
-                        x:Name="PART_WindowCommands"
-                        Panel.ZIndex="1" VerticalAlignment="Top" HorizontalAlignment="Right" />
-                      <Controls:WindowButtonCommands 
-                        x:Name="PART_WindowButtonCommands"
-                        Panel.ZIndex="1"
-                        Grid.Column="1" />
-                    </Grid>
-
-                    <ContentPresenter Grid.Row="0" />
-
-                    <ItemsControl 
-                      Grid.Row="0" Panel.ZIndex="2" KeyboardNavigation.TabNavigation="None"
-                      ItemsSource="{Binding Flyouts, Mode=OneWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Controls:MetroWindow}}}"
-                      VerticalAlignment="Stretch">
-                      <ItemsControl.ItemsPanel>
-                        <ItemsPanelTemplate>
-                          <Grid TextElement.Foreground="{DynamicResource FlyoutWhiteBrush}" />
-                        </ItemsPanelTemplate>
-                      </ItemsControl.ItemsPanel>
-                    </ItemsControl>
+                  <Grid VerticalAlignment="Top" HorizontalAlignment="Right" Panel.ZIndex="100">
+                    <Grid.ColumnDefinitions>
+                      <ColumnDefinition Width="Auto" />
+                      <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <ContentPresenter 
+                      Content="{Binding WindowCommands, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Controls:MetroWindow}}}"
+                      x:Name="PART_WindowCommands"
+                      Panel.ZIndex="1" VerticalAlignment="Top" HorizontalAlignment="Right" />
+                    <Controls:WindowButtonCommands 
+                      x:Name="PART_WindowButtonCommands"
+                      Panel.ZIndex="1"
+                      Grid.Column="1" />
                   </Grid>
-                </Controls:MetroContentControl>
+
+                  <ContentPresenter Grid.Row="0" />
+
+                  <ItemsControl 
+                    Grid.Row="0" Panel.ZIndex="2" KeyboardNavigation.TabNavigation="None"
+                    ItemsSource="{Binding Flyouts, Mode=OneWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Controls:MetroWindow}}}"
+                    VerticalAlignment="Stretch">
+                    <ItemsControl.ItemsPanel>
+                      <ItemsPanelTemplate>
+                        <Grid TextElement.Foreground="{DynamicResource FlyoutWhiteBrush}" />
+                      </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                  </ItemsControl>
+                </Grid>
               </AdornerDecorator>
-              <Border 
-                Opacity="1"
-                BorderBrush="{TemplateBinding BorderBrush}"
-                BorderThickness="{TemplateBinding BorderThickness}"
-                HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
               <ResizeGrip 
                 x:Name="WindowResizeGrip"
                 HorizontalAlignment="Right"
