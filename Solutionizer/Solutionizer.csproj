@@ -127,7 +127,6 @@
     <Compile Include="ViewModels\FileScanningViewModel.cs" />
     <Compile Include="Helper\GridHelper.cs" />
     <Compile Include="Infrastructure\BindableSelectedItemBehavior .cs" />
-    <Compile Include="Infrastructure\DragMoveWindowBehavior.cs" />
     <Compile Include="Infrastructure\IDialogManager.cs" />
     <Compile Include="Infrastructure\InputBindingTrigger.cs" />
     <Compile Include="IShell.cs" />
@@ -155,7 +154,6 @@
     <Compile Include="Helper\TfsHelper.cs" />
     <Compile Include="Infrastructure\FixedRelayCommand.cs" />
     <Compile Include="Infrastructure\FixedRelayCommandGeneric.cs" />
-    <Compile Include="Infrastructure\ModelAttacher.cs" />
     <Compile Include="Infrastructure\WindowStatePersistence.cs" />
     <Compile Include="Models\Project.cs" />
     <Compile Include="Services\Settings.cs" />

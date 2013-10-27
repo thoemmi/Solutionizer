@@ -114,9 +114,6 @@
       <RowDefinition Height="*"/>
     </Grid.RowDefinitions>
     <Grid Background="White" x:Name="PART_TitleBar">
-      <i:Interaction.Behaviors>
-        <Infrastructure:DragMoveWindowBehavior/>
-      </i:Interaction.Behaviors>
       <Grid.ColumnDefinitions>
         <ColumnDefinition Width="auto"/>
         <ColumnDefinition Width="auto"/>
