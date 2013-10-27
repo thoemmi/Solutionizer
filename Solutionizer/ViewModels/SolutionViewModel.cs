@@ -5,7 +5,6 @@ using System.IO;
 using System.Linq;
 using System.Windows;
 using System.Windows.Input;
-using Caliburn.Micro;
 using NLog;
 using Ookii.Dialogs.Wpf;
 using Solutionizer.Commands;
@@ -16,7 +15,7 @@ using Solutionizer.Services;
 
 namespace Solutionizer.ViewModels {
     public class SolutionViewModel : PropertyChangedBase {
-        private static readonly Logger _log = NLog.LogManager.GetCurrentClassLogger();
+        private static readonly Logger _log = LogManager.GetCurrentClassLogger();
 
         private readonly string _rootPath;
         private readonly IDictionary<string, Project> _projects;

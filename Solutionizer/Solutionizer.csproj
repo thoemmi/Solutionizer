@@ -115,12 +115,14 @@
     <Compile Include="Infrastructure\AppEnvironment.cs" />
     <Compile Include="Infrastructure\ContextMenuOnLeftClickBehavior.cs" />
     <Compile Include="Infrastructure\HyperlinkNavigateBehavior.cs" />
+    <Compile Include="Infrastructure\PropertyChangedBase.cs" />
     <Compile Include="Infrastructure\ReleaseInfoReader.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Infrastructure\UpdateManager.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Properties\Annotations.cs" />
     <Compile Include="ViewModels\AboutViewModel.cs" />
     <Compile Include="ViewModels\FileScanningViewModel.cs" />
     <Compile Include="Helper\GridHelper.cs" />

@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Linq;
-using Caliburn.Micro;
 using Solutionizer.Extensions;
+using Solutionizer.Infrastructure;
 using Solutionizer.Models;
 using Solutionizer.Services;
 

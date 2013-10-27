@@ -1,8 +1,8 @@
 ﻿using System;
-using Caliburn.Micro;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using Solutionizer.Helper;
+using Solutionizer.Infrastructure;
 
 namespace Solutionizer.Services {
     public class Settings : PropertyChangedBase, ISettings {

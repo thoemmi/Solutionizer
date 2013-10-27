@@ -3,6 +3,7 @@ using System.Collections;
 using System.ComponentModel.Composition;
 using Caliburn.Micro;
 using Solutionizer.Infrastructure;
+using PropertyChangedBase = Caliburn.Micro.PropertyChangedBase;
 
 namespace Solutionizer.ViewModels {
     [Export(typeof (IDialogManager)), PartCreationPolicy(CreationPolicy.NonShared)]
