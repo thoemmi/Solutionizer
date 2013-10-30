@@ -35,6 +35,9 @@
     <Reference Include="Autofac">
       <HintPath>..\packages\Autofac.3.1.5\lib\net40\Autofac.dll</HintPath>
     </Reference>
+    <Reference Include="MahApps.Metro">
+      <HintPath>..\packages\MahApps.Metro.0.11.2.3-ALPHA\lib\net45\MahApps.Metro.dll</HintPath>
+    </Reference>
     <Reference Include="NLog">
       <HintPath>..\packages\NLog.2.1.0\lib\net45\NLog.dll</HintPath>
     </Reference>
@@ -52,6 +55,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BootstrapperBase.cs" />
+    <Compile Include="FlyoutManager.cs" />
     <Compile Include="LogRequestsModule.cs" />
     <Compile Include="PropertyChangedBase.cs" />
     <Compile Include="RelayCommand.Generic.cs" />

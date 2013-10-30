@@ -70,6 +70,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Bootstrapper.cs" />
+    <Compile Include="MyFlyoutView.cs">
+      <DependentUpon>MyFlyoutView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="MyFlyoutViewModel.cs" />
     <Compile Include="ShellViewModel.cs" />
     <Compile Include="SubView.xaml.cs">
       <DependentUpon>SubView.xaml</DependentUpon>
@@ -111,6 +115,10 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Page Include="MyFlyoutView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="ShellView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

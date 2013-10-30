@@ -9,7 +9,7 @@ namespace Solutionizer.Framework {
     /// method is 'true'.  This class does not allow you to accept command parameters in the
     /// Execute and CanExecute callback methods.
     /// </summary>
-    public class RelayCommand {
+    public class RelayCommand : ICommand {
         private readonly Action _execute;
         private readonly Func<bool> _canExecute;
 

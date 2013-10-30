@@ -1,6 +1,6 @@
 ﻿namespace Solutionizer.Framework.TryOut {
-    public partial class SubView {
-        public SubView() {
+    public partial class MyFlyoutView {
+        public MyFlyoutView() {
             InitializeComponent();
         }
     }

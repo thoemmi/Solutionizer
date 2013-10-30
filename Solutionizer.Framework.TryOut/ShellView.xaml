@@ -8,7 +8,15 @@
         xmlns:Controls="http://metro.mahapps.com/winfx/xaml/controls"
         mc:Ignorable="d"
         Title="{Binding Title}" Height="300" Width="300" d:DataContext="{d:DesignInstance TryOut:ShellViewModel}">
-    <Grid>
-        <Framework:ViewModelPresenter ViewModel="{Binding SubViewModel}"/>
-    </Grid>
+  
+  <Controls:MetroWindow.Flyouts>
+    <Controls:FlyoutsControl ItemsSource="{Binding Flyouts}" />
+  </Controls:MetroWindow.Flyouts>
+  
+    <StackPanel>
+        <Framework:ViewModelPresenter 
+          ViewModel="{Binding SubViewModel}"/>
+      
+      <Button Command="{Binding ShowFlyoutCommand}">Show Flyout</Button>
+    </StackPanel>
 </Controls:MetroWindow>

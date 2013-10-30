@@ -9,6 +9,8 @@ namespace Solutionizer.Framework.TryOut {
             builder.RegisterType<ShellViewModel>();
             builder.RegisterType<SubView>();
             builder.RegisterType<SubViewModel>();
+            builder.RegisterType<MyFlyoutView>();
+            builder.RegisterType<MyFlyoutViewModel>();
         }
 
         protected override string GetLogFolder() {
