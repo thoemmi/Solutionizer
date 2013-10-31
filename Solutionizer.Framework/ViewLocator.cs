@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Reflection;
+using System.Windows;
+using Autofac;
 
 namespace Solutionizer.Framework {
     public static class ViewLocator {
@@ -13,6 +16,32 @@ namespace Solutionizer.Framework {
                 var viewType = type.Assembly.GetType(viewTypeName);
                 return viewType;
             };
+        }
+
+        public static object GetViewForViewModel(object viewModel) {
+            var viewType = GetViewTypeFromViewModelType(viewModel.GetType());
+            if (viewType == null) {
+                throw new InvalidOperationException("No View found for ViewModel of type " + viewModel.GetType());
+            }
+
+            var view = BootstrapperBase.Container.Resolve(viewType);
+
+            var frameworkElement = view as FrameworkElement;
+            if (frameworkElement != null) {
+                frameworkElement.DataContext = viewModel;
+            }
+
+            InitializeComponent(view);
+
+            return view;
+        }
+
+        private static void InitializeComponent(object element) {
+            var method = element.GetType().GetMethod("InitializeComponent", BindingFlags.Instance | BindingFlags.Public);
+            if (method == null) {
+                return;
+            }
+            method.Invoke(element, null);
         }
     }
 }

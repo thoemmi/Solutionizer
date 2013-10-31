@@ -2,7 +2,6 @@
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using System.Windows;
-using Autofac;
 using MahApps.Metro.Controls;
 
 namespace Solutionizer.Framework {
@@ -11,22 +10,10 @@ namespace Solutionizer.Framework {
     }
 
     public class FlyoutManager : ObservableCollection<Flyout>, IFlyoutManager {
-        private readonly IComponentContext _container;
-
-        public FlyoutManager(IComponentContext container) {
-            _container = container;
-        }
-
         public void ShowFlyout(object viewModel) {
-            var viewTypeFromViewModelType = ViewLocator.GetViewTypeFromViewModelType(viewModel.GetType());
-            var view = (FrameworkElement)_container.Resolve(viewTypeFromViewModelType);
+            var view = (FrameworkElement)ViewLocator.GetViewForViewModel(viewModel);
 
-            view.DataContext = viewModel;
-
-            var flyout = view as Flyout;
-            if (flyout == null) {
-                flyout = new Flyout { Content = view };
-            }
+            var flyout = view as Flyout ?? new Flyout { Content = view };
 
             EventHandler handler = null;
             handler = (sender, args) => {

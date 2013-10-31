@@ -1,8 +1,6 @@
-﻿using System;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
-using Autofac;
 
 namespace Solutionizer.Framework {
     public class ViewModelPresenter : ContentControl {
@@ -23,23 +21,10 @@ namespace Solutionizer.Framework {
             var self = (ViewModelPresenter)d;
             self.Content = null;
 
-            if (e.NewValue == null) {
-                return;
+            if (e.NewValue != null) {
+                var view = ViewLocator.GetViewForViewModel(e.NewValue);
+                self.Content = view;
             }
-
-            var viewType = ViewLocator.GetViewTypeFromViewModelType(e.NewValue.GetType());
-            if (viewType == null) {
-                throw new InvalidOperationException("No View found for ViewModel of type " + e.NewValue.GetType());
-            }
-
-            var view = BootstrapperBase.Container.Resolve(viewType);
-
-            var frameworkElement = view as FrameworkElement;
-            if (frameworkElement != null) {
-                frameworkElement.DataContext = e.NewValue;
-            }
-
-            self.Content = view;
         }
     }
 }
