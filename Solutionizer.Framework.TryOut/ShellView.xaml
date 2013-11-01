@@ -23,35 +23,6 @@
       <Button Command="{Binding ShowDialogCommand}">Show Dialog</Button>
     </StackPanel>
 
-    <Framework:DialogsControl ItemsSource="{Binding Dialogs}" Panel.ZIndex="100">
-      <Framework:DialogsControl.ItemsPanel>
-        <ItemsPanelTemplate>
-          <Grid/>
-        </ItemsPanelTemplate>
-      </Framework:DialogsControl.ItemsPanel>
-      <Framework:DialogsControl.ItemTemplate>
-        <DataTemplate>
-          <Grid>
-            <Grid.RowDefinitions>
-              <RowDefinition Height="*" />
-              <RowDefinition Height="Auto" />
-              <RowDefinition Height="*" />
-            </Grid.RowDefinitions>
-            <Rectangle Grid.Column="0" Grid.Row="0" Fill="#40000000"/>
-            <Border Grid.Column="0" Grid.Row="1" Background="{DynamicResource WindowBackgroundBrush}" BorderThickness="0 1" BorderBrush="{DynamicResource WindowTitleColorBrush}">
-              <Grid>
-                <Grid.ColumnDefinitions>
-                  <ColumnDefinition Width="*" />
-                  <ColumnDefinition Width="Auto" />
-                  <ColumnDefinition Width="*" />
-                </Grid.ColumnDefinitions>
-                <Framework:ViewModelPresenter Grid.Column="1" ViewModel="{Binding}"/>
-              </Grid>
-            </Border>
-            <Rectangle Grid.Column="0" Grid.Row="2" Fill="#40000000" />
-          </Grid>
-        </DataTemplate>
-      </Framework:DialogsControl.ItemTemplate>
-    </Framework:DialogsControl>
+    <Framework:DialogsControl ItemsSource="{Binding Dialogs}" />
   </Grid>
 </Controls:MetroWindow>
