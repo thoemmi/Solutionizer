@@ -1,4 +1,6 @@
-﻿namespace Solutionizer.Framework.TryOut {
+﻿using System.Windows.Input;
+
+namespace Solutionizer.Framework.TryOut {
     public class MyFlyoutViewModel : PropertyChangedBase {
         private string _text;
 
