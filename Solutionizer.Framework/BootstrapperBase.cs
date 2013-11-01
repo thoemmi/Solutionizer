@@ -74,6 +74,7 @@ namespace Solutionizer.Framework {
             builder.RegisterModule<LogRequestsModule>();
             builder.RegisterType<WindowManager>().SingleInstance();
             builder.RegisterType<FlyoutManager>().AsImplementedInterfaces().SingleInstance();
+            builder.RegisterType<DialogManager>().AsImplementedInterfaces().SingleInstance();
 
             ConfigureContainer(builder);
 

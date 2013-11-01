@@ -5,20 +5,28 @@ namespace Solutionizer.Framework.TryOut {
         private string _title;
         private readonly SubViewModel _subViewModel;
         private readonly IFlyoutManager _flyoutManager;
+        private readonly IDialogManager _dialogManager;
         private readonly ICommand _showFlyoutCommand;
+        private readonly ICommand _showDialogCommand;
 
-        public ShellViewModel(SubViewModel subViewModel, IFlyoutManager flyoutManager) {
+        public ShellViewModel(SubViewModel subViewModel, IFlyoutManager flyoutManager, IDialogManager dialogManager) {
             _subViewModel = subViewModel;
             _flyoutManager = flyoutManager;
+            _dialogManager = dialogManager;
 
             Title = "Hello world";
             _subViewModel.SomeText = "Some text";
 
             _showFlyoutCommand = new RelayCommand(OnShowFlyout);
+            _showDialogCommand = new RelayCommand(OnShowDialog);
         }
 
         private void OnShowFlyout() {
             _flyoutManager.ShowFlyout(new MyFlyoutViewModel { Text = "This is my flyout" });
+        }
+
+        private void OnShowDialog() {
+            _dialogManager.ShowDialog(new MyDialogViewModel { DialogText = "This is my dialog with just some text." });
         }
 
         public string Title {
@@ -39,8 +47,16 @@ namespace Solutionizer.Framework.TryOut {
             get { return _flyoutManager; }
         }
 
+        public IDialogManager Dialogs {
+            get { return _dialogManager; }
+        }
+
         public ICommand ShowFlyoutCommand {
             get { return _showFlyoutCommand; }
+        }
+
+        public ICommand ShowDialogCommand {
+            get { return _showDialogCommand; }
         }
     }
 }

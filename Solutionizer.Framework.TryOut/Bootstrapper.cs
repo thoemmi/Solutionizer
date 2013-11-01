@@ -11,6 +11,8 @@ namespace Solutionizer.Framework.TryOut {
             builder.RegisterType<SubViewModel>();
             builder.RegisterType<MyFlyoutView>();
             builder.RegisterType<MyFlyoutViewModel>();
+            builder.RegisterType<MyDialogView>();
+            builder.RegisterType<MyDialogViewModel>();
         }
 
         protected override string GetLogFolder() {

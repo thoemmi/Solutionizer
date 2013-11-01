@@ -71,6 +71,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Bootstrapper.cs" />
+    <Compile Include="MyDialogViewModel.cs" />
     <Compile Include="MyFlyoutViewModel.cs" />
     <Compile Include="ShellViewModel.cs" />
     <Compile Include="SubViewModel.cs" />
@@ -110,6 +111,10 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Page Include="MyDialogView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MyFlyoutView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

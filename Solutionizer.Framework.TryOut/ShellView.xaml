@@ -6,17 +6,52 @@
         xmlns:TryOut="clr-namespace:Solutionizer.Framework.TryOut"
         xmlns:Framework="clr-namespace:Solutionizer.Framework;assembly=Solutionizer.Framework"
         xmlns:Controls="http://metro.mahapps.com/winfx/xaml/controls"
+        TextBlock.FontSize="{DynamicResource NormalFontSize}"
         mc:Ignorable="d"
         Title="{Binding Title}" Height="300" Width="300" d:DataContext="{d:DesignInstance TryOut:ShellViewModel}">
   
   <Controls:MetroWindow.Flyouts>
     <Controls:FlyoutsControl ItemsSource="{Binding Flyouts}" />
   </Controls:MetroWindow.Flyouts>
-  
+
+  <Grid>
     <StackPanel>
         <Framework:ViewModelPresenter 
           ViewModel="{Binding SubViewModel}"/>
       
       <Button Command="{Binding ShowFlyoutCommand}">Show Flyout</Button>
+      <Button Command="{Binding ShowDialogCommand}">Show Dialog</Button>
     </StackPanel>
+
+    <Framework:DialogsControl ItemsSource="{Binding Dialogs}" Panel.ZIndex="100">
+      <Framework:DialogsControl.ItemsPanel>
+        <ItemsPanelTemplate>
+          <Grid/>
+        </ItemsPanelTemplate>
+      </Framework:DialogsControl.ItemsPanel>
+      <Framework:DialogsControl.ItemTemplate>
+        <DataTemplate>
+          <Grid>
+            <Grid.RowDefinitions>
+              <RowDefinition Height="*" />
+              <RowDefinition Height="Auto" />
+              <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <Rectangle Grid.Column="0" Grid.Row="0" Fill="#40000000"/>
+            <Border Grid.Column="0" Grid.Row="1" Background="{DynamicResource WindowBackgroundBrush}" BorderThickness="0 1" BorderBrush="{DynamicResource WindowTitleColorBrush}">
+              <Grid>
+                <Grid.ColumnDefinitions>
+                  <ColumnDefinition Width="*" />
+                  <ColumnDefinition Width="Auto" />
+                  <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Framework:ViewModelPresenter Grid.Column="1" ViewModel="{Binding}"/>
+              </Grid>
+            </Border>
+            <Rectangle Grid.Column="0" Grid.Row="2" Fill="#40000000" />
+          </Grid>
+        </DataTemplate>
+      </Framework:DialogsControl.ItemTemplate>
+    </Framework:DialogsControl>
+  </Grid>
 </Controls:MetroWindow>
