@@ -2,7 +2,6 @@
 using System.ComponentModel;
 using System.Linq.Expressions;
 using System.Reflection;
-using System.Runtime.CompilerServices;
 
 namespace Solutionizer.Framework {
     public abstract class PropertyChangedBase : INotifyPropertyChanged {
@@ -12,7 +11,7 @@ namespace Solutionizer.Framework {
             NotifyOfPropertyChange(String.Empty);
         }
 
-        protected virtual void NotifyOfPropertyChange([CallerMemberName] string propertyName = null) {
+        protected virtual void NotifyOfPropertyChange(string propertyName = null) {
             var handler = PropertyChanged;
             if (handler != null) {
                 handler(this, new PropertyChangedEventArgs(propertyName));

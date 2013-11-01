@@ -18,7 +18,7 @@ namespace Solutionizer.Framework {
                 return;
             }
 
-            var self = (ViewModelPresenter)d;
+            var self = (ViewModelPresenter) d;
             self.Content = null;
 
             if (e.NewValue != null) {

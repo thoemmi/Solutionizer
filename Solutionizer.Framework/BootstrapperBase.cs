@@ -11,8 +11,6 @@ using NLog.Targets;
 
 namespace Solutionizer.Framework {
     public abstract class BootstrapperBase {
-        private static readonly Logger _log = LogManager.GetCurrentClassLogger();
-
         protected BootstrapperBase() {
             Start();
 

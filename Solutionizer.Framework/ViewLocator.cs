@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Data.Odbc;
 using System.Reflection;
 using System.Windows;
-using System.Windows.Controls;
 using Autofac;
 using NLog;
 
