@@ -6,17 +6,21 @@ using MahApps.Metro.Controls;
 
 namespace Solutionizer.Framework {
     public interface IFlyoutManager {
-        void ShowFlyout(object viewModel);
+        Task ShowFlyout(object viewModel);
     }
 
     public class FlyoutManager : ObservableCollection<Flyout>, IFlyoutManager {
-        public void ShowFlyout(object viewModel) {
+        public Task ShowFlyout(object viewModel) {
             var view = (FrameworkElement)ViewLocator.GetViewForViewModel(viewModel);
 
             var flyout = view as Flyout ?? new Flyout { Content = view };
+            flyout.IsOpen = true;
+
+            var tcs = new TaskCompletionSource<int>();
 
             EventHandler handler = null;
             handler = (sender, args) => {
+                tcs.SetResult(0);
                 flyout.IsOpenChanged -= handler;
                 DelayedRemove(flyout);
             };
@@ -24,7 +28,7 @@ namespace Solutionizer.Framework {
 
             Add(flyout);
 
-            flyout.IsOpen = true;
+            return tcs.Task;
         }
 
         private async void DelayedRemove(Flyout flyout) {

@@ -21,8 +21,10 @@ namespace Solutionizer.Framework.TryOut {
             _showDialogCommand = new RelayCommand(OnShowDialog);
         }
 
-        private void OnShowFlyout() {
-            _flyoutManager.ShowFlyout(new MyFlyoutViewModel { Text = "This is my flyout" });
+        private async void OnShowFlyout() {
+            _subViewModel.SomeText = "Showing flyout";
+            await _flyoutManager.ShowFlyout(new MyFlyoutViewModel { Text = "This is my flyout" });
+            _subViewModel.SomeText = "Flyout was closed";
         }
 
         private async void OnShowDialog() {
