@@ -1,14 +1,15 @@
 ﻿using System.Collections.ObjectModel;
-using System.Windows;
+using System.Threading.Tasks;
 
 namespace Solutionizer.Framework {
     public interface IDialogManager {
-        void ShowDialog(object viewModel);
+        Task<TResult> ShowDialog<TResult>(DialogViewModel<TResult> viewModel);
     }
 
     public class DialogManager : ObservableCollection<object>, IDialogManager {
-        public void ShowDialog(object viewModel) {
+        public Task<TResult> ShowDialog<TResult>(DialogViewModel<TResult> viewModel) {
             Add(viewModel);
+            return viewModel.Task;
         }
     }
 }

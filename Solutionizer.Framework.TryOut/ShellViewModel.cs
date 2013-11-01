@@ -25,8 +25,10 @@ namespace Solutionizer.Framework.TryOut {
             _flyoutManager.ShowFlyout(new MyFlyoutViewModel { Text = "This is my flyout" });
         }
 
-        private void OnShowDialog() {
-            _dialogManager.ShowDialog(new MyDialogViewModel { DialogText = "This is my dialog with just some text." });
+        private async void OnShowDialog() {
+            _subViewModel.SomeText = "Showing dialog";
+            await _dialogManager.ShowDialog(new MyDialogViewModel { DialogText = "This is my dialog with just some text." });
+            _subViewModel.SomeText = "Dialog was closed";
         }
 
         public string Title {

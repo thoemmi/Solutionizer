@@ -3,22 +3,10 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Linq;
-using System.Windows;
 using System.Windows.Controls;
 
 namespace Solutionizer.Framework {
     public class DialogsControl : ItemsControl {
-        protected override bool IsItemItsOwnContainerOverride(object item) {
-            return base.IsItemItsOwnContainerOverride(item);
-        }
-
-        protected override DependencyObject GetContainerForItemOverride() {
-            return base.GetContainerForItemOverride();
-            //var view = (FrameworkElement)ViewLocator.GetViewForViewModel(viewModel);
-
-            //return base.GetContainerForItemOverride();
-        }
-
         protected override void OnItemsChanged(NotifyCollectionChangedEventArgs e) {
             base.OnItemsChanged(e);
             switch (e.Action) {
@@ -38,7 +26,7 @@ namespace Solutionizer.Framework {
             }
         }
 
-        private void AttachHandlers(IEnumerable<DialogViewModel> items) {
+        private void AttachHandlers(IEnumerable<IDialogViewModel> items) {
             foreach (var viewModel in items) {
                 viewModel.Closed += ViewModelOnClosed;
             }
@@ -51,14 +39,14 @@ namespace Solutionizer.Framework {
             }
         }
 
-        private void DetachHandlers(IEnumerable<DialogViewModel> items) {
+        private void DetachHandlers(IEnumerable<IDialogViewModel> items) {
             foreach (var viewModel in items) {
                 viewModel.Closed -= ViewModelOnClosed;
             }
         }
 
-        private static IEnumerable<DialogViewModel> GetViewModels(IEnumerable items) {
-            return items.OfType<DialogViewModel>();
+        private static IEnumerable<IDialogViewModel> GetViewModels(IEnumerable items) {
+            return items.OfType<IDialogViewModel>();
         }
     }
 }

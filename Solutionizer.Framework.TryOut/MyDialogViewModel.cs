@@ -1,12 +1,12 @@
 ﻿using System.Windows.Input;
 
 namespace Solutionizer.Framework.TryOut {
-    public class MyDialogViewModel : DialogViewModel {
+    public class MyDialogViewModel : DialogViewModel<bool> {
         private readonly ICommand _closeCommand;
         private string _dialogText;
 
         public MyDialogViewModel() {
-            _closeCommand = new RelayCommand(Close);
+            _closeCommand = new RelayCommand(() => Close(true));
         }
 
         public string DialogText {
