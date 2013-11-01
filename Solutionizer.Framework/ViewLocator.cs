@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Data.Odbc;
 using System.Reflection;
 using System.Windows;
+using System.Windows.Controls;
 using Autofac;
 using NLog;
 
@@ -33,12 +35,25 @@ namespace Solutionizer.Framework {
 
             var frameworkElement = view as FrameworkElement;
             if (frameworkElement != null) {
+                AttachHandler(frameworkElement, viewModel);
                 frameworkElement.DataContext = viewModel;
             }
 
             InitializeComponent(view);
 
             return view;
+        }
+
+        private static void AttachHandler(FrameworkElement view, object viewModel) {
+            var onLoadedHandler = viewModel as IOnLoadedHandler;
+            if (onLoadedHandler != null) {
+                RoutedEventHandler handler = null;
+                handler = (sender, args) => {
+                    view.Loaded -= handler;
+                    onLoadedHandler.OnLoaded();
+                };
+                view.Loaded += handler;
+            }
         }
 
         private static void InitializeComponent(object element) {

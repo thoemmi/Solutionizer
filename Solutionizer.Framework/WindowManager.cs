@@ -17,16 +17,6 @@ namespace Solutionizer.Framework {
 
             var view = (Window)ViewLocator.GetViewForViewModel(viewModel);
 
-            //var onLoadedHandler = viewModel as IOnLoadedHandler;
-            //if (onLoadedHandler != null) {
-            //    RoutedEventHandler handler = null;
-            //    handler = (sender, args) => {
-            //        view.Loaded -= handler;
-            //        onLoadedHandler.OnViewLoaded();
-            //    };
-            //    view.Loaded += handler;
-            //}
-
             view.Show();
         }
     }

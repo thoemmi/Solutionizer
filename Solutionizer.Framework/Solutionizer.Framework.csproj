@@ -59,6 +59,7 @@
     <Compile Include="DialogsControl.cs" />
     <Compile Include="DialogViewModel.cs" />
     <Compile Include="FlyoutManager.cs" />
+    <Compile Include="IOnLoadedHandler.cs" />
     <Compile Include="LogRequestsModule.cs" />
     <Compile Include="PropertyChangedBase.cs" />
     <Compile Include="RelayCommand.Generic.cs" />

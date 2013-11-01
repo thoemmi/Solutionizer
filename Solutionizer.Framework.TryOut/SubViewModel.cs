@@ -1,5 +1,5 @@
 ﻿namespace Solutionizer.Framework.TryOut {
-    public class SubViewModel : PropertyChangedBase {
+    public class SubViewModel : PropertyChangedBase, IOnLoadedHandler {
         private string _someText;
 
         public string SomeText {
@@ -10,6 +10,10 @@
                     NotifyOfPropertyChange(() => SomeText);
                 }
             }
+        }
+
+        public void OnLoaded() {
+            SomeText = "subview was loaded";
         }
     }
 }
