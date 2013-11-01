@@ -22,7 +22,7 @@ namespace Solutionizer.Framework {
         }
 
         public static object GetViewForViewModel(object viewModel) {
-            _log.Debug("Getting view for view model");
+            _log.Debug("View for view model {0} requested", viewModel.GetType());
             var viewType = GetViewTypeFromViewModelType(viewModel.GetType());
             if (viewType == null) {
                 _log.Error("Could not find view for view model type {0}", viewModel.GetType());
@@ -30,6 +30,7 @@ namespace Solutionizer.Framework {
             }
 
             var view = BootstrapperBase.Container.Resolve(viewType);
+            _log.Debug("Resolved to instance of {0}", view.GetType());
 
             var frameworkElement = view as FrameworkElement;
             if (frameworkElement != null) {
