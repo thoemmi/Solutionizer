@@ -18,6 +18,9 @@
 
           <System:Boolean x:Key="FalseValue">False</System:Boolean>
           <System:Boolean x:Key="TrueValue">True</System:Boolean>
+
+          <System:Double x:Key="NormalFontSize">16</System:Double>
+          <System:Double x:Key="ContentFontSize">14</System:Double>
         </ResourceDictionary>
       </ResourceDictionary.MergedDictionaries>
     </ResourceDictionary>
