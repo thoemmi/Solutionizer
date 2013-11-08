@@ -11,7 +11,7 @@
              xmlns:Controls="http://metro.mahapps.com/winfx/xaml/controls"
              mc:Ignorable="d" 
              d:DataContext="{d:DesignInstance ViewModels:UpdateViewModel}"
-             d:DesignHeight="300" d:DesignWidth="300" MaxWidth="500">
+             d:DesignHeight="300" d:DesignWidth="300" MaxWidth="800">
   <UserControl.Resources>
     <ResourceDictionary>
       <ResourceDictionary.MergedDictionaries>
@@ -56,37 +56,40 @@
         <ItemsControl.ItemTemplate>
           <DataTemplate DataType="Infrastructure:ReleaseInfo">
               <Grid Margin="0 0 0 10">
-                <Grid.ColumnDefinitions>
-                  <ColumnDefinition Width="Auto" />
-                  <ColumnDefinition Width="*" />
-                </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
+                  <RowDefinition Height="Auto" />
                   <RowDefinition Height="Auto" />
                   <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
                 
                 <Rectangle 
-                  Grid.RowSpan="2" 
+                  Grid.RowSpan="3" 
                   HorizontalAlignment="Left" Width="4" 
                   StrokeThickness="0"
                   Fill="{DynamicResource HighlightBrush}"
                   Visibility="{Binding IsNew, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                
+                <TextBlock 
+                  Grid.Row="0" Grid.Column="0" 
+                  Margin="10 0 0 0" Foreground="{DynamicResource TextBrush}"
+                  FontSize="20" FontWeight="Bold"
+                  Text="{Binding Path=Name}"/>
               
-                <TextBlock Grid.Row="0" Grid.Column="0" Margin="10 0 0 4">
-                  <Hyperlink NavigateUri="{Binding HtmlUrl}">
+                <TextBlock Foreground="{DynamicResource MenuItemDisabledBrush}" Grid.Row="1" Margin="10 0 0 4">
+                  <Run Text="Version "/><TextBlock Text="{Binding Version}"/><TextBlock Text=" (Prerelease)" Visibility="{Binding IsPrerelease, Converter={StaticResource BooleanToVisibilityConverter}}"/><Run Text=", published"/>
+                  <Run Text="{Binding PublishedAt, StringFormat=d, ConverterCulture={x:Static gl:CultureInfo.CurrentCulture}}" /><Run Text="," />
+                  <Hyperlink NavigateUri="{Binding HtmlUrl}" TextDecorations="None" ToolTip="Open release notes in web browser">
                     <i:Interaction.Behaviors>
                         <Infrastructure:HyperlinkNavigateBehavior/>
                     </i:Interaction.Behaviors>
-                    <Run FontWeight="Bold" FontSize="14" Text="{Binding Path=Name}"/></Hyperlink>
-                </TextBlock>
-
-              <TextBlock Foreground="{DynamicResource MenuItemDisabledBrush}" Grid.Row="0" Grid.Column="1" HorizontalAlignment="Right" Margin="0 0 4 0">
-                  <Run Text="Version "/><TextBlock Text="{Binding Version}"/><TextBlock Text=" (Prerelease)" Visibility="{Binding IsPrerelease, Converter={StaticResource BooleanToVisibilityConverter}}"/><Run Text=", published"/>
-                  <Run Text="{Binding PublishedAt, StringFormat=d, ConverterCulture={x:Static gl:CultureInfo.CurrentCulture}}" />
+                    <Viewbox Height="12">
+                      <Path Width="38.818" Height="30.7044" Stretch="Fill" Fill="{DynamicResource MenuItemDisabledBrush}" Data="F1 M 23.4963,46.1288L 25.0796,48.8712L 29.4053,50.0303L 33.519,47.6553L 34.8902,46.8636L 37.6326,45.2803L 38.4242,46.6515L 37.2652,50.9772L 30.4091,54.9356L 21.7577,52.6174L 18.591,47.1326L 20.9091,38.4811L 27.7652,34.5227L 32.0909,35.6818L 32.8826,37.053L 30.1402,38.6364L 28.769,39.428L 24.6553,41.803L 23.4963,46.1288 Z M 38.7348,28.1895L 45.5908,24.2311L 54.2423,26.5493L 57.409,32.0341L 55.0908,40.6856L 48.2348,44.6439L 43.9091,43.4848L 43.1174,42.1136L 45.8598,40.5303L 47.231,39.7386L 51.3446,37.3636L 52.5037,33.0379L 50.9204,30.2955L 46.5946,29.1364L 42.481,31.5114L 41.1098,32.3031L 38.3674,33.8864L 37.5757,32.5152L 38.7348,28.1895 Z M 33.9006,45.1496L 31.7377,44.5701L 30.5502,42.5133L 31.1298,40.3504L 42.0994,34.0171L 44.2623,34.5966L 45.4498,36.6534L 44.8702,38.8163L 33.9006,45.1496 Z "/>
+                    </Viewbox>
+                    </Hyperlink>
                 </TextBlock>
               
                 <FlowDocumentScrollViewer Margin="10 0 0 0"
-                  Grid.Row="1" Grid.ColumnSpan="2" Grid.Column="0"
+                  Grid.Row="2" Grid.Column="0"
                   VerticalScrollBarVisibility="Hidden"
                   HorizontalScrollBarVisibility="Hidden"
                   Document="{Binding Path=ReleaseNotes, Converter={StaticResource MarkdownToFlowDocumentConverter}}" />

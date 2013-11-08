@@ -2778,11 +2778,34 @@ namespace Solutionizer.Helper {
         #endregion Private Fields
     }
 
+    public class HtmlToXamlSettings {
+        public static HtmlToXamlSettings Default {
+            get { return new HtmlToXamlSettings(); }
+        }
+
+        public int Header1FontSize = 22; // "XXLarge";
+        public int Header2FontSize = 20; // "XLarge";
+        public int Header3FontSize = 18; // "Large";
+        public int Header4FontSize = 16; // "Medium";
+        public int Header5FontSize = 12; // "Small";
+        public int Header6FontSize = 10; // "XSmall";
+        public int ParagraphFontSize = 8; // "XXSmall";
+    }
+
     /// <summary>
     /// HtmlToXamlConverter is a static class that takes an HTML string
     /// and converts it into XAML
     /// </summary>
     public static class HtmlToXamlConverter {
+        private static HtmlToXamlSettings _settings;
+
+        public static HtmlToXamlSettings Settings {
+            set { _settings = value; }
+            get {
+                return _settings ?? (_settings = HtmlToXamlSettings.Default);
+            }
+        }
+
         // ---------------------------------------------------------------------
         //
         // Internal Methods
@@ -4574,26 +4597,26 @@ namespace Solutionizer.Helper {
                 switch ((string) propertyEnumerator.Key) {
                     case "font-family":
                         //  Convert from font-family value list into xaml FontFamily value
-                        xamlElement.SetAttribute(Xaml_FontFamily, (string) propertyEnumerator.Value);
+                        xamlElement.SetAttribute(Xaml_FontFamily, propertyEnumerator.Value.ToString());
                         break;
                     case "font-style":
-                        xamlElement.SetAttribute(Xaml_FontStyle, (string) propertyEnumerator.Value);
+                        xamlElement.SetAttribute(Xaml_FontStyle, propertyEnumerator.Value.ToString());
                         break;
                     case "font-variant":
                         //  Convert from font-variant into xaml property
                         break;
                     case "font-weight":
-                        xamlElement.SetAttribute(Xaml_FontWeight, (string) propertyEnumerator.Value);
+                        xamlElement.SetAttribute(Xaml_FontWeight, propertyEnumerator.Value.ToString());
                         break;
                     case "font-size":
                         //  Convert from css size into FontSize
-                        xamlElement.SetAttribute(Xaml_FontSize, (string) propertyEnumerator.Value);
+                        xamlElement.SetAttribute(Xaml_FontSize, propertyEnumerator.Value.ToString());
                         break;
                     case "color":
-                        SetPropertyValue(xamlElement, TextElement.ForegroundProperty, (string) propertyEnumerator.Value);
+                        SetPropertyValue(xamlElement, TextElement.ForegroundProperty, propertyEnumerator.Value.ToString());
                         break;
                     case "background-color":
-                        SetPropertyValue(xamlElement, TextElement.BackgroundProperty, (string) propertyEnumerator.Value);
+                        SetPropertyValue(xamlElement, TextElement.BackgroundProperty, propertyEnumerator.Value.ToString());
                         break;
                     case "text-decoration-underline":
                         if (!isBlock) {
@@ -4903,7 +4926,7 @@ namespace Solutionizer.Helper {
                     break;
                 case "samp":
                     localProperties["font-family"] = "Courier New"; // code sample
-                    localProperties["font-size"] = Xaml_FontSize_XXSmall;
+                    localProperties["font-size"] = Settings.ParagraphFontSize + "pt";
                     localProperties["text-align"] = "Left";
                     break;
                 case "sub":
@@ -4927,7 +4950,7 @@ namespace Solutionizer.Helper {
                     break;
                 case "pre":
                     localProperties["font-family"] = "Courier New"; // renders text in a fixed-width font
-                    localProperties["font-size"] = Xaml_FontSize_XXSmall;
+                    localProperties["font-size"] = Settings.ParagraphFontSize;
                     localProperties["text-align"] = "Left";
                     break;
                 case "blockquote":
@@ -4935,22 +4958,22 @@ namespace Solutionizer.Helper {
                     break;
 
                 case "h1":
-                    localProperties["font-size"] = Xaml_FontSize_XXLarge;
+                    localProperties["font-size"] = Settings.Header1FontSize;
                     break;
                 case "h2":
-                    localProperties["font-size"] = Xaml_FontSize_XLarge;
+                    localProperties["font-size"] = Settings.Header2FontSize;
                     break;
                 case "h3":
-                    localProperties["font-size"] = Xaml_FontSize_Large;
+                    localProperties["font-size"] = Settings.Header3FontSize;
                     break;
                 case "h4":
-                    localProperties["font-size"] = Xaml_FontSize_Medium;
+                    localProperties["font-size"] = Settings.Header4FontSize;
                     break;
                 case "h5":
-                    localProperties["font-size"] = Xaml_FontSize_Small;
+                    localProperties["font-size"] = Settings.Header5FontSize;
                     break;
                 case "h6":
-                    localProperties["font-size"] = Xaml_FontSize_XSmall;
+                    localProperties["font-size"] = Settings.Header6FontSize;
                     break;
                     // List properties
                 case "ul":
@@ -5153,13 +5176,6 @@ namespace Solutionizer.Helper {
         public const string Xaml_FontFamily = "FontFamily";
 
         public const string Xaml_FontSize = "FontSize";
-        public const string Xaml_FontSize_XXLarge = "22pt"; // "XXLarge";
-        public const string Xaml_FontSize_XLarge = "20pt"; // "XLarge";
-        public const string Xaml_FontSize_Large = "18pt"; // "Large";
-        public const string Xaml_FontSize_Medium = "16pt"; // "Medium";
-        public const string Xaml_FontSize_Small = "12pt"; // "Small";
-        public const string Xaml_FontSize_XSmall = "10pt"; // "XSmall";
-        public const string Xaml_FontSize_XXSmall = "8pt"; // "XXSmall";
 
         public const string Xaml_FontWeight = "FontWeight";
         public const string Xaml_FontWeight_Bold = "Bold";
