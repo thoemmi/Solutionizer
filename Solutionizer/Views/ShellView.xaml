@@ -129,7 +129,7 @@
       <RowDefinition Height="auto"/>
       <RowDefinition Height="*"/>
     </Grid.RowDefinitions>
-    <Grid Background="White" x:Name="PART_TitleBar">
+    <Grid x:Name="PART_TitleBar">
       <Grid.ColumnDefinitions>
         <ColumnDefinition Width="auto"/>
         <ColumnDefinition Width="auto"/>
@@ -209,8 +209,8 @@
         ViewModel="{Binding Solution}"/>
     </Grid>
 
-    <Framework:DialogsControl 
-      Grid.RowSpan="2"
+    <Framework:DialogsControl
+      Grid.Row="0" Grid.RowSpan="2"
       ItemsSource="{Binding Dialogs}" />
     
   </Grid>

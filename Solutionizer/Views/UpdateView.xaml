@@ -8,7 +8,7 @@
              xmlns:Infrastructure="clr-namespace:Solutionizer.Infrastructure"
              xmlns:gl="clr-namespace:System.Globalization;assembly=mscorlib"
              xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
-             xmlns:Controls="clr-namespace:Solutionizer.Controls"
+             xmlns:Controls="http://metro.mahapps.com/winfx/xaml/controls"
              mc:Ignorable="d" 
              d:DataContext="{d:DesignInstance ViewModels:UpdateViewModel}"
              d:DesignHeight="300" d:DesignWidth="300" MaxWidth="500">
@@ -39,7 +39,7 @@
     </Grid.RowDefinitions>
 
     <StackPanel Orientation="Horizontal" Visibility="{Binding IsUpdating, Converter={StaticResource BooleanToVisibilityConverter}}">
-      <Controls:CircularProgressAnimation IsActive="True" Width="14" Height="14" DotDiameter="2" Margin="0 0 4 0"/>
+      <Controls:ProgressRing IsActive="True" Width="14" Height="14" IsLarge="False" Margin="0 0 4 0"/>
       <TextBlock>Checking for updates...</TextBlock>
     </StackPanel>
 

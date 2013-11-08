@@ -43,7 +43,7 @@
       <RowDefinition Height="Auto" />
     </Grid.RowDefinitions>
 
-    <ScrollViewer VerticalScrollBarVisibility="Auto" VerticalAlignment="Stretch" Grid.Column="1">
+    <ScrollViewer VerticalScrollBarVisibility="Auto" VerticalAlignment="Stretch">
       <Grid>
         <Grid.RowDefinitions>
           <RowDefinition Height="Auto" />

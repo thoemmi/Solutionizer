@@ -3,7 +3,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
-using Autofac;
 using Ookii.Dialogs.Wpf;
 using Solutionizer.Framework;
 using Solutionizer.Infrastructure;

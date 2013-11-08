@@ -92,9 +92,7 @@
     <Compile Include="AppBootstrapper.cs" />
     <Compile Include="Commands\SaveSolutionCommand.cs" />
     <Compile Include="CommonAssemblyInfo.cs" />
-    <Compile Include="Controls\CircularProgressAnimation.cs" />
     <Compile Include="Converters\MarkdownToFlowDocumentConverter.cs" />
-    <Compile Include="Converters\NullToCollapsedConverter.cs" />
     <Compile Include="Helper\HtmlToXamlConverter.cs" />
     <Compile Include="Helper\Markdown.cs" />
     <Compile Include="Helper\VisualStudioHelper.cs" />
@@ -131,7 +129,6 @@
     <Compile Include="Helper\DragDropHelper.cs" />
     <Compile Include="Helper\DraggedAdorner.cs" />
     <Compile Include="Helper\FileSystem.cs" />
-    <Compile Include="Helper\GridViewSort.cs" />
     <Compile Include="Helper\Icons.cs" />
     <Compile Include="Helper\InsertionAdorner.cs" />
     <Compile Include="Helper\TfsHelper.cs" />

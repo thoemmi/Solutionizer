@@ -18,8 +18,8 @@ namespace Solutionizer.ViewModels {
         private bool _isUpToDate = false;
         private bool _canUpdate = false;
         private bool _showOldReleases;
-        private ICommand _updateCommand;
-        private ICommand _cancelCommand;
+        private readonly ICommand _updateCommand;
+        private readonly ICommand _cancelCommand;
 
         public UpdateViewModel(UpdateManager updateManager, ISettings settings, bool checkForUpdates) {
             _updateManager = updateManager;
