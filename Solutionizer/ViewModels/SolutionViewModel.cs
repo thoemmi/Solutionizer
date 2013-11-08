@@ -8,8 +8,8 @@ using System.Windows.Input;
 using NLog;
 using Ookii.Dialogs.Wpf;
 using Solutionizer.Commands;
+using Solutionizer.Framework;
 using Solutionizer.Helper;
-using Solutionizer.Infrastructure;
 using Solutionizer.Models;
 using Solutionizer.Services;
 
@@ -20,6 +20,11 @@ namespace Solutionizer.ViewModels {
         private readonly string _rootPath;
         private readonly IDictionary<string, Project> _projects;
         private readonly ICommand _dropCommand;
+        private readonly ICommand _removeSelectedItemCommand;
+        private readonly ICommand _launchCommand;
+        private readonly ICommand _saveCommand;
+        private readonly ICommand _clearCommand;
+
         private bool _isSccBound;
         private bool _isDirty;
         private readonly SolutionFolder _solutionRoot = new SolutionFolder(null);
@@ -30,7 +35,8 @@ namespace Solutionizer.ViewModels {
             _rootPath = rootPath;
             _projects = projects;
             _settings = settings;
-            _dropCommand = new FixedRelayCommand<object>(OnDrop, obj => obj is ProjectViewModel);
+            _dropCommand = new RelayCommand<object>(OnDrop, obj => obj is ProjectViewModel);
+            _removeSelectedItemCommand = new RelayCommand(RemoveSolutionItem);
             _settings.PropertyChanged += (sender, args) => {
                 if (args.PropertyName == "ShowLaunchElevatedButton") {
                     NotifyOfPropertyChange(() => ShowLaunchElevatedButton);
@@ -39,6 +45,9 @@ namespace Solutionizer.ViewModels {
                     NotifyOfPropertyChange(() => ShowProjectCount);
                 }
             };
+            _launchCommand = new RelayCommand<bool>(Launch, _ => _solutionRoot.Items.Any());
+            _saveCommand = new RelayCommand(Save, () => _solutionRoot.Items.Any());
+            _clearCommand = new RelayCommand(Clear, () => _solutionRoot.Items.Any());
         }
 
         private void OnDrop(object node) {
@@ -47,15 +56,7 @@ namespace Solutionizer.ViewModels {
             AddProject(project);
         }
 
-        public void Launch() {
-            LaunchInternal(false);
-        }
-
-        public void LaunchElevated() {
-            LaunchInternal(true);
-        }
-
-        private void LaunchInternal(bool elevated) {
+        private void Launch(bool elevated) {
             var newFilename = Path.Combine(Path.GetTempPath(), DateTime.Now.ToString("yyyy-MM-dd_HHmmss")) + ".sln";
             new SaveSolutionCommand(_settings, newFilename, _settings.VisualStudioVersion, this).Execute();
             var exePath = VisualStudioHelper.GetVisualStudioExecutable(_settings.VisualStudioVersion);
@@ -67,15 +68,7 @@ namespace Solutionizer.ViewModels {
             Application.Current.MainWindow.WindowState = WindowState.Minimized;
         }
 
-        public bool CanLaunch {
-            get { return _solutionRoot.Items.Any(); }
-        }
-
-        public bool CanLaunchElevated {
-            get { return _solutionRoot.Items.Any(); }
-        }
-
-        public void Save() {
+        private void Save() {
             var dlg = new VistaSaveFileDialog {
                 Filter = "Solution File (*.sln)|*.sln",
                 AddExtension = true,
@@ -87,22 +80,30 @@ namespace Solutionizer.ViewModels {
             }
         }
 
-        public bool CanSave {
-            get { return _solutionRoot.Items.Any(); }
-        }
-
-        public void Clear() {
+        private void Clear() {
             _solutionRoot.Items.Clear();
             SelectedItem = null;
             Refresh();
         }
 
-        public bool CanClear {
-            get { return _solutionRoot.Items.Any(); }
-        }
-
         public ICommand DropCommand {
             get { return _dropCommand; }
+        }
+
+        public ICommand LaunchCommand {
+            get { return _launchCommand; }
+        }
+
+        public ICommand SaveCommand {
+            get { return _saveCommand; }
+        }
+
+        public ICommand ClearCommand {
+            get { return _clearCommand; }
+        }
+
+        public ICommand RemoveSelectedItemCommand {
+            get { return _removeSelectedItemCommand; }
         }
 
         public IList<SolutionItem> SolutionItems {
@@ -136,7 +137,6 @@ namespace Solutionizer.ViewModels {
         public bool ShowProjectCount {
             get { return _settings.ShowProjectCount; }
         }
-
 
         public void AddProject(Project project) {
             IsSccBound |= project.IsSccBound;

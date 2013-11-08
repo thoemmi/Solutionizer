@@ -8,7 +8,8 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:ViewModels="clr-namespace:Solutionizer.ViewModels"
-        xmlns:cal="clr-namespace:Caliburn.Micro;assembly=Caliburn.Micro" mc:Ignorable="d"
+        xmlns:Framework="clr-namespace:Solutionizer.Framework;assembly=Solutionizer.Framework"
+        mc:Ignorable="d"
         Infrastructure:WindowStatePersistence.Settings="{Binding Settings}"  
         TextOptions.TextFormattingMode="Display"
         SnapsToDevicePixels="true" 
@@ -26,19 +27,22 @@
   <i:Interaction.Behaviors>
     <Behaviours:BorderlessWindowBehavior AllowsTransparency="False" EnableDWMDropShadow="True" ResizeWithGrip="True" />
   </i:Interaction.Behaviors>
-  
+
   <Controls:MetroWindow.WindowCommands>
     <Controls:WindowCommands HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0">
-      <Button Content="Update available" cal:Message.Attach="ShowUpdate('false')" Visibility="{Binding AreUpdatesAvailable, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+      <Button 
+        Content="Update available"
+        Command="{Binding ShowUpdatesCommand}" CommandParameter="{StaticResource FalseValue}"
+        Visibility="{Binding AreUpdatesAvailable, Converter={StaticResource BooleanToVisibilityConverter}}"/>
       <Button ToolTip="Tools and Options">
         <i:Interaction.Behaviors>
           <Infrastructure:ContextMenuOnLeftClickBehavior/>
         </i:Interaction.Behaviors>
         <Button.ContextMenu>
           <ContextMenu>
-            <MenuItem Header="Settings" cal:Message.Attach="ShowSettings()"/>
-            <MenuItem Header="Check for updates" cal:Message.Attach="ShowUpdate('true')"/>
-            <MenuItem Header="About" cal:Message.Attach="ShowAbout()"/>
+            <MenuItem Header="Settings" Command="{Binding ShowSettingsCommand}"/>
+            <MenuItem Header="Check for updates" Command="{Binding ShowUpdatesCommand}" CommandParameter="{StaticResource TrueValue}"/>
+            <MenuItem Header="About" Command="{Binding ShowAboutCommand}"/>
           </ContextMenu>
         </Button.ContextMenu>
         <Viewbox Height="14" Width="14">
@@ -74,7 +78,7 @@
 
                   <ContentPresenter Grid.Row="0" />
 
-                  <ItemsControl 
+                  <!--<ItemsControl 
                     Grid.Row="0" Panel.ZIndex="2" KeyboardNavigation.TabNavigation="None"
                     ItemsSource="{Binding Flyouts, Mode=OneWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Controls:MetroWindow}}}"
                     VerticalAlignment="Stretch">
@@ -83,7 +87,15 @@
                         <Grid TextElement.Foreground="{DynamicResource FlyoutWhiteBrush}" />
                       </ItemsPanelTemplate>
                     </ItemsControl.ItemsPanel>
-                  </ItemsControl>
+                  </ItemsControl>-->
+                  <ContentControl Grid.Row="0"
+                                        Grid.Column="0"
+                                        Panel.ZIndex="2"
+                                        Focusable="False"
+                                        KeyboardNavigation.TabNavigation="None"
+                                        Content="{Binding Flyouts, Mode=OneWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Controls:MetroWindow}}}"
+                                        VerticalAlignment="Stretch" HorizontalAlignment="Stretch" />
+
                 </Grid>
               </AdornerDecorator>
               <ResizeGrip 
@@ -108,6 +120,10 @@
     </Style>
   </Window.Style>
 
+  <Controls:MetroWindow.Flyouts>
+    <Controls:FlyoutsControl ItemsSource="{Binding Flyouts}" />
+  </Controls:MetroWindow.Flyouts>
+
   <Grid>
     <Grid.RowDefinitions>
       <RowDefinition Height="auto"/>
@@ -121,17 +137,21 @@
       </Grid.ColumnDefinitions>
       
       <TextBlock 
-        Text="{Binding DisplayName}"
+        Text="Solutionizer -"
         VerticalAlignment="Top"
         FontWeight="Bold" FontSize="20" Margin="20,5,0,0"/>
       
       <Label 
-        x:Name="RootPath"
+        Content="{Binding RootPath}"
         Grid.Column="1"
-        cal:Message.Attach="[Event PreviewMouseDown] = [Action SelectRootPath()]"
         VerticalAlignment="Top"
         ToolTip="Change the root folder"
         FontWeight="Bold" FontSize="20" Margin="0 5 0 0" Padding="5 0 5 0">
+        <i:Interaction.Triggers>
+          <i:EventTrigger EventName="PreviewMouseDown">
+            <i:InvokeCommandAction Command="{Binding SelectRootPathCommand}" />
+          </i:EventTrigger>
+        </i:Interaction.Triggers>
         <Label.Style>
           <Style TargetType="Label">
             <Style.Setters>
@@ -176,22 +196,22 @@
       </Grid.ColumnDefinitions>
       
       <Border Margin="6 6 0 6" Padding="2" BorderThickness="1" BorderBrush="{DynamicResource {x:Static SystemColors.ActiveBorderBrushKey}}">
-        <ContentControl x:Name="ProjectRepository" />
+        <Framework:ViewModelPresenter ViewModel="{Binding ProjectRepository}" />
       </Border>
 
       <GridSplitter 
         Grid.Column="1" Width="6" Background="Transparent" ShowsPreview="true" 
         HorizontalAlignment="Center" VerticalAlignment="Stretch" />
 
-      <ContentControl 
+      <Framework:ViewModelPresenter 
         Margin="0 3 3 3" 
         Grid.Column="2"  
-        x:Name="Solution" />
+        ViewModel="{Binding Solution}"/>
     </Grid>
 
-    <ContentControl 
+    <Framework:DialogsControl 
       Grid.RowSpan="2"
-      x:Name="Dialogs" />
+      ItemsSource="{Binding Dialogs}" />
     
   </Grid>
 </Controls:MetroWindow>

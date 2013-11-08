@@ -2,29 +2,33 @@
 using System.IO;
 using System.Net;
 using System.Threading;
-using Caliburn.Micro;
+using System.Windows.Input;
 using NLog;
+using Solutionizer.Framework;
 using Solutionizer.Infrastructure;
 
 namespace Solutionizer.ViewModels {
-    public class UpdateDownloadViewModel : Screen {
-        private static readonly Logger _log = NLog.LogManager.GetCurrentClassLogger();
+    public class UpdateDownloadViewModel : DialogViewModel<bool>, IOnLoadedHandler {
+        private static readonly Logger _log = LogManager.GetCurrentClassLogger();
 
         private readonly CancellationTokenSource _cancellationTokenSource = new CancellationTokenSource();
         private readonly UpdateManager _updateManager;
         private readonly ReleaseInfo _releaseInfo;
+        private readonly ICommand _cancelCommand;
         private int _progress;
-        private bool _isNotDownloading = true;
+        private bool _isPreparingDownload;
 
         public UpdateDownloadViewModel(UpdateManager updateManager, ReleaseInfo releaseInfo) {
             _updateManager = updateManager;
             _releaseInfo = releaseInfo;
-            DisplayName = "Downloading update";
+
+            _cancelCommand = new RelayCommand(() => {
+                _log.Debug("Cancelling download");
+                _cancellationTokenSource.Cancel();
+            });
         }
 
-        protected override void OnViewLoaded(object view) {
-            base.OnViewLoaded(view);
-
+        public void OnLoaded() {
             Download();
         }
 
@@ -34,9 +38,9 @@ namespace Solutionizer.ViewModels {
                 _log.Debug("Downloading update");
                 filename = await _updateManager.DownloadReleaseAsync(
                     _releaseInfo, 
-                    progress => { 
+                    progress => {
                         Progress = progress;
-                        IsNotDownloading = false;
+                        IsPreparingDownload = false;
                     },
                     _cancellationTokenSource.Token);
             } catch (WebException ex) {
@@ -48,16 +52,11 @@ namespace Solutionizer.ViewModels {
             if (filename != null && File.Exists(filename)) {
                 _log.Debug("Downloading succeeded, spawning");
                 Process.Start(filename);
-                TryClose(true);
+                Close(true);
             } else {
                 _log.Debug("Download failed or cancelled");
-                TryClose(false);
+                Close(false);
             }
-        }
-
-        public void Cancel() {
-            _log.Debug("Cancelling download");
-            _cancellationTokenSource.Cancel();
         }
 
         public int Progress {
@@ -70,15 +69,18 @@ namespace Solutionizer.ViewModels {
             }
         }
 
-        public bool IsNotDownloading {
-            get { return _isNotDownloading; }
+        public bool IsPreparingDownload {
+            get { return _isPreparingDownload; }
             set {
-                if (value.Equals(_isNotDownloading)) {
-                    return;
+                if (_isPreparingDownload != value) {
+                    _isPreparingDownload = value;
+                    NotifyOfPropertyChange(() => IsPreparingDownload);
                 }
-                _isNotDownloading = value;
-                NotifyOfPropertyChange(() => IsNotDownloading);
             }
+        }
+
+        public ICommand CancelCommand {
+            get { return _cancelCommand; }
         }
     }
 }

@@ -4,9 +4,14 @@ using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Linq;
 using System.Windows.Controls;
+using System.Windows.Data;
 
 namespace Solutionizer.Framework {
     public class DialogsControl : ItemsControl {
+        public DialogsControl() {
+            BindingOperations.EnableCollectionSynchronization(this.Items, this);
+        }
+
         protected override void OnItemsChanged(NotifyCollectionChangedEventArgs e) {
             base.OnItemsChanged(e);
             switch (e.Action) {

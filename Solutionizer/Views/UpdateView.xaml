@@ -13,22 +13,29 @@
              d:DataContext="{d:DesignInstance ViewModels:UpdateViewModel}"
              d:DesignHeight="300" d:DesignWidth="300" MaxWidth="500">
   <UserControl.Resources>
-    <Converters:MarkdownToFlowDocumentConverter x:Key="MarkdownToFlowDocumentConverter"/>
-    <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+    <ResourceDictionary>
+      <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/FlatButton.xaml" />
+      </ResourceDictionary.MergedDictionaries>
+      <Converters:MarkdownToFlowDocumentConverter x:Key="MarkdownToFlowDocumentConverter"/>
+      <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
 
-    <Style TargetType="FlowDocument" >
-      <Setter Property="FontFamily" Value="Segoe UI" />
-      <Setter Property="TextAlignment" Value="Left" />
-      <Setter Property="FontSize" Value="12" />
-      <Setter Property="PagePadding" Value="0" />
-    </Style>
+      <Style TargetType="FlowDocument" >
+        <Setter Property="FontFamily" Value="Segoe UI" />
+        <Setter Property="TextAlignment" Value="Left" />
+        <Setter Property="FontSize" Value="12" />
+        <Setter Property="PagePadding" Value="0" />
+        <Setter Property="Foreground" Value="{DynamicResource TextBrush}" />
+      </Style>
+    </ResourceDictionary>
   </UserControl.Resources>
-  <Grid>
+  <Grid Margin="15">
     <Grid.RowDefinitions>
       <RowDefinition Height="Auto" />
       <RowDefinition Height="Auto" />
       <RowDefinition Height="*" />
-      <RowDefinition Height="auto" />
+      <RowDefinition Height="Auto" />
+      <RowDefinition Height="Auto" />
     </Grid.RowDefinitions>
 
     <StackPanel Orientation="Horizontal" Visibility="{Binding IsUpdating, Converter={StaticResource BooleanToVisibilityConverter}}">
@@ -88,33 +95,25 @@
         </ItemsControl.ItemTemplate>
       </ItemsControl>
     </ScrollViewer>
-    
-    <Grid
-      Grid.Row="3"
-      Margin="0 16 0 0"
-      HorizontalAlignment="Stretch">
-      <Grid.ColumnDefinitions>
-        <ColumnDefinition Width="*"/>
-        <ColumnDefinition Width="Auto"/>
-        <ColumnDefinition Width="Auto"/>
-      </Grid.ColumnDefinitions>
-      <CheckBox 
-        Grid.Column="0"
+
+    <CheckBox 
+        Grid.Row="3"
         VerticalAlignment="Center" 
         IsChecked="{Binding ShowOldReleases}">Show old releases</CheckBox>
+    
+    <StackPanel
+      Grid.Row="4"
+      Margin="0 16 0 0"
+      HorizontalAlignment="Left" Orientation="Horizontal">
       <Button 
-        Grid.Column="1"
-        Margin="8 0 0 0"
         MinWidth="80"
-        x:Name="Update" 
+        Command="{Binding UpdateCommand}"
         Content="Update"/>
       <Button 
-        Grid.Column="2"
         Margin="8 0 0 0"
         MinWidth="80"
-        x:Name="Cancel" 
+        Command="{Binding CancelCommand}"
         Content="Cancel"/>
-    </Grid>
-
+    </StackPanel>
   </Grid>
 </UserControl>

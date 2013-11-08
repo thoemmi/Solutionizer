@@ -1,7 +1,8 @@
 ﻿using System.Collections;
 using System.Linq;
+using System.Windows.Input;
 using Solutionizer.Extensions;
-using Solutionizer.Infrastructure;
+using Solutionizer.Framework;
 using Solutionizer.Models;
 using Solutionizer.Services;
 
@@ -12,9 +13,11 @@ namespace Solutionizer.ViewModels {
         private ProjectFolder _rootFolder;
         private IList _nodes;
         private string _filter;
+        private readonly ICommand _doubleClickCommand;
 
-        public ProjectRepositoryViewModel(ISettings settings) {
+        public ProjectRepositoryViewModel(ISettings settings, ICommand doubleClickCommand) {
             _settings = settings;
+            _doubleClickCommand = doubleClickCommand;
 
             _settings.PropertyChanged += (sender, args) => {
                 if (args.PropertyName == "ShowProjectCount") {
@@ -31,6 +34,10 @@ namespace Solutionizer.ViewModels {
                     NotifyOfPropertyChange(() => RootPath);
                 }
             }
+        }
+
+        public ICommand DoubleClickCommand {
+            get { return _doubleClickCommand; }
         }
 
         public ProjectFolder RootFolder {

@@ -1,5 +1,5 @@
 using System;
-using Solutionizer.Infrastructure;
+using Solutionizer.Framework;
 
 namespace Solutionizer.ViewModels {
     public abstract class SolutionItem : PropertyChangedBase {

@@ -1,8 +1,13 @@
 ﻿using System.Windows.Input;
 
 namespace Solutionizer.Framework.TryOut {
-    public class MyFlyoutViewModel : PropertyChangedBase {
+    public class MyFlyoutViewModel : DialogViewModel {
+        private readonly ICommand _closeCommand;
         private string _text;
+
+        public MyFlyoutViewModel() {
+            _closeCommand = new RelayCommand(Close);
+        }
 
         public string Text {
             get { return _text; }
@@ -12,6 +17,10 @@ namespace Solutionizer.Framework.TryOut {
                     NotifyOfPropertyChange(() => Text);
                 }
             }
+        }
+
+        public ICommand CloseCommand {
+            get { return _closeCommand; }
         }
     }
 }

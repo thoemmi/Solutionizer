@@ -19,10 +19,14 @@ namespace Solutionizer.Framework {
         }
 
         protected void NotifyOfPropertyChange<TProperty>(Expression<Func<TProperty>> property) {
-            NotifyOfPropertyChange(GetMemberInfo(property).Name);
+            NotifyOfPropertyChange(GetMemberName(property));
         }
 
-        private static MemberInfo GetMemberInfo(Expression expression) {
+        public static string GetMemberName<TProperty>(Expression<Func<TProperty>> property) {
+            return GetMemberInfo(property).Name;
+        }
+
+        protected static MemberInfo GetMemberInfo(Expression expression) {
             var lambdaExpression = (LambdaExpression)expression;
             return (!(lambdaExpression.Body is UnaryExpression) ? (MemberExpression)lambdaExpression.Body : (MemberExpression)((UnaryExpression)lambdaExpression.Body).Operand).Member;
         }

@@ -3,16 +3,15 @@
                     xmlns:Framework="clr-namespace:Solutionizer.Framework">
 
   <Style TargetType="{x:Type Framework:DialogsControl}">
-    <Setter Property="Framework:DialogsControl.ItemsPanel">
+    <Setter Property="ItemsPanel">
       <Setter.Value>
         <ItemsPanelTemplate>
           <Grid/>
         </ItemsPanelTemplate>
       </Setter.Value>
     </Setter>
-    <Setter Property="Framework:DialogsControl.ItemTemplate">
+    <Setter Property="ItemTemplate">
       <Setter.Value>
-
         <DataTemplate>
           <Grid>
             <Grid.RowDefinitions>
@@ -21,7 +20,7 @@
               <RowDefinition Height="*" />
             </Grid.RowDefinitions>
             <Rectangle Grid.Column="0" Grid.Row="0" Fill="#40000000"/>
-            <Border Grid.Column="0" Grid.Row="1" Background="{DynamicResource WindowBackgroundBrush}" BorderThickness="0 1" BorderBrush="{DynamicResource WindowTitleColorBrush}">
+            <Border Grid.Column="0" Grid.Row="1" Background="{DynamicResource WindowBackgroundBrush}" BorderThickness="0 1" BorderBrush="{DynamicResource ControlBorderBrush}">
               <Grid>
                 <Grid.ColumnDefinitions>
                   <ColumnDefinition Width="*" />
@@ -35,7 +34,6 @@
           </Grid>
         </DataTemplate>
       </Setter.Value>
-
     </Setter>
   </Style>  
 </ResourceDictionary>

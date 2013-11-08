@@ -3,14 +3,14 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Data;
-using Caliburn.Micro;
+using System.Windows.Input;
+using Solutionizer.Framework;
 using Solutionizer.Infrastructure;
 using Solutionizer.Services;
 
 namespace Solutionizer.ViewModels {
-    public class UpdateViewModel : Screen {
+    public class UpdateViewModel : DialogViewModel<ReleaseInfo>, IOnLoadedHandler, IWithTitle {
         private readonly UpdateManager _updateManager;
-        private readonly IDialogManager _dialogManager;
         private readonly ISettings _settings;
         private readonly bool _checkForUpdates;
         private readonly ObservableCollection<ReleaseInfo> _releases = new ObservableCollection<ReleaseInfo>();
@@ -18,14 +18,17 @@ namespace Solutionizer.ViewModels {
         private bool _isUpToDate = false;
         private bool _canUpdate = false;
         private bool _showOldReleases;
+        private ICommand _updateCommand;
+        private ICommand _cancelCommand;
 
-        public UpdateViewModel(UpdateManager updateManager, IDialogManager dialogManager, ISettings settings, bool checkForUpdates) {
+        public UpdateViewModel(UpdateManager updateManager, ISettings settings, bool checkForUpdates) {
             _updateManager = updateManager;
-            _dialogManager = dialogManager;
             _settings = settings;
             _checkForUpdates = checkForUpdates;
-            DisplayName = checkForUpdates ? "Check for Updates" : "Available Updates";
             _releases = new ObservableCollection<ReleaseInfo>();
+
+            _updateCommand = new RelayCommand(() => Close(_releases.First()), () => CanUpdate);
+            _cancelCommand = new RelayCommand(() => Close(null));
 
             var collectionView = CollectionViewSource.GetDefaultView(Releases);
             collectionView.Filter = item => ((ReleaseInfo)item).IsNew;
@@ -33,8 +36,7 @@ namespace Solutionizer.ViewModels {
             BindingOperations.EnableCollectionSynchronization(_releases, _releases);
         }
 
-        protected override void OnViewLoaded(object view) {
-            base.OnViewLoaded(view);
+        public void OnLoaded() {
             Task.Run(() => Populate());
         }
 
@@ -53,6 +55,13 @@ namespace Solutionizer.ViewModels {
             IsUpdating = false;
             IsUpToDate = _releases.All(r => !r.IsNew);
             CanUpdate = _releases.Any(r => r.IsNew);
+        }
+
+
+        public string Title {
+            get {
+                return _checkForUpdates ? "Check for Updates" : "Available Updates";
+            }
         }
 
         public ObservableCollection<ReleaseInfo> Releases {
@@ -107,13 +116,12 @@ namespace Solutionizer.ViewModels {
             }
         }
 
-        public void Update() {
-            TryClose(true);
-            _dialogManager.ShowDialog(new UpdateDownloadViewModel(_updateManager, _releases.First()));
+        public ICommand UpdateCommand {
+            get { return _updateCommand; }
         }
 
-        public void Cancel() {
-            TryClose(false);
+        public ICommand CancelCommand {
+            get { return _cancelCommand; }
         }
     }
 }

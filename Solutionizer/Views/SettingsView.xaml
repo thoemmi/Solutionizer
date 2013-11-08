@@ -3,55 +3,77 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:Helper="clr-namespace:Solutionizer.Helper" xmlns:System="clr-namespace:System;assembly=mscorlib"
+             xmlns:System="clr-namespace:System;assembly=mscorlib"
              xmlns:Services="clr-namespace:Solutionizer.Services" mc:Ignorable="d" 
              xmlns:ViewModels="clr-namespace:Solutionizer.ViewModels"
              d:DataContext="{d:DesignInstance ViewModels:SettingsViewModel}"
              d:DesignHeight="300" d:DesignWidth="300">
-    <Grid>
-        <Grid.Resources>
-            <ObjectDataProvider MethodName="GetValues" ObjectType="{x:Type System:Enum}" x:Key="PossibleValues">
-                <ObjectDataProvider.MethodParameters>
-                    <x:Type TypeName="Services:VisualStudioVersion" />
-                </ObjectDataProvider.MethodParameters>
-            </ObjectDataProvider>
-            <DataTemplate DataType="{x:Type Services:VisualStudioVersion}">
-                <TextBlock Text="{Binding}" x:Name="PART_Text" />
-                <DataTemplate.Triggers>
-                    <DataTrigger Binding="{Binding}" Value="VS2010">
-                        <Setter TargetName="PART_Text" Property="Text" Value="Visual Studio 2010" />
-                    </DataTrigger>
-                    <DataTrigger Binding="{Binding}" Value="VS2012">
-                        <Setter TargetName="PART_Text" Property="Text" Value="Visual Studio 2012" />
-                    </DataTrigger>
-                    <DataTrigger Binding="{Binding}" Value="VS2013">
-                        <Setter TargetName="PART_Text" Property="Text" Value="Visual Studio 2013" />
-                    </DataTrigger>
-                </DataTemplate.Triggers>
-            </DataTemplate>
-        </Grid.Resources>
-      <Grid.RowDefinitions>
-        <RowDefinition Height="*" />
-        <RowDefinition Height="Auto" />
-      </Grid.RowDefinitions>
+  <UserControl.Resources>
+    <ResourceDictionary>
+      <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/FlatButton.xaml" />
+      </ResourceDictionary.MergedDictionaries>
+    </ResourceDictionary>
+  </UserControl.Resources>
 
-    <ScrollViewer VerticalScrollBarVisibility="Auto" VerticalAlignment="Stretch">
-      <Grid Helper:GridHelper.RowCount="11">
+  <Grid Margin="15">
+    <Grid.Resources>
+      <ObjectDataProvider MethodName="GetValues" ObjectType="{x:Type System:Enum}" x:Key="PossibleValues">
+        <ObjectDataProvider.MethodParameters>
+          <x:Type TypeName="Services:VisualStudioVersion" />
+        </ObjectDataProvider.MethodParameters>
+      </ObjectDataProvider>
+      <DataTemplate DataType="{x:Type Services:VisualStudioVersion}">
+        <TextBlock Text="{Binding}" x:Name="PART_Text" />
+        <DataTemplate.Triggers>
+          <DataTrigger Binding="{Binding}" Value="VS2010">
+            <Setter TargetName="PART_Text" Property="Text" Value="Visual Studio 2010" />
+          </DataTrigger>
+          <DataTrigger Binding="{Binding}" Value="VS2012">
+            <Setter TargetName="PART_Text" Property="Text" Value="Visual Studio 2012" />
+          </DataTrigger>
+          <DataTrigger Binding="{Binding}" Value="VS2013">
+            <Setter TargetName="PART_Text" Property="Text" Value="Visual Studio 2013" />
+          </DataTrigger>
+        </DataTemplate.Triggers>
+      </DataTemplate>
+    </Grid.Resources>
+    <Grid.RowDefinitions>
+      <RowDefinition Height="*" />
+      <RowDefinition Height="Auto" />
+    </Grid.RowDefinitions>
+
+    <ScrollViewer VerticalScrollBarVisibility="Auto" VerticalAlignment="Stretch" Grid.Column="1">
+      <Grid>
+        <Grid.RowDefinitions>
+          <RowDefinition Height="Auto" />
+          <RowDefinition Height="Auto" />
+          <RowDefinition Height="Auto" />
+          <RowDefinition Height="Auto" />
+          <RowDefinition Height="Auto" />
+          <RowDefinition Height="Auto" />
+          <RowDefinition Height="Auto" />
+          <RowDefinition Height="Auto" />
+          <RowDefinition Height="Auto" />
+          <RowDefinition Height="Auto" />
+          <RowDefinition Height="Auto" />
+          <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
         <CheckBox 
-          x:Name="ScanOnStartup" 
+          IsChecked="{Binding ScanOnStartup}"
           Margin="0 0 0 8" 
           Content="Scan projects on start-up"
           ToolTip="If checked, the last used folder will be scanned for projects."/>
-          
+
         <CheckBox 
-          x:Name="SimplifyProjectTree" 
+          IsChecked="{Binding SimplifyProjectTree}"
           Margin="0 0 0 8" 
           Grid.Row="1" 
           Content="Hide empty folders in hierarchy"
           ToolTip="If checked, folders containing no projects but subfolders only will be hidden."/>
-            
+
         <CheckBox 
-          x:Name="IncludeReferencedProjects" 
+          IsChecked="{Binding IncludeReferencedProjects}"
           Margin="0 0 0 8" 
           Grid.Row="2" 
           Content="Add referenced projects automatically"
@@ -67,11 +89,11 @@
             Margin="0 0 8 0"
             Text="Folder name:"/>
           <TextBox 
-            x:Name="ReferenceFolderName" 
+            Text="{Binding ReferenceFolderName}"
             Width="200"
             ToolTip="Specify the name of the solution folder, where referenced projects&#x0a;should be added to. The folder structure will be preserved&#x0a;underneath this folder."/>
         </StackPanel>
-            
+
         <StackPanel 
           Orientation="Horizontal" 
           Grid.Row="4" 
@@ -94,7 +116,7 @@
         </StackPanel>
 
         <CheckBox
-          x:Name="DontBuildReferencedProjects"
+          IsChecked="{Binding DontBuildReferencedProjects}"
           IsEnabled="{Binding IncludeReferencedProjects}"
           Grid.Row="5" 
           Margin="20 0 0 8"
@@ -102,7 +124,7 @@
           ToolTip="If checked, referenced projects won't be build&#x0a;automatically in the resulting solution."/>
 
         <CheckBox 
-          x:Name="IsFlatMode" 
+          IsChecked="{Binding IsFlatMode}"
           Margin="0 0 0 8" 
           Grid.Row="6" 
           Content="Show projects as flat list."
@@ -124,43 +146,42 @@
         </StackPanel>
 
         <CheckBox 
-          x:Name="ShowLaunchElevatedButton" 
+          IsChecked="{Binding ShowLaunchElevatedButton}"
           Margin="0 0 0 8" 
           Grid.Row="8" 
           Content="Show &quot;Launch Elevated&quot; button."
           ToolTip="This button allows to open the created solution&#x0a;inside an elevated instance of Visual Studio."/>
 
         <CheckBox 
-          x:Name="ShowProjectCount" 
+          IsChecked="{Binding ShowProjectCount}"
           Margin="0 0 0 8" 
           Grid.Row="9" 
           Content="Show number of contained projects behind the directory name."
           ToolTip="If checked, the number of contained projects&#x0a;will be displayed behind folders."/>
 
         <CheckBox 
-          x:Name="IncludePrereleaseUpdates" 
+          IsChecked="{Binding IncludePrereleaseUpdates}"
           Margin="0 0 0 8" 
           Grid.Row="10" 
           Content="Include pre-release versions for updates."
           ToolTip="If checked, auto-update will also check for pre-release versions."/>
       </Grid>
-      </ScrollViewer>
+    </ScrollViewer>
 
-        <StackPanel
-            Margin="0 16 0 0"
-            Grid.Row="1"
-            Orientation="Horizontal"
-            HorizontalAlignment="Right">
-            
-            <Button 
-                MinWidth="80"
-                x:Name="Ok" 
-                Content="OK"/>
-            <Button 
-                Margin="8 0 0 0"
-                MinWidth="80"
-                x:Name="Cancel" 
-                Content="Cancel"/>
-        </StackPanel>
-    </Grid>
+    <StackPanel
+      Margin="0 16 0 0"
+      Grid.Row="1"
+      Orientation="Horizontal"
+      HorizontalAlignment="Left">      
+      <Button 
+        MinWidth="80"
+        Command="{Binding OkCommand}"
+        Content="OK"/>
+      <Button 
+        MinWidth="80"
+        Margin="8 0 0 0"
+        Command="{Binding CancelCommand}"
+        Content="Cancel"/>
+    </StackPanel>
+  </Grid>
 </UserControl>

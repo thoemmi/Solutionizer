@@ -4,28 +4,44 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:ViewModels="clr-namespace:Solutionizer.ViewModels"
+             xmlns:Controls="http://metro.mahapps.com/winfx/xaml/controls"
              mc:Ignorable="d" 
              d:DataContext="{d:DesignInstance ViewModels:UpdateDownloadViewModel}"
              d:DesignHeight="300" d:DesignWidth="300">
-  <StackPanel>
-    <ProgressBar 
-      Minimum="0" Maximum="100" Value="{Binding Progress}"
-      IsIndeterminate="{Binding IsNotDownloading}"
-      Height="10"
-      />
-    <StackPanel
-      Margin="0 16 0 0"
-      Orientation="Horizontal"
-      HorizontalAlignment="Right">
-      <Button 
-        MinWidth="80"
-        x:Name="Update" 
-        Content="Update"/>
-      <Button 
-        Margin="8 0 0 0"
-        MinWidth="80"
-        x:Name="Cancel" 
-        Content="Cancel"/>
-    </StackPanel>
-  </StackPanel>
+  <Grid Margin="0 5">
+    <Grid.ColumnDefinitions>
+      <ColumnDefinition Width="*" />
+      <ColumnDefinition Width="Auto" MinWidth="400" />
+      <ColumnDefinition Width="*" />
+    </Grid.ColumnDefinitions>
+    <Grid.RowDefinitions>
+      <RowDefinition Height="Auto" />
+      <RowDefinition Height="Auto" />
+      <RowDefinition Height="Auto" />
+    </Grid.RowDefinitions>
+    
+    <TextBlock 
+      Text="{Binding Progress}"
+      FontSize="{DynamicResource WindowTitleFontSize}"
+      Margin="0 5"
+      Grid.Row="0" Grid.Column="1"/>
+    <!--<TextBlock 
+      Text="Downloading update"
+      FontSize="{DynamicResource WindowTitleFontSize}"
+      Margin="0 5"
+      Grid.Row="0" Grid.Column="1"/>-->
+
+    <Controls:MetroProgressBar
+      Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" 
+      Minimum="0" Maximum="100" Value="{Binding Progress}" MinWidth="500"
+      IsIndeterminate="{Binding IsPreparingDownload}"
+      Foreground="{DynamicResource AccentColorBrush}"/>
+
+    <Button 
+      Margin="0 5"
+      Grid.Row="2" Grid.Column="1"
+      Command="{Binding CancelCommand}"
+      HorizontalAlignment="Right"
+      MinWidth="80">Cancel</Button>
+  </Grid>
 </UserControl>

@@ -1,13 +1,20 @@
-﻿using Caliburn.Micro;
+﻿using System.Windows.Input;
+using Solutionizer.Framework;
 
 namespace Solutionizer.ViewModels {
-    public class AboutViewModel : Screen {
+    public class AboutViewModel : DialogViewModel, IWithTitle {
+        private readonly ICommand _closeCommand;
+
         public AboutViewModel() {
-            DisplayName = "About Solutionizer";
+            _closeCommand = new RelayCommand(Close);
         }
 
-        public void Ok() {
-            TryClose();
+        public string Title {
+            get { return "About Solutionizer"; }
+        }
+
+        public ICommand CloseCommand {
+            get { return _closeCommand; }
         }
     }
 }
