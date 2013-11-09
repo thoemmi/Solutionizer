@@ -13,7 +13,7 @@ namespace Solutionizer.ViewModels {
         private readonly ISettings _settings;
         private readonly IDialogManager _dialogManager;
         private readonly IFlyoutManager _flyoutManager;
-        private readonly UpdateManager _updateManager;
+        private readonly IUpdateManager _updateManager;
         private readonly ProjectRepositoryViewModel _projectRepository;
         private SolutionViewModel _solution;
         private string _rootPath;
@@ -24,18 +24,18 @@ namespace Solutionizer.ViewModels {
         private readonly ICommand _showAboutCommand;
         private readonly ICommand _selectRootPathCommand;
 
-        public ShellViewModel(ISettings settings, IDialogManager dialogManager, IFlyoutManager flyoutManager) {
+        public ShellViewModel(ISettings settings, IDialogManager dialogManager, IFlyoutManager flyoutManager, Func<SettingsViewModel> getSettingsViewModel, Func<AboutViewModel> getAboutViewModel, UpdateViewModel.Factory getUpdateViewModel, IUpdateManager updateManager, ProjectRepositoryViewModel.Factory getProjectRepositoryViewModel) {
             _settings = settings;
-            _projectRepository = new ProjectRepositoryViewModel(settings, new RelayCommand<ItemViewModel>(OnDoubleClick));
-            _updateManager = new UpdateManager(_settings, AppEnvironment.CurrentVersion);
-            _updateManager.UpdatesAvailable +=
-                (sender, args) => AreUpdatesAvailable = _updateManager.Releases != null && _updateManager.Releases.Any(r => r.IsNew && (_settings.IncludePrereleaseUpdates || !r.IsPrerelease));
+            _projectRepository = getProjectRepositoryViewModel(new RelayCommand<ItemViewModel>(OnDoubleClick));
             _dialogManager = dialogManager;
             _flyoutManager = flyoutManager;
+            _updateManager = updateManager;
+            _updateManager.UpdatesAvailable +=
+                (sender, args) => AreUpdatesAvailable = _updateManager.Releases != null && _updateManager.Releases.Any(r => r.IsNew && (_settings.IncludePrereleaseUpdates || !r.IsPrerelease));
 
-            _showUpdatesCommand = new RelayCommand<bool>(ShowUpdate);
-            _showSettingsCommand = new RelayCommand(ShowSettings);
-            _showAboutCommand = new RelayCommand(ShowAbout);
+            _showUpdatesCommand = new RelayCommand<bool>(checkForUpdates => _flyoutManager.ShowFlyout(getUpdateViewModel(checkForUpdates)));
+            _showSettingsCommand = new RelayCommand(() => _flyoutManager.ShowFlyout(getSettingsViewModel()));
+            _showAboutCommand = new RelayCommand(() => _flyoutManager.ShowFlyout(getAboutViewModel()));
             _selectRootPathCommand = new RelayCommand(SelectRootPath);
         }
 
@@ -113,21 +113,6 @@ namespace Solutionizer.ViewModels {
 
         public IFlyoutManager Flyouts {
             get { return _flyoutManager; }
-        }
-
-        public void ShowSettings() {
-            _flyoutManager.ShowFlyout(new SettingsViewModel(_settings));
-        }
-
-        public async void ShowUpdate(bool checkForUpdates) {
-            var result = await _flyoutManager.ShowFlyout(new UpdateViewModel(_updateManager, _settings, checkForUpdates));
-            if (result != null) {
-                await _dialogManager.ShowDialog(new UpdateDownloadViewModel(_updateManager, result));
-            }
-        }
-
-        public void ShowAbout() {
-            _flyoutManager.ShowFlyout(new AboutViewModel());
         }
 
         public IDialogManager Dialogs {

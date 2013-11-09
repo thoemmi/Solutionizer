@@ -9,16 +9,18 @@ using Solutionizer.Infrastructure;
 
 namespace Solutionizer.ViewModels {
     public class UpdateDownloadViewModel : DialogViewModel<bool>, IOnLoadedHandler {
+        public delegate UpdateDownloadViewModel Factory(ReleaseInfo releaseInfo);
+
         private static readonly Logger _log = LogManager.GetCurrentClassLogger();
 
         private readonly CancellationTokenSource _cancellationTokenSource = new CancellationTokenSource();
-        private readonly UpdateManager _updateManager;
+        private readonly IUpdateManager _updateManager;
         private readonly ReleaseInfo _releaseInfo;
         private readonly ICommand _cancelCommand;
         private int _progress;
         private bool _isPreparingDownload;
 
-        public UpdateDownloadViewModel(UpdateManager updateManager, ReleaseInfo releaseInfo) {
+        public UpdateDownloadViewModel(IUpdateManager updateManager, ReleaseInfo releaseInfo) {
             _updateManager = updateManager;
             _releaseInfo = releaseInfo;
 

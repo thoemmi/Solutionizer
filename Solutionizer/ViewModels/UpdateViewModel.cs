@@ -9,8 +9,10 @@ using Solutionizer.Infrastructure;
 using Solutionizer.Services;
 
 namespace Solutionizer.ViewModels {
-    public class UpdateViewModel : DialogViewModel<ReleaseInfo>, IOnLoadedHandler, IWithTitle {
-        private readonly UpdateManager _updateManager;
+    public class UpdateViewModel : DialogViewModel, IOnLoadedHandler, IWithTitle {
+        public delegate UpdateViewModel Factory(bool checkForUpdates);
+
+        private readonly IUpdateManager _updateManager;
         private readonly ISettings _settings;
         private readonly bool _checkForUpdates;
         private readonly ObservableCollection<ReleaseInfo> _releases = new ObservableCollection<ReleaseInfo>();
@@ -21,14 +23,17 @@ namespace Solutionizer.ViewModels {
         private readonly ICommand _updateCommand;
         private readonly ICommand _cancelCommand;
 
-        public UpdateViewModel(UpdateManager updateManager, ISettings settings, bool checkForUpdates) {
+        public UpdateViewModel(IUpdateManager updateManager, ISettings settings, IDialogManager dialogManager, UpdateDownloadViewModel.Factory updateDownloadViewModelFactory, bool checkForUpdates) {
             _updateManager = updateManager;
             _settings = settings;
             _checkForUpdates = checkForUpdates;
             _releases = new ObservableCollection<ReleaseInfo>();
 
-            _updateCommand = new RelayCommand(() => Close(_releases.First()), () => CanUpdate);
-            _cancelCommand = new RelayCommand(() => Close(null));
+            _updateCommand = new RelayCommand(() => {
+                Close();
+                dialogManager.ShowDialog(updateDownloadViewModelFactory.Invoke(_releases.First()));
+            }, () => CanUpdate);
+            _cancelCommand = new RelayCommand(Close);
 
             var collectionView = CollectionViewSource.GetDefaultView(Releases);
             collectionView.Filter = item => ((ReleaseInfo)item).IsNew;

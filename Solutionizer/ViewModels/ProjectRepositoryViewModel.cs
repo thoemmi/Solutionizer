@@ -8,6 +8,8 @@ using Solutionizer.Services;
 
 namespace Solutionizer.ViewModels {
     public class ProjectRepositoryViewModel : PropertyChangedBase {
+        public delegate ProjectRepositoryViewModel Factory(ICommand doubleClickCommand);
+
         private readonly ISettings _settings;
         private string _rootPath;
         private ProjectFolder _rootFolder;
