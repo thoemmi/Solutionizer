@@ -2,24 +2,39 @@
 using System.Diagnostics;
 using System.Windows.Input;
 
-namespace Solutionizer.Infrastructure {
+namespace Solutionizer.Framework {
     /// <summary>
     /// A command whose sole purpose is to relay its functionality to other
     /// objects by invoking delegates. The default return value for the CanExecute
     /// method is 'true'.  This class does not allow you to accept command parameters in the
     /// Execute and CanExecute callback methods.
     /// </summary>
-    /// <remarks>
-    /// HACK: this call is necessary because RelayCommand.CanExecuteChanged does not rely on 
-    /// CommandProcessor in V4beta1. See http://mvvmlight.codeplex.com/workitem/7546.
-    /// </remarks>
-    public class FixedRelayCommand : ICommand {
+    public class RelayCommand : ICommand {
         private readonly Action _execute;
         private readonly Func<bool> _canExecute;
 
         /// <summary>
+        /// Initializes a new instance of the RelayCommand class that can always execute.
+        /// </summary>
+        /// <param name="execute">The execution logic.</param><exception cref="T:System.ArgumentNullException">If the execute argument is null.</exception>
+        public RelayCommand(Action execute)
+            : this(execute, null) {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the RelayCommand class.
+        /// </summary>
+        /// <param name="execute">The execution logic.</param><param name="canExecute">The execution status logic.</param><exception cref="T:System.ArgumentNullException">If the execute argument is null.</exception>
+        public RelayCommand(Action execute, Func<bool> canExecute) {
+            if (execute == null) {
+                throw new ArgumentNullException("execute");
+            }
+            _execute = execute;
+            _canExecute = canExecute;
+        }
+
+        /// <summary>
         /// Occurs when changes occur that affect whether the command should execute.
-        /// 
         /// </summary>
         public event EventHandler CanExecuteChanged {
             add {
@@ -32,29 +47,6 @@ namespace Solutionizer.Infrastructure {
                     CommandManager.RequerySuggested -= value;
                 }
             }
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the RelayCommand class that
-        ///             can always execute.
-        /// 
-        /// </summary>
-        /// <param name="execute">The execution logic.</param><exception cref="T:System.ArgumentNullException">If the execute argument is null.</exception>
-        public FixedRelayCommand(Action execute)
-            : this(execute, null) {
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the RelayCommand class.
-        /// 
-        /// </summary>
-        /// <param name="execute">The execution logic.</param><param name="canExecute">The execution status logic.</param><exception cref="T:System.ArgumentNullException">If the execute argument is null.</exception>
-        public FixedRelayCommand(Action execute, Func<bool> canExecute) {
-            if (execute == null) {
-                throw new ArgumentNullException("execute");
-            }
-            _execute = execute;
-            _canExecute = canExecute;
         }
 
         /// <summary>

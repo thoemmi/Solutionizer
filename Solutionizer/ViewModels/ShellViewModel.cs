@@ -2,32 +2,44 @@
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
-using Caliburn.Micro;
+using System.Windows.Input;
 using Ookii.Dialogs.Wpf;
+using Solutionizer.Framework;
 using Solutionizer.Infrastructure;
-using System.ComponentModel.Composition;
+using Solutionizer.Services;
 
 namespace Solutionizer.ViewModels {
-    [Export(typeof(IShell))]
-    public sealed class ShellViewModel : Screen, IShell {
-        private readonly Services.Settings _settings;
+    public sealed class ShellViewModel : PropertyChangedBase, IShell, IOnLoadedHandler {
+        private readonly ISettings _settings;
         private readonly IDialogManager _dialogManager;
-        private readonly UpdateManager _updateManager;
+        private readonly IFlyoutManager _flyoutManager;
+        private readonly IUpdateManager _updateManager;
+        private readonly IViewModelFactory _viewModelFactory;
         private readonly ProjectRepositoryViewModel _projectRepository;
         private SolutionViewModel _solution;
         private string _rootPath;
         private bool _areUpdatesAvailable;
         private string _title = "Solutionizer";
+        private readonly ICommand _showUpdatesCommand;
+        private readonly ICommand _showSettingsCommand;
+        private readonly ICommand _showAboutCommand;
+        private readonly ICommand _selectRootPathCommand;
 
-        [ImportingConstructor]
-        public ShellViewModel(Services.Settings settings, IDialogManager dialogManager) {
+        public ShellViewModel(ISettings settings, IDialogManager dialogManager, IFlyoutManager flyoutManager, IUpdateManager updateManager, IViewModelFactory viewModelFactory) {
             _settings = settings;
-            _projectRepository = new ProjectRepositoryViewModel(settings);
-            _updateManager = new UpdateManager(_settings, AppEnvironment.CurrentVersion);
+            _dialogManager = dialogManager;
+            _flyoutManager = flyoutManager;
+            _updateManager = updateManager;
+            _viewModelFactory = viewModelFactory;
+
+            _projectRepository = _viewModelFactory.CreateProjectRepositoryViewModel(new RelayCommand<ProjectViewModel>(projectViewModel => _solution.AddProject(projectViewModel.Project)));
             _updateManager.UpdatesAvailable +=
                 (sender, args) => AreUpdatesAvailable = _updateManager.Releases != null && _updateManager.Releases.Any(r => r.IsNew && (_settings.IncludePrereleaseUpdates || !r.IsPrerelease));
-            _dialogManager = dialogManager;
-            DisplayName = "Solutionizer";
+
+            _showUpdatesCommand = new RelayCommand<bool>(checkForUpdates => _flyoutManager.ShowFlyout(_viewModelFactory.CreateUpdateViewModel(checkForUpdates)));
+            _showSettingsCommand = new RelayCommand(() => _flyoutManager.ShowFlyout(_viewModelFactory.CreateSettingsViewModel()));
+            _showAboutCommand = new RelayCommand(() => _flyoutManager.ShowFlyout(_viewModelFactory.CreateAboutViewModel()));
+            _selectRootPathCommand = new RelayCommand(SelectRootPath);
         }
 
         public string RootPath {
@@ -64,13 +76,27 @@ namespace Solutionizer.ViewModels {
             }
         }
 
-        public Services.Settings Settings {
+        public ISettings Settings {
             get { return _settings; }
         }
 
-        protected override void OnViewLoaded(object view) {
-            base.OnViewLoaded(view);
+        public ICommand ShowUpdatesCommand {
+            get { return _showUpdatesCommand; }
+        }
 
+        public ICommand ShowSettingsCommand {
+            get { return _showSettingsCommand; }
+        }
+
+        public ICommand ShowAboutCommand {
+            get { return _showAboutCommand; }
+        }
+
+        public ICommand SelectRootPathCommand {
+            get { return _selectRootPathCommand; }
+        }
+
+        public void OnLoaded() {
             if (_settings.ScanOnStartup) {
                 LoadProjects(_settings.RootPath);
             }
@@ -88,16 +114,8 @@ namespace Solutionizer.ViewModels {
             }
         }
 
-        public void ShowSettings() {
-            _dialogManager.ShowDialog(new SettingsViewModel(_settings));
-        }
-
-        public void ShowUpdate(bool checkForUpdates) {
-            _dialogManager.ShowDialog(new UpdateViewModel(_updateManager, _dialogManager, _settings, checkForUpdates));
-        }
-
-        public void ShowAbout() {
-            _dialogManager.ShowDialog(new AboutViewModel());
+        public IFlyoutManager Flyouts {
+            get { return _flyoutManager; }
         }
 
         public IDialogManager Dialogs {
@@ -114,31 +132,19 @@ namespace Solutionizer.ViewModels {
             }
         }
 
-        private void LoadProjects(string path) {
-            var oldDisplayName = DisplayName;
+        private async void LoadProjects(string path) {
             var oldRootPath = RootPath;
-            DisplayName = "Solutionizer -";
             RootPath = path;
 
-            var fileScanningViewModel = new FileScanningViewModel(_settings, path);
-            _dialogManager.ShowDialog(fileScanningViewModel);
+            var fileScanningViewModel = _viewModelFactory.CreateFileScanningViewModel(path);
+            var result = await _dialogManager.ShowDialog(fileScanningViewModel);
 
-            fileScanningViewModel.Deactivated += (sender, args) => {
-                if (fileScanningViewModel.Result != null) {
-                    _projectRepository.RootPath = path;
-                    _projectRepository.RootFolder = fileScanningViewModel.Result.ProjectFolder;
-                    Solution = new SolutionViewModel(_settings, path, fileScanningViewModel.Result.Projects);
-                } else {
-                    DisplayName = oldDisplayName;
-                    RootPath = oldRootPath;
-                }
-            };
-        }
-
-        public void OnDoubleClick(ItemViewModel itemViewModel) {
-            var projectViewModel = itemViewModel as ProjectViewModel;
-            if (projectViewModel != null) {
-                _solution.AddProject(projectViewModel.Project);
+            if (result != null) {
+                _projectRepository.RootPath = path;
+                _projectRepository.RootFolder = result.ProjectFolder;
+                Solution = _viewModelFactory.CreateSolutionViewModel(path, result.Projects);
+            } else {
+                RootPath = oldRootPath;
             }
         }
     }

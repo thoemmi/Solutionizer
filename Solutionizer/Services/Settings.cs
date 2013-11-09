@@ -1,7 +1,7 @@
 ﻿using System;
-using Caliburn.Micro;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
+using Solutionizer.Framework;
 using Solutionizer.Helper;
 
 namespace Solutionizer.Services {

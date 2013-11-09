@@ -5,11 +5,11 @@
              xmlns:Converters="clr-namespace:Solutionizer.Converters" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:ViewModels="clr-namespace:Solutionizer.ViewModels" xmlns:Helper="clr-namespace:Solutionizer.Helper"
-             xmlns:cal="http://www.caliburnproject.org"
              xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
              xmlns:Views="clr-namespace:Solutionizer.Views"
+             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300">
+             d:DesignHeight="300" d:DesignWidth="300" d:DataContext="{d:DesignInstance ViewModels:ProjectRepositoryViewModel}">
   <UserControl.Resources>
     <Converters:FilePathToImageSourceConverter x:Key="FilePathToImageSource"/>
     <BooleanToVisibilityConverter x:Key="BooleanToVisibility"/>
@@ -71,7 +71,7 @@
     <TextBox
       Grid.ColumnSpan="3" 
       Margin="3 3 3 5" VerticalContentAlignment="Center"
-      Name="Filter" 
+      Text="{Binding Filter}"
       ToolTip="Enter text to filter projects"
       Controls:TextboxHelper.Watermark="Filter..."
       Controls:TextboxHelper.ClearTextButton="True">
@@ -86,15 +86,20 @@
       </TextBox.Style>
     </TextBox>
     <TreeView 
+      x:Name="NodeTreeView"
       Grid.Row="1"
       Grid.Column="0" Grid.ColumnSpan="3"
       VirtualizingStackPanel.IsVirtualizing="True"
       VirtualizingStackPanel.VirtualizationMode="Recycling"
       ScrollViewer.CanContentScroll="true"
-      x:Name="Nodes" Margin="0" Padding="0"
+      ItemsSource="{Binding Nodes}" Margin="0" Padding="0"
       Helper:DragDropHelper.IsDragSource="true" 
-      cal:Message.Attach="[Event MouseDoubleClick] = [Action OnDoubleClick(Nodes.SelectedItem)]"
       Helper:DragDropHelper.DragDropTemplate="{StaticResource ProjectItemDrag}">
+      <i:Interaction.Triggers>
+        <i:EventTrigger EventName="MouseDoubleClick">
+          <i:InvokeCommandAction Command="{Binding DoubleClickCommand}" CommandParameter="{Binding ElementName=NodeTreeView, Path=SelectedItem}"/>
+        </i:EventTrigger>
+      </i:Interaction.Triggers>
       <TreeView.ItemContainerStyle>
         <Style TargetType="TreeViewItem" BasedOn="{StaticResource MetroTreeViewItem}">
           <Setter Property="Visibility" Value="Collapsed"/>

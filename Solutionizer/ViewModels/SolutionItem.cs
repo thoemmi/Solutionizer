@@ -1,5 +1,5 @@
 using System;
-using Caliburn.Micro;
+using Solutionizer.Framework;
 
 namespace Solutionizer.ViewModels {
     public abstract class SolutionItem : PropertyChangedBase {

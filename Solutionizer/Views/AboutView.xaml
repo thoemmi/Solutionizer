@@ -10,14 +10,21 @@
              d:DataContext="{d:DesignInstance ViewModels:AboutViewModel}"
              d:DesignHeight="300" d:DesignWidth="300">
   <UserControl.Resources>
+    <ResourceDictionary>
+      <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/FlatButton.xaml" />
+      </ResourceDictionary.MergedDictionaries>
+
     <Style TargetType="FlowDocument" >
       <Setter Property="FontFamily" Value="Segoe UI" />
       <Setter Property="TextAlignment" Value="Left" />
       <Setter Property="FontSize" Value="12" />
       <Setter Property="PagePadding" Value="2" />
+      <Setter Property="Foreground" Value="{DynamicResource TextBrush}" />
     </Style>
+    </ResourceDictionary>
   </UserControl.Resources>
-  <Grid>
+  <Grid Margin="15">
     <Grid.RowDefinitions>
       <RowDefinition Height="Auto" />
       <RowDefinition Height="Auto" />
@@ -125,11 +132,11 @@
     </FlowDocumentScrollViewer>
 
     <Button 
-      HorizontalAlignment="Right"
+      HorizontalAlignment="Left"
       Margin="0 16 0 0"
       Grid.Row="4"
       MinWidth="80"
-      x:Name="Ok" 
+      Command="{Binding CloseCommand}"
       Content="Ok"/>
 
   </Grid>

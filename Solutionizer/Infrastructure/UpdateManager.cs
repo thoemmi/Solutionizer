@@ -9,15 +9,22 @@ using NLog;
 using Solutionizer.Services;
 
 namespace Solutionizer.Infrastructure {
-    public class UpdateManager {
+    public interface IUpdateManager {
+        Task CheckForUpdatesAsync();
+        IReadOnlyCollection<ReleaseInfo> Releases { get; }
+        event EventHandler UpdatesAvailable;
+        Task<string> DownloadReleaseAsync(ReleaseInfo releaseInfo, Action<int> downloadProgressCallback, CancellationToken cancellationToken);
+    }
+
+    public class UpdateManager : IUpdateManager {
         private readonly Version _currentVersion;
         private static readonly Logger _log = LogManager.GetCurrentClassLogger();
 
         private readonly IReleaseProvider _reader;
         private readonly List<ReleaseInfo> _releases = new List<ReleaseInfo>();
 
-        public UpdateManager(ISettings settings, Version currentVersion) {
-            _currentVersion = currentVersion;
+        public UpdateManager(ISettings settings) {
+            _currentVersion = AppEnvironment.CurrentVersion;
             //_reader = new FakeReleaseProvider();
             _reader = new GithubReleaseProvider(settings);
 

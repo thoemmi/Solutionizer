@@ -1,4 +1,4 @@
-﻿using Caliburn.Micro;
+﻿using Solutionizer.Framework;
 
 namespace Solutionizer.ViewModels {
     public abstract class ItemViewModel : PropertyChangedBase {

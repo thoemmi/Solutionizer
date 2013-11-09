@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Linq.Expressions;
-using System.Runtime.CompilerServices;
-using Caliburn.Micro;
+using System.Windows.Input;
+using Solutionizer.Framework;
 using Solutionizer.Services;
 
 namespace Solutionizer.ViewModels {
-    public sealed class SettingsViewModel : Screen {
+    public sealed class SettingsViewModel : DialogViewModel, IOnLoadedHandler, IWithTitle {
         private readonly ISettings _settings;
         private bool _scanOnStartup;
         private bool _simplifyProjectTree;
@@ -18,15 +18,20 @@ namespace Solutionizer.ViewModels {
         private bool _showLaunchElevatedButton;
         private bool _showProjectCount;
         private bool _includePrereleaseUpdates;
+        private readonly ICommand _okCommand;
+        private readonly ICommand _cancelCommand;
 
         public SettingsViewModel(ISettings settings) {
             _settings = settings;
-            DisplayName = "Settings";
+            _okCommand = new RelayCommand(Ok, () => CanOk);
+            _cancelCommand = new RelayCommand(Close);
         }
 
-        protected override void OnActivate() {
-            base.OnActivate();
+        public string Title {
+            get { return "Settings"; }
+        }
 
+        public void OnLoaded() {
             ScanOnStartup = _settings.ScanOnStartup;
             SimplifyProjectTree = _settings.SimplifyProjectTree;
             IncludeReferencedProjects = _settings.IncludeReferencedProjects;
@@ -149,15 +154,23 @@ namespace Solutionizer.ViewModels {
             }
         }
 
-        public override void NotifyOfPropertyChange([CallerMemberName] string propertyName = "") {
+        protected override void NotifyOfPropertyChange(string propertyName = null) {
             base.NotifyOfPropertyChange(propertyName);
 
             // if any property changed that is not CanOk, we want the UI to evaluate that property
             Expression<Func<bool>> property = () => CanOk;
-            var canOkName = property.GetMemberInfo().Name;
+            var canOkName = GetMemberInfo(property).Name;
             if (propertyName != canOkName) {
                 NotifyOfPropertyChange(property);
             }
+        }
+
+        public ICommand OkCommand {
+            get { return _okCommand; }
+        }
+
+        public ICommand CancelCommand {
+            get { return _cancelCommand; }
         }
 
         public void Ok() {
@@ -173,7 +186,7 @@ namespace Solutionizer.ViewModels {
             _settings.ShowProjectCount = ShowProjectCount;
             _settings.IncludePrereleaseUpdates = IncludePrereleaseUpdates;
 
-            TryClose(true);
+            Close();
         }
 
         public bool CanOk {
@@ -191,10 +204,6 @@ namespace Solutionizer.ViewModels {
                     ShowProjectCount != _settings.ShowProjectCount ||
                     IncludePrereleaseUpdates != _settings.IncludePrereleaseUpdates;
             }
-        }
-
-        public void Cancel() {
-            TryClose(false);
         }
     }
 }

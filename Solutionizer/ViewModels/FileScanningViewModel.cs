@@ -6,9 +6,10 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Input;
 using System.Windows.Shell;
-using Caliburn.Micro;
 using NLog;
+using Solutionizer.Framework;
 using Solutionizer.Models;
 using Solutionizer.Services;
 
@@ -24,7 +25,7 @@ namespace Solutionizer.ViewModels {
     }
 
     public class ScanningCommand {
-        private static readonly Logger _log = NLog.LogManager.GetCurrentClassLogger();
+        private static readonly Logger _log = LogManager.GetCurrentClassLogger();
 
         private readonly CancellationTokenSource _cancellationTokenSource;
         private readonly CancellationToken _cancellationToken;
@@ -79,6 +80,7 @@ namespace Solutionizer.ViewModels {
                 } catch (Exception ex) {
                     _log.ErrorException("Loading projects from " + _path + " failed", ex);
                 }
+                Task.Delay(TimeSpan.FromSeconds(20), _cancellationToken);
                 return new ScanResult(projectFolder, _projects);
             }
             finally {
@@ -89,7 +91,7 @@ namespace Solutionizer.ViewModels {
         private static void SetTaskbarItemProgressState(TaskbarItemProgressState state) {
             // HACK speaking to Application.Current and Application.Current.MainWindow inside a ViewModel is not acceptable, but oh my
             try {
-                Application.Current.Dispatcher.BeginInvoke((System.Action)(() => Application.Current.MainWindow.TaskbarItemInfo.ProgressState = state));
+                Application.Current.Dispatcher.BeginInvoke((Action)(() => Application.Current.MainWindow.TaskbarItemInfo.ProgressState = state));
             } catch (Exception e) {
                 _log.ErrorException("Setting TaskbarItemInfo to " + state + " failed", e);
             }
@@ -173,18 +175,19 @@ namespace Solutionizer.ViewModels {
         }
     }
 
-    public sealed class FileScanningViewModel : Screen {
-        private readonly ISettings _settings;
+    public sealed class FileScanningViewModel : DialogViewModel<ScanResult>, IOnLoadedHandler {
+        public delegate FileScanningViewModel Factory(string path);
+
         private string _loadingText;
         private string _progressText;
         private readonly ScanningCommand _scanningCommand;
+        private readonly ICommand _cancelCommand;
 
         public FileScanningViewModel(ISettings settings, string path) {
-            _settings = settings;
-            DisplayName = null;
-
             _loadingText = "Loading projects from " + path.ToLowerInvariant();
-            _scanningCommand = new ScanningCommand(path, _settings.SimplifyProjectTree);
+            _scanningCommand = new ScanningCommand(path, settings.SimplifyProjectTree);
+
+            _cancelCommand = new RelayCommand(() => _scanningCommand.Cancel());
         }
 
         private void OnProgressTextChanged(object sender, EventArgs eventArgs) {
@@ -211,24 +214,15 @@ namespace Solutionizer.ViewModels {
             }
         }
 
-        public void Cancel() {
-            _scanningCommand.Cancel();
+        public ICommand CancelCommand {
+            get { return _cancelCommand; }
         }
 
-        public ScanResult Result { get; private set; }
-        
-        protected override void OnActivate() {
-            base.OnActivate();
+        public async void OnLoaded() {
             _scanningCommand.ProgressTextChanged += OnProgressTextChanged;
-            _scanningCommand.Start().ContinueWith(t => {
-                Result = t.IsCompleted ? t.Result : null;
-                TryClose(true); 
-            }, TaskScheduler.Current);
-        }
-
-        protected override void OnDeactivate(bool close) {
+            var result = await _scanningCommand.Start();
             _scanningCommand.ProgressTextChanged -= OnProgressTextChanged;
-            base.OnDeactivate(close);
+            Close(result);
         }
     }
 }
