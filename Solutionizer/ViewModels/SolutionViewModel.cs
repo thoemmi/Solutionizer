@@ -15,6 +15,8 @@ using Solutionizer.Services;
 
 namespace Solutionizer.ViewModels {
     public class SolutionViewModel : PropertyChangedBase {
+        public delegate SolutionViewModel Factory(string rootPath, IDictionary<string, Project> projects);
+
         private static readonly Logger _log = LogManager.GetCurrentClassLogger();
 
         private readonly string _rootPath;

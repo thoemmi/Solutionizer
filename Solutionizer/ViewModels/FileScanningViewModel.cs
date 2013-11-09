@@ -176,6 +176,8 @@ namespace Solutionizer.ViewModels {
     }
 
     public sealed class FileScanningViewModel : DialogViewModel<ScanResult>, IOnLoadedHandler {
+        public delegate FileScanningViewModel Factory(string path);
+
         private readonly ISettings _settings;
         private string _loadingText;
         private string _progressText;

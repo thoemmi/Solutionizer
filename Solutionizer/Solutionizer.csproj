@@ -146,6 +146,7 @@
     <Compile Include="ViewModels\SolutionProject.cs" />
     <Compile Include="ViewModels\UpdateDownloadViewModel.cs" />
     <Compile Include="ViewModels\UpdateViewModel.cs" />
+    <Compile Include="ViewModels\ViewModelFactory.cs" />
     <Page Include="Views\AboutView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

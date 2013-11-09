@@ -14,6 +14,7 @@ namespace Solutionizer {
             builder.RegisterType<ShellViewModel>().AsSelf().AsImplementedInterfaces().SingleInstance();
             builder.RegisterType<ShellView>().SingleInstance();
             builder.RegisterType<UpdateManager>().SingleInstance().As<IUpdateManager>();
+            builder.RegisterType<ViewModelFactory>().SingleInstance().As<IViewModelFactory>();
             builder.Register(c => new SettingsProvider()).SingleInstance();
             builder.Register(c => c.Resolve<SettingsProvider>().Settings).As<ISettings>().SingleInstance();
 
