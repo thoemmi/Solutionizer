@@ -21,15 +21,10 @@
     </Grid.RowDefinitions>
     
     <TextBlock 
-      Text="{Binding Progress}"
-      FontSize="{DynamicResource WindowTitleFontSize}"
-      Margin="0 5"
-      Grid.Row="0" Grid.Column="1"/>
-    <!--<TextBlock 
       Text="Downloading update"
       FontSize="{DynamicResource WindowTitleFontSize}"
       Margin="0 5"
-      Grid.Row="0" Grid.Column="1"/>-->
+      Grid.Row="0" Grid.Column="1"/>
 
     <Controls:MetroProgressBar
       Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" 
