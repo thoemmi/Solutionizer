@@ -44,44 +44,28 @@
     </Grid.RowDefinitions>
 
     <ScrollViewer VerticalScrollBarVisibility="Auto" VerticalAlignment="Stretch">
-      <Grid>
-        <Grid.RowDefinitions>
-          <RowDefinition Height="Auto" />
-          <RowDefinition Height="Auto" />
-          <RowDefinition Height="Auto" />
-          <RowDefinition Height="Auto" />
-          <RowDefinition Height="Auto" />
-          <RowDefinition Height="Auto" />
-          <RowDefinition Height="Auto" />
-          <RowDefinition Height="Auto" />
-          <RowDefinition Height="Auto" />
-          <RowDefinition Height="Auto" />
-          <RowDefinition Height="Auto" />
-          <RowDefinition Height="*" />
-        </Grid.RowDefinitions>
-        <CheckBox 
-          IsChecked="{Binding ScanOnStartup}"
-          Margin="0 0 0 8" 
-          Content="Scan projects on start-up"
-          ToolTip="If checked, the last used folder will be scanned for projects."/>
+      <StackPanel>
+        <StackPanel.Resources>
+          <Style x:Key="DescriptionHeaderStyle" TargetType="{x:Type TextBlock}">
+            <Setter Property="FontSize" Value="{DynamicResource TabItemFontSize}" />
+            <Setter Property="Foreground" Value="{DynamicResource AccentColorBrush}" />
+            <Setter Property="Margin" Value="0 8" />
+          </Style>
+        </StackPanel.Resources>
 
-        <CheckBox 
-          IsChecked="{Binding SimplifyProjectTree}"
-          Margin="0 0 0 8" 
-          Grid.Row="1" 
-          Content="Hide empty folders in hierarchy"
-          ToolTip="If checked, folders containing no projects but subfolders only will be hidden."/>
+        <TextBlock 
+          Margin="0 0 0 8"
+          Style="{StaticResource DescriptionHeaderStyle}" 
+          Text="Solution Structure" />
 
         <CheckBox 
           IsChecked="{Binding IncludeReferencedProjects}"
           Margin="0 0 0 8" 
-          Grid.Row="2" 
           Content="Add referenced projects automatically"
           ToolTip="If checked, referenced projects will be&#x0a;added to the solution automatically."/>
 
         <StackPanel 
           Orientation="Horizontal" 
-          Grid.Row="3" 
           IsEnabled="{Binding IncludeReferencedProjects}" 
           Margin="20 0 0 8" >
           <TextBlock 
@@ -96,7 +80,6 @@
 
         <StackPanel 
           Orientation="Horizontal" 
-          Grid.Row="4" 
           IsEnabled="{Binding IncludeReferencedProjects}" 
           Margin="20 0 0 8" >
           <TextBlock 
@@ -118,21 +101,12 @@
         <CheckBox
           IsChecked="{Binding DontBuildReferencedProjects}"
           IsEnabled="{Binding IncludeReferencedProjects}"
-          Grid.Row="5" 
           Margin="20 0 0 8"
           Content="Exclude referenced projects from build configurations."
           ToolTip="If checked, referenced projects won't be build&#x0a;automatically in the resulting solution."/>
 
-        <CheckBox 
-          IsChecked="{Binding IsFlatMode}"
-          Margin="0 0 0 8" 
-          Grid.Row="6" 
-          Content="Show projects as flat list."
-          ToolTip="If checked, the porjects will be presented&#x0a;in a flat list instead of a tree view."/>
-
         <StackPanel 
           Orientation="Horizontal" 
-          Grid.Row="7" 
           Margin="0 0 0 8">
           <TextBlock 
             VerticalAlignment="Center" 
@@ -145,27 +119,52 @@
             ToolTip="Specifies the target version of Visual Studio."/>
         </StackPanel>
 
+
+        <TextBlock 
+          Style="{StaticResource DescriptionHeaderStyle}" 
+          Text="User Interface" />
+        
+        <CheckBox 
+          IsChecked="{Binding SimplifyProjectTree}"
+          Margin="0 0 0 8" 
+          Content="Hide empty folders in hierarchy"
+          ToolTip="If checked, folders containing no projects but subfolders only will be hidden."/>
+
+        <CheckBox 
+          IsChecked="{Binding IsFlatMode}"
+          Margin="0 0 0 8" 
+          Content="Show projects as flat list."
+          ToolTip="If checked, the projects will be presented&#x0a;in a flat list instead of a tree view."/>
+
         <CheckBox 
           IsChecked="{Binding ShowLaunchElevatedButton}"
           Margin="0 0 0 8" 
-          Grid.Row="8" 
           Content="Show &quot;Launch Elevated&quot; button."
           ToolTip="This button allows to open the created solution&#x0a;inside an elevated instance of Visual Studio."/>
 
         <CheckBox 
           IsChecked="{Binding ShowProjectCount}"
           Margin="0 0 0 8" 
-          Grid.Row="9" 
           Content="Show number of contained projects behind the directory name."
           ToolTip="If checked, the number of contained projects&#x0a;will be displayed behind folders."/>
+
+        <TextBlock 
+          Style="{StaticResource DescriptionHeaderStyle}" 
+          Text="Miscellaneous" />
+
+        <CheckBox 
+          IsChecked="{Binding ScanOnStartup}"
+          Margin="0 0 0 8" 
+          Content="Scan projects on start-up"
+          ToolTip="If checked, the last used folder will be scanned for projects."/>
 
         <CheckBox 
           IsChecked="{Binding IncludePrereleaseUpdates}"
           Margin="0 0 0 8" 
-          Grid.Row="10" 
-          Content="Include pre-release versions for updates."
+          Content="Include pre-release versions in checks for updates."
           ToolTip="If checked, auto-update will also check for pre-release versions."/>
-      </Grid>
+        
+      </StackPanel>
     </ScrollViewer>
 
     <StackPanel
