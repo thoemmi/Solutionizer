@@ -69,7 +69,7 @@ namespace Solutionizer.Framework {
         /// to be passed, this object can be set to a null reference</param>
         /// <returns>true if this command can be executed; otherwise, false.</returns>
         public bool CanExecute(object parameter) {
-            return _canExecute == null || _canExecute((T) parameter);
+            return parameter is T && (_canExecute == null || _canExecute((T)parameter));
         }
 
         /// <summary>
@@ -78,7 +78,9 @@ namespace Solutionizer.Framework {
         /// <param name="parameter">Data used by the command. If the command does not require data 
         /// to be passed, this object can be set to a null reference</param>
         public void Execute(object parameter) {
-            _execute((T) parameter);
+            if (CanExecute(parameter)) {
+                _execute((T) parameter);
+            }
         }
     }
 }

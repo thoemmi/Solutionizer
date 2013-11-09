@@ -26,7 +26,7 @@ namespace Solutionizer.ViewModels {
 
         public ShellViewModel(ISettings settings, IDialogManager dialogManager, IFlyoutManager flyoutManager, Func<SettingsViewModel> getSettingsViewModel, Func<AboutViewModel> getAboutViewModel, UpdateViewModel.Factory getUpdateViewModel, IUpdateManager updateManager, ProjectRepositoryViewModel.Factory getProjectRepositoryViewModel) {
             _settings = settings;
-            _projectRepository = getProjectRepositoryViewModel(new RelayCommand<ItemViewModel>(OnDoubleClick));
+            _projectRepository = getProjectRepositoryViewModel(new RelayCommand<ProjectViewModel>(projectViewModel => _solution.AddProject(projectViewModel.Project)));
             _dialogManager = dialogManager;
             _flyoutManager = flyoutManager;
             _updateManager = updateManager;
@@ -142,13 +142,6 @@ namespace Solutionizer.ViewModels {
                 Solution = new SolutionViewModel(_settings, path, result.Projects);
             } else {
                 RootPath = oldRootPath;
-            }
-        }
-
-        public void OnDoubleClick(ItemViewModel itemViewModel) {
-            var projectViewModel = itemViewModel as ProjectViewModel;
-            if (projectViewModel != null) {
-                _solution.AddProject(projectViewModel.Project);
             }
         }
     }
