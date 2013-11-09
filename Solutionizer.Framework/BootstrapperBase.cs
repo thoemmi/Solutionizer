@@ -89,6 +89,7 @@ namespace Solutionizer.Framework {
         }
 
         protected virtual void OnExit(object sender, ExitEventArgs e) {
+            Container.Dispose();
         }
     }
 

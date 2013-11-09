@@ -5,7 +5,7 @@ using Newtonsoft.Json;
 using Solutionizer.Infrastructure;
 
 namespace Solutionizer.Services {
-    public class SettingsProvider {
+    public class SettingsProvider : IDisposable {
         private static readonly Logger _log = LogManager.GetCurrentClassLogger();
 
         private Settings _settings;
@@ -16,6 +16,10 @@ namespace Solutionizer.Services {
 
         public Settings Settings {
             get { return _settings ?? (_settings = Load()); }
+        }
+
+        public void Dispose() {
+            Save();
         }
 
         private Settings Load() {
