@@ -62,18 +62,6 @@
             <File Id="SOLUTIONIZER_EXE_CONFIG" Name="Solutionizer.exe.config" Source="Solutionizer/bin/Debug/Solutionizer.exe.config" />
             <RegistryValue Root='HKCU' Key='SOFTWARE\ThomasFreudenberg\Solutionizer' Name='Solutionizer.exe' Type='integer' Value='1' KeyPath='yes'/>
           </Component>
-          <Component Id="Caliburn.Micro.dll" Guid="{5E69534F-EBED-490F-B518-8D09D8EF6EC7}">
-            <File Id="Caliburn.Micro.dll" Name="Caliburn.Micro.dll" Source="Solutionizer/bin/Debug/Caliburn.Micro.dll"/>
-            <RegistryValue Root='HKCU' Key='SOFTWARE\ThomasFreudenberg\Solutionizer' Name='Caliburn.Micro.dll' Type='integer' Value='1' KeyPath='yes'/>
-          </Component>
-          <Component Id="Caliburn.Micro.Logging.dll" Guid="{02890B5E-8E5B-4209-B8F9-2DDDEF725BA2}">
-            <File Id="Caliburn.Micro.Logging.dll" Name="Caliburn.Micro.Logging.dll" Source="Solutionizer/bin/Debug/Caliburn.Micro.Logging.dll"/>
-            <RegistryValue Root='HKCU' Key='SOFTWARE\ThomasFreudenberg\Solutionizer' Name='Caliburn.Micro.Logging.dll' Type='integer' Value='1' KeyPath='yes'/>
-          </Component>
-          <Component Id="Caliburn.Micro.Logging.NLog.dll" Guid="{D2AAE2A9-6797-4041-9171-F5891EA82301}">
-            <File Id="Caliburn.Micro.Logging.NLog.dll" Name="Caliburn.Micro.Logging.NLog.dll" Source="Solutionizer/bin/Debug/Caliburn.Micro.Logging.NLog.dll"/>
-            <RegistryValue Root='HKCU' Key='SOFTWARE\ThomasFreudenberg\Solutionizer' Name='Caliburn.Micro.Logging.NLog.dll' Type='integer' Value='1' KeyPath='yes'/>
-          </Component>
           <Component Id="MahApps.Metro.dll" Guid="{FCB59AD0-66C8-4674-B649-F38072F12959}">
             <File Id="MahApps.Metro.dll" Name="MahApps.Metro.dll" Source="Solutionizer/bin/Debug/MahApps.Metro.dll"/>
             <RegistryValue Root="HKCU" Key="SOFTWARE\ThomasFreudenberg\Solutionizer" Name="MahApps.Metro.dll" Type="integer" Value="1" KeyPath="yes"/>
@@ -99,8 +87,12 @@
             <RegistryValue Root="HKCU" Key="SOFTWARE\ThomasFreudenberg\Solutionizer" Name="RestSharp.dll" Type="integer" Value="1" KeyPath="yes"/>
           </Component>
           <Component Id="Autofac.dll" Guid="{4B38CAEB-C3A3-4FE5-A293-0CAF827E605C}">
-            <File Id="Autofac.dll" Name="RestSharp.dll" Source="Solutionizer/bin/Debug/Autofac.dll"/>
+            <File Id="Autofac.dll" Name="Autofac.dll" Source="Solutionizer/bin/Debug/Autofac.dll"/>
             <RegistryValue Root="HKCU" Key="SOFTWARE\ThomasFreudenberg\Solutionizer" Name="Autofac.dll" Type="integer" Value="1" KeyPath="yes"/>
+          </Component>
+          <Component Id="Solutionizer.Framework.dll" Guid="{FF2475B7-6F7F-4FD8-8D2F-71D61F9DBE87}">
+            <File Id="Solutionizer.Framework.dll" Name="Solutionizer.Framework.dll" Source="Solutionizer/bin/Debug/Solutionizer.Framework.dll"/>
+            <RegistryValue Root="HKCU" Key="SOFTWARE\ThomasFreudenberg\Solutionizer" Name="Solutionizer.Framework.dll" Type="integer" Value="1" KeyPath="yes"/>
           </Component>
         </Directory>
       </Directory>
@@ -110,9 +102,6 @@
 
     <Feature Id="Complete">
       <ComponentRef Id="Solutionizer.exe"/>
-      <ComponentRef Id="Caliburn.Micro.dll"/>
-      <ComponentRef Id="Caliburn.Micro.Logging.dll"/>
-      <ComponentRef Id="Caliburn.Micro.Logging.NLog.dll"/>
       <ComponentRef Id="MahApps.Metro.dll"/>
       <ComponentRef Id="Newtonsoft.Json.dll"/>
       <ComponentRef Id="NLog.dll"/>
@@ -120,6 +109,7 @@
       <ComponentRef Id="System.Windows.Interactivity.dll"/>
       <ComponentRef Id="RestSharp.dll"/>
       <ComponentRef Id="Autofac.dll"/>
+      <ComponentRef Id="Solutionizer.Framework.dll"/>
     </Feature>
 
     <!-- no downgrade -->
