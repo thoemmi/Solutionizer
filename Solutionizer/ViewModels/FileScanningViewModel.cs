@@ -178,17 +178,14 @@ namespace Solutionizer.ViewModels {
     public sealed class FileScanningViewModel : DialogViewModel<ScanResult>, IOnLoadedHandler {
         public delegate FileScanningViewModel Factory(string path);
 
-        private readonly ISettings _settings;
         private string _loadingText;
         private string _progressText;
         private readonly ScanningCommand _scanningCommand;
         private readonly ICommand _cancelCommand;
 
         public FileScanningViewModel(ISettings settings, string path) {
-            _settings = settings;
-
             _loadingText = "Loading projects from " + path.ToLowerInvariant();
-            _scanningCommand = new ScanningCommand(path, _settings.SimplifyProjectTree);
+            _scanningCommand = new ScanningCommand(path, settings.SimplifyProjectTree);
 
             _cancelCommand = new RelayCommand(() => _scanningCommand.Cancel());
         }
