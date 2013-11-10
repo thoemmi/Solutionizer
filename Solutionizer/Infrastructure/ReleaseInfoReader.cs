@@ -195,7 +195,7 @@ namespace Solutionizer.Infrastructure {
         protected override async Task<IEnumerable<Release>> GetReleasesAsync() {
             var client = new RestClient("https://api.github.com");
             var request = new RestRequest("repos/thoemmi/Solutionizer/releases");
-            request.AddHeader("Accept", "application/vnd.github.manifold-preview");
+            request.AddHeader("Accept", "application/vnd.github.v3+json");
             if (!String.IsNullOrWhiteSpace(_settings.LastUpdateCheckETag)) {
                 request.AddHeader("If-None-Match", "\"" + _settings.LastUpdateCheckETag + "\"");
             }
