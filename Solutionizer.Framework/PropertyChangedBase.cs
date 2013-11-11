@@ -2,12 +2,14 @@
 using System.ComponentModel;
 using System.Linq.Expressions;
 using System.Reflection;
+using System.Windows.Input;
 
 namespace Solutionizer.Framework {
     public abstract class PropertyChangedBase : INotifyPropertyChanged {
         public event PropertyChangedEventHandler PropertyChanged;
 
         protected void Refresh() {
+            CommandManager.InvalidateRequerySuggested();
             NotifyOfPropertyChange(String.Empty);
         }
 
