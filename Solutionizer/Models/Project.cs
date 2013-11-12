@@ -94,7 +94,10 @@ namespace Solutionizer.Models {
                 return new string[0];
             } finally {
                 if (p != null) {
-                    Microsoft.Build.Evaluation.ProjectCollection.GlobalProjectCollection.UnloadProject(p);
+                    try {
+                        Microsoft.Build.Evaluation.ProjectCollection.GlobalProjectCollection.UnloadProject(p);
+                    } catch {
+                    }
                 }
             }
         }
