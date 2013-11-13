@@ -1,6 +1,8 @@
 Thumbs.db
 *.obj
 *.exe
+!NuGet.exe
+!assets/**/*.exe
 *.pdb
 *.user
 *.aps
