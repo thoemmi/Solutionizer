@@ -57,10 +57,10 @@ using System.Reflection%3B
             <Output TaskParameter="Value" PropertyName="NewLines"/>
         </CreateProperty>
       
-      <RemoveComments Text="$(OldLines)">
+      <RemoveComments Text="$(OldLines)" Condition="'$(OldLines)'!=''">
         <Output TaskParameter="CleanedText" PropertyName="OldLinesWithoutComments"/>
       </RemoveComments>
-      <RemoveComments Text="$(NewLines)">
+      <RemoveComments Text="$(NewLines)" Condition="'$(NewLines)'!=''">
         <Output TaskParameter="CleanedText" PropertyName="NewLinesWithoutComments"/>
       </RemoveComments>
 
