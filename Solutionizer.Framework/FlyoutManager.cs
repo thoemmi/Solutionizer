@@ -5,6 +5,7 @@ using System.Windows;
 using System.Windows.Data;
 using Autofac;
 using MahApps.Metro.Controls;
+using Solutionizer.Framework.Converters;
 
 namespace Solutionizer.Framework {
     public interface IFlyoutManager {
@@ -35,6 +36,18 @@ namespace Solutionizer.Framework {
             var flyout = view as Flyout ?? new Flyout { Content = view };
             flyout.IsOpen = false;
             flyout.Position = Position.Right;
+            view.HorizontalAlignment = HorizontalAlignment.Left;
+
+            var widthBinding = new Binding {
+                Path = new PropertyPath("ActualWidth"),
+                Mode = BindingMode.OneWay,
+                RelativeSource = new RelativeSource(RelativeSourceMode.FindAncestor) {
+                    AncestorType = typeof(MetroWindow)
+                },
+                Converter = new AddDoubleConverter(),
+                ConverterParameter = -150
+            };
+            flyout.SetBinding(Flyout.WidthProperty, widthBinding);
 
             var withTitle = viewModel as IWithTitle;
             if (withTitle != null) {

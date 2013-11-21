@@ -55,6 +55,7 @@
   <ItemGroup>
     <Compile Include="BootstrapperBase.cs" />
     <Compile Include="CommonAssemblyInfo.cs" />
+    <Compile Include="Converters\AddDoubleConverter.cs" />
     <Compile Include="DialogManager.cs" />
     <Compile Include="DialogsControl.cs" />
     <Compile Include="DialogViewModel.cs" />
