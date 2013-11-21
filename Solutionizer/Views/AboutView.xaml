@@ -28,7 +28,6 @@
     <Grid.RowDefinitions>
       <RowDefinition Height="Auto" />
       <RowDefinition Height="Auto" />
-      <RowDefinition Height="Auto" />
       <RowDefinition Height="*" />
       <RowDefinition Height="Auto" />
     </Grid.RowDefinitions>
@@ -49,88 +48,105 @@
         Please write an error report.</Hyperlink>
     </TextBlock>
 
-    <TextBlock       
-      Margin="0 4"
-      Grid.Row="2"
-      FontWeight="Bold">License</TextBlock>
-
-    <FlowDocumentScrollViewer       
-      Grid.Row="3" MaxWidth="600" 
-      BorderThickness="1" BorderBrush="{DynamicResource PageBorderBrush}">
-      <FlowDocument>
-        <Paragraph FontWeight="Bold">
-          Microsoft Public License (MS-PL)
-        </Paragraph>
-        <Paragraph>
-          This license governs use of the accompanying software. If you use the software, you
-          accept this license. If you do not accept the license, do not use the software.
-        </Paragraph>
-        <List MarkerStyle="Decimal">
-          <ListItem>
-            <Paragraph>
-              Definitions
+    <TabControl Grid.Row="2">
+      <TabItem Header="License">
+        <FlowDocumentScrollViewer       
+          MaxWidth="600" 
+          BorderThickness="1" BorderBrush="{DynamicResource PageBorderBrush}">
+          <FlowDocument>
+            <Paragraph FontWeight="Bold">
+              Microsoft Public License (MS-PL)
             </Paragraph>
             <Paragraph>
-              The terms "reproduce," "reproduction," "derivative works," and "distribution" have the
-              same meaning here as under U.S. copyright law.
-              A "contribution" is the original software, or any additions or changes to the software.
-              A "contributor" is any person that distributes its contribution under this license.
-              "Licensed patents" are a contributor's patent claims that read directly on its contribution.
+              This license governs use of the accompanying software. If you use the software, you
+              accept this license. If you do not accept the license, do not use the software.
             </Paragraph>
-          </ListItem>
-          <ListItem>
-            <Paragraph>
-              Grant of Rights
-            </Paragraph>
-            <List MarkerStyle="UpperLatin">
+            <List MarkerStyle="Decimal">
               <ListItem>
                 <Paragraph>
-                  Copyright Grant- Subject to the terms of this license, including the license conditions and limitations in section 3, each contributor grants you a non-exclusive, worldwide, royalty-free copyright license to reproduce its contribution, prepare derivative works of its contribution, and distribute its contribution or any derivative works that you create.
+                  Definitions
+                </Paragraph>
+                <Paragraph>
+                  The terms "reproduce," "reproduction," "derivative works," and "distribution" have the
+                  same meaning here as under U.S. copyright law.
+                  A "contribution" is the original software, or any additions or changes to the software.
+                  A "contributor" is any person that distributes its contribution under this license.
+                  "Licensed patents" are a contributor's patent claims that read directly on its contribution.
                 </Paragraph>
               </ListItem>
               <ListItem>
                 <Paragraph>
-                  Patent Grant- Subject to the terms of this license, including the license conditions and limitations in section 3, each contributor grants you a non-exclusive, worldwide, royalty-free license under its licensed patents to make, have made, use, sell, offer for sale, import, and/or otherwise dispose of its contribution in the software or derivative works of the contribution in the software.
+                  Grant of Rights
                 </Paragraph>
+                <List MarkerStyle="UpperLatin">
+                  <ListItem>
+                    <Paragraph>
+                      Copyright Grant- Subject to the terms of this license, including the license conditions and limitations in section 3, each contributor grants you a non-exclusive, worldwide, royalty-free copyright license to reproduce its contribution, prepare derivative works of its contribution, and distribute its contribution or any derivative works that you create.
+                    </Paragraph>
+                  </ListItem>
+                  <ListItem>
+                    <Paragraph>
+                      Patent Grant- Subject to the terms of this license, including the license conditions and limitations in section 3, each contributor grants you a non-exclusive, worldwide, royalty-free license under its licensed patents to make, have made, use, sell, offer for sale, import, and/or otherwise dispose of its contribution in the software or derivative works of the contribution in the software.
+                    </Paragraph>
+                  </ListItem>
+                </List>
+              </ListItem>
+              <ListItem>
+                <Paragraph>
+                  Conditions and Limitations
+                </Paragraph>
+                <List MarkerStyle="UpperLatin" >
+                  <ListItem>
+                    <Paragraph>
+                      No Trademark License- This license does not grant you rights to use any contributors' name, logo, or trademarks.
+                    </Paragraph>
+                  </ListItem>
+                  <ListItem>
+                    <Paragraph>
+                      If you bring a patent claim against any contributor over patents that you claim are infringed by the software, your patent license from such contributor to the software ends automatically.
+                    </Paragraph>
+                  </ListItem>
+                  <ListItem>
+                    <Paragraph>
+                      If you distribute any portion of the software, you must retain all copyright, patent, trademark, and attribution notices that are present in the software.
+                    </Paragraph>
+                  </ListItem>
+                  <ListItem>
+                    <Paragraph>
+                      If you distribute any portion of the software in source code form, you may do so only under this license by including a complete copy of this license with your distribution. If you distribute any portion of the software in compiled or object code form, you may only do so under a license that complies with this license.
+                    </Paragraph>
+                  </ListItem>
+                  <ListItem>
+                    <Paragraph>
+                      The software is licensed "as-is." You bear the risk of using it. The contributors give no express warranties, guarantees or conditions. You may have additional consumer rights under your local laws which this license cannot change. To the extent permitted under your local laws, the contributors exclude the implied warranties of merchantability, fitness for a particular purpose and non-infringement.
+                    </Paragraph>
+                  </ListItem>
+                </List>
               </ListItem>
             </List>
-          </ListItem>
-          <ListItem>
-            <Paragraph>
-              Conditions and Limitations
-            </Paragraph>
-            <List MarkerStyle="UpperLatin" >
-              <ListItem>
-                <Paragraph>
-                  No Trademark License- This license does not grant you rights to use any contributors' name, logo, or trademarks.
-                </Paragraph>
-              </ListItem>
-              <ListItem>
-                <Paragraph>
-                  If you bring a patent claim against any contributor over patents that you claim are infringed by the software, your patent license from such contributor to the software ends automatically.
-                </Paragraph>
-              </ListItem>
-              <ListItem>
-                <Paragraph>
-                  If you distribute any portion of the software, you must retain all copyright, patent, trademark, and attribution notices that are present in the software.
-                </Paragraph>
-              </ListItem>
-              <ListItem>
-                <Paragraph>
-                  If you distribute any portion of the software in source code form, you may do so only under this license by including a complete copy of this license with your distribution. If you distribute any portion of the software in compiled or object code form, you may only do so under a license that complies with this license.
-                </Paragraph>
-              </ListItem>
-              <ListItem>
-                <Paragraph>
-                  The software is licensed "as-is." You bear the risk of using it. The contributors give no express warranties, guarantees or conditions. You may have additional consumer rights under your local laws which this license cannot change. To the extent permitted under your local laws, the contributors exclude the implied warranties of merchantability, fitness for a particular purpose and non-infringement.
-                </Paragraph>
-              </ListItem>
-            </List>
-          </ListItem>
-        </List>
-      </FlowDocument>
-    </FlowDocumentScrollViewer>
-
+          </FlowDocument>
+        </FlowDocumentScrollViewer>
+      </TabItem>
+      <TabItem Header="Credits">
+        <StackPanel>
+        <TextBlock>Solutionizer depends on following libraries:</TextBlock>
+          <ItemsControl ItemsSource="{Binding CreditItems}">
+            <ItemsControl.Resources>
+              <DataTemplate DataType="{x:Type ViewModels:CreditItem}">
+                <TextBlock>
+                  <Hyperlink NavigateUri="{Binding Uri}">
+                    <i:Interaction.Behaviors>
+                      <Infrastructure:HyperlinkNavigateBehavior/>
+                    </i:Interaction.Behaviors>
+                    <Run Text="{Binding Name}"></Run>
+                  </Hyperlink>
+                </TextBlock>
+              </DataTemplate>
+            </ItemsControl.Resources>
+          </ItemsControl>
+        </StackPanel>
+      </TabItem>
+    </TabControl>
     <Button 
       HorizontalAlignment="Left"
       Margin="0 16 0 0"
