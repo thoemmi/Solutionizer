@@ -94,6 +94,7 @@
     <Compile Include="AppBootstrapper.cs" />
     <Compile Include="Commands\SaveSolutionCommand.cs" />
     <Compile Include="CommonAssemblyInfo.cs" />
+    <Compile Include="Converters\EnumBooleanConverter.cs" />
     <Compile Include="Converters\MarkdownToFlowDocumentConverter.cs" />
     <Compile Include="Helper\HtmlToXamlConverter.cs" />
     <Compile Include="Helper\Markdown.cs" />

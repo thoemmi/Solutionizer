@@ -20,6 +20,7 @@ namespace Solutionizer.ViewModels {
         private bool _includePrereleaseUpdates;
         private readonly ICommand _okCommand;
         private readonly ICommand _cancelCommand;
+        private SolutionTargetLocation _solutionTargetLocation;
 
         public SettingsViewModel(ISettings settings) {
             _settings = settings;
@@ -43,6 +44,7 @@ namespace Solutionizer.ViewModels {
             ShowLaunchElevatedButton = _settings.ShowLaunchElevatedButton;
             ShowProjectCount = _settings.ShowProjectCount;
             IncludePrereleaseUpdates = _settings.IncludePrereleaseUpdates;
+            SolutionTargetLocation = _settings.SolutionTargetLocation;
         }
 
         public bool ScanOnStartup {
@@ -148,9 +150,20 @@ namespace Solutionizer.ViewModels {
         public bool IncludePrereleaseUpdates {
             get { return _includePrereleaseUpdates; }
             set {
-                if (value.Equals(_includePrereleaseUpdates)) return;
-                _includePrereleaseUpdates = value;
-                NotifyOfPropertyChange(() => IncludePrereleaseUpdates);
+                if (_includePrereleaseUpdates != value) {
+                    _includePrereleaseUpdates = value;
+                    NotifyOfPropertyChange(() => IncludePrereleaseUpdates);
+                }
+            }
+        }
+
+        public SolutionTargetLocation SolutionTargetLocation {
+            get { return _solutionTargetLocation; }
+            set {
+                if (_solutionTargetLocation != value) {
+                    _solutionTargetLocation = value;
+                    NotifyOfPropertyChange(() => SolutionTargetLocation);
+                }
             }
         }
 
@@ -185,6 +198,7 @@ namespace Solutionizer.ViewModels {
             _settings.ShowLaunchElevatedButton = ShowLaunchElevatedButton;
             _settings.ShowProjectCount = ShowProjectCount;
             _settings.IncludePrereleaseUpdates = IncludePrereleaseUpdates;
+            _settings.SolutionTargetLocation = SolutionTargetLocation;
 
             Close();
         }
@@ -202,7 +216,8 @@ namespace Solutionizer.ViewModels {
                     VisualStudioVersion != _settings.VisualStudioVersion ||
                     ShowLaunchElevatedButton != _settings.ShowLaunchElevatedButton ||
                     ShowProjectCount != _settings.ShowProjectCount ||
-                    IncludePrereleaseUpdates != _settings.IncludePrereleaseUpdates;
+                    IncludePrereleaseUpdates != _settings.IncludePrereleaseUpdates ||
+                    SolutionTargetLocation != _settings.SolutionTargetLocation;
             }
         }
     }

@@ -23,6 +23,7 @@ namespace Solutionizer.Services {
         private string _lastUpdateCheckETag;
         private bool _includePrereleaseUpdates;
         private string _someOtherProperty;
+        private SolutionTargetLocation _solutionTargetLocation;
 
         public Settings() {
             _visualStudioVersion = VisualStudioHelper.DetectVersion();
@@ -217,6 +218,17 @@ namespace Solutionizer.Services {
                 }
             }
         }
+
+        public SolutionTargetLocation SolutionTargetLocation {
+            get { return _solutionTargetLocation; }
+            set {
+                if (_solutionTargetLocation != value) {
+                    _solutionTargetLocation = value;
+                    NotifyOfPropertyChange(() => SolutionTargetLocation);
+                    IsDirty = true;
+                }
+            }
+        }
     }
 
     public class WindowSettings {
@@ -234,4 +246,10 @@ namespace Solutionizer.Services {
         VS2013,
     }
     // ReSharper restore InconsistentNaming
+
+    public enum SolutionTargetLocation {
+        TempFolder,
+        CustomFolder,
+        BelowRootPath
+    }
 }
