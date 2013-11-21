@@ -20,5 +20,7 @@ namespace Solutionizer.Services {
         bool IncludePrereleaseUpdates { get; set; }
         string LastUpdateCheckETag { get; set; }
         SolutionTargetLocation SolutionTargetLocation { get; set; }
+        string CustomTargetFolder { get; set; }
+        string CustomTargetSubfolder { get; set; }
     }
 }

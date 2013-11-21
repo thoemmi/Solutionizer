@@ -139,9 +139,10 @@
           <TextBox 
             Margin="8 0 0 0"
             IsReadOnly="True" 
-            Text="lorem ispum"
+            Text="{Binding CustomTargetFolder}"
             Width="200"
             IsEnabled="{Binding SolutionTargetLocation, Converter={StaticResource EnumBooleanConverter}, ConverterParameter=CustomFolder}"
+            Controls:TextboxHelper.ButtonCommand="{Binding SelectSolutionTargetFolderCommand}"
             Style="{DynamicResource ButtonCommandMetroTextBox}">
             <Controls:TextboxHelper.ButtonContent>
               <TextBlock FontFamily="{DynamicResource DefaultFont}" Text="&#x2026;" />
@@ -155,9 +156,9 @@
             IsChecked="{Binding SolutionTargetLocation, Converter={StaticResource EnumBooleanConverter}, ConverterParameter=BelowRootPath}"/>
           <TextBox 
             Margin="8 0 0 0" Width="200"
+            Text="{Binding CustomTargetSubfolder}"
             IsEnabled="{Binding SolutionTargetLocation, Converter={StaticResource EnumBooleanConverter}, ConverterParameter=BelowRootPath}" />
         </StackPanel>
-        
 
         <TextBlock 
           Style="{StaticResource DescriptionHeaderStyle}" 
