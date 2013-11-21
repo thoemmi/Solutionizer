@@ -6,6 +6,7 @@
              xmlns:ViewModels="clr-namespace:Solutionizer.ViewModels"
              xmlns:Infrastructure="clr-namespace:Solutionizer.Infrastructure"
              xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+             xmlns:Controls="http://metro.mahapps.com/winfx/xaml/controls"
              mc:Ignorable="d" 
              d:DataContext="{d:DesignInstance ViewModels:AboutViewModel}"
              d:DesignHeight="300" d:DesignWidth="300">
@@ -48,8 +49,8 @@
         Please write an error report.</Hyperlink>
     </TextBlock>
 
-    <TabControl Grid.Row="2">
-      <TabItem Header="License">
+    <Controls:MetroAnimatedSingleRowTabControl Grid.Row="2" Margin="0 10 0 0">
+      <TabItem Header="License" Padding="0">
         <FlowDocumentScrollViewer       
           MaxWidth="600" 
           BorderThickness="1" BorderBrush="{DynamicResource PageBorderBrush}">
@@ -134,7 +135,7 @@
             <ItemsControl.Resources>
               <DataTemplate DataType="{x:Type ViewModels:CreditItem}">
                 <TextBlock>
-                  <Hyperlink NavigateUri="{Binding Uri}">
+                  <Hyperlink NavigateUri="{Binding Uri}" ToolTip="{Binding Uri}">
                     <i:Interaction.Behaviors>
                       <Infrastructure:HyperlinkNavigateBehavior/>
                     </i:Interaction.Behaviors>
@@ -146,7 +147,7 @@
           </ItemsControl>
         </StackPanel>
       </TabItem>
-    </TabControl>
+    </Controls:MetroAnimatedSingleRowTabControl>
     <Button 
       HorizontalAlignment="Left"
       Margin="0 16 0 0"
