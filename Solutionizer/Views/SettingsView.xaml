@@ -8,6 +8,7 @@
              xmlns:ViewModels="clr-namespace:Solutionizer.ViewModels"
              xmlns:Controls="http://metro.mahapps.com/winfx/xaml/controls"
              xmlns:Converters="clr-namespace:Solutionizer.Converters"
+             xmlns:Controls1="clr-namespace:Solutionizer.Controls"
              d:DataContext="{d:DesignInstance ViewModels:SettingsViewModel}"
              d:DesignHeight="300" d:DesignWidth="300">
   <UserControl.Resources>
@@ -136,18 +137,20 @@
           <RadioButton 
             Content="a custom folder" 
             IsChecked="{Binding SolutionTargetLocation, Converter={StaticResource EnumBooleanConverter}, ConverterParameter=CustomFolder}"/>
-          <TextBox 
+          <Controls1:EllipsisTextBox
+            EllipsisPlacement="Path"
+            Focusable="False"
             Margin="8 0 0 0"
             IsReadOnly="True" 
             Text="{Binding CustomTargetFolder}"
-            Width="200"
+            Width="300"
             IsEnabled="{Binding SolutionTargetLocation, Converter={StaticResource EnumBooleanConverter}, ConverterParameter=CustomFolder}"
             Controls:TextboxHelper.ButtonCommand="{Binding SelectSolutionTargetFolderCommand}"
             Style="{DynamicResource ButtonCommandMetroTextBox}">
             <Controls:TextboxHelper.ButtonContent>
               <TextBlock FontFamily="{DynamicResource DefaultFont}" Text="&#x2026;" />
             </Controls:TextboxHelper.ButtonContent>
-          </TextBox>
+          </Controls1:EllipsisTextBox>
         </StackPanel>
         
         <StackPanel Orientation="Horizontal" Margin="20 0 0 8">
