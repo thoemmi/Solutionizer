@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Linq.Expressions;
+using System.Windows;
 using System.Windows.Input;
+using Ookii.Dialogs.Wpf;
 using Solutionizer.Framework;
 using Solutionizer.Services;
 
@@ -18,13 +20,18 @@ namespace Solutionizer.ViewModels {
         private bool _showLaunchElevatedButton;
         private bool _showProjectCount;
         private bool _includePrereleaseUpdates;
+        private SolutionTargetLocation _solutionTargetLocation;
+        private string _customTargetFolder;
+        private string _customTargetSubfolder;
         private readonly ICommand _okCommand;
         private readonly ICommand _cancelCommand;
+        private readonly ICommand _selectSolutionTargetFolderCommand;
 
         public SettingsViewModel(ISettings settings) {
             _settings = settings;
             _okCommand = new RelayCommand(Ok, () => CanOk);
             _cancelCommand = new RelayCommand(Close);
+            _selectSolutionTargetFolderCommand = new RelayCommand(SelectSolutionTargetFolder);
         }
 
         public string Title {
@@ -43,6 +50,9 @@ namespace Solutionizer.ViewModels {
             ShowLaunchElevatedButton = _settings.ShowLaunchElevatedButton;
             ShowProjectCount = _settings.ShowProjectCount;
             IncludePrereleaseUpdates = _settings.IncludePrereleaseUpdates;
+            SolutionTargetLocation = _settings.SolutionTargetLocation;
+            CustomTargetFolder = _settings.CustomTargetFolder;
+            CustomTargetSubfolder = _settings.CustomTargetSubfolder;
         }
 
         public bool ScanOnStartup {
@@ -148,9 +158,53 @@ namespace Solutionizer.ViewModels {
         public bool IncludePrereleaseUpdates {
             get { return _includePrereleaseUpdates; }
             set {
-                if (value.Equals(_includePrereleaseUpdates)) return;
-                _includePrereleaseUpdates = value;
-                NotifyOfPropertyChange(() => IncludePrereleaseUpdates);
+                if (_includePrereleaseUpdates != value) {
+                    _includePrereleaseUpdates = value;
+                    NotifyOfPropertyChange(() => IncludePrereleaseUpdates);
+                }
+            }
+        }
+
+        public SolutionTargetLocation SolutionTargetLocation {
+            get { return _solutionTargetLocation; }
+            set {
+                if (_solutionTargetLocation != value) {
+                    _solutionTargetLocation = value;
+                    NotifyOfPropertyChange(() => SolutionTargetLocation);
+                }
+            }
+        }
+
+        public string CustomTargetFolder {
+            get { return _customTargetFolder; }
+            set {
+                if (_customTargetFolder != value) {
+                    _customTargetFolder = value;
+                    NotifyOfPropertyChange(() => CustomTargetFolder);
+                }
+            }
+        }
+
+        public ICommand SelectSolutionTargetFolderCommand {
+            get { return _selectSolutionTargetFolderCommand; }
+        }
+
+        private void SelectSolutionTargetFolder() {
+            var dlg = new VistaFolderBrowserDialog {
+                SelectedPath = CustomTargetFolder
+            };
+            if (dlg.ShowDialog(Application.Current.MainWindow) == true) {
+                CustomTargetFolder = dlg.SelectedPath;
+            }
+        }
+
+        public string CustomTargetSubfolder {
+            get { return _customTargetSubfolder; }
+            set {
+                if (_customTargetSubfolder != value) {
+                    _customTargetSubfolder = value;
+                    NotifyOfPropertyChange(() => CustomTargetSubfolder);
+                }
             }
         }
 
@@ -185,6 +239,9 @@ namespace Solutionizer.ViewModels {
             _settings.ShowLaunchElevatedButton = ShowLaunchElevatedButton;
             _settings.ShowProjectCount = ShowProjectCount;
             _settings.IncludePrereleaseUpdates = IncludePrereleaseUpdates;
+            _settings.SolutionTargetLocation = SolutionTargetLocation;
+            _settings.CustomTargetFolder = CustomTargetFolder;
+            _settings.CustomTargetSubfolder = CustomTargetSubfolder;
 
             Close();
         }
@@ -202,7 +259,10 @@ namespace Solutionizer.ViewModels {
                     VisualStudioVersion != _settings.VisualStudioVersion ||
                     ShowLaunchElevatedButton != _settings.ShowLaunchElevatedButton ||
                     ShowProjectCount != _settings.ShowProjectCount ||
-                    IncludePrereleaseUpdates != _settings.IncludePrereleaseUpdates;
+                    IncludePrereleaseUpdates != _settings.IncludePrereleaseUpdates ||
+                    SolutionTargetLocation != _settings.SolutionTargetLocation ||
+                    CustomTargetFolder != _settings.CustomTargetFolder ||
+                    CustomTargetSubfolder != _settings.CustomTargetSubfolder;
             }
         }
     }

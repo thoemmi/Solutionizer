@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -19,6 +20,7 @@ namespace Solutionizer.ViewModels {
 
         private static readonly Logger _log = LogManager.GetCurrentClassLogger();
 
+        private readonly IStatusMessenger _statusMessenger;
         private readonly string _rootPath;
         private readonly IDictionary<string, Project> _projects;
         private readonly ICommand _dropCommand;
@@ -32,8 +34,10 @@ namespace Solutionizer.ViewModels {
         private readonly SolutionFolder _solutionRoot = new SolutionFolder(null);
         private SolutionItem _selectedItem;
         private readonly ISettings _settings;
+        private string _fileName;
 
-        public SolutionViewModel(ISettings settings, string rootPath, IDictionary<string, Project> projects) {
+        public SolutionViewModel(IStatusMessenger statusMessenger, ISettings settings, string rootPath, IDictionary<string, Project> projects) {
+            _statusMessenger = statusMessenger;
             _rootPath = rootPath;
             _projects = projects;
             _settings = settings;
@@ -58,16 +62,35 @@ namespace Solutionizer.ViewModels {
             AddProject(project);
         }
 
+        private string GetTargetFolder() {
+            switch (_settings.SolutionTargetLocation) {
+                case SolutionTargetLocation.TempFolder:
+                    return Path.GetTempPath();
+                case SolutionTargetLocation.CustomFolder:
+                    return _settings.CustomTargetFolder;
+                case SolutionTargetLocation.BelowRootPath:
+                    return Path.Combine(_rootPath, _settings.CustomTargetSubfolder);
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+        }
+
         private void Launch(bool elevated) {
-            var newFilename = Path.Combine(Path.GetTempPath(), DateTime.Now.ToString("yyyy-MM-dd_HHmmss")) + ".sln";
-            new SaveSolutionCommand(_settings, newFilename, _settings.VisualStudioVersion, this).Execute();
+            InternalSave(null);
             var exePath = VisualStudioHelper.GetVisualStudioExecutable(_settings.VisualStudioVersion);
-            var psi = new ProcessStartInfo(exePath, newFilename);
+            var psi = new ProcessStartInfo(exePath, "\"" + FileName + "\"");
             if (elevated) {
                 psi.Verb = "runas";
             }
-            Process.Start(psi);
-            Application.Current.MainWindow.WindowState = WindowState.Minimized;
+            try {
+                Process.Start(psi);
+                Application.Current.MainWindow.WindowState = WindowState.Minimized;
+            } catch (Win32Exception ex) {
+                // if NativeErrorCode = 1223, the user cancelled the UAC dialog
+                if (ex.NativeErrorCode != 1223) {
+                    throw;
+                }
+            }
         }
 
         private void Save() {
@@ -77,14 +100,40 @@ namespace Solutionizer.ViewModels {
                 DefaultExt = ".sln"
             };
             if (dlg.ShowDialog() == true) {
-                new SaveSolutionCommand(_settings, dlg.FileName, _settings.VisualStudioVersion, this).Execute();
-                IsDirty = false;
+                InternalSave(dlg.FileName);
             }
+        }
+
+        private void InternalSave(string fileName) {
+            if (!String.IsNullOrEmpty(fileName)) {
+                FileName = fileName;
+            }
+
+            if (String.IsNullOrEmpty(FileName)) {
+                var targetFolder = GetTargetFolder();
+                if (!Directory.Exists(targetFolder)) {
+                    Directory.CreateDirectory(targetFolder);
+                }
+
+                var firstProject = _solutionRoot.Items.OfType<SolutionProject>().FirstOrDefault();
+                if (firstProject != null) {
+                    FileName = Path.Combine(targetFolder, firstProject.Name + " " + DateTime.Now.ToString("yyyy-MM-dd_HHmmss")) + ".sln";
+                } else {
+                    FileName = Path.Combine(targetFolder, DateTime.Now.ToString("yyyy-MM-dd_HHmmss")) + ".sln";
+                }
+            }
+
+            new SaveSolutionCommand(_settings, FileName, _settings.VisualStudioVersion, this).Execute();
+            _statusMessenger.Show(String.Format("Solution saved as '{0}'.", FileName));
+            IsDirty = false;
         }
 
         private void Clear() {
             _solutionRoot.Items.Clear();
             SelectedItem = null;
+            FileName = null;
+            IsDirty = false;
+            _statusMessenger.Show("Solution cleared.");
             Refresh();
         }
 
@@ -138,6 +187,16 @@ namespace Solutionizer.ViewModels {
 
         public bool ShowProjectCount {
             get { return _settings.ShowProjectCount; }
+        }
+
+        public string FileName {
+            get { return _fileName; }
+            set {
+                if (_fileName != value) {
+                    _fileName = value;
+                    NotifyOfPropertyChange(() => FileName);
+                }
+            }
         }
 
         public void AddProject(Project project) {

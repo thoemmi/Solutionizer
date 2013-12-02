@@ -6,6 +6,9 @@
              xmlns:System="clr-namespace:System;assembly=mscorlib"
              xmlns:Services="clr-namespace:Solutionizer.Services" mc:Ignorable="d" 
              xmlns:ViewModels="clr-namespace:Solutionizer.ViewModels"
+             xmlns:Controls="http://metro.mahapps.com/winfx/xaml/controls"
+             xmlns:Converters="clr-namespace:Solutionizer.Converters"
+             xmlns:Controls1="clr-namespace:Solutionizer.Controls"
              d:DataContext="{d:DesignInstance ViewModels:SettingsViewModel}"
              d:DesignHeight="300" d:DesignWidth="300">
   <UserControl.Resources>
@@ -13,6 +16,8 @@
       <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/FlatButton.xaml" />
       </ResourceDictionary.MergedDictionaries>
+
+      <Converters:EnumBooleanConverter x:Key="EnumBooleanConverter"/>
     </ResourceDictionary>
   </UserControl.Resources>
 
@@ -118,7 +123,44 @@
             ItemsSource="{Binding Source={StaticResource PossibleValues}}"
             ToolTip="Specifies the target version of Visual Studio."/>
         </StackPanel>
+        
+        <TextBlock 
+          Text="Store solutions in" 
+          Margin="0 0 0 8"/>
 
+        <RadioButton 
+          Margin="20 0 0 8" 
+          Content="the temporary folder" 
+          IsChecked="{Binding SolutionTargetLocation, Converter={StaticResource EnumBooleanConverter}, ConverterParameter=TempFolder}"/>
+        
+        <StackPanel Orientation="Horizontal" Margin="20 0 0 8">
+          <RadioButton 
+            Content="a custom folder" 
+            IsChecked="{Binding SolutionTargetLocation, Converter={StaticResource EnumBooleanConverter}, ConverterParameter=CustomFolder}"/>
+          <Controls1:EllipsisTextBox
+            EllipsisPlacement="Path"
+            Margin="8 0 0 0"
+            IsReadOnly="True" 
+            Text="{Binding CustomTargetFolder}"
+            Width="300"
+            IsEnabled="{Binding SolutionTargetLocation, Converter={StaticResource EnumBooleanConverter}, ConverterParameter=CustomFolder}"
+            Controls:TextboxHelper.ButtonCommand="{Binding SelectSolutionTargetFolderCommand}"
+            Style="{DynamicResource ButtonCommandMetroTextBox}">
+            <Controls:TextboxHelper.ButtonContent>
+              <TextBlock FontFamily="{DynamicResource DefaultFont}" Text="&#x2026;" />
+            </Controls:TextboxHelper.ButtonContent>
+          </Controls1:EllipsisTextBox>
+        </StackPanel>
+        
+        <StackPanel Orientation="Horizontal" Margin="20 0 0 8">
+          <RadioButton 
+            Content="a subfolder of the selected root folder" 
+            IsChecked="{Binding SolutionTargetLocation, Converter={StaticResource EnumBooleanConverter}, ConverterParameter=BelowRootPath}"/>
+          <TextBox 
+            Margin="8 0 0 0" Width="200"
+            Text="{Binding CustomTargetSubfolder}"
+            IsEnabled="{Binding SolutionTargetLocation, Converter={StaticResource EnumBooleanConverter}, ConverterParameter=BelowRootPath}" />
+        </StackPanel>
 
         <TextBlock 
           Style="{StaticResource DescriptionHeaderStyle}" 

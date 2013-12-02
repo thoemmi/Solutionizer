@@ -25,7 +25,7 @@ namespace Solutionizer.Tests {
             Project project;
             _scanningCommand.Projects.TryGetValue(Path.Combine(_testDataPath, "CsTestProject1.csproj"), out project);
 
-            var sut = new SolutionViewModel(_settings, _testDataPath, _scanningCommand.Projects);
+            var sut = new SolutionViewModel(new DummyStatusMessenger(), _settings, _testDataPath, _scanningCommand.Projects);
             sut.AddProject(project);
 
             Assert.AreEqual(1, sut.SolutionItems.Count);
@@ -44,7 +44,7 @@ namespace Solutionizer.Tests {
             Project project;
             _scanningCommand.Projects.TryGetValue(Path.Combine(_testDataPath, "p2", "CsTestProject2.csproj"), out project);
 
-            var sut = new SolutionViewModel(_settings, _testDataPath, _scanningCommand.Projects);
+            var sut = new SolutionViewModel(new DummyStatusMessenger(), _settings, _testDataPath, _scanningCommand.Projects);
             sut.AddProject(project);
 
             Assert.AreEqual(2, sut.SolutionItems.Count);

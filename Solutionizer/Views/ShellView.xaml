@@ -194,8 +194,12 @@
         <ColumnDefinition Width="auto" />
         <ColumnDefinition Width="2*" />
       </Grid.ColumnDefinitions>
+      <Grid.RowDefinitions>
+        <RowDefinition Height="*" />
+        <RowDefinition Height="Auto" />
+      </Grid.RowDefinitions>
       
-      <Border Margin="6 6 0 6" Padding="2" BorderThickness="1" BorderBrush="{DynamicResource {x:Static SystemColors.ActiveBorderBrushKey}}">
+      <Border Margin="6 6 0 3" Padding="2" BorderThickness="1" BorderBrush="{DynamicResource {x:Static SystemColors.ActiveBorderBrushKey}}">
         <Framework:ViewModelPresenter ViewModel="{Binding ProjectRepository}" />
       </Border>
 
@@ -207,6 +211,12 @@
         Margin="0 3 3 3" 
         Grid.Column="2"  
         ViewModel="{Binding Solution}"/>
+      
+      <TextBlock 
+        Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" 
+        FontSize="12"
+        Margin="6 0 6 6" 
+        Text="{Binding StatusMessage}" />
     </Grid>
 
     <Framework:DialogsControl

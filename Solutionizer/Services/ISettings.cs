@@ -19,5 +19,8 @@ namespace Solutionizer.Services {
         bool ShowProjectCount { get; set; }
         bool IncludePrereleaseUpdates { get; set; }
         string LastUpdateCheckETag { get; set; }
+        SolutionTargetLocation SolutionTargetLocation { get; set; }
+        string CustomTargetFolder { get; set; }
+        string CustomTargetSubfolder { get; set; }
     }
 }

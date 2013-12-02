@@ -3,13 +3,14 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
+using System.Windows.Threading;
 using Ookii.Dialogs.Wpf;
 using Solutionizer.Framework;
 using Solutionizer.Infrastructure;
 using Solutionizer.Services;
 
 namespace Solutionizer.ViewModels {
-    public sealed class ShellViewModel : PropertyChangedBase, IShell, IOnLoadedHandler {
+    public sealed class ShellViewModel : PropertyChangedBase, IShell, IOnLoadedHandler, IStatusMessenger {
         private readonly ISettings _settings;
         private readonly IDialogManager _dialogManager;
         private readonly IFlyoutManager _flyoutManager;
@@ -24,6 +25,7 @@ namespace Solutionizer.ViewModels {
         private readonly ICommand _showSettingsCommand;
         private readonly ICommand _showAboutCommand;
         private readonly ICommand _selectRootPathCommand;
+        private string _statusMessage;
 
         public ShellViewModel(ISettings settings, IDialogManager dialogManager, IFlyoutManager flyoutManager, IUpdateManager updateManager, IViewModelFactory viewModelFactory) {
             _settings = settings;
@@ -143,8 +145,23 @@ namespace Solutionizer.ViewModels {
                 _projectRepository.RootPath = path;
                 _projectRepository.RootFolder = result.ProjectFolder;
                 Solution = _viewModelFactory.CreateSolutionViewModel(path, result.Projects);
+                Show(String.Format("{0} projects loaded.", result.Projects.Count));
             } else {
                 RootPath = oldRootPath;
+            }
+        }
+
+        public void Show(string status) {
+            StatusMessage = status;
+        }
+
+        public string StatusMessage {
+            get { return _statusMessage; }
+            set {
+                if (_statusMessage != value) {
+                    _statusMessage = value;
+                    NotifyOfPropertyChange(() => StatusMessage);
+                }
             }
         }
     }

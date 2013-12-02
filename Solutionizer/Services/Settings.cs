@@ -23,10 +23,14 @@ namespace Solutionizer.Services {
         private string _lastUpdateCheckETag;
         private bool _includePrereleaseUpdates;
         private string _someOtherProperty;
+        private SolutionTargetLocation _solutionTargetLocation;
+        private string _customTargetFolder;
+        private string _customTargetSubfolder;
 
         public Settings() {
             _visualStudioVersion = VisualStudioHelper.DetectVersion();
             _rootPath = VisualStudioHelper.GetDefaultProjectsLocation(_visualStudioVersion);
+            _customTargetFolder = _rootPath;
         }
 
         public bool IsFlatMode {
@@ -217,6 +221,39 @@ namespace Solutionizer.Services {
                 }
             }
         }
+
+        public SolutionTargetLocation SolutionTargetLocation {
+            get { return _solutionTargetLocation; }
+            set {
+                if (_solutionTargetLocation != value) {
+                    _solutionTargetLocation = value;
+                    NotifyOfPropertyChange(() => SolutionTargetLocation);
+                    IsDirty = true;
+                }
+            }
+        }
+
+        public string CustomTargetFolder {
+            get { return _customTargetFolder; }
+            set {
+                if (_customTargetFolder != value) {
+                    _customTargetFolder = value;
+                    NotifyOfPropertyChange(() => CustomTargetFolder);
+                    IsDirty = true;
+                }
+            }
+        }
+
+        public string CustomTargetSubfolder {
+            get { return _customTargetSubfolder; }
+            set {
+                if (_customTargetSubfolder != value) {
+                    _customTargetSubfolder = value;
+                    NotifyOfPropertyChange(() => CustomTargetSubfolder);
+                    IsDirty = true;
+                }
+            }
+        }
     }
 
     public class WindowSettings {
@@ -234,4 +271,10 @@ namespace Solutionizer.Services {
         VS2013,
     }
     // ReSharper restore InconsistentNaming
+
+    public enum SolutionTargetLocation {
+        TempFolder,
+        CustomFolder,
+        BelowRootPath
+    }
 }
