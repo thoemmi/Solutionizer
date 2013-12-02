@@ -21,6 +21,7 @@ namespace Solutionizer.Services {
         private bool _showLaunchElevatedButton;
         private bool _showProjectCount;
         private string _lastUpdateCheckETag;
+        private bool _autoUpdateCheck = true;
         private bool _includePrereleaseUpdates;
         private string _someOtherProperty;
         private SolutionTargetLocation _solutionTargetLocation;
@@ -206,6 +207,17 @@ namespace Solutionizer.Services {
                 if (value != _someOtherProperty) {
                     _someOtherProperty = value;
                     NotifyOfPropertyChange(() => SomeOtherProperty);
+                    IsDirty = true;
+                }
+            }
+        }
+
+        public bool AutoUpdateCheck {
+            get { return _autoUpdateCheck; }
+            set {
+                if (_autoUpdateCheck != value) {
+                    _autoUpdateCheck = value;
+                    NotifyOfPropertyChange(() => AutoUpdateCheck);
                     IsDirty = true;
                 }
             }

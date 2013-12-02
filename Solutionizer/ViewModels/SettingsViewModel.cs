@@ -19,6 +19,7 @@ namespace Solutionizer.ViewModels {
         private VisualStudioVersion _visualStudioVersion;
         private bool _showLaunchElevatedButton;
         private bool _showProjectCount;
+        private bool _autoUpdateCheck;
         private bool _includePrereleaseUpdates;
         private SolutionTargetLocation _solutionTargetLocation;
         private string _customTargetFolder;
@@ -53,6 +54,7 @@ namespace Solutionizer.ViewModels {
             SolutionTargetLocation = _settings.SolutionTargetLocation;
             CustomTargetFolder = _settings.CustomTargetFolder;
             CustomTargetSubfolder = _settings.CustomTargetSubfolder;
+            AutoUpdateCheck = _settings.AutoUpdateCheck;
         }
 
         public bool ScanOnStartup {
@@ -155,6 +157,16 @@ namespace Solutionizer.ViewModels {
             }
         }
 
+        public bool AutoUpdateCheck {
+            get { return _autoUpdateCheck; }
+            set {
+                if (_autoUpdateCheck != value) {
+                    _autoUpdateCheck = value;
+                    NotifyOfPropertyChange(() => AutoUpdateCheck);
+                }
+            }
+        }
+
         public bool IncludePrereleaseUpdates {
             get { return _includePrereleaseUpdates; }
             set {
@@ -238,6 +250,7 @@ namespace Solutionizer.ViewModels {
             _settings.VisualStudioVersion = VisualStudioVersion;
             _settings.ShowLaunchElevatedButton = ShowLaunchElevatedButton;
             _settings.ShowProjectCount = ShowProjectCount;
+            _settings.AutoUpdateCheck = AutoUpdateCheck;
             _settings.IncludePrereleaseUpdates = IncludePrereleaseUpdates;
             _settings.SolutionTargetLocation = SolutionTargetLocation;
             _settings.CustomTargetFolder = CustomTargetFolder;
@@ -259,6 +272,7 @@ namespace Solutionizer.ViewModels {
                     VisualStudioVersion != _settings.VisualStudioVersion ||
                     ShowLaunchElevatedButton != _settings.ShowLaunchElevatedButton ||
                     ShowProjectCount != _settings.ShowProjectCount ||
+                    AutoUpdateCheck != _settings.AutoUpdateCheck ||
                     IncludePrereleaseUpdates != _settings.IncludePrereleaseUpdates ||
                     SolutionTargetLocation != _settings.SolutionTargetLocation ||
                     CustomTargetFolder != _settings.CustomTargetFolder ||

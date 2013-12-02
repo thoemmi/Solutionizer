@@ -201,6 +201,12 @@
           ToolTip="If checked, the last used folder will be scanned for projects."/>
 
         <CheckBox 
+          IsChecked="{Binding AutoUpdateCheck}"
+          Margin="0 0 0 8" 
+          Content="Automatically check for updates periodically"
+          ToolTip="If checked, Solutionizer will check for updates once per hour."/>
+        
+        <CheckBox 
           IsChecked="{Binding IncludePrereleaseUpdates}"
           Margin="0 0 0 8" 
           Content="Include pre-release versions in checks for updates."
