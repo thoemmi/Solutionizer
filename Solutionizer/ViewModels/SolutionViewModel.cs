@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -79,8 +80,15 @@ namespace Solutionizer.ViewModels {
             if (elevated) {
                 psi.Verb = "runas";
             }
-            Process.Start(psi);
-            Application.Current.MainWindow.WindowState = WindowState.Minimized;
+            try {
+                Process.Start(psi);
+                Application.Current.MainWindow.WindowState = WindowState.Minimized;
+            } catch (Win32Exception ex) {
+                // if NativeErrorCode = 1223, the user cancelled the UAC dialog
+                if (ex.NativeErrorCode != 1223) {
+                    throw;
+                }
+            }
         }
 
         private void Save() {
