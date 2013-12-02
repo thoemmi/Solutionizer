@@ -78,7 +78,7 @@ namespace Solutionizer.ViewModels {
         private void Launch(bool elevated) {
             InternalSave(null);
             var exePath = VisualStudioHelper.GetVisualStudioExecutable(_settings.VisualStudioVersion);
-            var psi = new ProcessStartInfo(exePath, FileName);
+            var psi = new ProcessStartInfo(exePath, "\"" + FileName + "\"");
             if (elevated) {
                 psi.Verb = "runas";
             }
@@ -114,7 +114,13 @@ namespace Solutionizer.ViewModels {
                 if (!Directory.Exists(targetFolder)) {
                     Directory.CreateDirectory(targetFolder);
                 }
-                FileName = Path.Combine(targetFolder, DateTime.Now.ToString("yyyy-MM-dd_HHmmss")) + ".sln";
+
+                var firstProject = _solutionRoot.Items.OfType<SolutionProject>().FirstOrDefault();
+                if (firstProject != null) {
+                    FileName = Path.Combine(targetFolder, firstProject.Name + " " + DateTime.Now.ToString("yyyy-MM-dd_HHmmss")) + ".sln";
+                } else {
+                    FileName = Path.Combine(targetFolder, DateTime.Now.ToString("yyyy-MM-dd_HHmmss")) + ".sln";
+                }
             }
 
             new SaveSolutionCommand(_settings, FileName, _settings.VisualStudioVersion, this).Execute();
