@@ -32,6 +32,7 @@ namespace Solutionizer.ViewModels {
         private readonly SolutionFolder _solutionRoot = new SolutionFolder(null);
         private SolutionItem _selectedItem;
         private readonly ISettings _settings;
+        private string _fileName;
 
         public SolutionViewModel(ISettings settings, string rootPath, IDictionary<string, Project> projects) {
             _rootPath = rootPath;
@@ -72,14 +73,9 @@ namespace Solutionizer.ViewModels {
         }
 
         private void Launch(bool elevated) {
-            var targetFolder = GetTargetFolder();
-            if (!Directory.Exists(targetFolder)) {
-                Directory.CreateDirectory(targetFolder);
-            }
-            var newFilename = Path.Combine(targetFolder, DateTime.Now.ToString("yyyy-MM-dd_HHmmss")) + ".sln";
-            new SaveSolutionCommand(_settings, newFilename, _settings.VisualStudioVersion, this).Execute();
+            InternalSave(null);
             var exePath = VisualStudioHelper.GetVisualStudioExecutable(_settings.VisualStudioVersion);
-            var psi = new ProcessStartInfo(exePath, newFilename);
+            var psi = new ProcessStartInfo(exePath, FileName);
             if (elevated) {
                 psi.Verb = "runas";
             }
@@ -94,14 +90,32 @@ namespace Solutionizer.ViewModels {
                 DefaultExt = ".sln"
             };
             if (dlg.ShowDialog() == true) {
-                new SaveSolutionCommand(_settings, dlg.FileName, _settings.VisualStudioVersion, this).Execute();
-                IsDirty = false;
+                InternalSave(dlg.FileName);
             }
+        }
+
+        private void InternalSave(string fileName) {
+            if (!String.IsNullOrEmpty(fileName)) {
+                FileName = fileName;
+            }
+
+            if (String.IsNullOrEmpty(FileName)) {
+                var targetFolder = GetTargetFolder();
+                if (!Directory.Exists(targetFolder)) {
+                    Directory.CreateDirectory(targetFolder);
+                }
+                FileName = Path.Combine(targetFolder, DateTime.Now.ToString("yyyy-MM-dd_HHmmss")) + ".sln";
+            }
+
+            new SaveSolutionCommand(_settings, FileName, _settings.VisualStudioVersion, this).Execute();
+            IsDirty = false;
         }
 
         private void Clear() {
             _solutionRoot.Items.Clear();
             SelectedItem = null;
+            FileName = null;
+            IsDirty = false;
             Refresh();
         }
 
@@ -155,6 +169,16 @@ namespace Solutionizer.ViewModels {
 
         public bool ShowProjectCount {
             get { return _settings.ShowProjectCount; }
+        }
+
+        public string FileName {
+            get { return _fileName; }
+            set {
+                if (_fileName != value) {
+                    _fileName = value;
+                    NotifyOfPropertyChange(() => FileName);
+                }
+            }
         }
 
         public void AddProject(Project project) {
