@@ -28,7 +28,7 @@ namespace Solutionizer.Tests {
             Project project;
             _scanningCommand.Projects.TryGetValue(Path.Combine(_testDataPath, "CsTestProject1.csproj"), out project);
 
-            var solution = new SolutionViewModel(_settings, _testDataPath, _scanningCommand.Projects);
+            var solution = new SolutionViewModel(new DummyStatusMessenger(), _settings, _testDataPath, _scanningCommand.Projects);
             solution.AddProject(project);
 
             var targetPath = Path.Combine(_testDataPath, "test.sln");
@@ -50,7 +50,7 @@ namespace Solutionizer.Tests {
             Project project;
             _scanningCommand.Projects.TryGetValue(Path.Combine(_testDataPath, "p2", "CsTestProject2.csproj"), out project);
 
-            var solution = new SolutionViewModel(_settings, _testDataPath, _scanningCommand.Projects);
+            var solution = new SolutionViewModel(new DummyStatusMessenger(), _settings, _testDataPath, _scanningCommand.Projects);
             solution.AddProject(project);
 
             // we need to change the Guid of the reference folder
@@ -76,7 +76,7 @@ namespace Solutionizer.Tests {
             Project project;
             _scanningCommand.Projects.TryGetValue(Path.Combine(_testDataPath, "p3", "sub", "CsTestProject3.csproj"), out project);
 
-            var solution = new SolutionViewModel(_settings, _testDataPath, _scanningCommand.Projects);
+            var solution = new SolutionViewModel(new DummyStatusMessenger(), _settings, _testDataPath, _scanningCommand.Projects);
             solution.AddProject(project);
 
             // we need to change the Guid of the reference folder

@@ -112,6 +112,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Properties\Annotations.cs" />
+    <Compile Include="Services\IStatusMessenger.cs" />
     <Compile Include="ViewModels\AboutViewModel.cs" />
     <Compile Include="ViewModels\FileScanningViewModel.cs" />
     <Compile Include="Infrastructure\BindableSelectedItemBehavior .cs" />

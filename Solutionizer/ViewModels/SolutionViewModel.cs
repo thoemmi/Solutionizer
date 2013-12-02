@@ -20,6 +20,7 @@ namespace Solutionizer.ViewModels {
 
         private static readonly Logger _log = LogManager.GetCurrentClassLogger();
 
+        private readonly IStatusMessenger _statusMessenger;
         private readonly string _rootPath;
         private readonly IDictionary<string, Project> _projects;
         private readonly ICommand _dropCommand;
@@ -35,7 +36,8 @@ namespace Solutionizer.ViewModels {
         private readonly ISettings _settings;
         private string _fileName;
 
-        public SolutionViewModel(ISettings settings, string rootPath, IDictionary<string, Project> projects) {
+        public SolutionViewModel(IStatusMessenger statusMessenger, ISettings settings, string rootPath, IDictionary<string, Project> projects) {
+            _statusMessenger = statusMessenger;
             _rootPath = rootPath;
             _projects = projects;
             _settings = settings;
@@ -116,6 +118,7 @@ namespace Solutionizer.ViewModels {
             }
 
             new SaveSolutionCommand(_settings, FileName, _settings.VisualStudioVersion, this).Execute();
+            _statusMessenger.Show(String.Format("Solution saved as '{0}'.", FileName));
             IsDirty = false;
         }
 
@@ -124,6 +127,7 @@ namespace Solutionizer.ViewModels {
             SelectedItem = null;
             FileName = null;
             IsDirty = false;
+            _statusMessenger.Show("Solution cleared.");
             Refresh();
         }
 
