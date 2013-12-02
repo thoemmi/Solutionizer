@@ -58,8 +58,25 @@ namespace Solutionizer.ViewModels {
             AddProject(project);
         }
 
+        private string GetTargetFolder() {
+            switch (_settings.SolutionTargetLocation) {
+                case SolutionTargetLocation.TempFolder:
+                    return Path.GetTempPath();
+                case SolutionTargetLocation.CustomFolder:
+                    return _settings.CustomTargetFolder;
+                case SolutionTargetLocation.BelowRootPath:
+                    return Path.Combine(_rootPath, _settings.CustomTargetSubfolder);
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+        }
+
         private void Launch(bool elevated) {
-            var newFilename = Path.Combine(Path.GetTempPath(), DateTime.Now.ToString("yyyy-MM-dd_HHmmss")) + ".sln";
+            var targetFolder = GetTargetFolder();
+            if (!Directory.Exists(targetFolder)) {
+                Directory.CreateDirectory(targetFolder);
+            }
+            var newFilename = Path.Combine(targetFolder, DateTime.Now.ToString("yyyy-MM-dd_HHmmss")) + ".sln";
             new SaveSolutionCommand(_settings, newFilename, _settings.VisualStudioVersion, this).Execute();
             var exePath = VisualStudioHelper.GetVisualStudioExecutable(_settings.VisualStudioVersion);
             var psi = new ProcessStartInfo(exePath, newFilename);
