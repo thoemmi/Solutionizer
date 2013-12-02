@@ -92,6 +92,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="AppBootstrapper.cs" />
+    <Compile Include="Commands\CommandProxy.cs" />
     <Compile Include="Commands\SaveSolutionCommand.cs" />
     <Compile Include="CommonAssemblyInfo.cs" />
     <Compile Include="Controls\EllipsisTextBox.cs" />

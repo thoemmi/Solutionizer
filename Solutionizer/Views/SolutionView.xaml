@@ -10,6 +10,7 @@
              xmlns:Infrastructure="clr-namespace:Solutionizer.Infrastructure"
              xmlns:ViewModels="clr-namespace:Solutionizer.ViewModels" xmlns:Views="clr-namespace:Solutionizer.Views"
              xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+             xmlns:Commands="clr-namespace:Solutionizer.Commands"
              d:DataContext="{d:DesignInstance Type=ViewModels:SolutionViewModel}"
              d:DesignHeight="300" d:DesignWidth="300">
   <Grid>
@@ -67,6 +68,14 @@
         VirtualizingStackPanel.VirtualizationMode="Recycling" 
         Helper:DragDropHelper.IsDropTarget="True" 
         Helper:DragDropHelper.DropCommand="{Binding DropCommand}">
+        <TreeView.Resources>
+          <!-- 
+          Though the direct binding of RemoveSelectedItemCommand to InputBindingTrigger did work, it always
+          generates an error. This is because RemoveSelectedItemCommand isn't a dependency property. To fix this
+          we use a proxy as described in http://joyfulwpf.blogspot.de/2009/05/mvvm-commandreference-and-keybinding.html 
+          -->
+          <Commands:CommandProxy x:Key="RemoveSelectedItemCommandProxy" Command="{Binding RemoveSelectedItemCommand}" />
+        </TreeView.Resources>
         <i:Interaction.Behaviors>
           <Infrastructure:BindableSelectedItemBehavior SelectedItem="{Binding SelectedItem}" />
         </i:Interaction.Behaviors>
@@ -75,7 +84,7 @@
             <Infrastructure:InputBindingTrigger.InputBinding>
               <KeyBinding Key="Delete"/>
             </Infrastructure:InputBindingTrigger.InputBinding>
-            <i:InvokeCommandAction Command="{Binding RemoveSelectedItemCommand}" />
+            <i:InvokeCommandAction Command="{StaticResource RemoveSelectedItemCommandProxy}" />
           </Infrastructure:InputBindingTrigger>
         </i:Interaction.Triggers>
       </TreeView>
