@@ -107,7 +107,7 @@
           IsChecked="{Binding DontBuildReferencedProjects}"
           IsEnabled="{Binding IncludeReferencedProjects}"
           Margin="20 0 0 8"
-          Content="Exclude referenced projects from build configurations."
+          Content="Exclude referenced projects from build configurations"
           ToolTip="If checked, referenced projects won't be build&#x0a;automatically in the resulting solution."/>
 
         <StackPanel 
@@ -175,19 +175,19 @@
         <CheckBox 
           IsChecked="{Binding IsFlatMode}"
           Margin="0 0 0 8" 
-          Content="Show projects as flat list."
+          Content="Show projects as flat list"
           ToolTip="If checked, the projects will be presented&#x0a;in a flat list instead of a tree view."/>
 
         <CheckBox 
           IsChecked="{Binding ShowLaunchElevatedButton}"
           Margin="0 0 0 8" 
-          Content="Show &quot;Launch Elevated&quot; button."
+          Content="Show &quot;Launch Elevated&quot; button"
           ToolTip="This button allows to open the created solution&#x0a;inside an elevated instance of Visual Studio."/>
 
         <CheckBox 
           IsChecked="{Binding ShowProjectCount}"
           Margin="0 0 0 8" 
-          Content="Show number of contained projects behind the directory name."
+          Content="Show number of contained projects behind the directory name"
           ToolTip="If checked, the number of contained projects&#x0a;will be displayed behind folders."/>
 
         <TextBlock 
@@ -209,7 +209,7 @@
         <CheckBox 
           IsChecked="{Binding IncludePrereleaseUpdates}"
           Margin="0 0 0 8" 
-          Content="Include pre-release versions in checks for updates."
+          Content="Include pre-release versions in checks for updates"
           ToolTip="If checked, auto-update will also check for pre-release versions."/>
         
       </StackPanel>
