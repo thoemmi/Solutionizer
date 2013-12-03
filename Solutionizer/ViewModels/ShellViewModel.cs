@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
@@ -25,6 +26,7 @@ namespace Solutionizer.ViewModels {
         private readonly ICommand _showSettingsCommand;
         private readonly ICommand _showAboutCommand;
         private readonly ICommand _selectRootPathCommand;
+        private readonly Timer _updateTimer;
         private string _statusMessage;
 
         public ShellViewModel(ISettings settings, IDialogManager dialogManager, IFlyoutManager flyoutManager, IUpdateManager updateManager, IViewModelFactory viewModelFactory) {
@@ -39,9 +41,11 @@ namespace Solutionizer.ViewModels {
                 (sender, args) => AreUpdatesAvailable = _updateManager.Releases != null && _updateManager.Releases.Any(r => r.IsNew && (_settings.IncludePrereleaseUpdates || !r.IsPrerelease));
 
             _showUpdatesCommand = new RelayCommand<bool>(checkForUpdates => _flyoutManager.ShowFlyout(_viewModelFactory.CreateUpdateViewModel(checkForUpdates)));
-            _showSettingsCommand = new RelayCommand(() => _flyoutManager.ShowFlyout(_viewModelFactory.CreateSettingsViewModel()));
+            _showSettingsCommand = new RelayCommand(OnShowSettings);
             _showAboutCommand = new RelayCommand(() => _flyoutManager.ShowFlyout(_viewModelFactory.CreateAboutViewModel()));
             _selectRootPathCommand = new RelayCommand(SelectRootPath);
+
+            _updateTimer = new Timer(_ => _updateManager.CheckForUpdatesAsync(), null, -1, -1);
         }
 
         public string RootPath {
@@ -103,7 +107,18 @@ namespace Solutionizer.ViewModels {
                 LoadProjects(_settings.RootPath);
             }
 
-            Task.Run(() => _updateManager.CheckForUpdatesAsync());
+            if (_settings.AutoUpdateCheck) {
+                _updateTimer.Change(0, 1000 * 60 * 60);
+            }
+        }
+
+        private async void OnShowSettings() {
+            await _flyoutManager.ShowFlyout(_viewModelFactory.CreateSettingsViewModel());
+            if (_settings.AutoUpdateCheck) {
+                _updateTimer.Change(0, 1000 * 60 * 60);
+            } else {
+                _updateTimer.Change(-1, -1);
+            }
         }
 
         public void SelectRootPath() {

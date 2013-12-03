@@ -33,6 +33,7 @@ namespace Solutionizer.Infrastructure {
         }
 
         public async Task CheckForUpdatesAsync() {
+            _log.Debug("Checking for updates.");
             IReadOnlyCollection<ReleaseInfo> newReleases;
             try {
                 newReleases = await _reader.GetReleaseInfosAsync();
@@ -50,7 +51,10 @@ namespace Solutionizer.Infrastructure {
             _releases.ForEach(r => r.IsNew = r.Version > _currentVersion);
             SaveReleases();
             if (_releases.Any(r => r.IsNew)) {
+                _log.Debug("{0} new updates detected.", _releases.Count(r => r.IsNew));
                 OnUpdatesAvailable();
+            } else {
+                _log.Debug("No updates detected.");
             }
         }
 
