@@ -73,12 +73,6 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup />
-  <ItemGroup>
-    <Page Include="Themes\Generic.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
   <Import Project="..\Solutionizer\PreBuild.targets" />
