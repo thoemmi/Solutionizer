@@ -9,6 +9,7 @@ using System.Windows.Input;
 using NLog;
 using Ookii.Dialogs.Wpf;
 using Solutionizer.Commands;
+using Solutionizer.Extensions;
 using Solutionizer.Framework;
 using Solutionizer.Helper;
 using Solutionizer.Models;
@@ -217,6 +218,9 @@ namespace Solutionizer.ViewModels {
                 AddReferencedProjects(project, _settings.ReferenceTreeDepth);
             }
 
+            var projectCount = SolutionItems.Flatten<SolutionItem, SolutionProject, SolutionFolder>(p => p.Items).Count();
+            _statusMessenger.Show(String.Format("{0} projects in the solution.", projectCount));
+
             Refresh();
         }
 
@@ -242,6 +246,7 @@ namespace Solutionizer.ViewModels {
                     solutionFolder.Items.Remove(folder);
                 }
             }
+
             return removed;
         }
 
@@ -317,6 +322,9 @@ namespace Solutionizer.ViewModels {
                     }
                     SelectedItem = index >= 0 ? parentFolder.Items[index] : parentFolder;
                 }
+
+                var projectCount = SolutionItems.Flatten<SolutionItem, SolutionProject, SolutionFolder>(p => p.Items).Count();
+                _statusMessenger.Show(String.Format("{0} projects in the solution.", projectCount));
 
                 Refresh();
             }
