@@ -49,12 +49,6 @@ namespace Solutionizer.Framework {
             };
             flyout.SetBinding(Flyout.WidthProperty, widthBinding);
 
-            var withTitle = viewModel as IWithTitle;
-            if (withTitle != null) {
-                var myBinding = new Binding(PropertyChangedBase.GetMemberName(() => withTitle.Title)) { Source = viewModel };
-                flyout.SetBinding(Flyout.HeaderProperty, myBinding);
-            }
-
             EventHandler closedHandler = null;
             closedHandler = (sender, args) => {
                 viewModel.Closed -= closedHandler;

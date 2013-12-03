@@ -22,7 +22,5 @@
       <Button Command="{Binding ShowFlyoutCommand}">Show Flyout</Button>
       <Button Command="{Binding ShowDialogCommand}">Show Dialog</Button>
     </StackPanel>
-
-    <Framework:DialogsControl ItemsSource="{Binding Dialogs}" />
   </Grid>
 </Controls:MetroWindow>

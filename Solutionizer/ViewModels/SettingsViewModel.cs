@@ -7,7 +7,7 @@ using Solutionizer.Framework;
 using Solutionizer.Services;
 
 namespace Solutionizer.ViewModels {
-    public sealed class SettingsViewModel : DialogViewModel, IOnLoadedHandler, IWithTitle {
+    public sealed class SettingsViewModel : DialogViewModel, IOnLoadedHandler {
         private readonly ISettings _settings;
         private bool _scanOnStartup;
         private bool _simplifyProjectTree;
@@ -33,10 +33,6 @@ namespace Solutionizer.ViewModels {
             _okCommand = new RelayCommand(Ok, () => CanOk);
             _cancelCommand = new RelayCommand(Close);
             _selectSolutionTargetFolderCommand = new RelayCommand(SelectSolutionTargetFolder);
-        }
-
-        public string Title {
-            get { return "Settings"; }
         }
 
         public void OnLoaded() {
