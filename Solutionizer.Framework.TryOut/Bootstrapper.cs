@@ -7,6 +7,7 @@ namespace Solutionizer.Framework.TryOut {
 
             builder.RegisterType<ShellView>();
             builder.RegisterType<ShellViewModel>();
+            builder.RegisterType<DialogManager>().SingleInstance().AsImplementedInterfaces();
             builder.RegisterType<SubView>();
             builder.RegisterType<SubViewModel>();
             builder.RegisterType<MyFlyoutView>();

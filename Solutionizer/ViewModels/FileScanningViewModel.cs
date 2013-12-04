@@ -71,21 +71,17 @@ namespace Solutionizer.ViewModels {
 
         private ScanResult LoadProjects() {
             SetTaskbarItemProgressState(TaskbarItemProgressState.Indeterminate);
+            ProjectFolder projectFolder = null;
             try {
-                ProjectFolder projectFolder = null;
-                try {
-                    var sp = System.Diagnostics.Stopwatch.StartNew();
-                    projectFolder = GetProjects(_path);
-                    _log.Debug("Loading project took {0}", sp.Elapsed);
-                } catch (Exception ex) {
-                    _log.ErrorException("Loading projects from " + _path + " failed", ex);
-                }
-                Task.Delay(TimeSpan.FromSeconds(20), _cancellationToken);
-                return new ScanResult(projectFolder, _projects);
-            }
-            finally {
+                var sp = System.Diagnostics.Stopwatch.StartNew();
+                projectFolder = GetProjects(_path);
+                _log.Debug("Loading project took {0}", sp.Elapsed);
+            } catch (Exception ex) {
+                _log.ErrorException("Loading projects from " + _path + " failed", ex);
+            } finally {
                 SetTaskbarItemProgressState(TaskbarItemProgressState.None);
             }
+            return projectFolder != null ? new ScanResult(projectFolder, _projects) : null;
         }
 
         private static void SetTaskbarItemProgressState(TaskbarItemProgressState state) {

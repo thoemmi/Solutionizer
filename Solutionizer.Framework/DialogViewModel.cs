@@ -6,10 +6,6 @@ namespace Solutionizer.Framework {
         event EventHandler Closed;
     }
 
-    public interface IWithTitle {
-        string Title { get; }
-    }
-
     public abstract class DialogViewModel : PropertyChangedBase, IDialogViewModel {
         private readonly TaskCompletionSource<int> _tcs;
 

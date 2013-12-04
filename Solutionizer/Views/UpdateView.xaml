@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="Solutionizer.Views.UpdateView"
+﻿<Controls:Flyout x:Class="Solutionizer.Views.UpdateView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -10,9 +10,11 @@
              xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
              xmlns:Controls="http://metro.mahapps.com/winfx/xaml/controls"
              mc:Ignorable="d" 
+             Header="{Binding Title}"
+             CloseCommand="{Binding CancelCommand}"
              d:DataContext="{d:DesignInstance ViewModels:UpdateViewModel}"
-             d:DesignHeight="300" d:DesignWidth="300" MaxWidth="800">
-  <UserControl.Resources>
+             d:DesignHeight="300" d:DesignWidth="300">
+  <Controls:Flyout.Resources>
     <ResourceDictionary>
       <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/FlatButton.xaml" />
@@ -28,7 +30,7 @@
         <Setter Property="Foreground" Value="{DynamicResource TextBrush}" />
       </Style>
     </ResourceDictionary>
-  </UserControl.Resources>
+  </Controls:Flyout.Resources>
   <Grid Margin="15">
     <Grid.RowDefinitions>
       <RowDefinition Height="Auto" />
@@ -119,4 +121,4 @@
         Content="Cancel"/>
     </StackPanel>
   </Grid>
-</UserControl>
+</Controls:Flyout>

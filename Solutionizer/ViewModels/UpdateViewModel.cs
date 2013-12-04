@@ -9,7 +9,7 @@ using Solutionizer.Infrastructure;
 using Solutionizer.Services;
 
 namespace Solutionizer.ViewModels {
-    public class UpdateViewModel : DialogViewModel, IOnLoadedHandler, IWithTitle {
+    public class UpdateViewModel : DialogViewModel, IOnLoadedHandler {
         public delegate UpdateViewModel Factory(bool checkForUpdates);
 
         private readonly IUpdateManager _updateManager;
