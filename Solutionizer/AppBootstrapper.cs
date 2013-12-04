@@ -17,6 +17,7 @@ namespace Solutionizer {
             builder.RegisterType<ViewModelFactory>().SingleInstance().As<IViewModelFactory>();
             builder.Register(c => new SettingsProvider()).SingleInstance();
             builder.Register(c => c.Resolve<SettingsProvider>().Settings).As<ISettings>().SingleInstance();
+            builder.RegisterType<GithubReleaseProvider>().SingleInstance().As<IReleaseProvider>();
 
             builder
                 .RegisterAssemblyTypes(GetType().Assembly)

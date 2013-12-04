@@ -40,7 +40,7 @@ namespace Solutionizer.Framework {
                 Converter = new AddDoubleConverter(),
                 ConverterParameter = -150
             };
-            flyout.SetBinding(Flyout.WidthProperty, widthBinding);
+            flyout.SetBinding(FrameworkElement.WidthProperty, widthBinding);
 
             EventHandler closedHandler = null;
             closedHandler = (sender, args) => {

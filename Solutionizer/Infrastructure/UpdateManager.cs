@@ -6,7 +6,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using NLog;
-using Solutionizer.Services;
 
 namespace Solutionizer.Infrastructure {
     public interface IUpdateManager {
@@ -23,10 +22,9 @@ namespace Solutionizer.Infrastructure {
         private readonly IReleaseProvider _reader;
         private readonly List<ReleaseInfo> _releases = new List<ReleaseInfo>();
 
-        public UpdateManager(ISettings settings) {
+        public UpdateManager(IReleaseProvider reader) {
             _currentVersion = AppEnvironment.CurrentVersion;
-            //_reader = new FakeReleaseProvider();
-            _reader = new GithubReleaseProvider(settings);
+            _reader = reader;
 
             _releases = LoadReleases();
             _releases.Sort((r1, r2) => r2.Version.CompareTo(r1.Version));

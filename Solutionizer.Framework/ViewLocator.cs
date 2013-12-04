@@ -21,6 +21,11 @@ namespace Solutionizer.Framework {
             };
         }
 
+        public static object GetViewForViewModel<TViewModel>() {
+            var viewModel = BootstrapperBase.Container.Resolve(typeof(TViewModel));
+            return GetViewForViewModel(viewModel);
+        }
+
         public static object GetViewForViewModel(object viewModel) {
             _log.Debug("View for view model {0} requested", viewModel.GetType());
             var viewType = GetViewTypeFromViewModelType(viewModel.GetType());

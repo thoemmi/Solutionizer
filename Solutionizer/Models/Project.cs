@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Linq.Expressions;
 using System.Threading.Tasks;
 using System.Xml;
 
@@ -53,19 +52,23 @@ namespace Solutionizer.Models {
             var directoryName = Path.GetDirectoryName(_filepath);
 
             var projectReferences = new List<string>();
-            foreach (XmlNode xmlNode in xmlDocument.GetElementsByTagName("ProjectReference")) {
-                projectReferences.Add(Path.GetFullPath(Path.Combine(directoryName, xmlNode.Attributes["Include"].Value)));
+            foreach (var xmlNode in xmlDocument.GetElementsByTagName("ProjectReference").Cast<XmlNode>()) {
+                if (xmlNode.Attributes != null) {
+                    projectReferences.Add(Path.GetFullPath(Path.Combine(directoryName, xmlNode.Attributes["Include"].Value)));
+                }
             }
 
             var assemblyReferences = new List<string>();
-            foreach (XmlNode xmlNode2 in xmlDocument.GetElementsByTagName("Reference")) {
-                var include = xmlNode2.Attributes["Include"].Value;
-                var num = include.IndexOf(',');
-                if (num >= 0) {
-                    include = include.Substring(0, num);
+            foreach (var xmlNode in xmlDocument.GetElementsByTagName("Reference").Cast<XmlNode>()) {
+                if (xmlNode.Attributes != null) {
+                    var include = xmlNode.Attributes["Include"].Value;
+                    var num = include.IndexOf(',');
+                    if (num >= 0) {
+                        include = include.Substring(0, num);
+                    }
+                    //Project.binary_references.Add(text);
+                    assemblyReferences.Add(include.ToLowerInvariant());
                 }
-                //Project.binary_references.Add(text);
-                assemblyReferences.Add(include.ToLowerInvariant());
             }
 
             var isSccBound = false;
@@ -96,6 +99,7 @@ namespace Solutionizer.Models {
                 if (p != null) {
                     try {
                         Microsoft.Build.Evaluation.ProjectCollection.GlobalProjectCollection.UnloadProject(p);
+                        // ReSharper disable once EmptyGeneralCatchClause
                     } catch {
                     }
                 }

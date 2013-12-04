@@ -51,11 +51,11 @@
         Please write an error report.</Hyperlink>
     </TextBlock>
 
-    <Controls:MetroAnimatedSingleRowTabControl Grid.Row="2" Margin="0 10 0 0">
+    <Controls:MetroAnimatedSingleRowTabControl Grid.Row="2" Margin="0 10 0 0" HorizontalAlignment="Left">
       <TabItem Header="License" Padding="0">
         <FlowDocumentScrollViewer       
           MaxWidth="600" 
-          BorderThickness="1" BorderBrush="{DynamicResource PageBorderBrush}">
+          BorderThickness="1" BorderBrush="{DynamicResource GrayBrush8}">
           <FlowDocument>
             <Paragraph FontWeight="Bold">
               Microsoft Public License (MS-PL)
@@ -150,10 +150,11 @@
         </StackPanel>
       </TabItem>
     </Controls:MetroAnimatedSingleRowTabControl>
+    
     <Button 
       HorizontalAlignment="Left"
       Margin="0 16 0 0"
-      Grid.Row="4"
+      Grid.Row="3"
       MinWidth="80"
       Command="{Binding CloseCommand}"
       Content="Ok"/>

@@ -44,7 +44,7 @@ namespace Solutionizer.Infrastructure {
 
         public abstract Task<string> DownloadReleasePackage(ReleaseInfo releaseInfo, Action<int> downloadProgressCallback, CancellationToken cancellationToken);
 
-        public class Release {
+        protected class Release {
             public string Url { get; set; }
             public string AssetsUrl { get; set; }
             public string UploadUrl { get; set; }

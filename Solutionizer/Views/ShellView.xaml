@@ -137,12 +137,12 @@
       </Border>
 
       <GridSplitter 
-        Grid.Column="1" Width="6" Background="Transparent" ShowsPreview="true" 
+        Grid.Row="0" Grid.Column="1" Width="6" Background="Transparent" ShowsPreview="true" 
         HorizontalAlignment="Center" VerticalAlignment="Stretch" />
 
       <Framework:ViewModelPresenter 
         Margin="0 3 3 3" 
-        Grid.Column="2"  
+        Grid.Row="0" Grid.Column="2"  
         ViewModel="{Binding Solution}"/>
       
       <TextBlock 
