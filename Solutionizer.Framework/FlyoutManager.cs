@@ -3,14 +3,12 @@ using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Data;
-using Autofac;
 using MahApps.Metro.Controls;
 using Solutionizer.Framework.Converters;
 
 namespace Solutionizer.Framework {
     public interface IFlyoutManager {
         Task ShowFlyout(DialogViewModel viewModel);
-        Task ShowFlyout<TViewModel>() where TViewModel : DialogViewModel;
         Task<TResult> ShowFlyout<TResult>(DialogViewModel<TResult> viewModel);
     }
 
@@ -23,11 +21,6 @@ namespace Solutionizer.Framework {
         public Task<TResult> ShowFlyout<TResult>(DialogViewModel<TResult> viewModel) {
             ShowFlyoutInternal(viewModel);
             return viewModel.Task;
-        }
-
-        public Task ShowFlyout<TViewModel>() where TViewModel : DialogViewModel {
-            var viewModel = BootstrapperBase.Container.Resolve<TViewModel>();
-            return ShowFlyout(viewModel);
         }
 
         private void ShowFlyoutInternal(IDialogViewModel viewModel) {
