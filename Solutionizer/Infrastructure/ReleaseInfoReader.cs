@@ -167,19 +167,17 @@ namespace Solutionizer.Infrastructure {
             });
         }
 
-        public override Task<string> DownloadReleasePackage(ReleaseInfo releaseInfo, Action<int> downloadProgressCallback, CancellationToken cancellationToken) {
-            return Task.Run(() => {
-                for (var i = 0; i < 50; ++i) {
-                    if (downloadProgressCallback != null) {
-                        downloadProgressCallback(i*2);
-                    }
-                    if (cancellationToken.IsCancellationRequested) {
-                        return null;
-                    }
-                    Thread.Sleep(100);
+        public async override Task<string> DownloadReleasePackage(ReleaseInfo releaseInfo, Action<int> downloadProgressCallback, CancellationToken cancellationToken) {
+            for (var i = 0; i < 50; ++i) {
+                if (downloadProgressCallback != null) {
+                    downloadProgressCallback(i*2);
                 }
-                return String.Empty;
-            });
+                if (cancellationToken.IsCancellationRequested) {
+                    return null;
+                }
+                await Task.Delay(100, cancellationToken);
+            }
+            return String.Empty;
         }
     }
 
