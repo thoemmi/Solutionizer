@@ -18,6 +18,7 @@ namespace Solutionizer.ViewModels {
         private readonly ReleaseInfo _releaseInfo;
         private readonly ICommand _cancelCommand;
         private int _progress;
+        private string _progressText;
         private bool _isPreparingDownload;
 
         public UpdateDownloadViewModel(IUpdateManager updateManager, ReleaseInfo releaseInfo) {
@@ -38,6 +39,7 @@ namespace Solutionizer.ViewModels {
             string filename;
             try {
                 _log.Debug("Downloading update");
+                ProgressText = "Downloading package from\n" + _releaseInfo.DownloadUrl;
                 filename = await _updateManager.DownloadReleaseAsync(
                     _releaseInfo, 
                     progress => {
@@ -67,6 +69,16 @@ namespace Solutionizer.ViewModels {
                 if (value != _progress) {
                     _progress = value;
                     NotifyOfPropertyChange(() => Progress);
+                }
+            }
+        }
+
+        public string ProgressText {
+            get { return _progressText; }
+            set {
+                if (_progressText != value) {
+                    _progressText = value;
+                    NotifyOfPropertyChange(() => ProgressText);
                 }
             }
         }
