@@ -21,7 +21,7 @@ namespace Solutionizer.Framework {
             }
 
             var firstMetroWindow = Application.Current.Windows.OfType<MetroWindow>().First();
-            await firstMetroWindow.ShowMetroDialogAsync(dialog.Title, dialog);
+            await firstMetroWindow.ShowMetroDialogAsync(dialog);
             await viewModel.Task;
             await firstMetroWindow.HideMetroDialogAsync(dialog);
         }
@@ -35,7 +35,7 @@ namespace Solutionizer.Framework {
             }
 
             var firstMetroWindow = Application.Current.Windows.OfType<MetroWindow>().First();
-            await firstMetroWindow.ShowMetroDialogAsync(dialog.Title, dialog);
+            await firstMetroWindow.ShowMetroDialogAsync(dialog);
             var result = await viewModel.Task;
             await firstMetroWindow.HideMetroDialogAsync(dialog);
 
