@@ -29,6 +29,7 @@ namespace Solutionizer.Infrastructure {
             _reader = new GithubReleaseProvider(settings);
 
             _releases = LoadReleases();
+            _releases.Sort((r1, r2) => r2.Version.CompareTo(r1.Version));
             _releases.ForEach(r => r.IsNew = r.Version > _currentVersion);
         }
 
@@ -48,6 +49,7 @@ namespace Solutionizer.Infrastructure {
             }
 
             _releases.AddRange(newReleases);
+            _releases.Sort((r1, r2) => r2.Version.CompareTo(r1.Version));
             _releases.ForEach(r => r.IsNew = r.Version > _currentVersion);
             SaveReleases();
             if (_releases.Any(r => r.IsNew)) {
