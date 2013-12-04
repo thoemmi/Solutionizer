@@ -10,10 +10,10 @@
              xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
              xmlns:Controls="http://metro.mahapps.com/winfx/xaml/controls"
              mc:Ignorable="d" 
-                 Header="{Binding Title}"
-                 CloseCommand="{Binding CancelCommand}"
+             Header="{Binding Title}"
+             CloseCommand="{Binding CancelCommand}"
              d:DataContext="{d:DesignInstance ViewModels:UpdateViewModel}"
-             d:DesignHeight="300" d:DesignWidth="300" MaxWidth="800">
+             d:DesignHeight="300" d:DesignWidth="300">
   <Controls:Flyout.Resources>
     <ResourceDictionary>
       <ResourceDictionary.MergedDictionaries>
