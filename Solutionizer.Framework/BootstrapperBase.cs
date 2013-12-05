@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Threading;
 using Autofac;
 using NLog;
 using NLog.Config;
@@ -93,9 +94,20 @@ namespace Solutionizer.Framework {
         }
     }
 
-    public abstract class BootstrapperBase<TViewModel> : BootstrapperBase {
+    public abstract class BootstrapperBase<TViewModel> : BootstrapperBase, IUiExecution {
+        private Window _window;
+        protected override void ConfigureContainer(ContainerBuilder builder) {
+            base.ConfigureContainer(builder);
+            builder.RegisterInstance(this).As<IUiExecution>();
+        }
+
         protected override void OnStartup(object sender, StartupEventArgs e) {
-            Container.Resolve<WindowManager>().ShowWindow<TViewModel>();
+            _window = Container.Resolve<WindowManager>().ShowWindow<TViewModel>();
+        }
+
+        public void Execute(Action action) {
+            var dispatcher = _window != null ? _window.Dispatcher : Dispatcher.CurrentDispatcher;
+            dispatcher.Invoke(action);
         }
     }
 }
