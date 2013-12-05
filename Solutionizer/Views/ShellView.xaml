@@ -9,13 +9,14 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:ViewModels="clr-namespace:Solutionizer.ViewModels"
         xmlns:Framework="clr-namespace:Solutionizer.Framework;assembly=Solutionizer.Framework"
-        mc:Ignorable="d"
+        xmlns:Views="clr-namespace:Solutionizer.Views"
+        mc:Ignorable="d" 
         Infrastructure:WindowStatePersistence.Settings="{Binding Settings}"  
         TextOptions.TextFormattingMode="Display"
         SnapsToDevicePixels="true" 
         Title="{Binding Title}" ShowTitleBar="False"
         ResizeMode="CanResizeWithGrip"
-        UseLayoutRounding="True" 
+        UseLayoutRounding="True" x:Name="Window"
                       Style="{DynamicResource CleanWindowStyleKey}"
         Icon="/Solutionizer;component/Logo.ico" d:DataContext="{d:DesignInstance ViewModels:ShellViewModel}">
 
@@ -81,10 +82,21 @@
         ToolTip="Change the root folder"
         FontWeight="Bold" FontSize="20" Margin="0 5 0 0" Padding="5 0 5 0">
         <i:Interaction.Triggers>
-          <i:EventTrigger EventName="PreviewMouseDown">
+          <i:EventTrigger EventName="MouseLeftButtonDown" >
             <i:InvokeCommandAction Command="{Binding SelectRootPathCommand}" />
           </i:EventTrigger>
         </i:Interaction.Triggers>
+        <Label.ContextMenu>
+          <ContextMenu ItemsSource="{Binding Path=MostRecentUsedFolders}" DataContext="{Binding PlacementTarget.DataContext, RelativeSource={RelativeSource Self}}">
+            <ContextMenu.ItemContainerStyle>
+              <Style TargetType="MenuItem" BasedOn="{StaticResource MetroMenuItem}">
+                <Setter Property="Header" Value="{Binding}"/>
+                <Setter Property="Command" Value="{Binding DataContext.SetRootPathCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Views:ShellView}}"/>
+                <Setter Property="CommandParameter" Value="{Binding}"/>
+              </Style>
+            </ContextMenu.ItemContainerStyle>
+          </ContextMenu>
+        </Label.ContextMenu>
         <Label.Style>
           <Style TargetType="Label">
             <Style.Setters>

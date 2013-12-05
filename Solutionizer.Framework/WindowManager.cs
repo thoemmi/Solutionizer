@@ -2,9 +2,10 @@
 
 namespace Solutionizer.Framework {
     public class WindowManager {
-        public void ShowWindow<TViewModel>() {
+        public Window ShowWindow<TViewModel>() {
             var view = (Window)ViewLocator.GetViewForViewModel<TViewModel>();
             view.Show();
+            return view;
         }
     }
 }

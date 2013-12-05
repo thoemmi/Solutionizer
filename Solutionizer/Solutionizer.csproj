@@ -30,6 +30,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <Prefer32Bit>false</Prefer32Bit>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
     <PlatformTarget>x86</PlatformTarget>
@@ -113,6 +114,7 @@
     </Compile>
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="Services\IStatusMessenger.cs" />
+    <Compile Include="Services\MostRecentUsedFoldersRepository.cs" />
     <Compile Include="ViewModels\AboutViewModel.cs" />
     <Compile Include="ViewModels\FileScanningViewModel.cs" />
     <Compile Include="Infrastructure\BindableSelectedItemBehavior .cs" />

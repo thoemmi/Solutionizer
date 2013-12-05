@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Windows;
@@ -15,6 +17,7 @@ namespace Solutionizer.ViewModels {
         private readonly IFlyoutManager _flyoutManager;
         private readonly IUpdateManager _updateManager;
         private readonly IViewModelFactory _viewModelFactory;
+        private readonly IMostRecentUsedFoldersRepository _mostRecentUsedFoldersRepository;
         private readonly ProjectRepositoryViewModel _projectRepository;
         private SolutionViewModel _solution;
         private string _rootPath;
@@ -24,15 +27,17 @@ namespace Solutionizer.ViewModels {
         private readonly ICommand _showSettingsCommand;
         private readonly ICommand _showAboutCommand;
         private readonly ICommand _selectRootPathCommand;
+        private readonly ICommand _setRootPathCommand;
         private readonly Timer _updateTimer;
         private string _statusMessage;
 
-        public ShellViewModel(ISettings settings, IDialogManager dialogManager, IFlyoutManager flyoutManager, IUpdateManager updateManager, IViewModelFactory viewModelFactory) {
+        public ShellViewModel(ISettings settings, IDialogManager dialogManager, IFlyoutManager flyoutManager, IUpdateManager updateManager, IViewModelFactory viewModelFactory, IMostRecentUsedFoldersRepository mostRecentUsedFoldersRepository) {
             _settings = settings;
             _dialogManager = dialogManager;
             _flyoutManager = flyoutManager;
             _updateManager = updateManager;
             _viewModelFactory = viewModelFactory;
+            _mostRecentUsedFoldersRepository = mostRecentUsedFoldersRepository;
 
             _projectRepository = _viewModelFactory.CreateProjectRepositoryViewModel(new RelayCommand<ProjectViewModel>(projectViewModel => _solution.AddProject(projectViewModel.Project)));
             _updateManager.UpdatesAvailable +=
@@ -42,6 +47,7 @@ namespace Solutionizer.ViewModels {
             _showSettingsCommand = new RelayCommand(OnShowSettings);
             _showAboutCommand = new RelayCommand(() => _flyoutManager.ShowFlyout(_viewModelFactory.CreateAboutViewModel()));
             _selectRootPathCommand = new RelayCommand(SelectRootPath);
+            _setRootPathCommand = new RelayCommand<string>(LoadProjects, path => !String.Equals(path, RootPath));
 
             _updateTimer = new Timer(_ => _updateManager.CheckForUpdatesAsync(), null, -1, -1);
         }
@@ -64,6 +70,10 @@ namespace Solutionizer.ViewModels {
                 _title = value;
                 NotifyOfPropertyChange(() => Title);
             }
+        }
+
+        public ObservableCollection<string> MostRecentUsedFolders {
+            get { return _mostRecentUsedFoldersRepository.Folders; }
         }
 
         public ProjectRepositoryViewModel ProjectRepository {
@@ -100,8 +110,15 @@ namespace Solutionizer.ViewModels {
             get { return _selectRootPathCommand; }
         }
 
+        public ICommand SetRootPathCommand {
+            get { return _setRootPathCommand; }
+        }
+
         public void OnLoaded() {
-            if (_settings.ScanOnStartup) {
+            var args = Environment.GetCommandLineArgs();
+            if (args.Length > 1 && Directory.Exists(args[1])) {
+                LoadProjects(args[1]);
+            } else if (_settings.ScanOnStartup) {
                 LoadProjects(_settings.RootPath);
             }
 
@@ -124,7 +141,6 @@ namespace Solutionizer.ViewModels {
                 SelectedPath = _settings.RootPath
             };
             if (dlg.ShowDialog(Application.Current.MainWindow) == true) {
-                _settings.RootPath = dlg.SelectedPath;
                 LoadProjects(dlg.SelectedPath);
             }
         }
@@ -155,8 +171,10 @@ namespace Solutionizer.ViewModels {
             var result = await _dialogManager.ShowDialog(fileScanningViewModel);
 
             if (result != null) {
+                _settings.RootPath = path;
                 _projectRepository.RootPath = path;
                 _projectRepository.RootFolder = result.ProjectFolder;
+                _mostRecentUsedFoldersRepository.SetCurrentFolder(path);
                 Solution = _viewModelFactory.CreateSolutionViewModel(path, result.Projects);
                 Show(String.Format("{0} projects loaded.", result.Projects.Count));
             } else {
