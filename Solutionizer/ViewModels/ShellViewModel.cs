@@ -1,6 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Windows;
@@ -115,7 +115,10 @@ namespace Solutionizer.ViewModels {
         }
 
         public void OnLoaded() {
-            if (_settings.ScanOnStartup) {
+            var args = Environment.GetCommandLineArgs();
+            if (args.Length > 1 && Directory.Exists(args[1])) {
+                LoadProjects(args[1]);
+            } else if (_settings.ScanOnStartup) {
                 LoadProjects(_settings.RootPath);
             }
 

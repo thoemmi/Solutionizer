@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
+using System.Reflection;
+using System.Windows;
+using System.Windows.Shell;
 using Newtonsoft.Json;
 using NLog;
 using Solutionizer.Framework;
@@ -100,7 +103,30 @@ namespace Solutionizer.Services {
                 _fileSystemWatcher.EnableRaisingEvents = true;
             }
 
+            UpdateJumpList();
             UpdateMruFolders();
         }
+
+        private void UpdateJumpList() {
+            var jumpList = JumpList.GetJumpList(Application.Current) ?? new JumpList();
+            jumpList.ShowRecentCategory = true;
+
+            // Remove JumpTasks for folders,which are not in the MRU list anymore
+            //jumpList.JumpItems.RemoveAll(item => item is JumpTask && !_folders.Any(path => String.Equals(path, ((JumpTask)item).Title, StringComparison.OrdinalIgnoreCase)));
+
+            // add JumpTasks for folders, which do not exist already
+            foreach (var folder in _folders.Where(f => !jumpList.JumpItems.OfType<JumpTask>().Any(item => String.Equals(f, item.Title, StringComparison.OrdinalIgnoreCase)))) {
+                var jumpTask = new JumpTask {
+                    ApplicationPath = Assembly.GetExecutingAssembly().Location,
+                    Arguments = folder,
+                    IconResourcePath = @"C:\Windows\System32\shell32.dll",
+                    IconResourceIndex = 3,
+                    Title = folder,
+                    CustomCategory = "Recent folders"
+                };
+                JumpList.AddToRecentCategory(jumpTask);
+            }
+
+            jumpList.Apply();        }
     }
 }
