@@ -18,6 +18,7 @@ namespace Solutionizer {
             builder.Register(c => new SettingsProvider()).SingleInstance();
             builder.Register(c => c.Resolve<SettingsProvider>().Settings).As<ISettings>().SingleInstance();
             builder.RegisterType<GithubReleaseProvider>().SingleInstance().As<IReleaseProvider>();
+            builder.RegisterType<MostRecentUsedFoldersRepository>().SingleInstance().As<IMostRecentUsedFoldersRepository>();
 
             builder
                 .RegisterAssemblyTypes(GetType().Assembly)
