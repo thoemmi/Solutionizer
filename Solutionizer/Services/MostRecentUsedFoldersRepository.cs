@@ -9,7 +9,7 @@ using Solutionizer.Infrastructure;
 
 namespace Solutionizer.Services {
     public interface IMostRecentUsedFoldersRepository {
-        void AddFolder(string folder);
+        void SetCurrentFolder(string folder);
         ObservableCollection<string> Folders { get; }
     }
 
@@ -18,7 +18,9 @@ namespace Solutionizer.Services {
         
         private const int LENGTH = 10;
         private readonly string _mruFile;
-        private readonly ObservableCollection<string> _folders = new ObservableCollection<string>();
+        private string _currentFolder;
+        private readonly List<string> _folders = new List<string>();
+        private readonly ObservableCollection<string> _foldersExceptCurrent = new ObservableCollection<string>();
 
         public MostRecentUsedFoldersRepository() {
             _mruFile = Path.Combine(AppEnvironment.DataFolder, "mru.json");
@@ -34,18 +36,27 @@ namespace Solutionizer.Services {
                     foreach (var folder in folders) {
                         _folders.Add(folder);
                     }
+                    UpdateMruFolders();
                 } 
             }
             catch (Exception e) {
-                _log.ErrorException("Loading settings from " + _mruFile + " failed", e);
+                _log.ErrorException("Loading most recent used folders from " + _mruFile + " failed", e);
+            }
+        }
+
+        private void UpdateMruFolders() {
+            _foldersExceptCurrent.Clear();
+            foreach (var folder in _folders.Where(f => !String.Equals(f, _currentFolder))) {
+                _foldersExceptCurrent.Add(folder);
             }
         }
 
         public ObservableCollection<string> Folders {
-            get { return _folders; }
+            get { return _foldersExceptCurrent; }
         }
 
-        public void AddFolder(string folder) {
+        public void SetCurrentFolder(string folder) {
+            _currentFolder = folder;
             _folders.Remove(folder);
             _folders.Insert(0, folder);
             while (_folders.Count > LENGTH) {
@@ -60,6 +71,8 @@ namespace Solutionizer.Services {
             catch (Exception e) {
                 _log.ErrorException("Saving mru folder list failed", e);
             }
+
+            UpdateMruFolders();
         }
     }
 }

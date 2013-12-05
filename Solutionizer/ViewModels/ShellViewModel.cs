@@ -171,7 +171,7 @@ namespace Solutionizer.ViewModels {
                 _settings.RootPath = path;
                 _projectRepository.RootPath = path;
                 _projectRepository.RootFolder = result.ProjectFolder;
-                _mostRecentUsedFoldersRepository.AddFolder(path);
+                _mostRecentUsedFoldersRepository.SetCurrentFolder(path);
                 Solution = _viewModelFactory.CreateSolutionViewModel(path, result.Projects);
                 Show(String.Format("{0} projects loaded.", result.Projects.Count));
             } else {
