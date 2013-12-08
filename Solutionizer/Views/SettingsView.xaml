@@ -93,16 +93,13 @@
             VerticalAlignment="Center" 
             Margin="0 0 8 0"
             Text="Tree depth:"/>
-          <ComboBox SelectedItem="{Binding ReferenceTreeDepth}" Width="60" ToolTip="Specifies the depth of referenced projects&#x0a;which should be added to the solution.">
-            <ComboBox.Items>
-              <System:Int32>1</System:Int32>
-              <System:Int32>2</System:Int32>
-              <System:Int32>3</System:Int32>
-              <System:Int32>4</System:Int32>
-              <System:Int32>5</System:Int32>
-              <System:Int32>6</System:Int32>
-            </ComboBox.Items>
-          </ComboBox>
+          <Controls:NumericUpDown
+            Minimum="1"
+            Maximum="10"
+            Value="{Binding ReferenceTreeDepth}"
+            Width="70" TextAlignment="Right"
+            ToolTip="Specifies the depth of referenced projects&#x0a;which should be added to the solution."
+            />
         </StackPanel>
 
         <CheckBox
