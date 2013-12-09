@@ -6,7 +6,7 @@ namespace Solutionizer.Framework {
         event EventHandler Closed;
     }
 
-    public abstract class DialogViewModel : PropertyChangedBase, IDialogViewModel {
+    public abstract class DialogViewModel : ValidationPropertyChangedBase, IDialogViewModel {
         private readonly TaskCompletionSource<int> _tcs;
 
         protected DialogViewModel() {
@@ -29,7 +29,7 @@ namespace Solutionizer.Framework {
         public event EventHandler Closed;
     }
 
-    public abstract class DialogViewModel<TResult> : PropertyChangedBase, IDialogViewModel {
+    public abstract class DialogViewModel<TResult> : ValidationPropertyChangedBase, IDialogViewModel {
         private readonly TaskCompletionSource<TResult> _tcs;
 
         protected DialogViewModel() {
