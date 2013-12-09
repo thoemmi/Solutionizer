@@ -57,27 +57,28 @@
       <ItemsControl ItemsSource="{Binding Releases}">
         <ItemsControl.ItemTemplate>
           <DataTemplate DataType="Infrastructure:ReleaseInfo">
-              <Grid Margin="0 0 0 20">
-                <Grid.RowDefinitions>
-                  <RowDefinition Height="Auto" />
-                  <RowDefinition Height="Auto" />
-                  <RowDefinition Height="Auto" />
-                </Grid.RowDefinitions>
-                
-                <Rectangle 
+            <Grid Margin="0 3 6 3" Background="{DynamicResource GrayBrush10}">
+              <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+              </Grid.RowDefinitions>
+
+              <Rectangle 
                   Grid.RowSpan="3" 
+                  Margin="0"
                   HorizontalAlignment="Left" Width="4" 
                   StrokeThickness="0"
                   Fill="{DynamicResource HighlightBrush}"
                   Visibility="{Binding IsNew, Converter={StaticResource BooleanToVisibilityConverter}}"/>
-                
-                <TextBlock 
+
+              <TextBlock 
                   Grid.Row="0" Grid.Column="0" 
-                  Margin="10 0 0 0" Foreground="{DynamicResource TextBrush}"
+                  Margin="10 0 3 0" Foreground="{DynamicResource TextBrush}"
                   FontSize="20" FontWeight="Bold"
                   Text="{Binding Path=Name}"/>
               
-                <TextBlock Foreground="{DynamicResource MenuItemDisabledBrush}" Grid.Row="1" Margin="10 0 0 4">
+                <TextBlock Foreground="{DynamicResource MenuItemDisabledBrush}" Grid.Row="1" Margin="10 0 3 3">
                   <Run Text="Version "/><TextBlock Text="{Binding Version}"/><TextBlock Text=" (Prerelease)" Visibility="{Binding IsPrerelease, Converter={StaticResource BooleanToVisibilityConverter}}"/><Run Text=", published"/>
                   <Run Text="{Binding PublishedAt, StringFormat=d, ConverterCulture={x:Static gl:CultureInfo.CurrentCulture}}" /><Run Text="," />
                   <Hyperlink NavigateUri="{Binding HtmlUrl}" TextDecorations="None" ToolTip="Open release notes in web browser">
@@ -90,7 +91,7 @@
                   </Hyperlink>
                 </TextBlock>
               
-                <FlowDocumentScrollViewer Margin="10 0 0 0"
+                <FlowDocumentScrollViewer Margin="10 3 3 6"
                   Grid.Row="2" Grid.Column="0"
                   VerticalScrollBarVisibility="Hidden"
                   HorizontalScrollBarVisibility="Hidden"
