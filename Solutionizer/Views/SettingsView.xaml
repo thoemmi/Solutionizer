@@ -80,7 +80,7 @@
             Margin="0 0 8 0"
             Text="Folder name:"/>
           <TextBox 
-            Text="{Binding ReferenceFolderName}"
+            Text="{Binding ReferenceFolderName, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
             Width="200"
             ToolTip="Specify the name of the solution folder, where referenced projects&#x0a;should be added to. The folder structure will be preserved&#x0a;underneath this folder."/>
         </StackPanel>
@@ -140,7 +140,7 @@
             EllipsisPlacement="Path"
             Margin="8 0 0 0"
             IsReadOnly="True" 
-            Text="{Binding CustomTargetFolder}"
+            Text="{Binding CustomTargetFolder, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
             Width="300"
             IsEnabled="{Binding SolutionTargetLocation, Converter={StaticResource EnumBooleanConverter}, ConverterParameter=CustomFolder}"
             Controls:TextboxHelper.ButtonCommand="{Binding SelectSolutionTargetFolderCommand}"
@@ -157,7 +157,7 @@
             IsChecked="{Binding SolutionTargetLocation, Converter={StaticResource EnumBooleanConverter}, ConverterParameter=BelowRootPath}"/>
           <TextBox 
             Margin="8 0 0 0" Width="200"
-            Text="{Binding CustomTargetSubfolder}"
+            Text="{Binding CustomTargetSubfolder, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
             IsEnabled="{Binding SolutionTargetLocation, Converter={StaticResource EnumBooleanConverter}, ConverterParameter=BelowRootPath}" />
         </StackPanel>
 

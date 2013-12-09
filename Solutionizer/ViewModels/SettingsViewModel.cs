@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Linq.Expressions;
+using System.Linq;
 using System.Windows;
 using System.Windows.Input;
 using Ookii.Dialogs.Wpf;
@@ -78,6 +78,7 @@ namespace Solutionizer.ViewModels {
             set {
                 if (_includeReferencedProjects != value) {
                     _includeReferencedProjects = value;
+                    ValidateReferenceFolderName();
                     NotifyOfPropertyChange(() => IncludeReferencedProjects);
                 }
             }
@@ -88,9 +89,30 @@ namespace Solutionizer.ViewModels {
             set {
                 if (_referenceFolderName != value) {
                     _referenceFolderName = value;
+                    ValidateReferenceFolderName();
                     NotifyOfPropertyChange(() => ReferenceFolderName);
                 }
             }
+        }
+
+        private void ValidateReferenceFolderName() {
+            Validate(
+                !IncludeReferencedProjects || !String.IsNullOrEmpty(ReferenceFolderName), 
+                () => ReferenceFolderName, 
+                "Folder name must not be empty.");
+
+            Validate(
+                !IncludeReferencedProjects || IsValidFileName(ReferenceFolderName), 
+                () => ReferenceFolderName, 
+                "The folder name contains invalid characters.");
+        }
+
+        private bool IsValidFileName(string s) {
+            if (String.IsNullOrEmpty(s)) {
+                return false;
+            }
+            var invalidPathChars = System.IO.Path.GetInvalidFileNameChars();
+            return !invalidPathChars.Any(s.Contains);
         }
 
         public int ReferenceTreeDepth {
@@ -178,6 +200,7 @@ namespace Solutionizer.ViewModels {
             set {
                 if (_solutionTargetLocation != value) {
                     _solutionTargetLocation = value;
+                    ValidateTargetFolder();
                     NotifyOfPropertyChange(() => SolutionTargetLocation);
                 }
             }
@@ -188,6 +211,7 @@ namespace Solutionizer.ViewModels {
             set {
                 if (_customTargetFolder != value) {
                     _customTargetFolder = value;
+                    ValidateTargetFolder();
                     NotifyOfPropertyChange(() => CustomTargetFolder);
                 }
             }
@@ -211,20 +235,29 @@ namespace Solutionizer.ViewModels {
             set {
                 if (_customTargetSubfolder != value) {
                     _customTargetSubfolder = value;
+                    ValidateTargetFolder();
                     NotifyOfPropertyChange(() => CustomTargetSubfolder);
                 }
             }
         }
 
-        protected override void NotifyOfPropertyChange(string propertyName = null) {
-            base.NotifyOfPropertyChange(propertyName);
+        private void ValidateTargetFolder() {
+            Validate(
+                SolutionTargetLocation != SolutionTargetLocation.CustomFolder || !String.IsNullOrEmpty(CustomTargetFolder),
+                () => CustomTargetFolder,
+                "You must specify a folder."
+                );
 
-            // if any property changed that is not CanOk, we want the UI to evaluate that property
-            Expression<Func<bool>> property = () => CanOk;
-            var canOkName = GetMemberInfo(property).Name;
-            if (propertyName != canOkName) {
-                NotifyOfPropertyChange(property);
-            }
+            Validate(
+                SolutionTargetLocation != SolutionTargetLocation.BelowRootPath || !String.IsNullOrEmpty(CustomTargetSubfolder),
+                () => CustomTargetSubfolder,
+                "Folder name must not be empty.");
+
+            Validate(
+                SolutionTargetLocation != SolutionTargetLocation.BelowRootPath || IsValidFileName(CustomTargetSubfolder),
+                () => CustomTargetSubfolder,
+                "The folder name contains invalid characters.");
+
         }
 
         public ICommand OkCommand {
@@ -258,21 +291,22 @@ namespace Solutionizer.ViewModels {
         public bool CanOk {
             get {
                 return
-                    ScanOnStartup != _settings.ScanOnStartup ||
-                    SimplifyProjectTree != _settings.SimplifyProjectTree ||
-                    IncludeReferencedProjects != _settings.IncludeReferencedProjects ||
-                    ReferenceFolderName != _settings.ReferenceFolderName ||
-                    ReferenceTreeDepth != _settings.ReferenceTreeDepth ||
-                    DontBuildReferencedProjects != _settings.DontBuildReferencedProjects ||
-                    IsFlatMode != _settings.IsFlatMode ||
-                    VisualStudioVersion != _settings.VisualStudioVersion ||
-                    ShowLaunchElevatedButton != _settings.ShowLaunchElevatedButton ||
-                    ShowProjectCount != _settings.ShowProjectCount ||
-                    AutoUpdateCheck != _settings.AutoUpdateCheck ||
-                    IncludePrereleaseUpdates != _settings.IncludePrereleaseUpdates ||
-                    SolutionTargetLocation != _settings.SolutionTargetLocation ||
-                    CustomTargetFolder != _settings.CustomTargetFolder ||
-                    CustomTargetSubfolder != _settings.CustomTargetSubfolder;
+                    !HasErrors && (
+                        ScanOnStartup != _settings.ScanOnStartup ||
+                        SimplifyProjectTree != _settings.SimplifyProjectTree ||
+                        IncludeReferencedProjects != _settings.IncludeReferencedProjects ||
+                        ReferenceFolderName != _settings.ReferenceFolderName ||
+                        ReferenceTreeDepth != _settings.ReferenceTreeDepth ||
+                        DontBuildReferencedProjects != _settings.DontBuildReferencedProjects ||
+                        IsFlatMode != _settings.IsFlatMode ||
+                        VisualStudioVersion != _settings.VisualStudioVersion ||
+                        ShowLaunchElevatedButton != _settings.ShowLaunchElevatedButton ||
+                        ShowProjectCount != _settings.ShowProjectCount ||
+                        AutoUpdateCheck != _settings.AutoUpdateCheck ||
+                        IncludePrereleaseUpdates != _settings.IncludePrereleaseUpdates ||
+                        SolutionTargetLocation != _settings.SolutionTargetLocation ||
+                        CustomTargetFolder != _settings.CustomTargetFolder ||
+                        CustomTargetSubfolder != _settings.CustomTargetSubfolder);
             }
         }
     }
