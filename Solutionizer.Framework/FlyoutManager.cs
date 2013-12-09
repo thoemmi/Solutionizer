@@ -29,6 +29,7 @@ namespace Solutionizer.Framework {
             var flyout = view as Flyout ?? new Flyout { Content = view };
             flyout.IsOpen = false;
             flyout.Position = Position.Right;
+            flyout.IsModal = true;
             view.HorizontalAlignment = HorizontalAlignment.Left;
 
             var widthBinding = new Binding {
