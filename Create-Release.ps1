@@ -1,5 +1,5 @@
 ﻿$SolutionDir = split-path -parent $PSCommandPath
-$wixdir = Join-Path (Join-Path $SolutionDir "assets") "wix.3.7"
+$wixdir = Join-Path (Join-Path $SolutionDir "assets") "wix.3.8"
 $TargetDir = Join-Path $SolutionDir "publish"
 $WxsFile = Join-Path $SolutionDir "Solutionizer.wxs"
 
