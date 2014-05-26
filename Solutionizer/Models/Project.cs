@@ -4,9 +4,12 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Xml;
+using NLog;
 
 namespace Solutionizer.Models {
     public class Project {
+        private static readonly Logger _log = LogManager.GetCurrentClassLogger();
+
         private readonly string _filepath;
         private ProjectFolder _parent;
         private readonly string _name;
@@ -30,7 +33,8 @@ namespace Solutionizer.Models {
             try {
                 LoadInternal();
             }
-            catch (XmlException) {
+            catch (Exception ex) {
+                _log.ErrorException(String.Format("Loading project file '{0}' failed", _filepath), ex);
                 // log exception
             }
         }
@@ -44,10 +48,14 @@ namespace Solutionizer.Models {
             var xmlDocument = new XmlDocument();
             xmlDocument.Load(_filepath);
             if (xmlDocument.DocumentElement.NamespaceURI != "http://schemas.microsoft.com/developer/msbuild/2003") {
-                throw new ArgumentException("Not a valid VS2005 C# project file: \"" + _filepath + "\"");
+                throw new ArgumentException("Not a supported C# project file: \"" + _filepath + "\"");
             }
 
-            var assemblyName = xmlDocument.GetElementsByTagName("AssemblyName")[0].FirstChild.Value;
+            var assemblyNameElement = xmlDocument.GetElementsByTagName("AssemblyName");
+            if (assemblyNameElement == null || assemblyNameElement.Count == 0) {
+                throw new ArgumentException("Not a supported C# project file: \"" + _filepath + "\"");
+            }
+            var assemblyName = assemblyNameElement[0].FirstChild.Value;
             var guid = Guid.Parse(xmlDocument.GetElementsByTagName("ProjectGuid")[0].FirstChild.Value);
             var directoryName = Path.GetDirectoryName(_filepath);
 
@@ -127,7 +135,7 @@ namespace Solutionizer.Models {
         }
 
         public List<string> ProjectReferences {
-            get { return _projectReferences; }
+            get { return _projectReferences ?? new List<string>(); }
         }
 
         public List<string> BrokenProjectReferences {
