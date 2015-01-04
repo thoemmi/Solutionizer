@@ -57,7 +57,7 @@
             <RemoveFolder Id='INSTALLLOCATION' On='uninstall' />
             <File Id="SOLUTIONIZER_EXE" Name="Solutionizer.exe" Source="Solutionizer/bin/Debug/Solutionizer.exe">
               <Shortcut Id="startmenuFoobar10" Directory="ProgramMenuFolder" Name="Solutionizer"
-                                WorkingDirectory='INSTALLLOCATION'/>           
+                                WorkingDirectory='INSTALLLOCATION'/>
             </File>
             <File Id="SOLUTIONIZER_EXE_CONFIG" Name="Solutionizer.exe.config" Source="Solutionizer/bin/Debug/Solutionizer.exe.config" />
             <RegistryValue Root='HKCU' Key='SOFTWARE\ThomasFreudenberg\Solutionizer' Name='Solutionizer.exe' Type='integer' Value='1' KeyPath='yes'/>
@@ -82,10 +82,6 @@
             <File Id="System.Windows.Interactivity.dll" Name="System.Windows.Interactivity.dll" Source="Solutionizer/bin/Debug/System.Windows.Interactivity.dll"/>
             <RegistryValue Root="HKCU" Key="SOFTWARE\ThomasFreudenberg\Solutionizer" Name="System.Windows.Interactivity.dll" Type="integer" Value="1" KeyPath="yes"/>
           </Component>
-          <Component Id="RestSharp.dll" Guid="{22824CC0-E2F7-4C10-ABF3-82C486BBA89F}">
-            <File Id="RestSharp.dll" Name="RestSharp.dll" Source="Solutionizer/bin/Debug/RestSharp.dll"/>
-            <RegistryValue Root="HKCU" Key="SOFTWARE\ThomasFreudenberg\Solutionizer" Name="RestSharp.dll" Type="integer" Value="1" KeyPath="yes"/>
-          </Component>
           <Component Id="Autofac.dll" Guid="{4B38CAEB-C3A3-4FE5-A293-0CAF827E605C}">
             <File Id="Autofac.dll" Name="Autofac.dll" Source="Solutionizer/bin/Debug/Autofac.dll"/>
             <RegistryValue Root="HKCU" Key="SOFTWARE\ThomasFreudenberg\Solutionizer" Name="Autofac.dll" Type="integer" Value="1" KeyPath="yes"/>
@@ -93,6 +89,10 @@
           <Component Id="Solutionizer.Framework.dll" Guid="{FF2475B7-6F7F-4FD8-8D2F-71D61F9DBE87}">
             <File Id="Solutionizer.Framework.dll" Name="Solutionizer.Framework.dll" Source="Solutionizer/bin/Debug/Solutionizer.Framework.dll"/>
             <RegistryValue Root="HKCU" Key="SOFTWARE\ThomasFreudenberg\Solutionizer" Name="Solutionizer.Framework.dll" Type="integer" Value="1" KeyPath="yes"/>
+          </Component>
+          <Component Id="Octokit.dll" Guid="{4B4DBBF0-1B78-47C8-BDB3-D779FF2F7497}">
+            <File Id="Octokit.dll" Name="Octokit.dll" Source="Solutionizer/bin/Debug/Octokit.dll"/>
+            <RegistryValue Root="HKCU" Key="SOFTWARE\ThomasFreudenberg\Solutionizer" Name="Octokit.dll" Type="integer" Value="1" KeyPath="yes"/>
           </Component>
         </Directory>
       </Directory>
