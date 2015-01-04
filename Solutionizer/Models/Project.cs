@@ -16,7 +16,7 @@ namespace Solutionizer.Models {
         private string _assemblyName;
         private Guid _guid;
         private bool _isSccBound;
-        private List<string> _projectReferences;
+        private List<string> _projectReferences = new List<string>();
         private readonly List<string> _brokenProjectReferences = new List<string>();
         private readonly List<string> _errors = new List<string>();
         private Task<IList<string>> _taskLoadConfigurations;
