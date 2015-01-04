@@ -13,7 +13,7 @@ namespace Solutionizer.Models {
         private string _assemblyName;
         private Guid _guid;
         private bool _isSccBound;
-        private List<string> _projectReferences;
+        private List<string> _projectReferences = new List<string>();
         private readonly List<string> _brokenProjectReferences = new List<string>();
         private readonly List<string> _errors = new List<string>();
         private Task<IList<string>> _taskLoadConfigurations;
@@ -47,7 +47,13 @@ namespace Solutionizer.Models {
                 throw new ArgumentException("Not a valid VS2005 C# project file: \"" + _filepath + "\"");
             }
 
-            var assemblyName = xmlDocument.GetElementsByTagName("AssemblyName")[0].FirstChild.Value;
+            var assemblyNameElements = xmlDocument.GetElementsByTagName("AssemblyName");
+            if (assemblyNameElements.Count == 0) {
+                _errors.Add("Not a valid project file.");
+                return;
+            }
+
+            var assemblyName = assemblyNameElements[0].FirstChild.Value;
             var guid = Guid.Parse(xmlDocument.GetElementsByTagName("ProjectGuid")[0].FirstChild.Value);
             var directoryName = Path.GetDirectoryName(_filepath);
 
