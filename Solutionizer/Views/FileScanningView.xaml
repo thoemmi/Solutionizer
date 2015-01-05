@@ -13,36 +13,35 @@
     <ResourceDictionary>
       <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/FlatButton.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Themes/Dialogs/BaseMetroDialog.xaml" />
       </ResourceDictionary.MergedDictionaries>
     </ResourceDictionary>
   </Dialogs:BaseMetroDialog.Resources>
 
-  <Dialogs:BaseMetroDialog.DialogBody>
-    <Grid>
-      <Grid.RowDefinitions>
-        <RowDefinition Height="Auto" />
-        <RowDefinition Height="*" />
-        <RowDefinition Height="Auto" />
-      </Grid.RowDefinitions>
+  <Grid>
+    <Grid.RowDefinitions>
+      <RowDefinition Height="Auto" />
+      <RowDefinition Height="*" />
+      <RowDefinition Height="Auto" />
+    </Grid.RowDefinitions>
 
-      <TextBlock 
-        Text="{Binding LoadingText}"
-        Margin="0 5"
-        Grid.Row="0"/>
+    <TextBlock 
+      Text="{Binding LoadingText}"
+      Margin="0 5"
+      Grid.Row="0"/>
     
-      <TextBlock
-        Margin="0 5"
-        Text="{Binding ProgressText}"
-        Grid.Row="1"/>
+    <TextBlock
+      Margin="0 5"
+      Text="{Binding ProgressText}"
+      Grid.Row="1"/>
 
-      <Button 
-        Margin="0 5"
-        Grid.Row="2"
-        Command="{Binding CancelCommand}"
-        HorizontalAlignment="Right"
-        MinWidth="80">Cancel</Button>
-    </Grid>
-  </Dialogs:BaseMetroDialog.DialogBody>
+    <Button 
+      Margin="0 5"
+      Grid.Row="2"
+      Command="{Binding CancelCommand}"
+      HorizontalAlignment="Right"
+      MinWidth="80">Cancel</Button>
+  </Grid>
   
   <Dialogs:BaseMetroDialog.DialogBottom>
     <Controls:MetroProgressBar

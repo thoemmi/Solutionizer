@@ -1,38 +1,35 @@
-﻿<Controls:MetroWindow x:Class="Solutionizer.Views.ShellView"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
-        xmlns:Infrastructure="clr-namespace:Solutionizer.Infrastructure" 
-        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity" 
-        xmlns:Behaviours="clr-namespace:MahApps.Metro.Behaviours;assembly=MahApps.Metro" 
-        xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:ViewModels="clr-namespace:Solutionizer.ViewModels"
-        xmlns:Framework="clr-namespace:Solutionizer.Framework;assembly=Solutionizer.Framework"
-        xmlns:Views="clr-namespace:Solutionizer.Views"
-        mc:Ignorable="d" 
-        Infrastructure:WindowStatePersistence.Settings="{Binding Settings}"  
-        TextOptions.TextFormattingMode="Display"
-        SnapsToDevicePixels="true" 
-        Title="{Binding Title}" ShowTitleBar="False"
-        ResizeMode="CanResizeWithGrip"
-        UseLayoutRounding="True" x:Name="Window"
-                      Style="{DynamicResource CleanWindowStyleKey}"
-        Icon="/Solutionizer;component/Logo.ico" d:DataContext="{d:DesignInstance ViewModels:ShellViewModel}">
+﻿<Controls:MetroWindow
+  x:Class="Solutionizer.Views.ShellView"
+  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+  xmlns:Infrastructure="clr-namespace:Solutionizer.Infrastructure"
+  xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+  xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+  xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+  xmlns:ViewModels="clr-namespace:Solutionizer.ViewModels"
+  xmlns:Views="clr-namespace:Solutionizer.Views"
+  xmlns:TinyLittleMvvm="clr-namespace:TinyLittleMvvm;assembly=TinyLittleMvvm"
+  mc:Ignorable="d"
+  Infrastructure:WindowStatePersistence.Settings="{Binding Settings}"
+  TextOptions.TextFormattingMode="Display"
+  SnapsToDevicePixels="true"
+  Title="{Binding Title}" ShowTitleBar="False"
+  ResizeMode="CanResizeWithGrip"
+  UseLayoutRounding="True" x:Name="Window"
+  GlowBrush="{DynamicResource AccentColorBrush}"
+  Style="{DynamicResource CleanWindowStyleKey}"
+  Icon="/Solutionizer;component/Logo.ico" d:DataContext="{d:DesignInstance ViewModels:ShellViewModel}">
 
   <Window.Resources>
     <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
   </Window.Resources>
-  
-  <Window.TaskbarItemInfo><TaskbarItemInfo/></Window.TaskbarItemInfo>
-  
-  <i:Interaction.Behaviors>
-    <Behaviours:BorderlessWindowBehavior AllowsTransparency="False" EnableDWMDropShadow="True" ResizeWithGrip="True" />
-  </i:Interaction.Behaviors>
 
-  <Controls:MetroWindow.WindowCommands>
+  <Window.TaskbarItemInfo><TaskbarItemInfo/></Window.TaskbarItemInfo>
+
+  <Controls:MetroWindow.RightWindowCommands>
     <Controls:WindowCommands HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0">
-      <Button 
+      <Button
         Content="Update available"
         Command="{Binding ShowUpdatesCommand}" CommandParameter="{StaticResource FalseValue}"
         Visibility="{Binding AreUpdatesAvailable, Converter={StaticResource BooleanToVisibilityConverter}}"/>
@@ -52,8 +49,8 @@
         </Viewbox>
       </Button>
     </Controls:WindowCommands>
-  </Controls:MetroWindow.WindowCommands>
-  
+  </Controls:MetroWindow.RightWindowCommands>
+
   <Controls:MetroWindow.Flyouts>
     <Controls:FlyoutsControl ItemsSource="{Binding Flyouts}" />
   </Controls:MetroWindow.Flyouts>
@@ -69,13 +66,13 @@
         <ColumnDefinition Width="auto"/>
         <ColumnDefinition Width="*"/>
       </Grid.ColumnDefinitions>
-      
-      <TextBlock 
+
+      <TextBlock
         Text="Solutionizer -"
         VerticalAlignment="Top"
         FontWeight="Bold" FontSize="20" Margin="20,5,0,0"/>
-      
-      <Label 
+
+      <Label
         Content="{Binding RootPath}"
         Grid.Column="1"
         VerticalAlignment="Top"
@@ -126,13 +123,13 @@
           </Style>
         </Label.Style>
       </Label>
-      
-      <Rectangle 
-        Grid.Column="0" 
-        HorizontalAlignment="Left" Width="10" StrokeThickness="0" Margin="0 10 0 0" 
-        Fill="{DynamicResource HighlightBrush}"/>
+
+      <Rectangle
+        Grid.Column="0"
+        HorizontalAlignment="Left" Width="10" StrokeThickness="0" Margin="0 10 0 0"
+        Fill="{DynamicResource AccentColorBrush}"/>
     </Grid>
-    
+
     <Grid Grid.Row="1">
       <Grid.ColumnDefinitions>
         <ColumnDefinition Width="*" />
@@ -143,24 +140,24 @@
         <RowDefinition Height="*" />
         <RowDefinition Height="Auto" />
       </Grid.RowDefinitions>
-      
+
       <Border Margin="6 6 0 3" Padding="2" BorderThickness="1" BorderBrush="{DynamicResource {x:Static SystemColors.ActiveBorderBrushKey}}">
-        <Framework:ViewModelPresenter ViewModel="{Binding ProjectRepository}" />
+        <TinyLittleMvvm:ViewModelPresenter ViewModel="{Binding ProjectRepository}" />
       </Border>
 
-      <GridSplitter 
-        Grid.Row="0" Grid.Column="1" Width="6" Background="Transparent" ShowsPreview="true" 
+      <GridSplitter
+        Grid.Row="0" Grid.Column="1" Width="6" Background="Transparent" ShowsPreview="true"
         HorizontalAlignment="Center" VerticalAlignment="Stretch" />
 
-      <Framework:ViewModelPresenter 
-        Margin="0 3 3 3" 
-        Grid.Row="0" Grid.Column="2"  
+      <TinyLittleMvvm:ViewModelPresenter
+        Margin="0 3 3 3"
+        Grid.Row="0" Grid.Column="2"
         ViewModel="{Binding Solution}"/>
       
       <TextBlock 
-        Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" 
+        Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3"
         FontSize="12"
-        Margin="6 0 6 6" 
+        Margin="6 0 6 6"
         Text="{Binding StatusMessage}" />
     </Grid>
 

@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Windows.Input;
-using Solutionizer.Framework;
+using TinyLittleMvvm;
 
 namespace Solutionizer.ViewModels {
     public class AboutViewModel : DialogViewModel {
@@ -19,10 +19,10 @@ namespace Solutionizer.ViewModels {
                 return new[] {
                     new CreditItem { Name = "Autofac", Uri = "http://autofac.org/" },
                     new CreditItem { Name = "MahApps.Metro", Uri = "http://mahapps.com/MahApps.Metro/" },
-                    new CreditItem { Name = "Json.NET", Uri = "http://james.newtonking.com/projects/json-net.aspx" },
+                    new CreditItem { Name = "Json.NET", Uri = "http://james.newtonking.com/json" },
                     new CreditItem { Name = "NLog", Uri = "http://nlog-project.org/" },
                     new CreditItem { Name = "Ookii Dialogs WPF library", Uri = "http://www.ookii.org/software/dialogs/" },
-                    new CreditItem { Name = "RestSharp", Uri = "http://restsharp.org/" },
+                    new CreditItem { Name = "Octokit", Uri = "https://github.com/octokit/octokit.net" },
                 };
             }
         }

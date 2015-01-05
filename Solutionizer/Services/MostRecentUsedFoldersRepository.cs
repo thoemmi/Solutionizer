@@ -8,8 +8,8 @@ using System.Windows;
 using System.Windows.Shell;
 using Newtonsoft.Json;
 using NLog;
-using Solutionizer.Framework;
 using Solutionizer.Infrastructure;
+using TinyLittleMvvm;
 
 namespace Solutionizer.Services {
     public interface IMostRecentUsedFoldersRepository {
