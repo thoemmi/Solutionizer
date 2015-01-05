@@ -96,7 +96,7 @@
           </Component>
         </Directory>
       </Directory>
-      
+
       <Directory Id="ProgramMenuFolder" />
     </Directory>
 
@@ -107,13 +107,13 @@
       <ComponentRef Id="NLog.dll"/>
       <ComponentRef Id="Ookii.Dialogs.Wpf.dll"/>
       <ComponentRef Id="System.Windows.Interactivity.dll"/>
-      <ComponentRef Id="RestSharp.dll"/>
+      <ComponentRef Id="Octokit.dll"/>
       <ComponentRef Id="Autofac.dll"/>
-      <ComponentRef Id="Solutionizer.Framework.dll"/>
+      <ComponentRef Id="TinyLittleMvvm.dll"/>
     </Feature>
 
     <!-- no downgrade -->
-    <CustomAction 
+    <CustomAction
       Id="PreventDowngrading"
       Error="There is already a newer version installed." />
 
@@ -134,7 +134,7 @@
         Event="DoAction"
         Value="LaunchApplication">WIXUI_EXITDIALOGOPTIONALCHECKBOX = 1 and NOT Installed</Publish>
     </UI>
-    
+
     <Icon Id="icon" SourceFile="Assets\logo.ico"/>
   </Product>
 </Wix>
