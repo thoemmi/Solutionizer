@@ -3,22 +3,22 @@
 
   <?define UpgradeGuid="{C3666D56-FBED-4ADE-AD5E-94298DE449F4}" ?>
   <?define ProductVersion="!(bind.FileVersion.SOLUTIONIZER_EXE)" ?>
-  
-  <Product 
-    Name="Solutionizer" 
-    Id="*" 
-    UpgradeCode="$(var.UpgradeGuid)" 
-    Version="$(var.ProductVersion)" 
+
+  <Product
+    Name="Solutionizer"
+    Id="*"
+    UpgradeCode="$(var.UpgradeGuid)"
+    Version="$(var.ProductVersion)"
     Manufacturer="Thomas Freudenberg" Language="1033">
-    
-    <Package 
-      InstallerVersion="300" 
-      Compressed="yes" 
+
+    <Package
+      InstallerVersion="300"
+      Compressed="yes"
       InstallScope="perUser"/>
-    
-    <Media 
-      Id="1" 
-      Cabinet="media1.cab" 
+
+    <Media
+      Id="1"
+      Cabinet="media1.cab"
       EmbedCab="yes"/>
 
     <Property Id="ARPHELPLINK" Value="https://github.com/thoemmi/Solutionizer/issues" />
@@ -32,14 +32,14 @@
     <CustomAction Id="LaunchApplication" BinaryKey="WixCA" DllEntry="WixShellExec" Impersonate="yes" />
 
     <Upgrade Id="$(var.UpgradeGuid)">
-      <UpgradeVersion 
-        Minimum="$(var.ProductVersion)" 
-        OnlyDetect="yes" 
+      <UpgradeVersion
+        Minimum="$(var.ProductVersion)"
+        OnlyDetect="yes"
         Property="NEWERVERSIONDETECTED"/>
-      <UpgradeVersion 
-        Minimum="0.0.0" 
-        Maximum="$(var.ProductVersion)" 
-        IncludeMinimum="yes" 
+      <UpgradeVersion
+        Minimum="0.0.0"
+        Maximum="$(var.ProductVersion)"
+        IncludeMinimum="yes"
         IncludeMaximum="no"
         Property="OLDERVERSIONBEINGUPGRADED"/>
     </Upgrade>
@@ -86,9 +86,9 @@
             <File Id="Autofac.dll" Name="Autofac.dll" Source="Solutionizer/bin/Debug/Autofac.dll"/>
             <RegistryValue Root="HKCU" Key="SOFTWARE\ThomasFreudenberg\Solutionizer" Name="Autofac.dll" Type="integer" Value="1" KeyPath="yes"/>
           </Component>
-          <Component Id="Solutionizer.Framework.dll" Guid="{FF2475B7-6F7F-4FD8-8D2F-71D61F9DBE87}">
-            <File Id="Solutionizer.Framework.dll" Name="Solutionizer.Framework.dll" Source="Solutionizer/bin/Debug/Solutionizer.Framework.dll"/>
-            <RegistryValue Root="HKCU" Key="SOFTWARE\ThomasFreudenberg\Solutionizer" Name="Solutionizer.Framework.dll" Type="integer" Value="1" KeyPath="yes"/>
+          <Component Id="TinyLittleMvvm.dll" Guid="{DE0E8B25-B626-47B3-8AAE-5AD240FA6622}">
+            <File Id="TinyLittleMvvm.dll" Name="TinyLittleMvvm.dll" Source="Solutionizer/bin/Debug/TinyLittleMvvm.dll"/>
+            <RegistryValue Root="HKCU" Key="SOFTWARE\ThomasFreudenberg\Solutionizer" Name="TinyLittleMvvm.dll" Type="integer" Value="1" KeyPath="yes"/>
           </Component>
           <Component Id="Octokit.dll" Guid="{4B4DBBF0-1B78-47C8-BDB3-D779FF2F7497}">
             <File Id="Octokit.dll" Name="Octokit.dll" Source="Solutionizer/bin/Debug/Octokit.dll"/>
