@@ -6,6 +6,11 @@ using Solutionizer.Services;
 namespace Solutionizer.Helper {
     public static class VisualStudioHelper {
         public static VisualStudioVersion DetectVersion() {
+            using (var key = Registry.ClassesRoot.OpenSubKey("VisualStudio.DTE.14.0")) {
+                if (key != null) {
+                    return VisualStudioVersion.VS2013;
+                }
+            }
             using (var key = Registry.ClassesRoot.OpenSubKey("VisualStudio.DTE.12.0")) {
                 if (key != null) {
                     return VisualStudioVersion.VS2013;
@@ -25,6 +30,8 @@ namespace Solutionizer.Helper {
                     return "11.0";
                 case VisualStudioVersion.VS2013:
                     return "12.0";
+                case VisualStudioVersion.VS2015:
+                    return "14.0";
             }
             return "10.0";
         }
@@ -53,7 +60,7 @@ namespace Solutionizer.Helper {
         }
 
         public static string GetVisualStudioExecutable(VisualStudioVersion visualStudioVersion) {
-            var regPath = String.Format(@"Software\{0}Microsoft\VisualStudio\{1}", 
+            var regPath = String.Format(@"Software\{0}Microsoft\VisualStudio\{1}",
                 Environment.Is64BitOperatingSystem ? @"Wow6432Node\" : String.Empty,
                 GetVersionKey(visualStudioVersion));
             using (var key = Registry.LocalMachine.OpenSubKey(regPath)) {
