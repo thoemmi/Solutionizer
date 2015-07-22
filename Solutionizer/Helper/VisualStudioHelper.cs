@@ -8,7 +8,7 @@ namespace Solutionizer.Helper {
         public static VisualStudioVersion DetectVersion() {
             using (var key = Registry.ClassesRoot.OpenSubKey("VisualStudio.DTE.14.0")) {
                 if (key != null) {
-                    return VisualStudioVersion.VS2013;
+                    return VisualStudioVersion.VS2015;
                 }
             }
             using (var key = Registry.ClassesRoot.OpenSubKey("VisualStudio.DTE.12.0")) {
