@@ -144,7 +144,7 @@ namespace Solutionizer.Infrastructure {
                     IsPrerelease = release.Prerelease,
                 };
 
-                var assets = await github.Release.GetAssets(GitHubOwner, GitHubRepository, release.Id);
+                var assets = await github.Release.GetAllAssets(GitHubOwner, GitHubRepository, release.Id);
                 var asset = assets.FirstOrDefault(a => a.Name.EndsWith(".msi"));
                 if (asset != null) {
                     r.Filename = asset.Name;
