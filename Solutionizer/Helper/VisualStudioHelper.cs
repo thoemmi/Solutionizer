@@ -60,10 +60,9 @@ namespace Solutionizer.Helper {
         }
 
         public static string GetVisualStudioExecutable(VisualStudioVersion visualStudioVersion) {
-            var regPath = String.Format(@"Software\{0}Microsoft\VisualStudio\{1}",
-                Environment.Is64BitOperatingSystem ? @"Wow6432Node\" : String.Empty,
-                GetVersionKey(visualStudioVersion));
-            using (var key = Registry.LocalMachine.OpenSubKey(regPath)) {
+            var regPath = String.Format(@"Software\Microsoft\VisualStudio\{0}", GetVersionKey(visualStudioVersion));
+            using (var hiveKey = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Registry32))
+            using (var key = hiveKey.OpenSubKey(regPath)) {
                 var installPath = key.GetValue("InstallDir") as string;
                 return Path.Combine(installPath, "devenv.exe");
             }
