@@ -102,6 +102,10 @@ namespace Solutionizer.Commands {
                     writer.WriteLine("Microsoft Visual Studio Solution File, Format Version 12.00");
                     writer.WriteLine("# Visual Studio 2013");
                     break;
+                case VisualStudioVersion.VS2015:
+                    writer.WriteLine("Microsoft Visual Studio Solution File, Format Version 14.00");
+                    writer.WriteLine("# Visual Studio 2015");
+                    break;
                 default:
                     throw new ArgumentOutOfRangeException();
             }

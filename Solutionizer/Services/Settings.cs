@@ -281,6 +281,7 @@ namespace Solutionizer.Services {
         VS2010,
         VS2012,
         VS2013,
+        VS2015
     }
     // ReSharper restore InconsistentNaming
 
