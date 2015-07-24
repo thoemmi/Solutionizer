@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using Ookii.Dialogs.Wpf;
-using Solutionizer.Framework;
 using Solutionizer.Services;
+using TinyLittleMvvm;
 
 namespace Solutionizer.ViewModels {
     public sealed class SettingsViewModel : DialogViewModel, IOnLoadedHandler {
@@ -35,7 +36,7 @@ namespace Solutionizer.ViewModels {
             _selectSolutionTargetFolderCommand = new RelayCommand(SelectSolutionTargetFolder);
         }
 
-        public void OnLoaded() {
+        public Task OnLoadedAsync() {
             ScanOnStartup = _settings.ScanOnStartup;
             SimplifyProjectTree = _settings.SimplifyProjectTree;
             IncludeReferencedProjects = _settings.IncludeReferencedProjects;
@@ -51,6 +52,7 @@ namespace Solutionizer.ViewModels {
             CustomTargetFolder = _settings.CustomTargetFolder;
             CustomTargetSubfolder = _settings.CustomTargetSubfolder;
             AutoUpdateCheck = _settings.AutoUpdateCheck;
+            return Task.FromResult(0);
         }
 
         public bool ScanOnStartup {

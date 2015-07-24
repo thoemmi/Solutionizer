@@ -1,4 +1,4 @@
-﻿<Controls:Flyout x:Class="Solutionizer.Views.SettingsView"
+﻿<Controls1:FullSizeFlyout x:Class="Solutionizer.Views.SettingsView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -13,7 +13,7 @@
                  CloseCommand="{Binding CancelCommand}"
              d:DataContext="{d:DesignInstance ViewModels:SettingsViewModel}"
              d:DesignHeight="300" d:DesignWidth="300">
-  <Controls:Flyout.Resources>
+  <Controls1:FullSizeFlyout.Resources>
     <ResourceDictionary>
       <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/FlatButton.xaml" />
@@ -21,7 +21,7 @@
 
       <Converters:EnumBooleanConverter x:Key="EnumBooleanConverter"/>
     </ResourceDictionary>
-  </Controls:Flyout.Resources>
+  </Controls1:FullSizeFlyout.Resources>
 
   <Grid Margin="15">
     <Grid.Resources>
@@ -143,11 +143,11 @@
             Text="{Binding CustomTargetFolder, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
             Width="300"
             IsEnabled="{Binding SolutionTargetLocation, Converter={StaticResource EnumBooleanConverter}, ConverterParameter=CustomFolder}"
-            Controls:TextboxHelper.ButtonCommand="{Binding SelectSolutionTargetFolderCommand}"
+            Controls:TextBoxHelper.ButtonCommand="{Binding SelectSolutionTargetFolderCommand}"
             Style="{DynamicResource ButtonCommandMetroTextBox}">
-            <Controls:TextboxHelper.ButtonContent>
+            <Controls:TextBoxHelper.ButtonContent>
               <TextBlock FontFamily="{DynamicResource DefaultFont}" Text="&#x2026;" />
-            </Controls:TextboxHelper.ButtonContent>
+            </Controls:TextBoxHelper.ButtonContent>
           </Controls1:EllipsisTextBox>
         </StackPanel>
         
@@ -230,4 +230,4 @@
         Content="Cancel"/>
     </StackPanel>
   </Grid>
-</Controls:Flyout>
+</Controls1:FullSizeFlyout>

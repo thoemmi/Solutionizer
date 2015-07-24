@@ -2,10 +2,11 @@
 using System.IO;
 using System.Net;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using NLog;
-using Solutionizer.Framework;
 using Solutionizer.Infrastructure;
+using TinyLittleMvvm;
 
 namespace Solutionizer.ViewModels {
     public class UpdateDownloadViewModel : DialogViewModel<bool>, IOnLoadedHandler {
@@ -31,11 +32,7 @@ namespace Solutionizer.ViewModels {
             });
         }
 
-        public void OnLoaded() {
-            Download();
-        }
-
-        private async void Download() {
+        public async Task OnLoadedAsync() {
             string filename;
             try {
                 _log.Debug("Downloading update");

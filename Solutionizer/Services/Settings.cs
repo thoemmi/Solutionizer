@@ -1,8 +1,8 @@
 ﻿using System;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
-using Solutionizer.Framework;
 using Solutionizer.Helper;
+using TinyLittleMvvm;
 
 namespace Solutionizer.Services {
     public class Settings : PropertyChangedBase, ISettings {

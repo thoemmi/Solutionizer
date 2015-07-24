@@ -1,4 +1,4 @@
-﻿using Solutionizer.Framework;
+﻿using TinyLittleMvvm;
 
 namespace Solutionizer.ViewModels {
     public abstract class ItemViewModel : PropertyChangedBase {

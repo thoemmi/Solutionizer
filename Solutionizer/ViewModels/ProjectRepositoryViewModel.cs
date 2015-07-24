@@ -2,9 +2,9 @@
 using System.Linq;
 using System.Windows.Input;
 using Solutionizer.Extensions;
-using Solutionizer.Framework;
 using Solutionizer.Models;
 using Solutionizer.Services;
+using TinyLittleMvvm;
 
 namespace Solutionizer.ViewModels {
     public class ProjectRepositoryViewModel : PropertyChangedBase {

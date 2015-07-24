@@ -10,10 +10,10 @@ using NLog;
 using Ookii.Dialogs.Wpf;
 using Solutionizer.Commands;
 using Solutionizer.Extensions;
-using Solutionizer.Framework;
 using Solutionizer.Helper;
 using Solutionizer.Models;
 using Solutionizer.Services;
+using TinyLittleMvvm;
 
 namespace Solutionizer.ViewModels {
     public class SolutionViewModel : PropertyChangedBase {

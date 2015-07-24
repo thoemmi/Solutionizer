@@ -3,12 +3,13 @@ using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using Ookii.Dialogs.Wpf;
-using Solutionizer.Framework;
 using Solutionizer.Infrastructure;
 using Solutionizer.Services;
+using TinyLittleMvvm;
 
 namespace Solutionizer.ViewModels {
     public sealed class ShellViewModel : PropertyChangedBase, IShell, IOnLoadedHandler, IStatusMessenger {
@@ -46,8 +47,8 @@ namespace Solutionizer.ViewModels {
             _showUpdatesCommand = new RelayCommand<bool>(checkForUpdates => _flyoutManager.ShowFlyout(_viewModelFactory.CreateUpdateViewModel(checkForUpdates)));
             _showSettingsCommand = new RelayCommand(OnShowSettings);
             _showAboutCommand = new RelayCommand(() => _flyoutManager.ShowFlyout(_viewModelFactory.CreateAboutViewModel()));
-            _selectRootPathCommand = new RelayCommand(SelectRootPath);
-            _setRootPathCommand = new RelayCommand<string>(LoadProjects, path => !String.Equals(path, RootPath));
+            _selectRootPathCommand = new AsyncRelayCommand(SelectRootPath);
+            _setRootPathCommand = new AsyncRelayCommand<string>(LoadProjectsAsync, path => !String.Equals(path, RootPath));
 
             _updateTimer = new Timer(_ => _updateManager.CheckForUpdatesAsync(), null, -1, -1);
         }
@@ -114,12 +115,12 @@ namespace Solutionizer.ViewModels {
             get { return _setRootPathCommand; }
         }
 
-        public void OnLoaded() {
+        public async Task OnLoadedAsync() {
             var args = Environment.GetCommandLineArgs();
             if (args.Length > 1 && Directory.Exists(args[1])) {
-                LoadProjects(args[1]);
+                await LoadProjectsAsync(args[1]);
             } else if (_settings.ScanOnStartup) {
-                LoadProjects(_settings.RootPath);
+                await LoadProjectsAsync(_settings.RootPath);
             }
 
             if (_settings.AutoUpdateCheck) {
@@ -136,12 +137,12 @@ namespace Solutionizer.ViewModels {
             }
         }
 
-        public void SelectRootPath() {
+        public async Task SelectRootPath() {
             var dlg = new VistaFolderBrowserDialog {
                 SelectedPath = _settings.RootPath
             };
             if (dlg.ShowDialog(Application.Current.MainWindow) == true) {
-                LoadProjects(dlg.SelectedPath);
+                await LoadProjectsAsync(dlg.SelectedPath);
             }
         }
 
@@ -163,12 +164,12 @@ namespace Solutionizer.ViewModels {
             }
         }
 
-        private async void LoadProjects(string path) {
+        private async Task LoadProjectsAsync(string path) {
             var oldRootPath = RootPath;
             RootPath = path;
 
             var fileScanningViewModel = _viewModelFactory.CreateFileScanningViewModel(path);
-            var result = await _dialogManager.ShowDialog(fileScanningViewModel);
+            var result = await _dialogManager.ShowDialogAsync(fileScanningViewModel);
 
             if (result != null) {
                 _settings.RootPath = path;

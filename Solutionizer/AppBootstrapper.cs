@@ -1,10 +1,15 @@
-﻿using System.IO;
+﻿using System.Diagnostics;
+using System.IO;
 using Autofac;
-using Solutionizer.Framework;
+using NLog;
+using NLog.Config;
+using NLog.Layouts;
+using NLog.Targets;
 using Solutionizer.Infrastructure;
 using Solutionizer.Services;
 using Solutionizer.ViewModels;
 using Solutionizer.Views;
+using TinyLittleMvvm;
 
 namespace Solutionizer {
     public class AppBootstrapper : BootstrapperBase<IShell> {
@@ -28,6 +33,19 @@ namespace Solutionizer {
 
         protected override string GetLogFolder() {
             return Path.GetTempPath();
+        }
+
+        protected override void ConfigureLogging(LoggingConfiguration config) {
+            base.ConfigureLogging(config);
+
+            if (Debugger.IsAttached) {
+                var udpTarget = new NetworkTarget {
+                    Address = "udp4://localhost:962",
+                    Layout = new Log4JXmlEventLayout()
+                };
+                config.AddTarget("udp", udpTarget);
+                config.LoggingRules.Add(new LoggingRule("*", LogLevel.Debug, udpTarget));
+            }
         }
     }
 }

@@ -4,9 +4,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Data;
 using System.Windows.Input;
-using Solutionizer.Framework;
 using Solutionizer.Infrastructure;
 using Solutionizer.Services;
+using TinyLittleMvvm;
 
 namespace Solutionizer.ViewModels {
     public class UpdateViewModel : DialogViewModel, IOnLoadedHandler {
@@ -29,9 +29,9 @@ namespace Solutionizer.ViewModels {
             _checkForUpdates = checkForUpdates;
             _releases = new ObservableCollection<ReleaseInfo>();
 
-            _updateCommand = new RelayCommand(() => {
+            _updateCommand = new AsyncRelayCommand(async () => {
                 Close();
-                dialogManager.ShowDialog(updateDownloadViewModelFactory.Invoke(_releases.First()));
+                await dialogManager.ShowDialogAsync(updateDownloadViewModelFactory.Invoke(_releases.First()));
             }, () => CanUpdate);
             _cancelCommand = new RelayCommand(Close);
 
@@ -41,11 +41,7 @@ namespace Solutionizer.ViewModels {
             BindingOperations.EnableCollectionSynchronization(_releases, _releases);
         }
 
-        public void OnLoaded() {
-            Task.Run(() => Populate());
-        }
-
-        private async void Populate() {
+        public async Task OnLoadedAsync() {
             if (_checkForUpdates) {
                 await _updateManager.CheckForUpdatesAsync();
             }

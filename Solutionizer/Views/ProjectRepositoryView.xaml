@@ -13,7 +13,7 @@
   <UserControl.Resources>
     <ResourceDictionary>
       <ResourceDictionary.MergedDictionaries>
-        <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.Textbox.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.TextBox.xaml" />
         <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.TreeView.xaml" />
       </ResourceDictionary.MergedDictionaries>
       
@@ -80,13 +80,13 @@
       Margin="3 3 3 5" VerticalContentAlignment="Center"
       Text="{Binding Filter, UpdateSourceTrigger=PropertyChanged}"
       ToolTip="Enter text to filter projects"
-      Controls:TextboxHelper.Watermark="Filter..."
-      Controls:TextboxHelper.ClearTextButton="True">
+      Controls:TextBoxHelper.Watermark="Filter..."
+      Controls:TextBoxHelper.ClearTextButton="True">
       <TextBox.Style>
         <Style TargetType="{x:Type TextBox}" BasedOn="{StaticResource SearchMetroTextBox}">
           <Style.Triggers>
-            <Trigger Property="Controls:TextboxHelper.HasText" Value="True">
-              <Setter Property="Controls:TextboxHelper.ButtonTemplate" Value="{DynamicResource ChromelessButtonTemplate}" />
+            <Trigger Property="Controls:TextBoxHelper.HasText" Value="True">
+              <Setter Property="Controls:TextBoxHelper.ButtonTemplate" Value="{DynamicResource ChromelessButtonTemplate}" />
             </Trigger>
           </Style.Triggers>
         </Style>

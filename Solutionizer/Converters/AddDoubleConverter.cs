@@ -2,7 +2,7 @@
 using System.Globalization;
 using System.Windows.Data;
 
-namespace Solutionizer.Framework.Converters {
+namespace Solutionizer.Converters {
     public class AddDoubleConverter : IValueConverter {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture) {
             var doubleValue = System.Convert.ToDouble(value);

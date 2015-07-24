@@ -9,9 +9,9 @@ using System.Windows;
 using System.Windows.Input;
 using System.Windows.Shell;
 using NLog;
-using Solutionizer.Framework;
 using Solutionizer.Models;
 using Solutionizer.Services;
+using TinyLittleMvvm;
 
 namespace Solutionizer.ViewModels {
     public class ScanResult {
@@ -93,7 +93,7 @@ namespace Solutionizer.ViewModels {
             }
         }
 
-        public ProjectFolder GetProjects(string rootPath) {
+        private ProjectFolder GetProjects(string rootPath) {
             if (!Directory.Exists(rootPath)) {
                 return null;
             }
@@ -214,7 +214,7 @@ namespace Solutionizer.ViewModels {
             get { return _cancelCommand; }
         }
 
-        public async void OnLoaded() {
+        public async Task OnLoadedAsync() {
             _scanningCommand.ProgressTextChanged += OnProgressTextChanged;
             var result = await _scanningCommand.Start();
             _scanningCommand.ProgressTextChanged -= OnProgressTextChanged;
