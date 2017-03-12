@@ -10,7 +10,6 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using NLog;
 using Octokit;
-using Solutionizer.Services;
 
 namespace Solutionizer.Infrastructure {
     public interface IReleaseProvider {
@@ -124,12 +123,6 @@ namespace Solutionizer.Infrastructure {
         private const string GitHubOwner = "thoemmi";
         private const string GitHubRepository = "Solutionizer";
 
-        private readonly ISettings _settings;
-
-        public GithubReleaseProvider(ISettings settings) {
-            _settings = settings;
-        }
-
         protected override async Task<List<ReleaseInfo>> GetReleasesAsync() {
             var github = new GitHubClient(new ProductHeaderValue("Solutionizer", AppEnvironment.CurrentVersion.ToString()));
             var result = new List<ReleaseInfo>();
@@ -151,7 +144,7 @@ namespace Solutionizer.Infrastructure {
                     r.DownloadUrl = asset.Url;
                 }
 
-                var match = Regex.Match(r.TagName, @"^v(?<major>\d+)\.(?<minor>\d+)(\.(?<patch>\d+))?$");
+                var match = Regex.Match(r.TagName, @"^v?(?<major>\d+)\.(?<minor>\d+)(\.(?<patch>\d+))?$");
                 if (match.Success) {
                     int major, minor, patch;
                     Int32.TryParse(match.Groups["major"].Value, out major);
