@@ -36,6 +36,11 @@ namespace Solutionizer.Infrastructure {
             IReadOnlyCollection<ReleaseInfo> newReleases;
             try {
                 newReleases = await _reader.GetReleaseInfosAsync();
+                //HACK weil ein Release keine Version hat
+                foreach (var releaseInfo in newReleases.Where(v=>v.Version==null)) {
+                    var t = releaseInfo.TagName.Split('.');
+                    releaseInfo.Version = new Version(int.Parse(t[0]), int.Parse(t[1]));
+                }
             } catch (Exception ex) {
                 _log.ErrorException("Getting release informations failed", ex);
                 return;
