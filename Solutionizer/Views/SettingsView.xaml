@@ -45,6 +45,9 @@
           <DataTrigger Binding="{Binding}" Value="VS2015">
                 <Setter TargetName="PART_Text" Property="Text" Value="Visual Studio 2015" />
           </DataTrigger>
+            <DataTrigger Binding="{Binding}" Value="VS2017">
+                <Setter TargetName="PART_Text" Property="Text" Value="Visual Studio 2017" />
+            </DataTrigger>
         </DataTemplate.Triggers>
       </DataTemplate>
     </Grid.Resources>
