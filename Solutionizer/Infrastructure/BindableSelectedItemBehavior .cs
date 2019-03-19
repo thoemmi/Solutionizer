@@ -7,8 +7,8 @@ using Solutionizer.Extensions;
 namespace Solutionizer.Infrastructure {
     public class BindableSelectedItemBehavior : Behavior<TreeView> {
         public object SelectedItem {
-            get { return GetValue(SelectedItemProperty); }
-            set { SetValue(SelectedItemProperty, value); }
+            get => GetValue(SelectedItemProperty);
+            set => SetValue(SelectedItemProperty, value);
         }
 
         public static readonly DependencyProperty SelectedItemProperty =

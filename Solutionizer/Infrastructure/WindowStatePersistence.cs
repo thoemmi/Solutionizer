@@ -7,13 +7,11 @@ namespace Solutionizer.Infrastructure {
             DependencyProperty.RegisterAttached("Settings", typeof (Settings), typeof (WindowStatePersistence), new PropertyMetadata(null, OnChanged));
 
         private static void OnChanged(DependencyObject d, DependencyPropertyChangedEventArgs e) {
-            var window = d as Window;
-            if (window == null) {
+            if (!(d is Window window)) {
                 return;
             }
 
-            var setting = e.NewValue as Settings;
-            if (setting != null) {
+            if (e.NewValue is Settings setting) {
                 if (setting.WindowSettings != null) {
                     var top = setting.WindowSettings.Top;
                     var left = setting.WindowSettings.Left;

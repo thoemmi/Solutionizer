@@ -2,15 +2,11 @@
 
 namespace Solutionizer.ViewModels {
     public abstract class ItemViewModel : PropertyChangedBase {
-        private readonly DirectoryViewModel _parent;
-
         protected ItemViewModel(DirectoryViewModel parent) {
-            _parent = parent;
+            Parent = parent;
         }
 
-        public DirectoryViewModel Parent {
-            get { return _parent; }
-        }
+        public DirectoryViewModel Parent { get; }
 
         public abstract string Name { get; }
 

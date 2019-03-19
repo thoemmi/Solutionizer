@@ -6,8 +6,8 @@ using System.Windows.Interactivity;
 namespace Solutionizer.Infrastructure {
     public class InputBindingTrigger : TriggerBase<FrameworkElement>, ICommand {
         public InputBinding InputBinding {
-            get { return (InputBinding) GetValue(InputBindingProperty); }
-            set { SetValue(InputBindingProperty, value); }
+            get => (InputBinding) GetValue(InputBindingProperty);
+            set => SetValue(InputBindingProperty, value);
         }
 
         public static readonly DependencyProperty InputBindingProperty =

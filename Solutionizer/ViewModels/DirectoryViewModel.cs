@@ -13,25 +13,15 @@ namespace Solutionizer.ViewModels {
             _projectFolder = projectFolder;
         }
 
-        public override string Name {
-            get { return _projectFolder.Name; }
-        }
+        public override string Name => _projectFolder.Name;
 
-        public override string Path {
-            get { return _projectFolder.FullPath; }
-        }
+        public override string Path => _projectFolder.FullPath;
 
-        public ProjectFolder ProjectFolder {
-            get { return _projectFolder; }
-        }
+        public ProjectFolder ProjectFolder => _projectFolder;
 
-        public List<DirectoryViewModel> Directories {
-            get { return _directories; }
-        }
+        public List<DirectoryViewModel> Directories => _directories;
 
-        public List<ProjectViewModel> Projects {
-            get { return _projects; }
-        }
+        public List<ProjectViewModel> Projects => _projects;
 
         public bool IsVisible {
             get { return _isVisible; }
@@ -43,9 +33,7 @@ namespace Solutionizer.ViewModels {
             }
         }
 
-        public int ProjectCount {
-            get { return _projects.Count(_ =>_.IsVisible) + _directories.Where(_ => _.IsVisible).Select(_ => _.ProjectCount).Sum(); }
-        }
+        public int ProjectCount => _projects.Count(_ =>_.IsVisible) + _directories.Where(_ => _.IsVisible).Select(_ => _.ProjectCount).Sum();
 
         public override void Filter(string filter) {
             foreach (var directory in _directories) {

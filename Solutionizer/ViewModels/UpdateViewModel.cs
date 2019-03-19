@@ -15,30 +15,27 @@ namespace Solutionizer.ViewModels {
         private readonly IUpdateManager _updateManager;
         private readonly ISettings _settings;
         private readonly bool _checkForUpdates;
-        private readonly ObservableCollection<ReleaseInfo> _releases = new ObservableCollection<ReleaseInfo>();
         private bool _isUpdating = true;
         private bool _isUpToDate = false;
         private bool _canUpdate = false;
         private bool _showOldReleases;
-        private readonly ICommand _updateCommand;
-        private readonly ICommand _cancelCommand;
 
         public UpdateViewModel(IUpdateManager updateManager, ISettings settings, IDialogManager dialogManager, UpdateDownloadViewModel.Factory updateDownloadViewModelFactory, bool checkForUpdates) {
             _updateManager = updateManager;
             _settings = settings;
             _checkForUpdates = checkForUpdates;
-            _releases = new ObservableCollection<ReleaseInfo>();
+            Releases = new ObservableCollection<ReleaseInfo>();
 
-            _updateCommand = new AsyncRelayCommand(async () => {
+            UpdateCommand = new AsyncRelayCommand(async () => {
                 Close();
-                await dialogManager.ShowDialogAsync(updateDownloadViewModelFactory.Invoke(_releases.First()));
+                await dialogManager.ShowDialogAsync(updateDownloadViewModelFactory.Invoke(Releases.First()));
             }, () => CanUpdate);
-            _cancelCommand = new RelayCommand(Close);
+            CancelCommand = new RelayCommand(Close);
 
             var collectionView = CollectionViewSource.GetDefaultView(Releases);
             collectionView.Filter = item => ((ReleaseInfo)item).IsNew;
 
-            BindingOperations.EnableCollectionSynchronization(_releases, _releases);
+            BindingOperations.EnableCollectionSynchronization(Releases, Releases);
         }
 
         public async Task OnLoadedAsync() {
@@ -51,23 +48,17 @@ namespace Solutionizer.ViewModels {
                 .OrderByDescending(r => r.Version)
                 .SkipWhile(r => String.IsNullOrWhiteSpace(r.DownloadUrl)).ToList();
 
-            releases.ForEach(_releases.Add);
+            releases.ForEach(Releases.Add);
 
             IsUpdating = false;
-            IsUpToDate = _releases.All(r => !r.IsNew);
-            CanUpdate = _releases.Any(r => r.IsNew);
+            IsUpToDate = Releases.All(r => !r.IsNew);
+            CanUpdate = Releases.Any(r => r.IsNew);
         }
 
 
-        public string Title {
-            get {
-                return _checkForUpdates ? "Check for Updates" : "Available Updates";
-            }
-        }
+        public string Title => _checkForUpdates ? "Check for Updates" : "Available Updates";
 
-        public ObservableCollection<ReleaseInfo> Releases {
-            get { return _releases; }
-        }
+        public ObservableCollection<ReleaseInfo> Releases { get; }
 
         public bool CanUpdate {
             get { return _canUpdate; }
@@ -117,12 +108,8 @@ namespace Solutionizer.ViewModels {
             }
         }
 
-        public ICommand UpdateCommand {
-            get { return _updateCommand; }
-        }
+        public ICommand UpdateCommand { get; }
 
-        public ICommand CancelCommand {
-            get { return _cancelCommand; }
-        }
+        public ICommand CancelCommand { get; }
     }
 }

@@ -146,10 +146,9 @@ namespace Solutionizer.Infrastructure {
 
                 var match = Regex.Match(r.TagName, @"^v?(?<major>\d+)\.(?<minor>\d+)(\.(?<patch>\d+))?$");
                 if (match.Success) {
-                    int major, minor, patch;
-                    Int32.TryParse(match.Groups["major"].Value, out major);
-                    Int32.TryParse(match.Groups["minor"].Value, out minor);
-                    if (Int32.TryParse(match.Groups["patch"].Value, out patch)) {
+                    Int32.TryParse(match.Groups["major"].Value, out var major);
+                    Int32.TryParse(match.Groups["minor"].Value, out var minor);
+                    if (Int32.TryParse(match.Groups["patch"].Value, out var patch)) {
                         r.Version = new Version(major, minor, patch);
                     } else {
                         r.Version = new Version(major, minor);

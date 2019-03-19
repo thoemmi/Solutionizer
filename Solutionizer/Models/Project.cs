@@ -10,23 +10,15 @@ namespace Solutionizer.Models {
     public class Project {
         private static readonly Logger _log = LogManager.GetCurrentClassLogger();
 
-        private readonly string _filepath;
-        private ProjectFolder _parent;
-        private readonly string _name;
-        private string _assemblyName;
-        private Guid _guid;
-        private bool _isSccBound;
         private List<string> _projectReferences = new List<string>();
-        private readonly List<string> _brokenProjectReferences = new List<string>();
-        private readonly List<string> _errors = new List<string>();
         private Task<IList<string>> _taskLoadConfigurations;
 
         public Project(string filepath) : this(filepath, null) {}
 
         public Project(string filepath, ProjectFolder parent) {
-            _filepath = filepath;
-            _parent = parent;
-            _name = Path.GetFileNameWithoutExtension(_filepath);
+            Filepath = filepath;
+            Parent = parent;
+            Name = Path.GetFileNameWithoutExtension(Filepath);
         }
 
         public void Load() {
@@ -34,30 +26,27 @@ namespace Solutionizer.Models {
                 LoadInternal();
             }
             catch (Exception ex) {
-                _log.Error(ex, "Loading project file '{0}' failed", _filepath);
+                _log.Error(ex, "Loading project file '{0}' failed", Filepath);
                 // log exception
             }
         }
 
-        public ProjectFolder Parent {
-            get { return _parent; }
-            set { _parent = value; }
-        }
+        public ProjectFolder Parent { get; set; }
 
         private void LoadInternal() {
             var xmlDocument = new XmlDocument();
-            xmlDocument.Load(_filepath);
+            xmlDocument.Load(Filepath);
             if (xmlDocument.DocumentElement.NamespaceURI != "http://schemas.microsoft.com/developer/msbuild/2003") {
-                throw new ArgumentException("Not a supported C# project file: \"" + _filepath + "\"");
+                throw new ArgumentException("Not a supported C# project file: \"" + Filepath + "\"");
             }
 
             var assemblyNameElement = xmlDocument.GetElementsByTagName("AssemblyName");
             if (assemblyNameElement == null || assemblyNameElement.Count == 0) {
-                throw new ArgumentException("Not a supported C# project file: \"" + _filepath + "\"");
+                throw new ArgumentException("Not a supported C# project file: \"" + Filepath + "\"");
             }
             var assemblyName = assemblyNameElement[0].FirstChild.Value;
             var guid = Guid.Parse(xmlDocument.GetElementsByTagName("ProjectGuid")[0].FirstChild.Value);
-            var directoryName = Path.GetDirectoryName(_filepath);
+            var directoryName = Path.GetDirectoryName(Filepath);
 
             var projectReferences = new List<string>();
             foreach (var xmlNode in xmlDocument.GetElementsByTagName("ProjectReference").Cast<XmlNode>()) {
@@ -85,9 +74,9 @@ namespace Solutionizer.Models {
                 isSccBound = elementsByTagName[0].ChildNodes.Count > 0 && !string.IsNullOrEmpty(elementsByTagName[0].FirstChild.Value);
             }
 
-            _assemblyName = assemblyName;
-            _guid = guid;
-            _isSccBound = isSccBound;
+            AssemblyName = assemblyName;
+            Guid = guid;
+            IsSccBound = isSccBound;
             _projectReferences = projectReferences;
 
             _taskLoadConfigurations = Task<IList<string>>.Factory.StartNew(LoadConfigurationsWithMicrosoftBuild);
@@ -96,12 +85,12 @@ namespace Solutionizer.Models {
         private IList<string> LoadConfigurationsWithMicrosoftBuild() {
             Microsoft.Build.Evaluation.Project p = null;
             try {
-                p = Microsoft.Build.Evaluation.ProjectCollection.GlobalProjectCollection.LoadProject(_filepath);
+                p = Microsoft.Build.Evaluation.ProjectCollection.GlobalProjectCollection.LoadProject(Filepath);
                 var configurations = p.ConditionedProperties["Configuration"];
                 var platforms = p.ConditionedProperties["Platform"];
                 return configurations.SelectMany(configuration => platforms.Select(platform => configuration + "|" + platform)).ToList();
             } catch (Exception ex) {
-                _errors.Add(ex.Message);
+                Errors.Add(ex.Message);
                 return new string[0];
             } finally {
                 if (p != null) {
@@ -114,40 +103,22 @@ namespace Solutionizer.Models {
             }
         }
 
-        public string Filepath {
-            get { return _filepath; }
-        }
+        public string Filepath { get; }
 
-        public string Name {
-            get { return _name; }
-        }
+        public string Name { get; }
 
-        public string AssemblyName {
-            get { return _assemblyName; }
-        }
+        public string AssemblyName { get; private set; }
 
-        public Guid Guid {
-            get { return _guid; }
-        }
+        public Guid Guid { get; private set; }
 
-        public bool IsSccBound {
-            get { return _isSccBound; }
-        }
+        public bool IsSccBound { get; private set; }
 
-        public List<string> ProjectReferences {
-            get { return _projectReferences ?? new List<string>(); }
-        }
+        public List<string> ProjectReferences => _projectReferences ?? new List<string>();
 
-        public List<string> BrokenProjectReferences {
-            get { return _brokenProjectReferences; }
-        }
+        public List<string> BrokenProjectReferences { get; } = new List<string>();
 
-        public List<string> Errors {
-            get { return _errors; }
-        }
+        public List<string> Errors { get; } = new List<string>();
 
-        public IList<string> Configurations {
-            get { return _taskLoadConfigurations.Result; }
-        }
+        public IList<string> Configurations => _taskLoadConfigurations.Result;
     }
 }

@@ -4,15 +4,12 @@ using TinyLittleMvvm;
 namespace Solutionizer.ViewModels {
     public abstract class SolutionItem : PropertyChangedBase {
         private string _name;
-        private readonly SolutionFolder _parent;
 
         protected SolutionItem(SolutionFolder parent) {
-            _parent = parent;
+            Parent = parent;
         }
 
-        public SolutionFolder Parent {
-            get { return _parent; }
-        }
+        public SolutionFolder Parent { get; }
 
         public string Name {
             get { return _name; }

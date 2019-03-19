@@ -10,13 +10,9 @@ namespace Solutionizer.Services {
 
         private Settings _settings;
 
-        private string SettingsPath {
-            get { return Path.Combine(AppEnvironment.DataFolder, "settings.json"); }
-        }
+        private string SettingsPath => Path.Combine(AppEnvironment.DataFolder, "settings.json");
 
-        public Settings Settings {
-            get { return _settings ?? (_settings = Load()); }
-        }
+        public Settings Settings => _settings ?? (_settings = Load());
 
         public void Dispose() {
             Save();

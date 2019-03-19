@@ -20,7 +20,7 @@ namespace Solutionizer.Services {
     public class MostRecentUsedFoldersRepository : IMostRecentUsedFoldersRepository, IDisposable {
         private readonly IUiExecution _uiExecution;
         private static readonly Logger _log = LogManager.GetCurrentClassLogger();
-        
+
         private const int LENGTH = 10;
         private readonly string _mruFile;
         private string _currentFolder;
@@ -33,9 +33,9 @@ namespace Solutionizer.Services {
             _mruFile = Path.Combine(AppEnvironment.DataFolder, "mru.json");
             Load();
             _fileSystemWatcher = new FileSystemWatcher {
-                Path = AppEnvironment.DataFolder, 
-                Filter = "mru.json", 
-                NotifyFilter = NotifyFilters.LastWrite, 
+                Path = AppEnvironment.DataFolder,
+                Filter = "mru.json",
+                NotifyFilter = NotifyFilters.LastWrite,
                 IncludeSubdirectories = false
             };
             _fileSystemWatcher.Changed += OnMruFileChanged;
@@ -62,10 +62,10 @@ namespace Solutionizer.Services {
                     foreach (var folder in folders) {
                         _folders.Add(folder);
                     }
+
                     UpdateMruFolders();
-                } 
-            }
-            catch (Exception e) {
+                }
+            } catch (Exception e) {
                 _log.Error(e, "Loading most recent used folders from {0} failed", _mruFile);
             }
         }
@@ -79,7 +79,8 @@ namespace Solutionizer.Services {
             });
         }
 
-        public ObservableCollection<string> Folders {
+        public ObservableCollection<string> Folders
+        {
             get { return _foldersExceptCurrent; }
         }
 
@@ -127,6 +128,7 @@ namespace Solutionizer.Services {
                 JumpList.AddToRecentCategory(jumpTask);
             }
 
-            jumpList.Apply();        }
+            jumpList.Apply();
+        }
     }
 }

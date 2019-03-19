@@ -17,7 +17,6 @@ namespace Solutionizer.ViewModels {
         private readonly CancellationTokenSource _cancellationTokenSource = new CancellationTokenSource();
         private readonly IUpdateManager _updateManager;
         private readonly ReleaseInfo _releaseInfo;
-        private readonly ICommand _cancelCommand;
         private int _progress;
         private string _progressText;
         private bool _isPreparingDownload;
@@ -26,7 +25,7 @@ namespace Solutionizer.ViewModels {
             _updateManager = updateManager;
             _releaseInfo = releaseInfo;
 
-            _cancelCommand = new RelayCommand(() => {
+            CancelCommand = new RelayCommand(() => {
                 _log.Debug("Cancelling download");
                 _cancellationTokenSource.Cancel();
             });
@@ -90,8 +89,6 @@ namespace Solutionizer.ViewModels {
             }
         }
 
-        public ICommand CancelCommand {
-            get { return _cancelCommand; }
-        }
+        public ICommand CancelCommand { get; }
     }
 }

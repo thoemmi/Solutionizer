@@ -24,11 +24,6 @@ namespace Solutionizer.ViewModels {
         private string _rootPath;
         private bool _areUpdatesAvailable;
         private string _title = "Solutionizer";
-        private readonly ICommand _showUpdatesCommand;
-        private readonly ICommand _showSettingsCommand;
-        private readonly ICommand _showAboutCommand;
-        private readonly ICommand _selectRootPathCommand;
-        private readonly ICommand _setRootPathCommand;
         private readonly Timer _updateTimer;
         private string _statusMessage;
 
@@ -44,17 +39,17 @@ namespace Solutionizer.ViewModels {
             _updateManager.UpdatesAvailable +=
                 (sender, args) => AreUpdatesAvailable = _updateManager.Releases != null && _updateManager.Releases.Any(r => r.IsNew && (_settings.IncludePrereleaseUpdates || !r.IsPrerelease));
 
-            _showUpdatesCommand = new RelayCommand<bool>(checkForUpdates => _flyoutManager.ShowFlyout(_viewModelFactory.CreateUpdateViewModel(checkForUpdates)));
-            _showSettingsCommand = new RelayCommand(OnShowSettings);
-            _showAboutCommand = new RelayCommand(() => _flyoutManager.ShowFlyout(_viewModelFactory.CreateAboutViewModel()));
-            _selectRootPathCommand = new AsyncRelayCommand(SelectRootPath);
-            _setRootPathCommand = new AsyncRelayCommand<string>(LoadProjectsAsync, path => !String.Equals(path, RootPath));
+            ShowUpdatesCommand = new RelayCommand<bool>(checkForUpdates => _flyoutManager.ShowFlyout(_viewModelFactory.CreateUpdateViewModel(checkForUpdates)));
+            ShowSettingsCommand = new RelayCommand(OnShowSettings);
+            ShowAboutCommand = new RelayCommand(() => _flyoutManager.ShowFlyout(_viewModelFactory.CreateAboutViewModel()));
+            SelectRootPathCommand = new AsyncRelayCommand(SelectRootPath);
+            SetRootPathCommand = new AsyncRelayCommand<string>(LoadProjectsAsync, path => !String.Equals(path, RootPath));
 
             _updateTimer = new Timer(_ => _updateManager.CheckForUpdatesAsync(), null, -1, -1);
         }
 
         public string RootPath {
-            get { return _rootPath; }
+            get => _rootPath;
             set {
                 if (_rootPath != value) {
                     _rootPath = value;
@@ -65,7 +60,7 @@ namespace Solutionizer.ViewModels {
         }
 
         public string Title {
-            get { return _title; }
+            get => _title;
             set {
                 if (value == _title) return;
                 _title = value;
@@ -73,16 +68,12 @@ namespace Solutionizer.ViewModels {
             }
         }
 
-        public ObservableCollection<string> MostRecentUsedFolders {
-            get { return _mostRecentUsedFoldersRepository.Folders; }
-        }
+        public ObservableCollection<string> MostRecentUsedFolders => _mostRecentUsedFoldersRepository.Folders;
 
-        public ProjectRepositoryViewModel ProjectRepository {
-            get { return _projectRepository; }
-        }
+        public ProjectRepositoryViewModel ProjectRepository => _projectRepository;
 
         public SolutionViewModel Solution {
-            get { return _solution; }
+            get => _solution;
             set {
                 if (_solution != value) {
                     _solution = value;
@@ -91,29 +82,17 @@ namespace Solutionizer.ViewModels {
             }
         }
 
-        public ISettings Settings {
-            get { return _settings; }
-        }
+        public ISettings Settings => _settings;
 
-        public ICommand ShowUpdatesCommand {
-            get { return _showUpdatesCommand; }
-        }
+        public ICommand ShowUpdatesCommand { get; }
 
-        public ICommand ShowSettingsCommand {
-            get { return _showSettingsCommand; }
-        }
+        public ICommand ShowSettingsCommand { get; }
 
-        public ICommand ShowAboutCommand {
-            get { return _showAboutCommand; }
-        }
+        public ICommand ShowAboutCommand { get; }
 
-        public ICommand SelectRootPathCommand {
-            get { return _selectRootPathCommand; }
-        }
+        public ICommand SelectRootPathCommand { get; }
 
-        public ICommand SetRootPathCommand {
-            get { return _setRootPathCommand; }
-        }
+        public ICommand SetRootPathCommand { get; }
 
         public async Task OnLoadedAsync() {
             var args = Environment.GetCommandLineArgs();
@@ -146,13 +125,9 @@ namespace Solutionizer.ViewModels {
             }
         }
 
-        public IFlyoutManager Flyouts {
-            get { return _flyoutManager; }
-        }
+        public IFlyoutManager Flyouts => _flyoutManager;
 
-        public IDialogManager Dialogs {
-            get { return _dialogManager; }
-        }
+        public IDialogManager Dialogs => _dialogManager;
 
         public bool AreUpdatesAvailable {
             get { return _areUpdatesAvailable; }
@@ -177,7 +152,7 @@ namespace Solutionizer.ViewModels {
                 _projectRepository.RootFolder = result.ProjectFolder;
                 _mostRecentUsedFoldersRepository.SetCurrentFolder(path);
                 Solution = _viewModelFactory.CreateSolutionViewModel(path, result.Projects);
-                Show(String.Format("{0} projects loaded.", result.Projects.Count));
+                Show($"{result.Projects.Count} projects loaded.");
             } else {
                 RootPath = oldRootPath;
             }
@@ -188,7 +163,7 @@ namespace Solutionizer.ViewModels {
         }
 
         public string StatusMessage {
-            get { return _statusMessage; }
+            get => _statusMessage;
             set {
                 if (_statusMessage != value) {
                     _statusMessage = value;
