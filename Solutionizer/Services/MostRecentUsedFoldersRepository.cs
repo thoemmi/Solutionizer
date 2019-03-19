@@ -66,7 +66,7 @@ namespace Solutionizer.Services {
                 } 
             }
             catch (Exception e) {
-                _log.ErrorException("Loading most recent used folders from " + _mruFile + " failed", e);
+                _log.Error(e, "Loading most recent used folders from {0} failed", _mruFile);
             }
         }
 
@@ -98,7 +98,7 @@ namespace Solutionizer.Services {
                     textWriter.WriteLine(JsonConvert.SerializeObject(_folders.ToArray(), Formatting.Indented));
                 }
             } catch (Exception e) {
-                _log.ErrorException("Saving mru folder list failed", e);
+                _log.Error(e, "Saving mru folder list failed");
             } finally {
                 _fileSystemWatcher.EnableRaisingEvents = true;
             }

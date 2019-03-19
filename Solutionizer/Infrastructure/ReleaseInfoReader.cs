@@ -126,7 +126,7 @@ namespace Solutionizer.Infrastructure {
         protected override async Task<List<ReleaseInfo>> GetReleasesAsync() {
             var github = new GitHubClient(new ProductHeaderValue("Solutionizer", AppEnvironment.CurrentVersion.ToString()));
             var result = new List<ReleaseInfo>();
-            foreach (var release in await github.Release.GetAll(GitHubOwner, GitHubRepository)) {
+            foreach (var release in await github.Repository.Release.GetAll(GitHubOwner, GitHubRepository)) {
                 var r = new ReleaseInfo {
                     Name = String.IsNullOrWhiteSpace(release.Name) ? release.TagName : release.Name,
                     ReleaseNotes = release.Body,
@@ -137,7 +137,7 @@ namespace Solutionizer.Infrastructure {
                     IsPrerelease = release.Prerelease,
                 };
 
-                var assets = await github.Release.GetAllAssets(GitHubOwner, GitHubRepository, release.Id);
+                var assets = await github.Repository.Release.GetAllAssets(GitHubOwner, GitHubRepository, release.Id);
                 var asset = assets.FirstOrDefault(a => a.Name.EndsWith(".msi"));
                 if (asset != null) {
                     r.Filename = asset.Name;

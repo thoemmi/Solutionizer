@@ -10,7 +10,7 @@ using System.Windows;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Thomas Freudenberg")]
 [assembly: AssemblyProduct("Solutionizer")]
-[assembly: AssemblyCopyright("Copyright © Thomas Freudenberg 2010-2012")]
+[assembly: AssemblyCopyright("Copyright © Thomas Freudenberg 2010-2019")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

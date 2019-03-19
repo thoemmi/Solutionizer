@@ -46,7 +46,7 @@ namespace Solutionizer.ViewModels {
                     _cancellationTokenSource.Token);
             } catch (WebException ex) {
                 if (ex.Status != WebExceptionStatus.RequestCanceled) {
-                    _log.ErrorException("Error downloading release from " + _releaseInfo.DownloadUrl, ex);
+                    _log.Error(ex, "Error downloading release from {0}", _releaseInfo.DownloadUrl);
                 }
                 filename = null;
             }

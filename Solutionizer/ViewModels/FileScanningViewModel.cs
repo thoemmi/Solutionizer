@@ -77,7 +77,7 @@ namespace Solutionizer.ViewModels {
                 projectFolder = GetProjects(_path);
                 _log.Debug("Loading project took {0}", sp.Elapsed);
             } catch (Exception ex) {
-                _log.ErrorException("Loading projects from " + _path + " failed", ex);
+                _log.Error(ex, "Loading projects from {0} failed", _path);
             } finally {
                 SetTaskbarItemProgressState(TaskbarItemProgressState.None);
             }
@@ -89,7 +89,7 @@ namespace Solutionizer.ViewModels {
             try {
                 Application.Current.Dispatcher.BeginInvoke((Action)(() => Application.Current.MainWindow.TaskbarItemInfo.ProgressState = state));
             } catch (Exception e) {
-                _log.ErrorException("Setting TaskbarItemInfo to " + state + " failed", e);
+                _log.Error(e, "Setting TaskbarItemInfo to {0} failed", state);
             }
         }
 

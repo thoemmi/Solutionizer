@@ -34,7 +34,7 @@ namespace Solutionizer.Models {
                 LoadInternal();
             }
             catch (Exception ex) {
-                _log.ErrorException(String.Format("Loading project file '{0}' failed", _filepath), ex);
+                _log.Error(ex, "Loading project file '{0}' failed", _filepath);
                 // log exception
             }
         }

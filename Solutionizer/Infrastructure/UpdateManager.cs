@@ -37,7 +37,7 @@ namespace Solutionizer.Infrastructure {
             try {
                 newReleases = await _reader.GetReleaseInfosAsync();
             } catch (Exception ex) {
-                _log.ErrorException("Getting release informations failed", ex);
+                _log.Error(ex, "Getting release informations failed");
                 return;
             }
 
@@ -74,7 +74,7 @@ namespace Solutionizer.Infrastructure {
                 }
             }
             catch (Exception e) {
-                _log.ErrorException("Saving settings failed", e);
+                _log.Error(e, "Saving settings failed");
             }
         }
 

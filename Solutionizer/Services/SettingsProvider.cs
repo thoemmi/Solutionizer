@@ -33,7 +33,7 @@ namespace Solutionizer.Services {
                 }
                 settings.IsDirty = false;
             } catch (Exception e) {
-                _log.ErrorException("Loading settings from " + SettingsPath + " failed", e);
+                _log.Error(e, "Loading settings from {0} failed", SettingsPath);
                 settings = new Settings {
                     IsDirty = true
                 };
@@ -52,7 +52,7 @@ namespace Solutionizer.Services {
                     textWriter.WriteLine(JsonConvert.SerializeObject(_settings, Formatting.Indented));
                 }
             } catch (Exception e) {
-                _log.ErrorException("Saving settings failed", e);
+                _log.Error(e, "Saving settings failed");
             }
 
             _settings.IsDirty = false;
