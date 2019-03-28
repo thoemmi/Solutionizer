@@ -41,6 +41,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DummyStatusMessenger.cs" />
+    <Compile Include="DummyVisualStudioInstallationProvider.cs" />
     <Compile Include="ProjectTestBase.cs" />
     <Compile Include="ProjectTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

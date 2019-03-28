@@ -11,6 +11,7 @@ namespace Solutionizer.Tests {
     [TestFixture]
     public class SaveSolutionCommandTests : ProjectTestBase {
         private readonly ISettings _settings;
+        private readonly IVisualStudioInstallationsProvider _visualStudioInstallationsProvider = new DummyVisualStudioInstallationProvider();
 
         public SaveSolutionCommandTests() {
             _settings = new Settings {
@@ -28,12 +29,12 @@ namespace Solutionizer.Tests {
             Project project;
             _scanningCommand.Projects.TryGetValue(Path.Combine(_testDataPath, "CsTestProject1.csproj"), out project);
 
-            var solution = new SolutionViewModel(new DummyStatusMessenger(), _settings, _testDataPath, _scanningCommand.Projects);
+            var solution = new SolutionViewModel(new DummyStatusMessenger(), _settings, _visualStudioInstallationsProvider, _testDataPath, _scanningCommand.Projects);
             solution.AddProject(project);
 
             var targetPath = Path.Combine(_testDataPath, "test.sln");
 
-            var cmd = new SaveSolutionCommand(_settings, targetPath, VisualStudioVersion.VS2010, solution);
+            var cmd = new SaveSolutionCommand(_settings, _visualStudioInstallationsProvider, targetPath, "VS2010", solution);
             cmd.Execute();
 
             Assert.AreEqual(ReadFromResource("CsTestProject1.sln"), File.ReadAllText(targetPath));
@@ -50,7 +51,7 @@ namespace Solutionizer.Tests {
             Project project;
             _scanningCommand.Projects.TryGetValue(Path.Combine(_testDataPath, "p2", "CsTestProject2.csproj"), out project);
 
-            var solution = new SolutionViewModel(new DummyStatusMessenger(), _settings, _testDataPath, _scanningCommand.Projects);
+            var solution = new SolutionViewModel(new DummyStatusMessenger(), _settings, _visualStudioInstallationsProvider, _testDataPath, _scanningCommand.Projects);
             solution.AddProject(project);
 
             // we need to change the Guid of the reference folder
@@ -58,7 +59,7 @@ namespace Solutionizer.Tests {
 
             var targetPath = Path.Combine(_testDataPath, "test.sln");
 
-            var cmd = new SaveSolutionCommand(_settings, targetPath, VisualStudioVersion.VS2010, solution);
+            var cmd = new SaveSolutionCommand(_settings, _visualStudioInstallationsProvider, targetPath, "VS2010", solution);
             cmd.Execute();
 
             Assert.AreEqual(ReadFromResource("CsTestProject2.sln"), File.ReadAllText(targetPath));
@@ -76,7 +77,7 @@ namespace Solutionizer.Tests {
             Project project;
             _scanningCommand.Projects.TryGetValue(Path.Combine(_testDataPath, "p3", "sub", "CsTestProject3.csproj"), out project);
 
-            var solution = new SolutionViewModel(new DummyStatusMessenger(), _settings, _testDataPath, _scanningCommand.Projects);
+            var solution = new SolutionViewModel(new DummyStatusMessenger(), _settings, _visualStudioInstallationsProvider, _testDataPath, _scanningCommand.Projects);
             solution.AddProject(project);
 
             // we need to change the Guid of the reference folder
@@ -86,7 +87,7 @@ namespace Solutionizer.Tests {
 
             var targetPath = Path.Combine(_testDataPath, "test.sln");
 
-            var cmd = new SaveSolutionCommand(_settings, targetPath, VisualStudioVersion.VS2010, solution);
+            var cmd = new SaveSolutionCommand(_settings, _visualStudioInstallationsProvider, targetPath, "VS2010", solution);
             cmd.Execute();
 
             Assert.AreEqual(ReadFromResource("CsTestProject3.sln"), File.ReadAllText(targetPath));

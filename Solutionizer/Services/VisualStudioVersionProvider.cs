@@ -6,34 +6,36 @@ using Microsoft.Win32;
 namespace Solutionizer.Services {
     public interface IVisualStudioInstallationsProvider {
         IReadOnlyList<VisualStudioInstallation> Installations { get; }
-        VisualStudioInstallation GetVisualStudioInstallationByVersionId(string versionId);
-        VisualStudioInstallation GetMostRecentVisualStudioInstallation();
+    }
+
+    public static class VisualStudioInstallationsProviderExtensions {
+        public static VisualStudioInstallation GetVisualStudioInstallationByVersionId(this IVisualStudioInstallationsProvider provider, string versionId)
+        {
+            return provider.Installations.FirstOrDefault(installation => installation.VersionId == versionId);
+        }
+
+        public static VisualStudioInstallation GetMostRecentVisualStudioInstallation(this IVisualStudioInstallationsProvider provider)
+        {
+            return provider.Installations.OrderByDescending(installation => installation.Version).FirstOrDefault();
+        }
     }
 
     public class VisualStudioInstallationsProvider : IVisualStudioInstallationsProvider {
         private readonly List<VisualStudioInstallation> _installations = new List<VisualStudioInstallation>();
 
         public VisualStudioInstallationsProvider() {
-            AddInstallationIfExists("Visual Studio 2010", "VS2010", "10.0", _installations);
-            AddInstallationIfExists("Visual Studio 2012", "VS2012", "11.0", _installations);
-            AddInstallationIfExists("Visual Studio 2013", "VS2013", "12.0", _installations);
-            AddInstallationIfExists("Visual Studio 2015", "VS2015", "14.0", _installations);
+            AddInstallationIfExists("Visual Studio 2010", "VS2010", "10.0", "11.00", _installations);
+            AddInstallationIfExists("Visual Studio 2012", "VS2012", "11.0", "12.00", _installations);
+            AddInstallationIfExists("Visual Studio 2013", "VS2013", "12.0", "12.00", _installations);
+            AddInstallationIfExists("Visual Studio 2015", "VS2015", "14.0", "14.00", _installations);
 
             // TODO: use vswhere to read VS2017 and newer instalations
-            AddInstallationIfExists("Visual Studio 2017", "VS2017", "15.0", _installations);
-        }
-
-        public VisualStudioInstallation GetVisualStudioInstallationByVersionId(string versionId) {
-            return _installations.FirstOrDefault(installation => installation.VersionId == versionId);
-        }
-
-        public VisualStudioInstallation GetMostRecentVisualStudioInstallation() {
-            return _installations.OrderByDescending(installation => installation.Version).FirstOrDefault();
+            AddInstallationIfExists("Visual Studio 2017", "VS2017", "15.0", "14.00", _installations);
         }
 
         public IReadOnlyList<VisualStudioInstallation> Installations => _installations;
 
-        private static void AddInstallationIfExists(string name, string versionId, string versionKey, ICollection<VisualStudioInstallation> installations) {
+        private static void AddInstallationIfExists(string name, string versionId, string versionKey, string solutionFileVersion, ICollection<VisualStudioInstallation> installations) {
             using (var key = Registry.ClassesRoot.OpenSubKey($"VisualStudio.DTE.{versionKey}"))
             {
                 if (key != null)
@@ -43,7 +45,7 @@ namespace Solutionizer.Services {
                         Name = name,
                         Version = versionKey,
                         VersionId = versionId,
-                        VersionKey = versionKey,
+                        SolutionFileVersion = solutionFileVersion,
                         InstallationPath = GetVisualStudioExecutable(versionKey),
                         ProjectsLocation = GetDefaultProjectsLocation(versionKey)
                     });
@@ -89,7 +91,7 @@ namespace Solutionizer.Services {
         public string Name { get; set; }
         public string Version { get; set; }
         public string VersionId { get; set; }
-        public string VersionKey { get; set; }
+        public string SolutionFileVersion { get; set; }
         public string InstallationPath { get; set; }
         public string ProjectsLocation { get; set; }
     }

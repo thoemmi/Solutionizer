@@ -95,7 +95,7 @@ namespace Solutionizer.Commands {
                 ?? _visualStudioInstallationsProvider.GetMostRecentVisualStudioInstallation();
 
             writer.WriteLine();
-            writer.WriteLine($"Microsoft Visual Studio Solution File, Format Version {installation.VersionKey}0");
+            writer.WriteLine($"Microsoft Visual Studio Solution File, Format Version {installation.SolutionFileVersion}");
             writer.WriteLine($"# {installation.Name}");
         }
 
