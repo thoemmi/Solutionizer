@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
@@ -10,6 +11,7 @@ using TinyLittleMvvm;
 namespace Solutionizer.ViewModels {
     public sealed class SettingsViewModel : DialogViewModel, IOnLoadedHandler {
         private readonly ISettings _settings;
+        private readonly IVisualStudioInstallationsProvider _visualStudioInstallationsProvider;
         private bool _scanOnStartup;
         private bool _simplifyProjectTree;
         private bool _includeReferencedProjects;
@@ -17,7 +19,7 @@ namespace Solutionizer.ViewModels {
         private string _referenceFolderName;
         private int _referenceTreeDepth;
         private bool _dontBuildReferencedProjects;
-        private VisualStudioVersion _visualStudioVersion;
+        private string _visualStudioVersion;
         private bool _showLaunchElevatedButton;
         private bool _showProjectCount;
         private bool _autoUpdateCheck;
@@ -29,8 +31,9 @@ namespace Solutionizer.ViewModels {
         private readonly ICommand _cancelCommand;
         private readonly ICommand _selectSolutionTargetFolderCommand;
 
-        public SettingsViewModel(ISettings settings) {
+        public SettingsViewModel(ISettings settings, IVisualStudioInstallationsProvider visualStudioInstallationsProvider) {
             _settings = settings;
+            _visualStudioInstallationsProvider = visualStudioInstallationsProvider;
             _okCommand = new RelayCommand(Ok, () => CanOk);
             _cancelCommand = new RelayCommand(Close);
             _selectSolutionTargetFolderCommand = new RelayCommand(SelectSolutionTargetFolder);
@@ -147,7 +150,10 @@ namespace Solutionizer.ViewModels {
             }
         }
 
-        public VisualStudioVersion VisualStudioVersion {
+        public IReadOnlyList<VisualStudioInstallation> Installations => _visualStudioInstallationsProvider.Installations;
+
+
+        public string VisualStudioVersion {
             get { return _visualStudioVersion; }
             set {
                 if (_visualStudioVersion != value) {

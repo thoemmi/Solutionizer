@@ -30,13 +30,15 @@ namespace Solutionizer.ViewModels {
         private readonly SolutionFolder _solutionRoot = new SolutionFolder(null);
         private SolutionItem _selectedItem;
         private readonly ISettings _settings;
+        private readonly IVisualStudioInstallationsProvider _visualStudioInstallationsProvider;
         private string _fileName;
 
-        public SolutionViewModel(IStatusMessenger statusMessenger, ISettings settings, string rootPath, IDictionary<string, Project> projects) {
+        public SolutionViewModel(IStatusMessenger statusMessenger, ISettings settings, IVisualStudioInstallationsProvider visualStudioInstallationsProvider, string rootPath, IDictionary<string, Project> projects) {
             _statusMessenger = statusMessenger;
             _rootPath = rootPath;
             _projects = projects;
             _settings = settings;
+            _visualStudioInstallationsProvider = visualStudioInstallationsProvider;
             DropCommand = new RelayCommand<object>(OnDrop, obj => obj is ProjectViewModel);
             RemoveSelectedItemCommand = new RelayCommand(RemoveSolutionItem);
             _settings.PropertyChanged += (sender, args) => {
@@ -73,8 +75,8 @@ namespace Solutionizer.ViewModels {
 
         private void Launch(bool elevated) {
             InternalSave(null);
-            var exePath = VisualStudioHelper.GetVisualStudioExecutable(_settings.VisualStudioVersion);
-            var psi = new ProcessStartInfo(exePath, "\"" + FileName + "\"");
+            var installation = _visualStudioInstallationsProvider.GetVisualStudioInstallationByVersionId(_settings.VisualStudioVersion);
+            var psi = new ProcessStartInfo(installation.InstallationPath, "\"" + FileName + "\"");
             if (elevated) {
                 psi.Verb = "runas";
             }
@@ -119,7 +121,7 @@ namespace Solutionizer.ViewModels {
                 }
             }
 
-            new SaveSolutionCommand(_settings, FileName, _settings.VisualStudioVersion, this).Execute();
+            new SaveSolutionCommand(_settings, _visualStudioInstallationsProvider, FileName, _settings.VisualStudioVersion, this).Execute();
             _statusMessenger.Show(String.Format("Solution saved as '{0}'.", FileName));
             IsDirty = false;
         }

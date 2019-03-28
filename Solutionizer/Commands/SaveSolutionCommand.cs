@@ -12,12 +12,14 @@ using Solutionizer.ViewModels;
 namespace Solutionizer.Commands {
     public class SaveSolutionCommand {
         private readonly ISettings _settings;
+        private readonly IVisualStudioInstallationsProvider _visualStudioInstallationsProvider;
         private readonly string _solutionFileName;
-        private readonly VisualStudioVersion _visualStudioVersion;
+        private readonly string _visualStudioVersion;
         private readonly SolutionViewModel _solution;
 
-        public SaveSolutionCommand(ISettings settings, string solutionFileName, VisualStudioVersion visualStudioVersion, SolutionViewModel solution) {
+        public SaveSolutionCommand(ISettings settings, IVisualStudioInstallationsProvider visualStudioInstallationsProvider, string solutionFileName, string visualStudioVersion, SolutionViewModel solution) {
             _settings = settings;
+            _visualStudioInstallationsProvider = visualStudioInstallationsProvider;
             _solutionFileName = solutionFileName;
             _visualStudioVersion = visualStudioVersion;
             _solution = solution;
@@ -88,31 +90,13 @@ namespace Solutionizer.Commands {
         }
 
         private void WriteHeader(TextWriter writer) {
+            var installation = 
+                _visualStudioInstallationsProvider.GetVisualStudioInstallationByVersionId(_visualStudioVersion)
+                ?? _visualStudioInstallationsProvider.GetMostRecentVisualStudioInstallation();
+
             writer.WriteLine();
-            switch (_visualStudioVersion) {
-                case VisualStudioVersion.VS2010:
-                    writer.WriteLine("Microsoft Visual Studio Solution File, Format Version 11.00");
-                    writer.WriteLine("# Visual Studio 2010");
-                    break;
-                case VisualStudioVersion.VS2012:
-                    writer.WriteLine("Microsoft Visual Studio Solution File, Format Version 12.00");
-                    writer.WriteLine("# Visual Studio 2012");
-                    break;
-                case VisualStudioVersion.VS2013:
-                    writer.WriteLine("Microsoft Visual Studio Solution File, Format Version 12.00");
-                    writer.WriteLine("# Visual Studio 2013");
-                    break;
-                case VisualStudioVersion.VS2015:
-                    writer.WriteLine("Microsoft Visual Studio Solution File, Format Version 14.00");
-                    writer.WriteLine("# Visual Studio 2015");
-                    break;
-                case VisualStudioVersion.VS2017:
-                    writer.WriteLine("Microsoft Visual Studio Solution File, Format Version 14.00");
-                    writer.WriteLine("# Visual Studio 15");
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException();
-            }
+            writer.WriteLine($"Microsoft Visual Studio Solution File, Format Version {installation.VersionKey}0");
+            writer.WriteLine($"# {installation.Name}");
         }
 
         private void WriteNestedProjects(TextWriter writer) {

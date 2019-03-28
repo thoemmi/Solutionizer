@@ -8,7 +8,12 @@ namespace Solutionizer.Services {
     public class SettingsProvider : IDisposable {
         private static readonly Logger _log = LogManager.GetCurrentClassLogger();
 
+        private IVisualStudioInstallationsProvider _visualStudioInstallationsProvider;
         private Settings _settings;
+
+        public SettingsProvider(IVisualStudioInstallationsProvider visualStudioInstallationsProvider) {
+            _visualStudioInstallationsProvider = visualStudioInstallationsProvider;
+        }
 
         private string SettingsPath => Path.Combine(AppEnvironment.DataFolder, "settings.json");
 

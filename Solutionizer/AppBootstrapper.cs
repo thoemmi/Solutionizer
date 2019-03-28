@@ -26,10 +26,11 @@ namespace Solutionizer {
             builder.RegisterType<ShellView>().SingleInstance();
             builder.RegisterType<UpdateManager>().SingleInstance().As<IUpdateManager>();
             builder.RegisterType<ViewModelFactory>().SingleInstance().As<IViewModelFactory>();
-            builder.Register(c => new SettingsProvider()).SingleInstance();
+            builder.RegisterType<SettingsProvider>().SingleInstance();
             builder.Register(c => c.Resolve<SettingsProvider>().Settings).As<ISettings>().SingleInstance();
             builder.RegisterType<GithubReleaseProvider>().SingleInstance().As<IReleaseProvider>();
             builder.RegisterType<MostRecentUsedFoldersRepository>().SingleInstance().As<IMostRecentUsedFoldersRepository>();
+            builder.RegisterType<VisualStudioInstallationsProvider>().SingleInstance().As<IVisualStudioInstallationsProvider>();
 
             builder
                 .RegisterAssemblyTypes(GetType().Assembly)

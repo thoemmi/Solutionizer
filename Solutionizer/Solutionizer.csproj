@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
@@ -85,7 +85,6 @@
     <Compile Include="Converters\MarkdownToFlowDocumentConverter.cs" />
     <Compile Include="Helper\HtmlToXamlConverter.cs" />
     <Compile Include="Helper\Markdown.cs" />
-    <Compile Include="Helper\VisualStudioHelper.cs" />
     <Compile Include="Helper\WebBrowserHelper.cs" />
     <Compile Include="Infrastructure\AppEnvironment.cs" />
     <Compile Include="Infrastructure\ContextMenuOnLeftClickBehavior.cs" />
@@ -99,6 +98,7 @@
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="Services\IStatusMessenger.cs" />
     <Compile Include="Services\MostRecentUsedFoldersRepository.cs" />
+    <Compile Include="Services\VisualStudioVersionProvider.cs" />
     <Compile Include="ViewModels\AboutViewModel.cs" />
     <Compile Include="ViewModels\FileScanningViewModel.cs" />
     <Compile Include="Infrastructure\BindableSelectedItemBehavior .cs" />

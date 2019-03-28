@@ -24,7 +24,7 @@
   </Controls1:FullSizeFlyout.Resources>
 
   <Grid Margin="15">
-    <Grid.Resources>
+    <!--<Grid.Resources>
       <ObjectDataProvider MethodName="GetValues" ObjectType="{x:Type System:Enum}" x:Key="PossibleValues">
         <ObjectDataProvider.MethodParameters>
           <x:Type TypeName="Services:VisualStudioVersion" />
@@ -50,7 +50,7 @@
             </DataTrigger>
         </DataTemplate.Triggers>
       </DataTemplate>
-    </Grid.Resources>
+    </Grid.Resources>-->
     <Grid.RowDefinitions>
       <RowDefinition Height="*" />
       <RowDefinition Height="Auto" />
@@ -123,9 +123,11 @@
             Margin="0 0 8 0"
             Text="Visual Studio version:"/>
           <ComboBox
+              SelectedValuePath="VersionId"
             SelectedValue="{Binding VisualStudioVersion}"
             Width="200"
-            ItemsSource="{Binding Source={StaticResource PossibleValues}}"
+            DisplayMemberPath="Name"
+            ItemsSource="{Binding Installations}"
             ToolTip="Specifies the target version of Visual Studio."/>
         </StackPanel>
 

@@ -13,7 +13,7 @@ namespace Solutionizer.Services {
         int ReferenceTreeDepth { get; set; }
         string ReferenceFolderName { get; set; }
         Uri TfsName { get; set; }
-        VisualStudioVersion VisualStudioVersion { get; set; }
+        string VisualStudioVersion { get; set; }
         bool ShowLaunchElevatedButton { get; set; }
         bool DontBuildReferencedProjects { get; set; }
         bool ShowProjectCount { get; set; }
