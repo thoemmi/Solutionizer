@@ -97,6 +97,9 @@ namespace Solutionizer.Commands {
             writer.WriteLine();
             writer.WriteLine($"Microsoft Visual Studio Solution File, Format Version {installation.SolutionFileVersion}");
             writer.WriteLine($"# {installation.Name}");
+            if (!string.IsNullOrEmpty(installation.SolutionVisualStudioVersion)) {
+                writer.WriteLine($"VisualStudioVersion = {installation.SolutionVisualStudioVersion}");
+            }
         }
 
         private void WriteNestedProjects(TextWriter writer) {

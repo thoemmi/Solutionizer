@@ -1,7 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using Microsoft.Win32;
+using Newtonsoft.Json;
+using NLog;
 
 namespace Solutionizer.Services {
     public interface IVisualStudioInstallationsProvider {
@@ -21,6 +25,8 @@ namespace Solutionizer.Services {
     }
 
     public class VisualStudioInstallationsProvider : IVisualStudioInstallationsProvider {
+        private static readonly Logger _log = LogManager.GetCurrentClassLogger();
+
         private readonly List<VisualStudioInstallation> _installations = new List<VisualStudioInstallation>();
 
         public VisualStudioInstallationsProvider() {
@@ -29,8 +35,61 @@ namespace Solutionizer.Services {
             AddInstallationIfExists("Visual Studio 2013", "VS2013", "12.0", "12.00", _installations);
             AddInstallationIfExists("Visual Studio 2015", "VS2015", "14.0", "14.00", _installations);
 
-            // TODO: use vswhere to read VS2017 and newer instalations
-            AddInstallationIfExists("Visual Studio 2017", "VS2017", "15.0", "14.00", _installations);
+            var vswherePath = Path.Combine(
+                Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86),
+                "Microsoft Visual Studio",
+                "Installer",
+                "vswhere.exe");
+            if (File.Exists(vswherePath)) {
+                var process = new Process
+                {
+                    StartInfo = new ProcessStartInfo
+                    {
+                        FileName = @".\vswhere.exe",
+                        Arguments = @"-nologo -prerelease -format json -utf8",
+                        CreateNoWindow = true,
+                        UseShellExecute = false,
+                        RedirectStandardOutput = true
+                    }
+                };
+
+                // Run vswhere.exe and wait for its termination.
+                process.Start();
+                string output = process.StandardOutput.ReadToEnd();
+                process.WaitForExit(30000);
+
+                if (process.ExitCode == 0) {
+                    try {
+                        var vsWhereInstallations = JsonConvert.DeserializeObject<VsWhereInstallation[]>(output);
+                        _installations.AddRange(vsWhereInstallations.Select(inst => new VisualStudioInstallation {
+                            Name = inst.DisplayName + (inst.Catalog.ProductMilestone == "RTW" ? "" : $" {inst.Catalog.ProductMilestone}"),
+                            VersionId = inst.InstanceId,
+                            Version = inst.InstallationVersion,
+                            InstallationPath = inst.ProductPath,
+                            SolutionFileVersion = "12",
+                            SolutionVisualStudioVersion = inst.InstallationVersion
+                        }));
+                    } catch (Exception ex) {
+                        _log.Error(ex, "Deserializing output from vswhere.exe failed");
+
+                    }
+                }
+            }
+        }
+
+        private class VsWhereInstallation {
+            public string InstanceId { get; set; }
+            public string DisplayName { get; set; }
+            public string InstallationVersion { get; set; }
+            public string ProductPath { get; set; }
+            public CatalogInfo Catalog { get; set; }
+        }
+
+        private class CatalogInfo {
+            public string ProductName { get; set; }
+            public string ProductLineVersion { get; set; }
+            public string ProductDisplayVersion { get; set; }
+            public string ProductMilestone { get; set; }
         }
 
         public IReadOnlyList<VisualStudioInstallation> Installations => _installations;
@@ -84,13 +143,13 @@ namespace Solutionizer.Services {
 
             return null;
         }
-
     }
 
     public class VisualStudioInstallation {
         public string Name { get; set; }
         public string Version { get; set; }
         public string VersionId { get; set; }
+        public string SolutionVisualStudioVersion { get; set; }
         public string SolutionFileVersion { get; set; }
         public string InstallationPath { get; set; }
         public string ProjectsLocation { get; set; }

@@ -1,241 +1,228 @@
-﻿<Controls1:FullSizeFlyout x:Class="Solutionizer.Views.SettingsView"
-             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:System="clr-namespace:System;assembly=mscorlib"
-             xmlns:Services="clr-namespace:Solutionizer.Services" mc:Ignorable="d"
-             xmlns:ViewModels="clr-namespace:Solutionizer.ViewModels"
-             xmlns:Controls="http://metro.mahapps.com/winfx/xaml/controls"
-             xmlns:Converters="clr-namespace:Solutionizer.Converters"
-             xmlns:Controls1="clr-namespace:Solutionizer.Controls"
-                 Header="Settings"
-                 CloseCommand="{Binding CancelCommand}"
-             d:DataContext="{d:DesignInstance ViewModels:SettingsViewModel}"
-             d:DesignHeight="300" d:DesignWidth="300">
-  <Controls1:FullSizeFlyout.Resources>
-    <ResourceDictionary>
-      <ResourceDictionary.MergedDictionaries>
-        <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/FlatButton.xaml" />
-      </ResourceDictionary.MergedDictionaries>
+﻿<Controls1:FullSizeFlyout
+    x:Class="Solutionizer.Views.SettingsView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:Controls="http://metro.mahapps.com/winfx/xaml/controls"
+    xmlns:Controls1="clr-namespace:Solutionizer.Controls"
+    xmlns:Converters="clr-namespace:Solutionizer.Converters"
+    xmlns:Services="clr-namespace:Solutionizer.Services"
+    xmlns:System="clr-namespace:System;assembly=mscorlib"
+    xmlns:ViewModels="clr-namespace:Solutionizer.ViewModels"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    d:DataContext="{d:DesignInstance ViewModels:SettingsViewModel}"
+    d:DesignHeight="300"
+    d:DesignWidth="300"
+    CloseCommand="{Binding CancelCommand}"
+    Header="Settings"
+    mc:Ignorable="d">
+    <Controls1:FullSizeFlyout.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/FlatButton.xaml" />
+            </ResourceDictionary.MergedDictionaries>
 
-      <Converters:EnumBooleanConverter x:Key="EnumBooleanConverter"/>
-    </ResourceDictionary>
-  </Controls1:FullSizeFlyout.Resources>
+            <Converters:EnumBooleanConverter x:Key="EnumBooleanConverter" />
+        </ResourceDictionary>
+    </Controls1:FullSizeFlyout.Resources>
 
-  <Grid Margin="15">
-    <!--<Grid.Resources>
-      <ObjectDataProvider MethodName="GetValues" ObjectType="{x:Type System:Enum}" x:Key="PossibleValues">
-        <ObjectDataProvider.MethodParameters>
-          <x:Type TypeName="Services:VisualStudioVersion" />
-        </ObjectDataProvider.MethodParameters>
-      </ObjectDataProvider>
-      <DataTemplate DataType="{x:Type Services:VisualStudioVersion}">
-        <TextBlock Text="{Binding}" x:Name="PART_Text" />
-        <DataTemplate.Triggers>
-          <DataTrigger Binding="{Binding}" Value="VS2010">
-            <Setter TargetName="PART_Text" Property="Text" Value="Visual Studio 2010" />
-          </DataTrigger>
-          <DataTrigger Binding="{Binding}" Value="VS2012">
-            <Setter TargetName="PART_Text" Property="Text" Value="Visual Studio 2012" />
-          </DataTrigger>
-          <DataTrigger Binding="{Binding}" Value="VS2013">
-            <Setter TargetName="PART_Text" Property="Text" Value="Visual Studio 2013" />
-          </DataTrigger>
-          <DataTrigger Binding="{Binding}" Value="VS2015">
-                <Setter TargetName="PART_Text" Property="Text" Value="Visual Studio 2015" />
-          </DataTrigger>
-            <DataTrigger Binding="{Binding}" Value="VS2017">
-                <Setter TargetName="PART_Text" Property="Text" Value="Visual Studio 2017" />
-            </DataTrigger>
-        </DataTemplate.Triggers>
-      </DataTemplate>
-    </Grid.Resources>-->
-    <Grid.RowDefinitions>
-      <RowDefinition Height="*" />
-      <RowDefinition Height="Auto" />
-    </Grid.RowDefinitions>
+    <Grid Margin="15">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
 
-    <ScrollViewer VerticalScrollBarVisibility="Auto" VerticalAlignment="Stretch">
-      <StackPanel>
-        <StackPanel.Resources>
-          <Style x:Key="DescriptionHeaderStyle" TargetType="{x:Type TextBlock}">
-            <Setter Property="FontSize" Value="{DynamicResource TabItemFontSize}" />
-            <Setter Property="Foreground" Value="{DynamicResource AccentColorBrush}" />
-            <Setter Property="Margin" Value="0 8" />
-          </Style>
-        </StackPanel.Resources>
+        <ScrollViewer
+            VerticalAlignment="Stretch"
+            VerticalScrollBarVisibility="Auto">
+            <StackPanel>
+                <StackPanel.Resources>
+                    <Style
+                        x:Key="DescriptionHeaderStyle"
+                        TargetType="{x:Type TextBlock}">
+                        <Setter Property="FontSize" Value="{DynamicResource TabItemFontSize}" />
+                        <Setter Property="Foreground" Value="{DynamicResource AccentColorBrush}" />
+                        <Setter Property="Margin" Value="0,8" />
+                    </Style>
+                </StackPanel.Resources>
 
-        <TextBlock
-          Margin="0 0 0 8"
-          Style="{StaticResource DescriptionHeaderStyle}"
-          Text="Solution Structure" />
+                <TextBlock
+                    Margin="0,0,0,8"
+                    Style="{StaticResource DescriptionHeaderStyle}"
+                    Text="Solution Structure" />
 
-        <CheckBox
-          IsChecked="{Binding IncludeReferencedProjects}"
-          Margin="0 0 0 8"
-          Content="Add referenced projects automatically"
-          ToolTip="If checked, referenced projects will be&#x0a;added to the solution automatically."/>
+                <CheckBox
+                    Margin="0,0,0,8"
+                    Content="Add referenced projects automatically"
+                    IsChecked="{Binding IncludeReferencedProjects}"
+                    ToolTip="If checked, referenced projects will be&#x0a;added to the solution automatically." />
+
+                <StackPanel
+                    Margin="20,0,0,8"
+                    IsEnabled="{Binding IncludeReferencedProjects}"
+                    Orientation="Horizontal">
+                    <TextBlock
+                        Margin="0,0,8,0"
+                        VerticalAlignment="Center"
+                        Text="Folder name:" />
+                    <TextBox
+                        Width="200"
+                        Text="{Binding ReferenceFolderName, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
+                        ToolTip="Specify the name of the solution folder, where referenced projects&#x0a;should be added to. The folder structure will be preserved&#x0a;underneath this folder." />
+                </StackPanel>
+
+                <StackPanel
+                    Margin="20,0,0,8"
+                    IsEnabled="{Binding IncludeReferencedProjects}"
+                    Orientation="Horizontal">
+                    <TextBlock
+                        Margin="0,0,8,0"
+                        VerticalAlignment="Center"
+                        Text="Tree depth:" />
+                    <Controls:NumericUpDown
+                        Width="70"
+                        Maximum="10"
+                        Minimum="1"
+                        TextAlignment="Right"
+                        ToolTip="Specifies the depth of referenced projects&#x0a;which should be added to the solution."
+                        Value="{Binding ReferenceTreeDepth}" />
+                </StackPanel>
+
+                <CheckBox
+                    Margin="20,0,0,8"
+                    Content="Exclude referenced projects from build configurations"
+                    IsChecked="{Binding DontBuildReferencedProjects}"
+                    IsEnabled="{Binding IncludeReferencedProjects}"
+                    ToolTip="If checked, referenced projects won't be build&#x0a;automatically in the resulting solution." />
+
+                <StackPanel
+                    Margin="0,0,0,8"
+                    Orientation="Horizontal">
+                    <TextBlock
+                        Margin="0,0,8,0"
+                        VerticalAlignment="Center"
+                        Text="Visual Studio version:" />
+                    <ComboBox
+                        Width="300"
+                        DisplayMemberPath="Name"
+                        ItemsSource="{Binding Installations}"
+                        SelectedValue="{Binding VisualStudioVersion}"
+                        SelectedValuePath="VersionId"
+                        ToolTip="Specifies the target version of Visual Studio." />
+                </StackPanel>
+
+                <TextBlock
+                    Margin="0,0,0,8"
+                    Text="Store solutions in" />
+
+                <RadioButton
+                    Margin="20,0,0,8"
+                    Content="the temporary folder"
+                    IsChecked="{Binding SolutionTargetLocation, Converter={StaticResource EnumBooleanConverter}, ConverterParameter=TempFolder}" />
+
+                <StackPanel
+                    Margin="20,0,0,8"
+                    Orientation="Horizontal">
+                    <RadioButton
+                        Content="a custom folder"
+                        IsChecked="{Binding SolutionTargetLocation, Converter={StaticResource EnumBooleanConverter}, ConverterParameter=CustomFolder}" />
+                    <Controls1:EllipsisTextBox
+                        Width="300"
+                        Margin="8,0,0,0"
+                        Controls:TextBoxHelper.ButtonCommand="{Binding SelectSolutionTargetFolderCommand}"
+                        EllipsisPlacement="Path"
+                        IsEnabled="{Binding SolutionTargetLocation, Converter={StaticResource EnumBooleanConverter}, ConverterParameter=CustomFolder}"
+                        IsReadOnly="True"
+                        Style="{DynamicResource ButtonCommandMetroTextBox}"
+                        Text="{Binding CustomTargetFolder, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}">
+                        <Controls:TextBoxHelper.ButtonContent>
+                            <TextBlock
+                                FontFamily="{DynamicResource DefaultFont}"
+                                Text="&#x2026;" />
+                        </Controls:TextBoxHelper.ButtonContent>
+                    </Controls1:EllipsisTextBox>
+                </StackPanel>
+
+                <StackPanel
+                    Margin="20,0,0,8"
+                    Orientation="Horizontal">
+                    <RadioButton
+                        Content="a subfolder of the selected root folder"
+                        IsChecked="{Binding SolutionTargetLocation, Converter={StaticResource EnumBooleanConverter}, ConverterParameter=BelowRootPath}" />
+                    <TextBox
+                        Width="200"
+                        Margin="8,0,0,0"
+                        IsEnabled="{Binding SolutionTargetLocation, Converter={StaticResource EnumBooleanConverter}, ConverterParameter=BelowRootPath}"
+                        Text="{Binding CustomTargetSubfolder, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" />
+                </StackPanel>
+
+                <TextBlock
+                    Style="{StaticResource DescriptionHeaderStyle}"
+                    Text="User Interface" />
+
+                <CheckBox
+                    Margin="0,0,0,8"
+                    Content="Hide empty folders in hierarchy"
+                    IsChecked="{Binding SimplifyProjectTree}"
+                    ToolTip="If checked, folders containing no projects but subfolders only will be hidden." />
+
+                <CheckBox
+                    Margin="0,0,0,8"
+                    Content="Show projects as flat list"
+                    IsChecked="{Binding IsFlatMode}"
+                    ToolTip="If checked, the projects will be presented&#x0a;in a flat list instead of a tree view." />
+
+                <CheckBox
+                    Margin="0,0,0,8"
+                    Content="Show &quot;Launch Elevated&quot; button"
+                    IsChecked="{Binding ShowLaunchElevatedButton}"
+                    ToolTip="This button allows to open the created solution&#x0a;inside an elevated instance of Visual Studio." />
+
+                <CheckBox
+                    Margin="0,0,0,8"
+                    Content="Show number of contained projects behind the directory name"
+                    IsChecked="{Binding ShowProjectCount}"
+                    ToolTip="If checked, the number of contained projects&#x0a;will be displayed behind folders." />
+
+                <TextBlock
+                    Style="{StaticResource DescriptionHeaderStyle}"
+                    Text="Miscellaneous" />
+
+                <CheckBox
+                    Margin="0,0,0,8"
+                    Content="Scan projects on start-up"
+                    IsChecked="{Binding ScanOnStartup}"
+                    ToolTip="If checked, the last used folder will be scanned for projects." />
+
+                <CheckBox
+                    Margin="0,0,0,8"
+                    Content="Automatically check for updates periodically"
+                    IsChecked="{Binding AutoUpdateCheck}"
+                    ToolTip="If checked, Solutionizer will check for updates once per hour." />
+
+                <CheckBox
+                    Margin="0,0,0,8"
+                    Content="Include pre-release versions in checks for updates"
+                    IsChecked="{Binding IncludePrereleaseUpdates}"
+                    ToolTip="If checked, auto-update will also check for pre-release versions." />
+
+            </StackPanel>
+        </ScrollViewer>
 
         <StackPanel
-          Orientation="Horizontal"
-          IsEnabled="{Binding IncludeReferencedProjects}"
-          Margin="20 0 0 8" >
-          <TextBlock
-            VerticalAlignment="Center"
-            Margin="0 0 8 0"
-            Text="Folder name:"/>
-          <TextBox
-            Text="{Binding ReferenceFolderName, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
-            Width="200"
-            ToolTip="Specify the name of the solution folder, where referenced projects&#x0a;should be added to. The folder structure will be preserved&#x0a;underneath this folder."/>
+            Grid.Row="1"
+            Margin="0,16,0,0"
+            HorizontalAlignment="Left"
+            Orientation="Horizontal">
+            <Button
+                MinWidth="80"
+                Command="{Binding OkCommand}"
+                Content="OK" />
+            <Button
+                MinWidth="80"
+                Margin="8,0,0,0"
+                Command="{Binding CancelCommand}"
+                Content="Cancel" />
         </StackPanel>
-
-        <StackPanel
-          Orientation="Horizontal"
-          IsEnabled="{Binding IncludeReferencedProjects}"
-          Margin="20 0 0 8" >
-          <TextBlock
-            VerticalAlignment="Center"
-            Margin="0 0 8 0"
-            Text="Tree depth:"/>
-          <Controls:NumericUpDown
-            Minimum="1"
-            Maximum="10"
-            Value="{Binding ReferenceTreeDepth}"
-            Width="70" TextAlignment="Right"
-            ToolTip="Specifies the depth of referenced projects&#x0a;which should be added to the solution."
-            />
-        </StackPanel>
-
-        <CheckBox
-          IsChecked="{Binding DontBuildReferencedProjects}"
-          IsEnabled="{Binding IncludeReferencedProjects}"
-          Margin="20 0 0 8"
-          Content="Exclude referenced projects from build configurations"
-          ToolTip="If checked, referenced projects won't be build&#x0a;automatically in the resulting solution."/>
-
-        <StackPanel
-          Orientation="Horizontal"
-          Margin="0 0 0 8">
-          <TextBlock
-            VerticalAlignment="Center"
-            Margin="0 0 8 0"
-            Text="Visual Studio version:"/>
-          <ComboBox
-              SelectedValuePath="VersionId"
-            SelectedValue="{Binding VisualStudioVersion}"
-            Width="200"
-            DisplayMemberPath="Name"
-            ItemsSource="{Binding Installations}"
-            ToolTip="Specifies the target version of Visual Studio."/>
-        </StackPanel>
-
-        <TextBlock
-          Text="Store solutions in"
-          Margin="0 0 0 8"/>
-
-        <RadioButton
-          Margin="20 0 0 8"
-          Content="the temporary folder"
-          IsChecked="{Binding SolutionTargetLocation, Converter={StaticResource EnumBooleanConverter}, ConverterParameter=TempFolder}"/>
-
-        <StackPanel Orientation="Horizontal" Margin="20 0 0 8">
-          <RadioButton
-            Content="a custom folder"
-            IsChecked="{Binding SolutionTargetLocation, Converter={StaticResource EnumBooleanConverter}, ConverterParameter=CustomFolder}"/>
-          <Controls1:EllipsisTextBox
-            EllipsisPlacement="Path"
-            Margin="8 0 0 0"
-            IsReadOnly="True"
-            Text="{Binding CustomTargetFolder, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
-            Width="300"
-            IsEnabled="{Binding SolutionTargetLocation, Converter={StaticResource EnumBooleanConverter}, ConverterParameter=CustomFolder}"
-            Controls:TextBoxHelper.ButtonCommand="{Binding SelectSolutionTargetFolderCommand}"
-            Style="{DynamicResource ButtonCommandMetroTextBox}">
-            <Controls:TextBoxHelper.ButtonContent>
-              <TextBlock FontFamily="{DynamicResource DefaultFont}" Text="&#x2026;" />
-            </Controls:TextBoxHelper.ButtonContent>
-          </Controls1:EllipsisTextBox>
-        </StackPanel>
-
-        <StackPanel Orientation="Horizontal" Margin="20 0 0 8">
-          <RadioButton
-            Content="a subfolder of the selected root folder"
-            IsChecked="{Binding SolutionTargetLocation, Converter={StaticResource EnumBooleanConverter}, ConverterParameter=BelowRootPath}"/>
-          <TextBox
-            Margin="8 0 0 0" Width="200"
-            Text="{Binding CustomTargetSubfolder, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
-            IsEnabled="{Binding SolutionTargetLocation, Converter={StaticResource EnumBooleanConverter}, ConverterParameter=BelowRootPath}" />
-        </StackPanel>
-
-        <TextBlock
-          Style="{StaticResource DescriptionHeaderStyle}"
-          Text="User Interface" />
-
-        <CheckBox
-          IsChecked="{Binding SimplifyProjectTree}"
-          Margin="0 0 0 8"
-          Content="Hide empty folders in hierarchy"
-          ToolTip="If checked, folders containing no projects but subfolders only will be hidden."/>
-
-        <CheckBox
-          IsChecked="{Binding IsFlatMode}"
-          Margin="0 0 0 8"
-          Content="Show projects as flat list"
-          ToolTip="If checked, the projects will be presented&#x0a;in a flat list instead of a tree view."/>
-
-        <CheckBox
-          IsChecked="{Binding ShowLaunchElevatedButton}"
-          Margin="0 0 0 8"
-          Content="Show &quot;Launch Elevated&quot; button"
-          ToolTip="This button allows to open the created solution&#x0a;inside an elevated instance of Visual Studio."/>
-
-        <CheckBox
-          IsChecked="{Binding ShowProjectCount}"
-          Margin="0 0 0 8"
-          Content="Show number of contained projects behind the directory name"
-          ToolTip="If checked, the number of contained projects&#x0a;will be displayed behind folders."/>
-
-        <TextBlock
-          Style="{StaticResource DescriptionHeaderStyle}"
-          Text="Miscellaneous" />
-
-        <CheckBox
-          IsChecked="{Binding ScanOnStartup}"
-          Margin="0 0 0 8"
-          Content="Scan projects on start-up"
-          ToolTip="If checked, the last used folder will be scanned for projects."/>
-
-        <CheckBox
-          IsChecked="{Binding AutoUpdateCheck}"
-          Margin="0 0 0 8"
-          Content="Automatically check for updates periodically"
-          ToolTip="If checked, Solutionizer will check for updates once per hour."/>
-
-        <CheckBox
-          IsChecked="{Binding IncludePrereleaseUpdates}"
-          Margin="0 0 0 8"
-          Content="Include pre-release versions in checks for updates"
-          ToolTip="If checked, auto-update will also check for pre-release versions."/>
-
-      </StackPanel>
-    </ScrollViewer>
-
-    <StackPanel
-      Margin="0 16 0 0"
-      Grid.Row="1"
-      Orientation="Horizontal"
-      HorizontalAlignment="Left">
-      <Button
-        MinWidth="80"
-        Command="{Binding OkCommand}"
-        Content="OK"/>
-      <Button
-        MinWidth="80"
-        Margin="8 0 0 0"
-        Command="{Binding CancelCommand}"
-        Content="Cancel"/>
-    </StackPanel>
-  </Grid>
+    </Grid>
 </Controls1:FullSizeFlyout>
