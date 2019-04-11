@@ -45,9 +45,9 @@
     </Upgrade>
     <Condition Message="A newer version of this software is already installed.">NOT NEWERVERSIONDETECTED</Condition>
 
-    <PropertyRef Id="NETFRAMEWORK45"/>
-    <Condition Message="This setup requires the full .NET Framework 4.5 installed.">
-      <![CDATA[Installed OR NETFRAMEWORK45]]>
+    <PropertyRef Id="NETFRAMEWORK46"/>
+    <Condition Message="This setup requires the full .NET Framework 4.6 installed.">
+      <![CDATA[Installed OR NETFRAMEWORK46]]>
     </Condition>
 
     <Directory Id='TARGETDIR' Name='SourceDir'>

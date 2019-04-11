@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Threading.Tasks;
 using System.Xml;
 using NLog;
 
@@ -11,7 +10,7 @@ namespace Solutionizer.Models {
         private static readonly Logger _log = LogManager.GetCurrentClassLogger();
 
         private List<string> _projectReferences = new List<string>();
-        private Task<IList<string>> _taskLoadConfigurations;
+        private List<string> _configurations;
 
         public Project(string filepath) : this(filepath, null) {}
 
@@ -44,6 +43,7 @@ namespace Solutionizer.Models {
             if (assemblyNameElement == null || assemblyNameElement.Count == 0) {
                 throw new ArgumentException("Not a supported C# project file: \"" + Filepath + "\"");
             }
+
             var assemblyName = assemblyNameElement[0].FirstChild.Value;
             var guid = Guid.Parse(xmlDocument.GetElementsByTagName("ProjectGuid")[0].FirstChild.Value);
             var directoryName = Path.GetDirectoryName(Filepath);
@@ -63,6 +63,7 @@ namespace Solutionizer.Models {
                     if (num >= 0) {
                         include = include.Substring(0, num);
                     }
+
                     //Project.binary_references.Add(text);
                     assemblyReferences.Add(include.ToLowerInvariant());
                 }
@@ -79,27 +80,16 @@ namespace Solutionizer.Models {
             IsSccBound = isSccBound;
             _projectReferences = projectReferences;
 
-            _taskLoadConfigurations = Task<IList<string>>.Factory.StartNew(LoadConfigurationsWithMicrosoftBuild);
-        }
-
-        private IList<string> LoadConfigurationsWithMicrosoftBuild() {
-            Microsoft.Build.Evaluation.Project p = null;
+            //_taskLoadConfigurations = Task<IList<string>>.Factory.StartNew(LoadConfigurationsWithMicrosoftBuild);
             try {
-                p = Microsoft.Build.Evaluation.ProjectCollection.GlobalProjectCollection.LoadProject(Filepath);
+                var p = new Microsoft.Build.Evaluation.Project(Filepath);
+
                 var configurations = p.ConditionedProperties["Configuration"];
                 var platforms = p.ConditionedProperties["Platform"];
-                return configurations.SelectMany(configuration => platforms.Select(platform => configuration + "|" + platform)).ToList();
+                _configurations = configurations.SelectMany(configuration => platforms.Select(platform => configuration + "|" + platform)).ToList();
             } catch (Exception ex) {
                 Errors.Add(ex.Message);
-                return new string[0];
-            } finally {
-                if (p != null) {
-                    try {
-                        Microsoft.Build.Evaluation.ProjectCollection.GlobalProjectCollection.UnloadProject(p);
-                        // ReSharper disable once EmptyGeneralCatchClause
-                    } catch {
-                    }
-                }
+                _configurations = new List<string>();
             }
         }
 
@@ -119,6 +109,6 @@ namespace Solutionizer.Models {
 
         public List<string> Errors { get; } = new List<string>();
 
-        public IList<string> Configurations => _taskLoadConfigurations.Result;
+        public IList<string> Configurations => _configurations;
     }
 }
