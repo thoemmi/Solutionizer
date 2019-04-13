@@ -97,6 +97,7 @@
     <Compile Include="Services\IStatusMessenger.cs" />
     <Compile Include="Services\MostRecentUsedFoldersRepository.cs" />
     <Compile Include="Services\VisualStudioVersionProvider.cs" />
+    <Compile Include="Services\VsWhereOutputParser.cs" />
     <Compile Include="ViewModels\AboutViewModel.cs" />
     <Compile Include="ViewModels\FileScanningViewModel.cs" />
     <Compile Include="Infrastructure\BindableSelectedItemBehavior .cs" />

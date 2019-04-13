@@ -112,7 +112,7 @@ namespace Solutionizer.Tests {
 
             var targetPath = Path.Combine(_testDataPath, $"{Guid.NewGuid()}.sln");
 
-            var cmd = new SaveSolutionCommand(_settings, _visualStudioInstallationsProvider, targetPath, "cc0d24c6", solution);
+            var cmd = new SaveSolutionCommand(_settings, _visualStudioInstallationsProvider, targetPath, "VS2019", solution);
             cmd.Execute();
 
             Assert.AreEqual(ReadFromResource("EmptyVs2019Solution.sln"), File.ReadAllText(targetPath));

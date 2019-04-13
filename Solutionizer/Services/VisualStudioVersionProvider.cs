@@ -55,41 +55,13 @@ namespace Solutionizer.Services {
 
                 // Run vswhere.exe and wait for its termination.
                 process.Start();
-                string output = process.StandardOutput.ReadToEnd();
+                var output = process.StandardOutput.ReadToEnd();
                 process.WaitForExit(30000);
 
                 if (process.ExitCode == 0) {
-                    try {
-                        var vsWhereInstallations = JsonConvert.DeserializeObject<VsWhereInstallation[]>(output);
-                        _installations.AddRange(vsWhereInstallations.Select(inst => new VisualStudioInstallation {
-                            Name = inst.DisplayName + (inst.Catalog.ProductMilestone == "RTW" ? "" : $" {inst.Catalog.ProductMilestone}"),
-                            VersionId = inst.InstanceId,
-                            Version = inst.InstallationVersion,
-                            InstallationPath = inst.ProductPath,
-                            SolutionFileVersion = "12",
-                            SolutionVisualStudioVersion = inst.InstallationVersion
-                        }));
-                    } catch (Exception ex) {
-                        _log.Error(ex, "Deserializing output from vswhere.exe failed");
-
-                    }
+                    _installations.AddRange(VsWhereOutputParser.Parse(output));
                 }
             }
-        }
-
-        private class VsWhereInstallation {
-            public string InstanceId { get; set; }
-            public string DisplayName { get; set; }
-            public string InstallationVersion { get; set; }
-            public string ProductPath { get; set; }
-            public CatalogInfo Catalog { get; set; }
-        }
-
-        private class CatalogInfo {
-            public string ProductName { get; set; }
-            public string ProductLineVersion { get; set; }
-            public string ProductDisplayVersion { get; set; }
-            public string ProductMilestone { get; set; }
         }
 
         public IReadOnlyList<VisualStudioInstallation> Installations => _installations;

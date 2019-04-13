@@ -75,6 +75,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
+    <EmbeddedResource Include="TestData\vswhere.json" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Autofac">
@@ -95,6 +96,9 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="TestData\EmptyVs2017Solution.sln" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="TestData\EmptyVs2019PreviewSolution.sln" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
