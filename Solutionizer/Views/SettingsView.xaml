@@ -9,6 +9,7 @@
     xmlns:System="clr-namespace:System;assembly=mscorlib"
     xmlns:ViewModels="clr-namespace:Solutionizer.ViewModels"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mah="http://metro.mahapps.com/winfx/xaml/shared"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     d:DataContext="{d:DesignInstance ViewModels:SettingsViewModel}"
     d:DesignHeight="300"
@@ -23,6 +24,7 @@
             </ResourceDictionary.MergedDictionaries>
 
             <Converters:EnumBooleanConverter x:Key="EnumBooleanConverter" />
+            <mah:StringToVisibilityConverter x:Key="StringToVisibilityConverter" />
         </ResourceDictionary>
     </Controls1:FullSizeFlyout.Resources>
 
@@ -154,6 +156,20 @@
                         Margin="8,0,0,0"
                         IsEnabled="{Binding SolutionTargetLocation, Converter={StaticResource EnumBooleanConverter}, ConverterParameter=BelowRootPath}"
                         Text="{Binding CustomTargetSubfolder, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" />
+                </StackPanel>
+
+                <StackPanel
+                    Margin="20,0,0,8"
+                    Orientation="Horizontal">
+                    <RadioButton
+                        Content="Visual Studio's default location for new projects"
+                        IsChecked="{Binding SolutionTargetLocation, Converter={StaticResource EnumBooleanConverter}, ConverterParameter=DefaultNewProjectLocation}" />
+                    <TextBlock
+                        Margin="8,0,0,0"
+                        Foreground="{DynamicResource GrayNormalBrush}"
+                        IsEnabled="{Binding SolutionTargetLocation, Converter={StaticResource EnumBooleanConverter}, ConverterParameter=DefaultNewProjectLocation}"
+                        Text="{Binding DefaultNewProjectLocation, StringFormat='Currently &quot;{0}&quot;'}"
+                        Visibility="{Binding DefaultNewProjectLocation, Converter={StaticResource StringToVisibilityConverter}}" />
                 </StackPanel>
 
                 <TextBlock

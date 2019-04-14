@@ -10,7 +10,6 @@ using NLog;
 using Ookii.Dialogs.Wpf;
 using Solutionizer.Commands;
 using Solutionizer.Extensions;
-using Solutionizer.Helper;
 using Solutionizer.Models;
 using Solutionizer.Services;
 using TinyLittleMvvm;
@@ -68,6 +67,11 @@ namespace Solutionizer.ViewModels {
                     return _settings.CustomTargetFolder;
                 case SolutionTargetLocation.BelowRootPath:
                     return Path.Combine(_rootPath, _settings.CustomTargetSubfolder);
+                case SolutionTargetLocation.DefaultNewProjectLocation:
+                    return _visualStudioInstallationsProvider
+                        .Installations
+                        .SingleOrDefault(inst => inst.VersionId == _settings.VisualStudioVersion)
+                        .DefaultNewProjectLocation;
                 default:
                     throw new ArgumentOutOfRangeException();
             }

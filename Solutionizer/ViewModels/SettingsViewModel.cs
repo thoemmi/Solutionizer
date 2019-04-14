@@ -159,6 +159,7 @@ namespace Solutionizer.ViewModels {
                 if (_visualStudioVersion != value) {
                     _visualStudioVersion = value;
                     NotifyOfPropertyChange(() => VisualStudioVersion);
+                    NotifyOfPropertyChange(() => DefaultNewProjectLocation);
                 }
             }
         }
@@ -246,6 +247,20 @@ namespace Solutionizer.ViewModels {
                     ValidateTargetFolder();
                     NotifyOfPropertyChange(() => CustomTargetSubfolder);
                 }
+            }
+        }
+
+        public string DefaultNewProjectLocation
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(VisualStudioVersion)) {
+                    return null;
+                }
+
+                return Installations
+                    .Single(inst => inst.VersionId == VisualStudioVersion)
+                    .DefaultNewProjectLocation;
             }
         }
 

@@ -277,6 +277,7 @@ namespace Solutionizer.Services {
     public enum SolutionTargetLocation {
         TempFolder,
         CustomFolder,
-        BelowRootPath
+        BelowRootPath,
+        DefaultNewProjectLocation
     }
 }
