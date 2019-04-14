@@ -76,7 +76,7 @@ namespace Solutionizer.ViewModels {
         private void Launch(bool elevated) {
             InternalSave(null);
             var installation = _visualStudioInstallationsProvider.GetVisualStudioInstallationByVersionId(_settings.VisualStudioVersion);
-            var psi = new ProcessStartInfo(installation.InstallationPath, "\"" + FileName + "\"");
+            var psi = new ProcessStartInfo(installation.DevEnvExePath, "\"" + FileName + "\"");
             if (elevated) {
                 psi.Verb = "runas";
             }

@@ -150,7 +150,7 @@ namespace Solutionizer.ViewModels {
             }
         }
 
-        public IReadOnlyList<VisualStudioInstallation> Installations => _visualStudioInstallationsProvider.Installations;
+        public IReadOnlyList<IVisualStudioInstallation> Installations => _visualStudioInstallationsProvider.Installations;
 
 
         public string VisualStudioVersion {
