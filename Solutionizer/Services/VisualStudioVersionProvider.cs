@@ -81,6 +81,7 @@ namespace Solutionizer.Services {
         string SolutionFileVersion { get; }
         string DevEnvExePath { get; }
         string DefaultNewProjectLocation { get; }
+        string SolutionComment { get; }
     }
 
     public class PreVisualStudio2017Installation : IVisualStudioInstallation {
@@ -88,6 +89,7 @@ namespace Solutionizer.Services {
         public string Version { get; set; }
         public string VersionId { get; set; }
         public string SolutionVisualStudioVersion => null;
+        public string SolutionComment => Name;
         public string SolutionFileVersion { get; set; }
 
         public string DevEnvExePath
@@ -130,6 +132,17 @@ namespace Solutionizer.Services {
         public string Version { get; set; }
         public string VersionId { get; set; }
         public string SolutionVisualStudioVersion { get; set; }
+        public string SolutionComment
+        {
+            get
+            {
+                var majorVersion = Version.Split('.').First();
+                return majorVersion == "15" 
+                    ? $"Visual Studio {majorVersion}"
+                    : $"Visual Studio Version {majorVersion}";
+            }
+        }
+
         public string SolutionFileVersion { get; set; }
         public string InstallationPath { get; set; }
         public string DevEnvExePath { get; set; }

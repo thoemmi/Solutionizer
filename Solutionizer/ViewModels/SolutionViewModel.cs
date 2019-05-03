@@ -148,7 +148,7 @@ namespace Solutionizer.ViewModels {
         public ICommand ClearCommand { get; }
 
         public ICommand RemoveSelectedItemCommand { get; }
-
+        
         public IList<SolutionItem> SolutionItems => _solutionRoot.Items;
 
         public bool IsDirty {
@@ -174,6 +174,8 @@ namespace Solutionizer.ViewModels {
         }
 
         public bool ShowProjectCount => _settings.ShowProjectCount;
+
+        public Guid SolutionId { get; set; } = Guid.NewGuid();
 
         public string FileName {
             get { return _fileName; }

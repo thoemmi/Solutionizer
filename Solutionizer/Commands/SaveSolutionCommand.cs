@@ -16,6 +16,7 @@ namespace Solutionizer.Commands {
         private readonly string _solutionFileName;
         private readonly string _visualStudioVersion;
         private readonly SolutionViewModel _solution;
+        private readonly IVisualStudioInstallation _visualStudioInstallation;
 
         public SaveSolutionCommand(ISettings settings, IVisualStudioInstallationsProvider visualStudioInstallationsProvider, string solutionFileName, string visualStudioVersion, SolutionViewModel solution) {
             _settings = settings;
@@ -23,6 +24,9 @@ namespace Solutionizer.Commands {
             _solutionFileName = solutionFileName;
             _visualStudioVersion = visualStudioVersion;
             _solution = solution;
+
+            _visualStudioInstallation = _visualStudioInstallationsProvider.GetVisualStudioInstallationByVersionId(_visualStudioVersion)
+                           ?? _visualStudioInstallationsProvider.GetMostRecentVisualStudioInstallation();
         }
 
         public void Execute() {
@@ -46,11 +50,14 @@ namespace Solutionizer.Commands {
                 }
 
                 writer.WriteLine("Global");
-                WriteTfsInformation(writer, projects);
-                WriteSolutionConfigurationPlatforms(writer, projects);
-                WriteProjectConfigurationPlatforms(writer, projects);
+                if (projects.Any()) {
+                    WriteTfsInformation(writer, projects);
+                    WriteSolutionConfigurationPlatforms(writer, projects);
+                    WriteProjectConfigurationPlatforms(writer, projects);
+                }
                 WriteSolutionProperties(writer);
                 WriteNestedProjects(writer);
+                WriteExtensibilityGlobals(writer);
                 writer.WriteLine("EndGlobal");
 
                 _solution.IsDirty = false;
@@ -90,15 +97,12 @@ namespace Solutionizer.Commands {
         }
 
         private void WriteHeader(TextWriter writer) {
-            var installation = 
-                _visualStudioInstallationsProvider.GetVisualStudioInstallationByVersionId(_visualStudioVersion)
-                ?? _visualStudioInstallationsProvider.GetMostRecentVisualStudioInstallation();
-
             writer.WriteLine();
-            writer.WriteLine($"Microsoft Visual Studio Solution File, Format Version {installation.SolutionFileVersion}");
-            writer.WriteLine($"# {installation.Name}");
-            if (!string.IsNullOrEmpty(installation.SolutionVisualStudioVersion)) {
-                writer.WriteLine($"VisualStudioVersion = {installation.SolutionVisualStudioVersion}");
+            writer.WriteLine($"Microsoft Visual Studio Solution File, Format Version {_visualStudioInstallation.SolutionFileVersion}");
+            writer.WriteLine($"# {_visualStudioInstallation.SolutionComment}");
+            if (!string.IsNullOrEmpty(_visualStudioInstallation.SolutionVisualStudioVersion)) {
+                writer.WriteLine($"VisualStudioVersion = {_visualStudioInstallation.SolutionVisualStudioVersion}");
+                writer.WriteLine("MinimumVisualStudioVersion = 10.0.40219.1");
             }
         }
 
@@ -116,6 +120,14 @@ namespace Solutionizer.Commands {
                 }
             }
             writer.WriteLine("\tEndGlobalSection");
+        }
+
+        private void WriteExtensibilityGlobals(TextWriter writer) {
+            if (_visualStudioInstallation is VisualStudio2017AndFollowingInstallation) {
+                writer.WriteLine("\tGlobalSection(ExtensibilityGlobals) = postSolution");
+                writer.WriteLine($"\t\tSolutionGuid = {_solution.SolutionId.ToString("B").ToUpperInvariant()}");
+                writer.WriteLine("\tEndGlobalSection");
+            }
         }
 
         private void WriteTfsInformation(TextWriter writer, ICollection<SolutionProject> projects) {
