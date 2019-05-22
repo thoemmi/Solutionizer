@@ -20,8 +20,8 @@ namespace Solutionizer.ViewModels {
             ProjectFolder = projectFolder;
         }
 
-        public ProjectFolder ProjectFolder { get; private set; }
-        public IDictionary<string, Project> Projects { get; private set; }
+        public ProjectFolder ProjectFolder { get; }
+        public IDictionary<string, Project> Projects { get; }
     }
 
     public class ScanningCommand {
@@ -33,7 +33,7 @@ namespace Solutionizer.ViewModels {
         private readonly bool _simplifyProjectTree;
         private readonly string _path;
 
-        public IDictionary<string, Project> Projects { get { return _projects; } }
+        public IDictionary<string, Project> Projects => _projects;
 
         private string _progressText;
         public event EventHandler ProgressTextChanged;
@@ -43,10 +43,7 @@ namespace Solutionizer.ViewModels {
             private set {
                 if (_progressText != value) {
                     _progressText = value;
-                    var handler = ProgressTextChanged;
-                    if (handler != null) {
-                        handler(this, EventArgs.Empty);
-                    }
+                    ProgressTextChanged?.Invoke(this, EventArgs.Empty);
                 }
             }
         }
@@ -77,7 +74,7 @@ namespace Solutionizer.ViewModels {
                 projectFolder = GetProjects(_path);
                 _log.Debug("Loading project took {0}", sp.Elapsed);
             } catch (Exception ex) {
-                _log.ErrorException("Loading projects from " + _path + " failed", ex);
+                _log.Error(ex, "Loading projects from {0} failed", _path);
             } finally {
                 SetTaskbarItemProgressState(TaskbarItemProgressState.None);
             }
@@ -89,7 +86,7 @@ namespace Solutionizer.ViewModels {
             try {
                 Application.Current.Dispatcher.BeginInvoke((Action)(() => Application.Current.MainWindow.TaskbarItemInfo.ProgressState = state));
             } catch (Exception e) {
-                _log.ErrorException("Setting TaskbarItemInfo to " + state + " failed", e);
+                _log.Error(e, "Setting TaskbarItemInfo to {0} failed", state);
             }
         }
 
@@ -177,13 +174,12 @@ namespace Solutionizer.ViewModels {
         private string _loadingText;
         private string _progressText;
         private readonly ScanningCommand _scanningCommand;
-        private readonly ICommand _cancelCommand;
 
         public FileScanningViewModel(ISettings settings, string path) {
             _loadingText = "Loading projects from " + path.ToLowerInvariant();
             _scanningCommand = new ScanningCommand(path, settings.SimplifyProjectTree);
 
-            _cancelCommand = new RelayCommand(() => _scanningCommand.Cancel());
+            CancelCommand = new RelayCommand(() => _scanningCommand.Cancel());
         }
 
         private void OnProgressTextChanged(object sender, EventArgs eventArgs) {
@@ -210,9 +206,7 @@ namespace Solutionizer.ViewModels {
             }
         }
 
-        public ICommand CancelCommand {
-            get { return _cancelCommand; }
-        }
+        public ICommand CancelCommand { get; }
 
         public async Task OnLoadedAsync() {
             _scanningCommand.ProgressTextChanged += OnProgressTextChanged;

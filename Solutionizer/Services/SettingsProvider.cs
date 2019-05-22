@@ -8,15 +8,16 @@ namespace Solutionizer.Services {
     public class SettingsProvider : IDisposable {
         private static readonly Logger _log = LogManager.GetCurrentClassLogger();
 
+        private IVisualStudioInstallationsProvider _visualStudioInstallationsProvider;
         private Settings _settings;
 
-        private string SettingsPath {
-            get { return Path.Combine(AppEnvironment.DataFolder, "settings.json"); }
+        public SettingsProvider(IVisualStudioInstallationsProvider visualStudioInstallationsProvider) {
+            _visualStudioInstallationsProvider = visualStudioInstallationsProvider;
         }
 
-        public Settings Settings {
-            get { return _settings ?? (_settings = Load()); }
-        }
+        private string SettingsPath => Path.Combine(AppEnvironment.DataFolder, "settings.json");
+
+        public Settings Settings => _settings ?? (_settings = Load());
 
         public void Dispose() {
             Save();
@@ -33,7 +34,7 @@ namespace Solutionizer.Services {
                 }
                 settings.IsDirty = false;
             } catch (Exception e) {
-                _log.ErrorException("Loading settings from " + SettingsPath + " failed", e);
+                _log.Error(e, "Loading settings from {0} failed", SettingsPath);
                 settings = new Settings {
                     IsDirty = true
                 };
@@ -52,7 +53,7 @@ namespace Solutionizer.Services {
                     textWriter.WriteLine(JsonConvert.SerializeObject(_settings, Formatting.Indented));
                 }
             } catch (Exception e) {
-                _log.ErrorException("Saving settings failed", e);
+                _log.Error(e, "Saving settings failed");
             }
 
             _settings.IsDirty = false;

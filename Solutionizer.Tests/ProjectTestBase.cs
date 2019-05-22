@@ -1,15 +1,12 @@
 ﻿using System;
 using System.IO;
-using System.Linq;
 using NUnit.Framework;
-using Solutionizer.ViewModels;
 
 namespace Solutionizer.Tests {
     public class ProjectTestBase {
         private static readonly Random _random = new Randomizer(Environment.TickCount);
         protected string _testDataFolderName;
         protected string _testDataPath;
-        protected ScanningCommand _scanningCommand;
 
         [SetUp]
         public void SetUp() {

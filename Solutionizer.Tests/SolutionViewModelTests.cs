@@ -8,6 +8,7 @@ namespace Solutionizer.Tests {
     [TestFixture]
     public class SolutionViewModelTests : ProjectTestBase {
         private readonly ISettings _settings;
+        private readonly IVisualStudioInstallationsProvider _visualStudioInstallationsProvider = new DummyVisualStudioInstallationProvider();
 
         public SolutionViewModelTests() {
             _settings = new Settings {
@@ -19,13 +20,13 @@ namespace Solutionizer.Tests {
         public void CanAddProject() {
             CopyTestDataToPath("CsTestProject1.csproj", _testDataPath);
 
-            _scanningCommand = new ScanningCommand(_testDataPath, true);
-            _scanningCommand.Start().Wait();
+            var scanningCommand = new ScanningCommand(_testDataPath, true);
+            scanningCommand.Start().Wait();
 
             Project project;
-            _scanningCommand.Projects.TryGetValue(Path.Combine(_testDataPath, "CsTestProject1.csproj"), out project);
+            scanningCommand.Projects.TryGetValue(Path.Combine(_testDataPath, "CsTestProject1.csproj"), out project);
 
-            var sut = new SolutionViewModel(new DummyStatusMessenger(), _settings, _testDataPath, _scanningCommand.Projects);
+            var sut = new SolutionViewModel(new DummyStatusMessenger(), _settings, _visualStudioInstallationsProvider, _testDataPath, scanningCommand.Projects);
             sut.AddProject(project);
 
             Assert.AreEqual(1, sut.SolutionItems.Count);
@@ -38,13 +39,13 @@ namespace Solutionizer.Tests {
             CopyTestDataToPath("CsTestProject1.csproj", Path.Combine(_testDataPath, "p1"));
             CopyTestDataToPath("CsTestProject2.csproj", Path.Combine(_testDataPath, "p2"));
 
-            _scanningCommand = new ScanningCommand(_testDataPath, true);
-            _scanningCommand.Start().Wait();
+            var scanningCommand = new ScanningCommand(_testDataPath, true);
+            scanningCommand.Start().Wait();
 
             Project project;
-            _scanningCommand.Projects.TryGetValue(Path.Combine(_testDataPath, "p2", "CsTestProject2.csproj"), out project);
+            scanningCommand.Projects.TryGetValue(Path.Combine(_testDataPath, "p2", "CsTestProject2.csproj"), out project);
 
-            var sut = new SolutionViewModel(new DummyStatusMessenger(), _settings, _testDataPath, _scanningCommand.Projects);
+            var sut = new SolutionViewModel(new DummyStatusMessenger(), _settings, _visualStudioInstallationsProvider, _testDataPath, scanningCommand.Projects);
             sut.AddProject(project);
 
             Assert.AreEqual(2, sut.SolutionItems.Count);

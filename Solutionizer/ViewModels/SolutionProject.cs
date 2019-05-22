@@ -11,6 +11,6 @@ namespace Solutionizer.ViewModels {
 
         public string Filepath { get; set; }
 
-        public IList<string> Configurations { get { return _project.Configurations; } }
+        public IList<string> Configurations => _project.Configurations;
     }
 }

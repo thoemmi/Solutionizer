@@ -4,6 +4,8 @@
   <?define UpgradeGuid="{C3666D56-FBED-4ADE-AD5E-94298DE449F4}" ?>
   <?define ProductVersion="!(bind.FileVersion.SOLUTIONIZER_EXE)" ?>
 
+  <?define NetFx472MinRelease = 461808 ?>
+
   <Product
     Name="Solutionizer"
     Id="*"
@@ -45,9 +47,13 @@
     </Upgrade>
     <Condition Message="A newer version of this software is already installed.">NOT NEWERVERSIONDETECTED</Condition>
 
-    <PropertyRef Id="NETFRAMEWORK45"/>
-    <Condition Message="This setup requires the full .NET Framework 4.5 installed.">
-      <![CDATA[Installed OR NETFRAMEWORK45]]>
+    <PropertyRef Id="WIXNETFX4RELEASEINSTALLED" />
+    <Property Id="WIX_IS_NETFRAMEWORK_472_OR_LATER_INSTALLED" Secure="yes" />
+    <SetProperty Id="WIX_IS_NETFRAMEWORK_472_OR_LATER_INSTALLED" Value="1" After="AppSearch">
+      WIXNETFX4RELEASEINSTALLED >= "#$(var.NetFx472MinRelease)"
+    </SetProperty>
+    <Condition Message="This setup requires the full .NET Framework 4.7.2 installed.">
+      <![CDATA[Installed OR WIX_IS_NETFRAMEWORK_472_OR_LATER_INSTALLED]]>
     </Condition>
 
     <Directory Id='TARGETDIR' Name='SourceDir'>

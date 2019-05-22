@@ -4,15 +4,11 @@ using TinyLittleMvvm;
 
 namespace Solutionizer.ViewModels {
     public class AboutViewModel : DialogViewModel {
-        private readonly ICommand _closeCommand;
-
         public AboutViewModel() {
-            _closeCommand = new RelayCommand(Close);
+            CloseCommand = new RelayCommand(Close);
         }
 
-        public ICommand CloseCommand {
-            get { return _closeCommand; }
-        }
+        public ICommand CloseCommand { get; }
 
         public IEnumerable<CreditItem> CreditItems {
             get {

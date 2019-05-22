@@ -3,41 +3,22 @@ using System.IO;
 
 namespace Solutionizer.Models {
     public class ProjectFolder {
-        private readonly string _name;
-        private readonly string _fullPath;
-        private ProjectFolder _parent;
-        private readonly List<ProjectFolder> _folders = new List<ProjectFolder>();
-        private readonly List<Project> _projects = new List<Project>();
-
         public ProjectFolder(string fullPath, ProjectFolder parent) {
-            _fullPath = fullPath;
-            _parent = parent;
-            _name = Path.GetFileName(fullPath);
+            FullPath = fullPath;
+            Parent = parent;
+            Name = Path.GetFileName(fullPath);
         }
 
-        public string Name {
-            get { return _name; }
-        }
+        public string Name { get; }
 
-        public string FullPath {
-            get { return _fullPath; }
-        }
+        public string FullPath { get; }
 
-        public ProjectFolder Parent {
-            get { return _parent; }
-            set { _parent = value; }
-        }
+        public ProjectFolder Parent { get; set; }
 
-        public bool IsEmpty {
-            get { return _projects.Count == 0 && _folders.Count == 0; }
-        }
+        public bool IsEmpty => Projects.Count == 0 && Folders.Count == 0;
 
-        public List<ProjectFolder> Folders {
-            get { return _folders; }
-        }
+        public List<ProjectFolder> Folders { get; } = new List<ProjectFolder>();
 
-        public List<Project> Projects {
-            get { return _projects; }
-        }
+        public List<Project> Projects { get; } = new List<Project>();
     }
 }

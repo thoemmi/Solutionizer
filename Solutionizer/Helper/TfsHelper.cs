@@ -37,7 +37,7 @@ namespace Solutionizer.Helper {
                     _log.Info("Loaded TFS assemblies and types");
                 }
             } catch (Exception ex) {
-                _log.WarnException("Exception while loading TFS assemblies", ex);
+                _log.Warn(ex, "Exception while loading TFS assemblies");
                 _tfsAssembliesAvailable = false;
             }
         }
@@ -100,7 +100,7 @@ namespace Solutionizer.Helper {
             } catch (Exception ex) {
                 switch (ex.GetType().Name) {
                     case "TeamFoundationServiceUnavailableException":
-                        _log.InfoException("TFS is not available", ex);
+                        _log.Info(ex, "TFS is not available");
                         workspaceArray = null;
                         break;
                     case "TeamFoundationServerUnauthorizedException": 
@@ -110,7 +110,7 @@ namespace Solutionizer.Helper {
                         workspaceArray = versionControlServer.QueryWorkspaces(null, versionControlServer.AuthorizedUser, Environment.MachineName);
                         break;
                     default:
-                        _log.ErrorException("Querying workspaces failed", ex);
+                        _log.Error(ex, "Querying workspaces failed");
                         throw;
                 }
             }

@@ -15,11 +15,10 @@ namespace Solutionizer.ViewModels {
         private ProjectFolder _rootFolder;
         private IList _nodes;
         private string _filter;
-        private readonly ICommand _doubleClickCommand;
 
         public ProjectRepositoryViewModel(ISettings settings, ICommand doubleClickCommand) {
             _settings = settings;
-            _doubleClickCommand = doubleClickCommand;
+            DoubleClickCommand = doubleClickCommand;
 
             _settings.PropertyChanged += (sender, args) => {
                 if (args.PropertyName == "ShowProjectCount") {
@@ -38,9 +37,7 @@ namespace Solutionizer.ViewModels {
             }
         }
 
-        public ICommand DoubleClickCommand {
-            get { return _doubleClickCommand; }
-        }
+        public ICommand DoubleClickCommand { get; }
 
         public ProjectFolder RootFolder {
             get { return _rootFolder; }
@@ -82,9 +79,7 @@ namespace Solutionizer.ViewModels {
             }
         }
 
-        public bool ShowProjectCount {
-            get { return _settings.ShowProjectCount; }
-        }
+        public bool ShowProjectCount => _settings.ShowProjectCount;
 
         private DirectoryViewModel CreateDirectoryViewModel(ProjectFolder projectFolder, DirectoryViewModel parent) {
             var viewModel = new DirectoryViewModel(parent, projectFolder);

@@ -11,6 +11,7 @@ namespace Solutionizer.Tests {
     [TestFixture]
     public class SaveSolutionCommandTests : ProjectTestBase {
         private readonly ISettings _settings;
+        private readonly IVisualStudioInstallationsProvider _visualStudioInstallationsProvider = new DummyVisualStudioInstallationProvider();
 
         public SaveSolutionCommandTests() {
             _settings = new Settings {
@@ -22,18 +23,18 @@ namespace Solutionizer.Tests {
         public void CanAddSaveSolution() {
             CopyTestDataToPath("CsTestProject1.csproj", _testDataPath);
 
-            _scanningCommand = new ScanningCommand(_testDataPath, true);
-            _scanningCommand.Start().Wait();
+            var scanningCommand = new ScanningCommand(_testDataPath, true);
+            scanningCommand.Start().Wait();
 
             Project project;
-            _scanningCommand.Projects.TryGetValue(Path.Combine(_testDataPath, "CsTestProject1.csproj"), out project);
+            scanningCommand.Projects.TryGetValue(Path.Combine(_testDataPath, "CsTestProject1.csproj"), out project);
 
-            var solution = new SolutionViewModel(new DummyStatusMessenger(), _settings, _testDataPath, _scanningCommand.Projects);
+            var solution = new SolutionViewModel(new DummyStatusMessenger(), _settings, _visualStudioInstallationsProvider, _testDataPath, scanningCommand.Projects);
             solution.AddProject(project);
 
             var targetPath = Path.Combine(_testDataPath, "test.sln");
 
-            var cmd = new SaveSolutionCommand(_settings, targetPath, VisualStudioVersion.VS2010, solution);
+            var cmd = new SaveSolutionCommand(_settings, _visualStudioInstallationsProvider, targetPath, "VS2010", solution);
             cmd.Execute();
 
             Assert.AreEqual(ReadFromResource("CsTestProject1.sln"), File.ReadAllText(targetPath));
@@ -44,13 +45,13 @@ namespace Solutionizer.Tests {
             CopyTestDataToPath("CsTestProject1.csproj", Path.Combine(_testDataPath, "p1"));
             CopyTestDataToPath("CsTestProject2.csproj", Path.Combine(_testDataPath, "p2"));
 
-            _scanningCommand = new ScanningCommand(_testDataPath, true);
-            _scanningCommand.Start().Wait();
+            var scanningCommand = new ScanningCommand(_testDataPath, true);
+            scanningCommand.Start().Wait();
 
             Project project;
-            _scanningCommand.Projects.TryGetValue(Path.Combine(_testDataPath, "p2", "CsTestProject2.csproj"), out project);
+            scanningCommand.Projects.TryGetValue(Path.Combine(_testDataPath, "p2", "CsTestProject2.csproj"), out project);
 
-            var solution = new SolutionViewModel(new DummyStatusMessenger(), _settings, _testDataPath, _scanningCommand.Projects);
+            var solution = new SolutionViewModel(new DummyStatusMessenger(), _settings, _visualStudioInstallationsProvider, _testDataPath, scanningCommand.Projects);
             solution.AddProject(project);
 
             // we need to change the Guid of the reference folder
@@ -58,7 +59,7 @@ namespace Solutionizer.Tests {
 
             var targetPath = Path.Combine(_testDataPath, "test.sln");
 
-            var cmd = new SaveSolutionCommand(_settings, targetPath, VisualStudioVersion.VS2010, solution);
+            var cmd = new SaveSolutionCommand(_settings, _visualStudioInstallationsProvider, targetPath, "VS2010", solution);
             cmd.Execute();
 
             Assert.AreEqual(ReadFromResource("CsTestProject2.sln"), File.ReadAllText(targetPath));
@@ -70,13 +71,13 @@ namespace Solutionizer.Tests {
             CopyTestDataToPath("CsTestProject2.csproj", Path.Combine(_testDataPath, "sub", "p2"));
             CopyTestDataToPath("CsTestProject3.csproj", Path.Combine(_testDataPath, "p3", "sub"));
 
-            _scanningCommand = new ScanningCommand(_testDataPath, true);
-            _scanningCommand.Start().Wait();
+            var scanningCommand = new ScanningCommand(_testDataPath, true);
+            scanningCommand.Start().Wait();
 
             Project project;
-            _scanningCommand.Projects.TryGetValue(Path.Combine(_testDataPath, "p3", "sub", "CsTestProject3.csproj"), out project);
+            scanningCommand.Projects.TryGetValue(Path.Combine(_testDataPath, "p3", "sub", "CsTestProject3.csproj"), out project);
 
-            var solution = new SolutionViewModel(new DummyStatusMessenger(), _settings, _testDataPath, _scanningCommand.Projects);
+            var solution = new SolutionViewModel(new DummyStatusMessenger(), _settings, _visualStudioInstallationsProvider, _testDataPath, scanningCommand.Projects);
             solution.AddProject(project);
 
             // we need to change the Guid of the reference folder
@@ -86,10 +87,37 @@ namespace Solutionizer.Tests {
 
             var targetPath = Path.Combine(_testDataPath, "test.sln");
 
-            var cmd = new SaveSolutionCommand(_settings, targetPath, VisualStudioVersion.VS2010, solution);
+            var cmd = new SaveSolutionCommand(_settings, _visualStudioInstallationsProvider, targetPath, "VS2010", solution);
             cmd.Execute();
 
             Assert.AreEqual(ReadFromResource("CsTestProject3.sln"), File.ReadAllText(targetPath));
+        }
+
+        [Test, Ignore("Don't know how to determine solution version yet")]
+        public void CanWriteEmptyVs2017Solution()
+        {
+            var solution = new SolutionViewModel(new DummyStatusMessenger(), _settings, _visualStudioInstallationsProvider, _testDataPath, null);
+            solution.SolutionId = Guid.Parse("07A0D871-36B7-441B-8091-5323BF63C5A5");
+
+            var targetPath = Path.Combine(_testDataPath, $"{Guid.NewGuid()}.sln");
+
+            var cmd = new SaveSolutionCommand(_settings, _visualStudioInstallationsProvider, targetPath, "cc0d24c6", solution);
+            cmd.Execute();
+
+            Assert.AreEqual(ReadFromResource("EmptyVs2017Solution.sln"), File.ReadAllText(targetPath));
+        }
+
+        [Test, Ignore("Don't know how to determine solution version yet")]
+        public void CanWriteEmptyVs2019Solution() {
+            var solution = new SolutionViewModel(new DummyStatusMessenger(), _settings, _visualStudioInstallationsProvider, _testDataPath, null);
+            solution.SolutionId = Guid.Parse("BB2AB6FA-8028-47EA-99C9-5BFA5DE54864");
+
+            var targetPath = Path.Combine(_testDataPath, $"{Guid.NewGuid()}.sln");
+
+            var cmd = new SaveSolutionCommand(_settings, _visualStudioInstallationsProvider, targetPath, "21375828", solution);
+            cmd.Execute();
+
+            Assert.AreEqual(ReadFromResource("EmptyVs2019Solution.sln"), File.ReadAllText(targetPath));
         }
     }
 }

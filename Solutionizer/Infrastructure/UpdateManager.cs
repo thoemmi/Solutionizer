@@ -37,7 +37,7 @@ namespace Solutionizer.Infrastructure {
             try {
                 newReleases = await _reader.GetReleaseInfosAsync();
             } catch (Exception ex) {
-                _log.ErrorException("Getting release informations failed", ex);
+                _log.Error(ex, "Getting release informations failed");
                 return;
             }
 
@@ -74,25 +74,18 @@ namespace Solutionizer.Infrastructure {
                 }
             }
             catch (Exception e) {
-                _log.ErrorException("Saving settings failed", e);
+                _log.Error(e, "Saving settings failed");
             }
         }
 
-        private string ReleasesPath {
-            get { return Path.Combine(AppEnvironment.DataFolder, "releases.json"); }
-        }
+        private static string ReleasesPath => Path.Combine(AppEnvironment.DataFolder, "releases.json");
 
-        public IReadOnlyCollection<ReleaseInfo> Releases {
-            get { return _releases; }
-        }
+        public IReadOnlyCollection<ReleaseInfo> Releases => _releases;
 
         public event EventHandler UpdatesAvailable;
 
         protected virtual void OnUpdatesAvailable() {
-            var handler = UpdatesAvailable;
-            if (handler != null) {
-                handler(this, EventArgs.Empty);
-            }
+            UpdatesAvailable?.Invoke(this, EventArgs.Empty);
         }
 
         public Task<string> DownloadReleaseAsync(ReleaseInfo releaseInfo, Action<int> downloadProgressCallback, CancellationToken cancellationToken) {

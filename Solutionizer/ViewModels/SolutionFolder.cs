@@ -19,9 +19,7 @@ namespace Solutionizer.ViewModels {
             };
         }
 
-        public ObservableCollection<SolutionItem> Items {
-            get { return _items; }
-        }
+        public ObservableCollection<SolutionItem> Items => _items;
 
         public bool ContainsProject(Project project) {
             return _items.OfType<SolutionProject>().Any(p => p.Guid == project.Guid);

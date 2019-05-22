@@ -12,15 +12,21 @@ using Solutionizer.ViewModels;
 namespace Solutionizer.Commands {
     public class SaveSolutionCommand {
         private readonly ISettings _settings;
+        private readonly IVisualStudioInstallationsProvider _visualStudioInstallationsProvider;
         private readonly string _solutionFileName;
-        private readonly VisualStudioVersion _visualStudioVersion;
+        private readonly string _visualStudioVersion;
         private readonly SolutionViewModel _solution;
+        private readonly IVisualStudioInstallation _visualStudioInstallation;
 
-        public SaveSolutionCommand(ISettings settings, string solutionFileName, VisualStudioVersion visualStudioVersion, SolutionViewModel solution) {
+        public SaveSolutionCommand(ISettings settings, IVisualStudioInstallationsProvider visualStudioInstallationsProvider, string solutionFileName, string visualStudioVersion, SolutionViewModel solution) {
             _settings = settings;
+            _visualStudioInstallationsProvider = visualStudioInstallationsProvider;
             _solutionFileName = solutionFileName;
             _visualStudioVersion = visualStudioVersion;
             _solution = solution;
+
+            _visualStudioInstallation = _visualStudioInstallationsProvider.GetVisualStudioInstallationByVersionId(_visualStudioVersion)
+                           ?? _visualStudioInstallationsProvider.GetMostRecentVisualStudioInstallation();
         }
 
         public void Execute() {
@@ -44,11 +50,14 @@ namespace Solutionizer.Commands {
                 }
 
                 writer.WriteLine("Global");
-                WriteTfsInformation(writer, projects);
-                WriteSolutionConfigurationPlatforms(writer, projects);
-                WriteProjectConfigurationPlatforms(writer, projects);
+                if (projects.Any()) {
+                    WriteTfsInformation(writer, projects);
+                    WriteSolutionConfigurationPlatforms(writer, projects);
+                    WriteProjectConfigurationPlatforms(writer, projects);
+                }
                 WriteSolutionProperties(writer);
                 WriteNestedProjects(writer);
+                WriteExtensibilityGlobals(writer);
                 writer.WriteLine("EndGlobal");
 
                 _solution.IsDirty = false;
@@ -89,29 +98,11 @@ namespace Solutionizer.Commands {
 
         private void WriteHeader(TextWriter writer) {
             writer.WriteLine();
-            switch (_visualStudioVersion) {
-                case VisualStudioVersion.VS2010:
-                    writer.WriteLine("Microsoft Visual Studio Solution File, Format Version 11.00");
-                    writer.WriteLine("# Visual Studio 2010");
-                    break;
-                case VisualStudioVersion.VS2012:
-                    writer.WriteLine("Microsoft Visual Studio Solution File, Format Version 12.00");
-                    writer.WriteLine("# Visual Studio 2012");
-                    break;
-                case VisualStudioVersion.VS2013:
-                    writer.WriteLine("Microsoft Visual Studio Solution File, Format Version 12.00");
-                    writer.WriteLine("# Visual Studio 2013");
-                    break;
-                case VisualStudioVersion.VS2015:
-                    writer.WriteLine("Microsoft Visual Studio Solution File, Format Version 14.00");
-                    writer.WriteLine("# Visual Studio 2015");
-                    break;
-                case VisualStudioVersion.VS2017:
-                    writer.WriteLine("Microsoft Visual Studio Solution File, Format Version 14.00");
-                    writer.WriteLine("# Visual Studio 15");
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException();
+            writer.WriteLine($"Microsoft Visual Studio Solution File, Format Version {_visualStudioInstallation.SolutionFileVersion}");
+            writer.WriteLine($"# {_visualStudioInstallation.SolutionComment}");
+            if (!string.IsNullOrEmpty(_visualStudioInstallation.SolutionVisualStudioVersion)) {
+                writer.WriteLine($"VisualStudioVersion = {_visualStudioInstallation.SolutionVisualStudioVersion}");
+                writer.WriteLine("MinimumVisualStudioVersion = 10.0.40219.1");
             }
         }
 
@@ -129,6 +120,14 @@ namespace Solutionizer.Commands {
                 }
             }
             writer.WriteLine("\tEndGlobalSection");
+        }
+
+        private void WriteExtensibilityGlobals(TextWriter writer) {
+            if (_visualStudioInstallation is VisualStudio2017AndFollowingInstallation) {
+                writer.WriteLine("\tGlobalSection(ExtensibilityGlobals) = postSolution");
+                writer.WriteLine($"\t\tSolutionGuid = {_solution.SolutionId.ToString("B").ToUpperInvariant()}");
+                writer.WriteLine("\tEndGlobalSection");
+            }
         }
 
         private void WriteTfsInformation(TextWriter writer, ICollection<SolutionProject> projects) {

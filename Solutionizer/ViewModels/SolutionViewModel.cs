@@ -10,7 +10,6 @@ using NLog;
 using Ookii.Dialogs.Wpf;
 using Solutionizer.Commands;
 using Solutionizer.Extensions;
-using Solutionizer.Helper;
 using Solutionizer.Models;
 using Solutionizer.Services;
 using TinyLittleMvvm;
@@ -24,26 +23,23 @@ namespace Solutionizer.ViewModels {
         private readonly IStatusMessenger _statusMessenger;
         private readonly string _rootPath;
         private readonly IDictionary<string, Project> _projects;
-        private readonly ICommand _dropCommand;
-        private readonly ICommand _removeSelectedItemCommand;
-        private readonly ICommand _launchCommand;
-        private readonly ICommand _saveCommand;
-        private readonly ICommand _clearCommand;
 
         private bool _isSccBound;
         private bool _isDirty;
         private readonly SolutionFolder _solutionRoot = new SolutionFolder(null);
         private SolutionItem _selectedItem;
         private readonly ISettings _settings;
+        private readonly IVisualStudioInstallationsProvider _visualStudioInstallationsProvider;
         private string _fileName;
 
-        public SolutionViewModel(IStatusMessenger statusMessenger, ISettings settings, string rootPath, IDictionary<string, Project> projects) {
+        public SolutionViewModel(IStatusMessenger statusMessenger, ISettings settings, IVisualStudioInstallationsProvider visualStudioInstallationsProvider, string rootPath, IDictionary<string, Project> projects) {
             _statusMessenger = statusMessenger;
             _rootPath = rootPath;
             _projects = projects;
             _settings = settings;
-            _dropCommand = new RelayCommand<object>(OnDrop, obj => obj is ProjectViewModel);
-            _removeSelectedItemCommand = new RelayCommand(RemoveSolutionItem);
+            _visualStudioInstallationsProvider = visualStudioInstallationsProvider;
+            DropCommand = new RelayCommand<object>(OnDrop, obj => obj is ProjectViewModel);
+            RemoveSelectedItemCommand = new RelayCommand(RemoveSolutionItem);
             _settings.PropertyChanged += (sender, args) => {
                 if (args.PropertyName == "ShowLaunchElevatedButton") {
                     NotifyOfPropertyChange(() => ShowLaunchElevatedButton);
@@ -52,9 +48,9 @@ namespace Solutionizer.ViewModels {
                     NotifyOfPropertyChange(() => ShowProjectCount);
                 }
             };
-            _launchCommand = new RelayCommand<bool>(Launch, _ => _solutionRoot.Items.Any());
-            _saveCommand = new RelayCommand(Save, () => _solutionRoot.Items.Any());
-            _clearCommand = new RelayCommand(Clear, () => _solutionRoot.Items.Any());
+            LaunchCommand = new RelayCommand<bool>(Launch, _ => _solutionRoot.Items.Any());
+            SaveCommand = new RelayCommand(Save, () => _solutionRoot.Items.Any());
+            ClearCommand = new RelayCommand(Clear, () => _solutionRoot.Items.Any());
         }
 
         private void OnDrop(object node) {
@@ -71,6 +67,11 @@ namespace Solutionizer.ViewModels {
                     return _settings.CustomTargetFolder;
                 case SolutionTargetLocation.BelowRootPath:
                     return Path.Combine(_rootPath, _settings.CustomTargetSubfolder);
+                case SolutionTargetLocation.DefaultNewProjectLocation:
+                    return _visualStudioInstallationsProvider
+                        .Installations
+                        .SingleOrDefault(inst => inst.VersionId == _settings.VisualStudioVersion)
+                        .DefaultNewProjectLocation;
                 default:
                     throw new ArgumentOutOfRangeException();
             }
@@ -78,8 +79,8 @@ namespace Solutionizer.ViewModels {
 
         private void Launch(bool elevated) {
             InternalSave(null);
-            var exePath = VisualStudioHelper.GetVisualStudioExecutable(_settings.VisualStudioVersion);
-            var psi = new ProcessStartInfo(exePath, "\"" + FileName + "\"");
+            var installation = _visualStudioInstallationsProvider.GetVisualStudioInstallationByVersionId(_settings.VisualStudioVersion);
+            var psi = new ProcessStartInfo(installation.DevEnvExePath, "\"" + FileName + "\"");
             if (elevated) {
                 psi.Verb = "runas";
             }
@@ -124,7 +125,7 @@ namespace Solutionizer.ViewModels {
                 }
             }
 
-            new SaveSolutionCommand(_settings, FileName, _settings.VisualStudioVersion, this).Execute();
+            new SaveSolutionCommand(_settings, _visualStudioInstallationsProvider, FileName, _settings.VisualStudioVersion, this).Execute();
             _statusMessenger.Show(String.Format("Solution saved as '{0}'.", FileName));
             IsDirty = false;
         }
@@ -138,29 +139,17 @@ namespace Solutionizer.ViewModels {
             Refresh();
         }
 
-        public ICommand DropCommand {
-            get { return _dropCommand; }
-        }
+        public ICommand DropCommand { get; }
 
-        public ICommand LaunchCommand {
-            get { return _launchCommand; }
-        }
+        public ICommand LaunchCommand { get; }
 
-        public ICommand SaveCommand {
-            get { return _saveCommand; }
-        }
+        public ICommand SaveCommand { get; }
 
-        public ICommand ClearCommand {
-            get { return _clearCommand; }
-        }
+        public ICommand ClearCommand { get; }
 
-        public ICommand RemoveSelectedItemCommand {
-            get { return _removeSelectedItemCommand; }
-        }
-
-        public IList<SolutionItem> SolutionItems {
-            get { return _solutionRoot.Items; }
-        }
+        public ICommand RemoveSelectedItemCommand { get; }
+        
+        public IList<SolutionItem> SolutionItems => _solutionRoot.Items;
 
         public bool IsDirty {
             get { return _isDirty; }
@@ -172,9 +161,7 @@ namespace Solutionizer.ViewModels {
             }
         }
 
-        public string RootPath {
-            get { return _rootPath; }
-        }
+        public string RootPath => _rootPath;
 
         public bool IsSccBound {
             get { return _isSccBound; }
@@ -186,9 +173,9 @@ namespace Solutionizer.ViewModels {
             }
         }
 
-        public bool ShowProjectCount {
-            get { return _settings.ShowProjectCount; }
-        }
+        public bool ShowProjectCount => _settings.ShowProjectCount;
+
+        public Guid SolutionId { get; set; } = Guid.NewGuid();
 
         public string FileName {
             get { return _fileName; }
@@ -219,13 +206,13 @@ namespace Solutionizer.ViewModels {
             }
 
             var projectCount = SolutionItems.Flatten<SolutionItem, SolutionProject, SolutionFolder>(p => p.Items).Count();
-            _statusMessenger.Show(String.Format("{0} projects in the solution.", projectCount));
+            _statusMessenger.Show($"{projectCount} projects in the solution.");
 
             Refresh();
         }
 
         private static bool RemoveProject(SolutionFolder solutionFolder, Project project) {
-            bool removed = false;
+            var removed = false;
             var item = solutionFolder.Items.SingleOrDefault(p => p.Guid == project.Guid);
             if (item != null) {
                 solutionFolder.Items.Remove(item);
@@ -252,8 +239,7 @@ namespace Solutionizer.ViewModels {
 
         private void AddReferencedProjects(Project project, int depth) {
             foreach (var projectReference in project.ProjectReferences) {
-                Project referencedProject;
-                if (!_projects.TryGetValue(projectReference, out referencedProject)) {
+                if (!_projects.TryGetValue(projectReference, out var referencedProject)) {
                     // TODO Present to user?
                     _log.Warn("Project {0} references unknown project {1}", project.Name, projectReference);
                     continue;
@@ -305,9 +291,7 @@ namespace Solutionizer.ViewModels {
             }
         }
 
-        public bool ShowLaunchElevatedButton {
-            get { return _settings.ShowLaunchElevatedButton; }
-        }
+        public bool ShowLaunchElevatedButton => _settings.ShowLaunchElevatedButton;
 
         public void RemoveSolutionItem() {
             if (_selectedItem != null) {
@@ -324,7 +308,7 @@ namespace Solutionizer.ViewModels {
                 }
 
                 var projectCount = SolutionItems.Flatten<SolutionItem, SolutionProject, SolutionFolder>(p => p.Items).Count();
-                _statusMessenger.Show(String.Format("{0} projects in the solution.", projectCount));
+                _statusMessenger.Show($"{projectCount} projects in the solution.");
 
                 Refresh();
             }

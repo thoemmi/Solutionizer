@@ -1,7 +1,5 @@
 ﻿using System;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
-using Solutionizer.Helper;
 using TinyLittleMvvm;
 
 namespace Solutionizer.Services {
@@ -15,7 +13,7 @@ namespace Solutionizer.Services {
         private bool _dontBuildReferencedProjects;
         private bool _simplifyProjectTree;
         private Uri _tfsName;
-        private VisualStudioVersion _visualStudioVersion;
+        private string _visualStudioVersion;
         private string _referenceFolderName = "_References";
         private string _rootPath;
         private bool _showLaunchElevatedButton;
@@ -29,8 +27,9 @@ namespace Solutionizer.Services {
         private string _customTargetSubfolder;
 
         public Settings() {
-            _visualStudioVersion = VisualStudioHelper.DetectVersion();
-            _rootPath = VisualStudioHelper.GetDefaultProjectsLocation(_visualStudioVersion);
+            //_visualStudioVersion = VisualStudioHelper.DetectVersion();
+            // TODO: get root folder from VisualStudioInstallationsProvider
+            //_rootPath = VisualStudioHelper.GetDefaultProjectsLocation(_visualStudioVersion);
             _customTargetFolder = _rootPath;
         }
 
@@ -156,8 +155,7 @@ namespace Solutionizer.Services {
             }
         }
 
-        [JsonConverter(typeof (StringEnumConverter))]
-        public VisualStudioVersion VisualStudioVersion {
+        public string VisualStudioVersion {
             get { return _visualStudioVersion; }
             set {
                 if (_visualStudioVersion != value) {
@@ -276,19 +274,10 @@ namespace Solutionizer.Services {
         public bool Maximized { get; set; }
     }
 
-    // ReSharper disable InconsistentNaming
-    public enum VisualStudioVersion {
-        VS2010,
-        VS2012,
-        VS2013,
-        VS2015,
-        VS2017,
-    }
-    // ReSharper restore InconsistentNaming
-
     public enum SolutionTargetLocation {
         TempFolder,
         CustomFolder,
-        BelowRootPath
+        BelowRootPath,
+        DefaultNewProjectLocation
     }
 }
