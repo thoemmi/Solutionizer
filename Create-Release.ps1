@@ -1,10 +1,10 @@
 ﻿$SolutionDir = split-path -parent $PSCommandPath
-$wixdir = Join-Path (Join-Path $SolutionDir "assets") "wix.3.8"
+$wixdir = Join-Path $env:USERPROFILE ".nuget/packages/wix/3.11.1/tools"
 $TargetDir = Join-Path $SolutionDir "publish"
 $WxsFile = Join-Path $SolutionDir "Solutionizer.wxs"
 
 $solutionizerExe = Join-Path $SolutionDir "Solutionizer/bin/Debug/Solutionizer.exe"
-$version = [System.Diagnostics.FileVersionInfo]::GetVersionInfo($solutionizerExe).ProductVersion
+$version = [System.Diagnostics.FileVersionInfo]::GetVersionInfo($solutionizerExe).FileVersion
 
 if (!(Test-Path $TargetDir)) {
     New-Item -ItemType Directory -Path $TargetDir

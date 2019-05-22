@@ -1,0 +1,11 @@
+assembly-versioning-scheme: MajorMinorPatchTag
+mode: Mainline
+continuous-delivery-fallback-tag: ''
+branches:
+  develop:
+    regex: ^dev(elop(ment)?)?$
+    increment: Patch
+    tag: unstable
+  master:
+    tag: ''
+    increment: Minor
