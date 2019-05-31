@@ -38,7 +38,7 @@ namespace Solutionizer.Services {
             if (File.Exists(vswherePath)) {
                 var process = new Process {
                     StartInfo = new ProcessStartInfo {
-                        FileName = @".\vswhere.exe",
+                        FileName = vswherePath,
                         Arguments = @"-nologo -prerelease -format json -utf8",
                         CreateNoWindow = true,
                         UseShellExecute = false,

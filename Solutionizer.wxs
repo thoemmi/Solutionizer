@@ -100,6 +100,218 @@
             <File Id="Octokit.dll" Name="Octokit.dll" Source="Solutionizer/bin/Debug/Octokit.dll"/>
             <RegistryValue Root="HKCU" Key="SOFTWARE\ThomasFreudenberg\Solutionizer" Name="Octokit.dll" Type="integer" Value="1" KeyPath="yes"/>
           </Component>
+          <Component Id="ControlzEx.dll" Guid="{5127EDCF-A57F-4AE0-90A8-D42FE56913DB}">
+            <File Id="ControlzEx.dll" Name="ControlzEx.dll" Source="Solutionizer/bin/Debug/ControlzEx.dll"/>
+            <RegistryValue Root="HKCU" Key="SOFTWARE\ThomasFreudenberg\Solutionizer" Name="ControlzEx.dll" Type="integer" Value="1" KeyPath="yes"/>
+          </Component>
+          <Component Id="Microsoft.Build.dll" Guid="{62485d4e-d12f-49dc-a1eb-e6ff12865f25}">
+            <File Id="Microsoft.Build.dll" Name="Microsoft.Build.dll" Source="Solutionizer/bin/Debug/Microsoft.Build.dll"/>
+            <RegistryValue Root="HKCU" Key="SOFTWARE\ThomasFreudenberg\Solutionizer" Name="Microsoft.Build.dll" Type="integer" Value="1" KeyPath="yes"/>
+          </Component>
+          <Component Id="Microsoft.Build.Framework.dll" Guid="{455d3c18-fb5e-40c8-8d3c-9b30b67d87d5}">
+            <File Id="Microsoft.Build.Framework.dll" Name="Microsoft.Build.Framework.dll" Source="Solutionizer/bin/Debug/Microsoft.Build.Framework.dll"/>
+            <RegistryValue Root="HKCU" Key="SOFTWARE\ThomasFreudenberg\Solutionizer" Name="Microsoft.Build.Framework.dll" Type="integer" Value="1" KeyPath="yes"/>
+          </Component>
+          <Component Id="Microsoft.Build.Utilities.Core.dll" Guid="{2b2888db-67b3-4ae2-9140-850fe133655e}">
+            <File Id="Microsoft.Build.Utilities.Core.dll" Name="Microsoft.Build.Utilities.Core.dll" Source="Solutionizer/bin/Debug/Microsoft.Build.Utilities.Core.dll"/>
+            <RegistryValue Root="HKCU" Key="SOFTWARE\ThomasFreudenberg\Solutionizer" Name="Microsoft.Build.Utilities.Core.dll" Type="integer" Value="1" KeyPath="yes"/>
+          </Component>
+          <Component Id="Microsoft.IdentityModel.Clients.ActiveDirectory.dll" Guid="{33fe0ad5-abb5-428a-b6bd-ce6c6136abbe}">
+            <File Id="Microsoft.IdentityModel.Clients.ActiveDirectory.dll" Name="Microsoft.IdentityModel.Clients.ActiveDirectory.dll" Source="Solutionizer/bin/Debug/Microsoft.IdentityModel.Clients.ActiveDirectory.dll"/>
+            <RegistryValue Root="HKCU" Key="SOFTWARE\ThomasFreudenberg\Solutionizer" Name="Microsoft.IdentityModel.Clients.ActiveDirectory.dll" Type="integer" Value="1" KeyPath="yes"/>
+          </Component>
+          <Component Id="Microsoft.IdentityModel.Clients.ActiveDirectory.WindowsForms.dll" Guid="{9da1827a-2158-4bf3-a810-6104e7d514b1}">
+            <File Id="Microsoft.IdentityModel.Clients.ActiveDirectory.WindowsForms.dll" Name="Microsoft.IdentityModel.Clients.ActiveDirectory.WindowsForms.dll" Source="Solutionizer/bin/Debug/Microsoft.IdentityModel.Clients.ActiveDirectory.WindowsForms.dll"/>
+            <RegistryValue Root="HKCU" Key="SOFTWARE\ThomasFreudenberg\Solutionizer" Name="Microsoft.IdentityModel.Clients.ActiveDirectory.WindowsForms.dll" Type="integer" Value="1" KeyPath="yes"/>
+          </Component>
+          <Component Id="Microsoft.ServiceBus.dll" Guid="{55e00a47-f500-4498-a787-c3de7e849df2}">
+            <File Id="Microsoft.ServiceBus.dll" Name="Microsoft.ServiceBus.dll" Source="Solutionizer/bin/Debug/Microsoft.ServiceBus.dll"/>
+            <RegistryValue Root="HKCU" Key="SOFTWARE\ThomasFreudenberg\Solutionizer" Name="Microsoft.ServiceBus.dll" Type="integer" Value="1" KeyPath="yes"/>
+          </Component>
+          <Component Id="Microsoft.TeamFoundation.Build.Client.dll" Guid="{9bc93ad9-8280-4cb9-ac7c-545ad000ba1e}">
+            <File Id="Microsoft.TeamFoundation.Build.Client.dll" Name="Microsoft.TeamFoundation.Build.Client.dll" Source="Solutionizer/bin/Debug/Microsoft.TeamFoundation.Build.Client.dll"/>
+            <RegistryValue Root="HKCU" Key="SOFTWARE\ThomasFreudenberg\Solutionizer" Name="Microsoft.TeamFoundation.Build.Client.dll" Type="integer" Value="1" KeyPath="yes"/>
+          </Component>
+          <Component Id="Microsoft.TeamFoundation.Build.Common.dll" Guid="{035ffc08-6972-4f35-8ae9-181bc2181aef}">
+            <File Id="Microsoft.TeamFoundation.Build.Common.dll" Name="Microsoft.TeamFoundation.Build.Common.dll" Source="Solutionizer/bin/Debug/Microsoft.TeamFoundation.Build.Common.dll"/>
+            <RegistryValue Root="HKCU" Key="SOFTWARE\ThomasFreudenberg\Solutionizer" Name="Microsoft.TeamFoundation.Build.Common.dll" Type="integer" Value="1" KeyPath="yes"/>
+          </Component>
+          <Component Id="Microsoft.TeamFoundation.Build2.WebApi.dll" Guid="{5a11bd81-6b71-48e4-9a93-f46c94e76aac}">
+            <File Id="Microsoft.TeamFoundation.Build2.WebApi.dll" Name="Microsoft.TeamFoundation.Build2.WebApi.dll" Source="Solutionizer/bin/Debug/Microsoft.TeamFoundation.Build2.WebApi.dll"/>
+            <RegistryValue Root="HKCU" Key="SOFTWARE\ThomasFreudenberg\Solutionizer" Name="Microsoft.TeamFoundation.Build2.WebApi.dll" Type="integer" Value="1" KeyPath="yes"/>
+          </Component>
+          <Component Id="Microsoft.TeamFoundation.Chat.WebApi.dll" Guid="{5ed1353b-381e-4d46-a7d2-37cc010a8069}">
+            <File Id="Microsoft.TeamFoundation.Chat.WebApi.dll" Name="Microsoft.TeamFoundation.Chat.WebApi.dll" Source="Solutionizer/bin/Debug/Microsoft.TeamFoundation.Chat.WebApi.dll"/>
+            <RegistryValue Root="HKCU" Key="SOFTWARE\ThomasFreudenberg\Solutionizer" Name="Microsoft.TeamFoundation.Chat.WebApi.dll" Type="integer" Value="1" KeyPath="yes"/>
+          </Component>
+          <Component Id="Microsoft.TeamFoundation.Client.dll" Guid="{6ea69db8-3f19-407a-8e1a-5a3d9ad782b9}">
+            <File Id="Microsoft.TeamFoundation.Client.dll" Name="Microsoft.TeamFoundation.Client.dll" Source="Solutionizer/bin/Debug/Microsoft.TeamFoundation.Client.dll"/>
+            <RegistryValue Root="HKCU" Key="SOFTWARE\ThomasFreudenberg\Solutionizer" Name="Microsoft.TeamFoundation.Client.dll" Type="integer" Value="1" KeyPath="yes"/>
+          </Component>
+          <Component Id="Microsoft.TeamFoundation.Common.dll" Guid="{b6c4c3ed-c2f0-4532-848e-8cc70ad6a3ee}">
+            <File Id="Microsoft.TeamFoundation.Common.dll" Name="Microsoft.TeamFoundation.Common.dll" Source="Solutionizer/bin/Debug/Microsoft.TeamFoundation.Common.dll"/>
+            <RegistryValue Root="HKCU" Key="SOFTWARE\ThomasFreudenberg\Solutionizer" Name="Microsoft.TeamFoundation.Common.dll" Type="integer" Value="1" KeyPath="yes"/>
+          </Component>
+          <Component Id="Microsoft.TeamFoundation.Core.WebApi.dll" Guid="{bc921f4f-36ff-4092-b0ec-e58b6528b784}">
+            <File Id="Microsoft.TeamFoundation.Core.WebApi.dll" Name="Microsoft.TeamFoundation.Core.WebApi.dll" Source="Solutionizer/bin/Debug/Microsoft.TeamFoundation.Core.WebApi.dll"/>
+            <RegistryValue Root="HKCU" Key="SOFTWARE\ThomasFreudenberg\Solutionizer" Name="Microsoft.TeamFoundation.Core.WebApi.dll" Type="integer" Value="1" KeyPath="yes"/>
+          </Component>
+          <Component Id="Microsoft.TeamFoundation.DeleteTeamProject.dll" Guid="{2d230357-17f5-4748-b6e7-06a21f35d76d}">
+            <File Id="Microsoft.TeamFoundation.DeleteTeamProject.dll" Name="Microsoft.TeamFoundation.DeleteTeamProject.dll" Source="Solutionizer/bin/Debug/Microsoft.TeamFoundation.DeleteTeamProject.dll"/>
+            <RegistryValue Root="HKCU" Key="SOFTWARE\ThomasFreudenberg\Solutionizer" Name="Microsoft.TeamFoundation.DeleteTeamProject.dll" Type="integer" Value="1" KeyPath="yes"/>
+          </Component>
+          <Component Id="Microsoft.TeamFoundation.Diff.dll" Guid="{8fcc2984-3e9e-4283-9825-2141be288971}">
+            <File Id="Microsoft.TeamFoundation.Diff.dll" Name="Microsoft.TeamFoundation.Diff.dll" Source="Solutionizer/bin/Debug/Microsoft.TeamFoundation.Diff.dll"/>
+            <RegistryValue Root="HKCU" Key="SOFTWARE\ThomasFreudenberg\Solutionizer" Name="Microsoft.TeamFoundation.Diff.dll" Type="integer" Value="1" KeyPath="yes"/>
+          </Component>
+          <Component Id="Microsoft.TeamFoundation.Discussion.Client.dll" Guid="{4025dbbb-159b-4d1a-b405-ffc3bee72a0a}">
+            <File Id="Microsoft.TeamFoundation.Discussion.Client.dll" Name="Microsoft.TeamFoundation.Discussion.Client.dll" Source="Solutionizer/bin/Debug/Microsoft.TeamFoundation.Discussion.Client.dll"/>
+            <RegistryValue Root="HKCU" Key="SOFTWARE\ThomasFreudenberg\Solutionizer" Name="Microsoft.TeamFoundation.Discussion.Client.dll" Type="integer" Value="1" KeyPath="yes"/>
+          </Component>
+          <Component Id="Microsoft.TeamFoundation.Git.Client.dll" Guid="{ddd5e711-f0e1-4aac-bd92-299356b69846}">
+            <File Id="Microsoft.TeamFoundation.Git.Client.dll" Name="Microsoft.TeamFoundation.Git.Client.dll" Source="Solutionizer/bin/Debug/Microsoft.TeamFoundation.Git.Client.dll"/>
+            <RegistryValue Root="HKCU" Key="SOFTWARE\ThomasFreudenberg\Solutionizer" Name="Microsoft.TeamFoundation.Git.Client.dll" Type="integer" Value="1" KeyPath="yes"/>
+          </Component>
+          <Component Id="Microsoft.TeamFoundation.Lab.Client.dll" Guid="{d9f5e180-08d9-4dfe-8c80-f773a1335200}">
+            <File Id="Microsoft.TeamFoundation.Lab.Client.dll" Name="Microsoft.TeamFoundation.Lab.Client.dll" Source="Solutionizer/bin/Debug/Microsoft.TeamFoundation.Lab.Client.dll"/>
+            <RegistryValue Root="HKCU" Key="SOFTWARE\ThomasFreudenberg\Solutionizer" Name="Microsoft.TeamFoundation.Lab.Client.dll" Type="integer" Value="1" KeyPath="yes"/>
+          </Component>
+          <Component Id="Microsoft.TeamFoundation.Lab.Common.dll" Guid="{f429901e-2434-43c6-bbec-261a2543f9b3}">
+            <File Id="Microsoft.TeamFoundation.Lab.Common.dll" Name="Microsoft.TeamFoundation.Lab.Common.dll" Source="Solutionizer/bin/Debug/Microsoft.TeamFoundation.Lab.Common.dll"/>
+            <RegistryValue Root="HKCU" Key="SOFTWARE\ThomasFreudenberg\Solutionizer" Name="Microsoft.TeamFoundation.Lab.Common.dll" Type="integer" Value="1" KeyPath="yes"/>
+          </Component>
+          <Component Id="Microsoft.TeamFoundation.Lab.TestIntegration.Client.dll" Guid="{723a8300-7a5b-4f99-b2e1-bb6ec71d065a}">
+            <File Id="Microsoft.TeamFoundation.Lab.TestIntegration.Client.dll" Name="Microsoft.TeamFoundation.Lab.TestIntegration.Client.dll" Source="Solutionizer/bin/Debug/Microsoft.TeamFoundation.Lab.TestIntegration.Client.dll"/>
+            <RegistryValue Root="HKCU" Key="SOFTWARE\ThomasFreudenberg\Solutionizer" Name="Microsoft.TeamFoundation.Lab.TestIntegration.Client.dll" Type="integer" Value="1" KeyPath="yes"/>
+          </Component>
+          <Component Id="Microsoft.TeamFoundation.Lab.WorkflowIntegration.Client.dll" Guid="{aa3fbe1e-0ba6-4e01-b05a-084073946e6c}">
+            <File Id="Microsoft.TeamFoundation.Lab.WorkflowIntegration.Client.dll" Name="Microsoft.TeamFoundation.Lab.WorkflowIntegration.Client.dll" Source="Solutionizer/bin/Debug/Microsoft.TeamFoundation.Lab.WorkflowIntegration.Client.dll"/>
+            <RegistryValue Root="HKCU" Key="SOFTWARE\ThomasFreudenberg\Solutionizer" Name="Microsoft.TeamFoundation.Lab.WorkflowIntegration.Client.dll" Type="integer" Value="1" KeyPath="yes"/>
+          </Component>
+          <Component Id="Microsoft.TeamFoundation.Policy.WebApi.dll" Guid="{ca4b1194-4bff-4ab5-ac4a-cbbf5447007d}">
+            <File Id="Microsoft.TeamFoundation.Policy.WebApi.dll" Name="Microsoft.TeamFoundation.Policy.WebApi.dll" Source="Solutionizer/bin/Debug/Microsoft.TeamFoundation.Policy.WebApi.dll"/>
+            <RegistryValue Root="HKCU" Key="SOFTWARE\ThomasFreudenberg\Solutionizer" Name="Microsoft.TeamFoundation.Policy.WebApi.dll" Type="integer" Value="1" KeyPath="yes"/>
+          </Component>
+          <Component Id="Microsoft.TeamFoundation.ProjectManagement.dll" Guid="{49175d46-54df-4377-9770-b640ac89032c}">
+            <File Id="Microsoft.TeamFoundation.ProjectManagement.dll" Name="Microsoft.TeamFoundation.ProjectManagement.dll" Source="Solutionizer/bin/Debug/Microsoft.TeamFoundation.ProjectManagement.dll"/>
+            <RegistryValue Root="HKCU" Key="SOFTWARE\ThomasFreudenberg\Solutionizer" Name="Microsoft.TeamFoundation.ProjectManagement.dll" Type="integer" Value="1" KeyPath="yes"/>
+          </Component>
+          <Component Id="Microsoft.TeamFoundation.SharePointReporting.Integration.dll" Guid="{3cab229b-ffd2-4db0-996f-b5a9e65fca85}">
+            <File Id="Microsoft.TeamFoundation.SharePointReporting.Integration.dll" Name="Microsoft.TeamFoundation.SharePointReporting.Integration.dll" Source="Solutionizer/bin/Debug/Microsoft.TeamFoundation.SharePointReporting.Integration.dll"/>
+            <RegistryValue Root="HKCU" Key="SOFTWARE\ThomasFreudenberg\Solutionizer" Name="Microsoft.TeamFoundation.SharePointReporting.Integration.dll" Type="integer" Value="1" KeyPath="yes"/>
+          </Component>
+          <Component Id="Microsoft.TeamFoundation.SourceControl.WebApi.dll" Guid="{2d3f0c8c-ee34-4cf8-9949-5c3da02769d7}">
+            <File Id="Microsoft.TeamFoundation.SourceControl.WebApi.dll" Name="Microsoft.TeamFoundation.SourceControl.WebApi.dll" Source="Solutionizer/bin/Debug/Microsoft.TeamFoundation.SourceControl.WebApi.dll"/>
+            <RegistryValue Root="HKCU" Key="SOFTWARE\ThomasFreudenberg\Solutionizer" Name="Microsoft.TeamFoundation.SourceControl.WebApi.dll" Type="integer" Value="1" KeyPath="yes"/>
+          </Component>
+          <Component Id="Microsoft.TeamFoundation.Test.WebApi.dll" Guid="{c940d7b0-2ec0-41a6-a116-35c140a46fcc}">
+            <File Id="Microsoft.TeamFoundation.Test.WebApi.dll" Name="Microsoft.TeamFoundation.Test.WebApi.dll" Source="Solutionizer/bin/Debug/Microsoft.TeamFoundation.Test.WebApi.dll"/>
+            <RegistryValue Root="HKCU" Key="SOFTWARE\ThomasFreudenberg\Solutionizer" Name="Microsoft.TeamFoundation.Test.WebApi.dll" Type="integer" Value="1" KeyPath="yes"/>
+          </Component>
+          <Component Id="Microsoft.TeamFoundation.TestImpact.Client.dll" Guid="{c9b363d5-682d-40ee-a13d-89ceb3d90626}">
+            <File Id="Microsoft.TeamFoundation.TestImpact.Client.dll" Name="Microsoft.TeamFoundation.TestImpact.Client.dll" Source="Solutionizer/bin/Debug/Microsoft.TeamFoundation.TestImpact.Client.dll"/>
+            <RegistryValue Root="HKCU" Key="SOFTWARE\ThomasFreudenberg\Solutionizer" Name="Microsoft.TeamFoundation.TestImpact.Client.dll" Type="integer" Value="1" KeyPath="yes"/>
+          </Component>
+          <Component Id="Microsoft.TeamFoundation.TestManagement.Client.dll" Guid="{10a9f811-da90-409d-9a62-bf27cf1b15e2}">
+            <File Id="Microsoft.TeamFoundation.TestManagement.Client.dll" Name="Microsoft.TeamFoundation.TestManagement.Client.dll" Source="Solutionizer/bin/Debug/Microsoft.TeamFoundation.TestManagement.Client.dll"/>
+            <RegistryValue Root="HKCU" Key="SOFTWARE\ThomasFreudenberg\Solutionizer" Name="Microsoft.TeamFoundation.TestManagement.Client.dll" Type="integer" Value="1" KeyPath="yes"/>
+          </Component>
+          <Component Id="Microsoft.TeamFoundation.TestManagement.Common.dll" Guid="{841103e2-4fb2-487d-a4b1-fa88d7546507}">
+            <File Id="Microsoft.TeamFoundation.TestManagement.Common.dll" Name="Microsoft.TeamFoundation.TestManagement.Common.dll" Source="Solutionizer/bin/Debug/Microsoft.TeamFoundation.TestManagement.Common.dll"/>
+            <RegistryValue Root="HKCU" Key="SOFTWARE\ThomasFreudenberg\Solutionizer" Name="Microsoft.TeamFoundation.TestManagement.Common.dll" Type="integer" Value="1" KeyPath="yes"/>
+          </Component>
+          <Component Id="Microsoft.TeamFoundation.TestManagement.WebApi.dll" Guid="{8a74b363-fc73-4df1-b281-4e3d5b174aff}">
+            <File Id="Microsoft.TeamFoundation.TestManagement.WebApi.dll" Name="Microsoft.TeamFoundation.TestManagement.WebApi.dll" Source="Solutionizer/bin/Debug/Microsoft.TeamFoundation.TestManagement.WebApi.dll"/>
+            <RegistryValue Root="HKCU" Key="SOFTWARE\ThomasFreudenberg\Solutionizer" Name="Microsoft.TeamFoundation.TestManagement.WebApi.dll" Type="integer" Value="1" KeyPath="yes"/>
+          </Component>
+          <Component Id="Microsoft.TeamFoundation.VersionControl.Client.dll" Guid="{9fb3a5be-d8bc-432a-9e81-40a6b1bc35bc}">
+            <File Id="Microsoft.TeamFoundation.VersionControl.Client.dll" Name="Microsoft.TeamFoundation.VersionControl.Client.dll" Source="Solutionizer/bin/Debug/Microsoft.TeamFoundation.VersionControl.Client.dll"/>
+            <RegistryValue Root="HKCU" Key="SOFTWARE\ThomasFreudenberg\Solutionizer" Name="Microsoft.TeamFoundation.VersionControl.Client.dll" Type="integer" Value="1" KeyPath="yes"/>
+          </Component>
+          <Component Id="Microsoft.TeamFoundation.VersionControl.Common.dll" Guid="{fa44fb5a-efe5-40d9-a3c2-d81ea568b0cc}">
+            <File Id="Microsoft.TeamFoundation.VersionControl.Common.dll" Name="Microsoft.TeamFoundation.VersionControl.Common.dll" Source="Solutionizer/bin/Debug/Microsoft.TeamFoundation.VersionControl.Common.dll"/>
+            <RegistryValue Root="HKCU" Key="SOFTWARE\ThomasFreudenberg\Solutionizer" Name="Microsoft.TeamFoundation.VersionControl.Common.dll" Type="integer" Value="1" KeyPath="yes"/>
+          </Component>
+          <Component Id="Microsoft.TeamFoundation.VersionControl.Common.Integration.dll" Guid="{723c5562-b7cb-4b88-b266-10d2e719525b}">
+            <File Id="Microsoft.TeamFoundation.VersionControl.Common.Integration.dll" Name="Microsoft.TeamFoundation.VersionControl.Common.Integration.dll" Source="Solutionizer/bin/Debug/Microsoft.TeamFoundation.VersionControl.Common.Integration.dll"/>
+            <RegistryValue Root="HKCU" Key="SOFTWARE\ThomasFreudenberg\Solutionizer" Name="Microsoft.TeamFoundation.VersionControl.Common.Integration.dll" Type="integer" Value="1" KeyPath="yes"/>
+          </Component>
+          <Component Id="Microsoft.TeamFoundation.Work.WebApi.dll" Guid="{5dd00da0-cde4-4ca8-8b17-966aab837f18}">
+            <File Id="Microsoft.TeamFoundation.Work.WebApi.dll" Name="Microsoft.TeamFoundation.Work.WebApi.dll" Source="Solutionizer/bin/Debug/Microsoft.TeamFoundation.Work.WebApi.dll"/>
+            <RegistryValue Root="HKCU" Key="SOFTWARE\ThomasFreudenberg\Solutionizer" Name="Microsoft.TeamFoundation.Work.WebApi.dll" Type="integer" Value="1" KeyPath="yes"/>
+          </Component>
+          <Component Id="Microsoft.TeamFoundation.WorkItemTracking.Client.DataStoreLoader.dll" Guid="{3eda58d8-689f-42f4-a315-df02e03b17bc}">
+            <File Id="Microsoft.TeamFoundation.WorkItemTracking.Client.DataStoreLoader.dll" Name="Microsoft.TeamFoundation.WorkItemTracking.Client.DataStoreLoader.dll" Source="Solutionizer/bin/Debug/Microsoft.TeamFoundation.WorkItemTracking.Client.DataStoreLoader.dll"/>
+            <RegistryValue Root="HKCU" Key="SOFTWARE\ThomasFreudenberg\Solutionizer" Name="Microsoft.TeamFoundation.WorkItemTracking.Client.DataStoreLoader.dll" Type="integer" Value="1" KeyPath="yes"/>
+          </Component>
+          <Component Id="Microsoft.TeamFoundation.WorkItemTracking.Client.dll" Guid="{191d65f6-0d01-467a-aefb-120981cd2d8e}">
+            <File Id="Microsoft.TeamFoundation.WorkItemTracking.Client.dll" Name="Microsoft.TeamFoundation.WorkItemTracking.Client.dll" Source="Solutionizer/bin/Debug/Microsoft.TeamFoundation.WorkItemTracking.Client.dll"/>
+            <RegistryValue Root="HKCU" Key="SOFTWARE\ThomasFreudenberg\Solutionizer" Name="Microsoft.TeamFoundation.WorkItemTracking.Client.dll" Type="integer" Value="1" KeyPath="yes"/>
+          </Component>
+          <Component Id="Microsoft.TeamFoundation.WorkItemTracking.Client.QueryLanguage.dll" Guid="{e84e43ab-7894-43c8-b7e0-626ac4ea5e0a}">
+            <File Id="Microsoft.TeamFoundation.WorkItemTracking.Client.QueryLanguage.dll" Name="Microsoft.TeamFoundation.WorkItemTracking.Client.QueryLanguage.dll" Source="Solutionizer/bin/Debug/Microsoft.TeamFoundation.WorkItemTracking.Client.QueryLanguage.dll"/>
+            <RegistryValue Root="HKCU" Key="SOFTWARE\ThomasFreudenberg\Solutionizer" Name="Microsoft.TeamFoundation.WorkItemTracking.Client.QueryLanguage.dll" Type="integer" Value="1" KeyPath="yes"/>
+          </Component>
+          <Component Id="Microsoft.TeamFoundation.WorkItemTracking.Common.dll" Guid="{c5ec0801-cbd4-40d0-a8e6-6efb5471a852}">
+            <File Id="Microsoft.TeamFoundation.WorkItemTracking.Common.dll" Name="Microsoft.TeamFoundation.WorkItemTracking.Common.dll" Source="Solutionizer/bin/Debug/Microsoft.TeamFoundation.WorkItemTracking.Common.dll"/>
+            <RegistryValue Root="HKCU" Key="SOFTWARE\ThomasFreudenberg\Solutionizer" Name="Microsoft.TeamFoundation.WorkItemTracking.Common.dll" Type="integer" Value="1" KeyPath="yes"/>
+          </Component>
+          <Component Id="Microsoft.TeamFoundation.WorkItemTracking.Proxy.dll" Guid="{fd653722-4b49-409b-bc1f-5f8c5c200629}">
+            <File Id="Microsoft.TeamFoundation.WorkItemTracking.Proxy.dll" Name="Microsoft.TeamFoundation.WorkItemTracking.Proxy.dll" Source="Solutionizer/bin/Debug/Microsoft.TeamFoundation.WorkItemTracking.Proxy.dll"/>
+            <RegistryValue Root="HKCU" Key="SOFTWARE\ThomasFreudenberg\Solutionizer" Name="Microsoft.TeamFoundation.WorkItemTracking.Proxy.dll" Type="integer" Value="1" KeyPath="yes"/>
+          </Component>
+          <Component Id="Microsoft.TeamFoundation.WorkItemTracking.WebApi.dll" Guid="{2494c1cd-bd80-4b34-9dc2-b36565ba5022}">
+            <File Id="Microsoft.TeamFoundation.WorkItemTracking.WebApi.dll" Name="Microsoft.TeamFoundation.WorkItemTracking.WebApi.dll" Source="Solutionizer/bin/Debug/Microsoft.TeamFoundation.WorkItemTracking.WebApi.dll"/>
+            <RegistryValue Root="HKCU" Key="SOFTWARE\ThomasFreudenberg\Solutionizer" Name="Microsoft.TeamFoundation.WorkItemTracking.WebApi.dll" Type="integer" Value="1" KeyPath="yes"/>
+          </Component>
+          <Component Id="Microsoft.VisualStudio.Services.Client.dll" Guid="{43045960-a091-476a-94cf-5713f5f2a7fb}">
+            <File Id="Microsoft.VisualStudio.Services.Client.dll" Name="Microsoft.VisualStudio.Services.Client.dll" Source="Solutionizer/bin/Debug/Microsoft.VisualStudio.Services.Client.dll"/>
+            <RegistryValue Root="HKCU" Key="SOFTWARE\ThomasFreudenberg\Solutionizer" Name="Microsoft.VisualStudio.Services.Client.dll" Type="integer" Value="1" KeyPath="yes"/>
+          </Component>
+          <Component Id="Microsoft.VisualStudio.Services.Common.dll" Guid="{a479e987-c8fa-4ace-a873-acc78eddcf53}">
+            <File Id="Microsoft.VisualStudio.Services.Common.dll" Name="Microsoft.VisualStudio.Services.Common.dll" Source="Solutionizer/bin/Debug/Microsoft.VisualStudio.Services.Common.dll"/>
+            <RegistryValue Root="HKCU" Key="SOFTWARE\ThomasFreudenberg\Solutionizer" Name="Microsoft.VisualStudio.Services.Common.dll" Type="integer" Value="1" KeyPath="yes"/>
+          </Component>
+          <Component Id="Microsoft.VisualStudio.Services.WebApi.dll" Guid="{fc84a720-9c5e-4264-9c3f-6250f521ce29}">
+            <File Id="Microsoft.VisualStudio.Services.WebApi.dll" Name="Microsoft.VisualStudio.Services.WebApi.dll" Source="Solutionizer/bin/Debug/Microsoft.VisualStudio.Services.WebApi.dll"/>
+            <RegistryValue Root="HKCU" Key="SOFTWARE\ThomasFreudenberg\Solutionizer" Name="Microsoft.VisualStudio.Services.WebApi.dll" Type="integer" Value="1" KeyPath="yes"/>
+          </Component>
+          <Component Id="Microsoft.VisualStudio.Setup.Configuration.Interop.dll" Guid="{715fafd4-fd8e-46f9-ba13-0ebf38568e62}">
+            <File Id="Microsoft.VisualStudio.Setup.Configuration.Interop.dll" Name="Microsoft.VisualStudio.Setup.Configuration.Interop.dll" Source="Solutionizer/bin/Debug/Microsoft.VisualStudio.Setup.Configuration.Interop.dll"/>
+            <RegistryValue Root="HKCU" Key="SOFTWARE\ThomasFreudenberg\Solutionizer" Name="Microsoft.VisualStudio.Setup.Configuration.Interop.dll" Type="integer" Value="1" KeyPath="yes"/>
+          </Component>
+          <Component Id="Microsoft.WindowsAzure.Configuration.dll" Guid="{b7f27afd-0335-4505-a126-d19ca937706a}">
+            <File Id="Microsoft.WindowsAzure.Configuration.dll" Name="Microsoft.WindowsAzure.Configuration.dll" Source="Solutionizer/bin/Debug/Microsoft.WindowsAzure.Configuration.dll"/>
+            <RegistryValue Root="HKCU" Key="SOFTWARE\ThomasFreudenberg\Solutionizer" Name="Microsoft.WindowsAzure.Configuration.dll" Type="integer" Value="1" KeyPath="yes"/>
+          </Component>
+          <Component Id="Microsoft.WITDataStore32.dll" Guid="{b1c5684a-995b-4102-97b2-6ba317380b6e}">
+            <File Id="Microsoft.WITDataStore32.dll" Name="Microsoft.WITDataStore32.dll" Source="Solutionizer/bin/Debug/Microsoft.WITDataStore32.dll"/>
+            <RegistryValue Root="HKCU" Key="SOFTWARE\ThomasFreudenberg\Solutionizer" Name="Microsoft.WITDataStore32.dll" Type="integer" Value="1" KeyPath="yes"/>
+          </Component>
+          <Component Id="Microsoft.WITDataStore64.dll" Guid="{4714b540-7ab0-44ea-83b7-9d4de082df74}">
+            <File Id="Microsoft.WITDataStore64.dll" Name="Microsoft.WITDataStore64.dll" Source="Solutionizer/bin/Debug/Microsoft.WITDataStore64.dll"/>
+            <RegistryValue Root="HKCU" Key="SOFTWARE\ThomasFreudenberg\Solutionizer" Name="Microsoft.WITDataStore64.dll" Type="integer" Value="1" KeyPath="yes"/>
+          </Component>
+          <Component Id="System.Collections.Immutable.dll" Guid="{eab2b699-e121-4c57-ab15-5da026b318c8}">
+            <File Id="System.Collections.Immutable.dll" Name="System.Collections.Immutable.dll" Source="Solutionizer/bin/Debug/System.Collections.Immutable.dll"/>
+            <RegistryValue Root="HKCU" Key="SOFTWARE\ThomasFreudenberg\Solutionizer" Name="System.Collections.Immutable.dll" Type="integer" Value="1" KeyPath="yes"/>
+          </Component>
+          <Component Id="System.IdentityModel.Tokens.Jwt.dll" Guid="{ee3e89e2-00f8-4b92-9028-28d5708b2158}">
+            <File Id="System.IdentityModel.Tokens.Jwt.dll" Name="System.IdentityModel.Tokens.Jwt.dll" Source="Solutionizer/bin/Debug/System.IdentityModel.Tokens.Jwt.dll"/>
+            <RegistryValue Root="HKCU" Key="SOFTWARE\ThomasFreudenberg\Solutionizer" Name="System.IdentityModel.Tokens.Jwt.dll" Type="integer" Value="1" KeyPath="yes"/>
+          </Component>
+          <Component Id="System.Net.Http.Formatting.dll" Guid="{ee3b0f93-f2ab-4375-a67f-d1cf3ab55d91}">
+            <File Id="System.Net.Http.Formatting.dll" Name="System.Net.Http.Formatting.dll" Source="Solutionizer/bin/Debug/System.Net.Http.Formatting.dll"/>
+            <RegistryValue Root="HKCU" Key="SOFTWARE\ThomasFreudenberg\Solutionizer" Name="System.Net.Http.Formatting.dll" Type="integer" Value="1" KeyPath="yes"/>
+          </Component>
+          <Component Id="System.Threading.Tasks.Dataflow.dll" Guid="{80a5092f-aa8d-461a-8636-f5723a95f905}">
+            <File Id="System.Threading.Tasks.Dataflow.dll" Name="System.Threading.Tasks.Dataflow.dll" Source="Solutionizer/bin/Debug/System.Threading.Tasks.Dataflow.dll"/>
+            <RegistryValue Root="HKCU" Key="SOFTWARE\ThomasFreudenberg\Solutionizer" Name="System.Threading.Tasks.Dataflow.dll" Type="integer" Value="1" KeyPath="yes"/>
+          </Component>
+          <Component Id="System.Web.Http.dll" Guid="{9b139c3a-8619-41cd-b9dc-828e3bc43416}">
+            <File Id="System.Web.Http.dll" Name="System.Web.Http.dll" Source="Solutionizer/bin/Debug/System.Web.Http.dll"/>
+            <RegistryValue Root="HKCU" Key="SOFTWARE\ThomasFreudenberg\Solutionizer" Name="System.Web.Http.dll" Type="integer" Value="1" KeyPath="yes"/>
+          </Component>
         </Directory>
       </Directory>
 
@@ -116,6 +328,59 @@
       <ComponentRef Id="Octokit.dll"/>
       <ComponentRef Id="Autofac.dll"/>
       <ComponentRef Id="TinyLittleMvvm.dll"/>
+      <ComponentRef Id="ControlzEx.dll"/>
+      <ComponentRef Id="Microsoft.Build.dll"/>
+      <ComponentRef Id="Microsoft.Build.Framework.dll"/>
+      <ComponentRef Id="Microsoft.Build.Utilities.Core.dll"/>
+      <ComponentRef Id="Microsoft.IdentityModel.Clients.ActiveDirectory.dll"/>
+      <ComponentRef Id="Microsoft.IdentityModel.Clients.ActiveDirectory.WindowsForms.dll"/>
+      <ComponentRef Id="Microsoft.ServiceBus.dll"/>
+      <ComponentRef Id="Microsoft.TeamFoundation.Build.Client.dll"/>
+      <ComponentRef Id="Microsoft.TeamFoundation.Build.Common.dll"/>
+      <ComponentRef Id="Microsoft.TeamFoundation.Build2.WebApi.dll"/>
+      <ComponentRef Id="Microsoft.TeamFoundation.Chat.WebApi.dll"/>
+      <ComponentRef Id="Microsoft.TeamFoundation.Client.dll"/>
+      <ComponentRef Id="Microsoft.TeamFoundation.Common.dll"/>
+      <ComponentRef Id="Microsoft.TeamFoundation.Core.WebApi.dll"/>
+      <ComponentRef Id="Microsoft.TeamFoundation.DeleteTeamProject.dll"/>
+      <ComponentRef Id="Microsoft.TeamFoundation.Diff.dll"/>
+      <ComponentRef Id="Microsoft.TeamFoundation.Discussion.Client.dll"/>
+      <ComponentRef Id="Microsoft.TeamFoundation.Git.Client.dll"/>
+      <ComponentRef Id="Microsoft.TeamFoundation.Lab.Client.dll"/>
+      <ComponentRef Id="Microsoft.TeamFoundation.Lab.Common.dll"/>
+      <ComponentRef Id="Microsoft.TeamFoundation.Lab.TestIntegration.Client.dll"/>
+      <ComponentRef Id="Microsoft.TeamFoundation.Lab.WorkflowIntegration.Client.dll"/>
+      <ComponentRef Id="Microsoft.TeamFoundation.Policy.WebApi.dll"/>
+      <ComponentRef Id="Microsoft.TeamFoundation.ProjectManagement.dll"/>
+      <ComponentRef Id="Microsoft.TeamFoundation.SharePointReporting.Integration.dll"/>
+      <ComponentRef Id="Microsoft.TeamFoundation.SourceControl.WebApi.dll"/>
+      <ComponentRef Id="Microsoft.TeamFoundation.Test.WebApi.dll"/>
+      <ComponentRef Id="Microsoft.TeamFoundation.TestImpact.Client.dll"/>
+      <ComponentRef Id="Microsoft.TeamFoundation.TestManagement.Client.dll"/>
+      <ComponentRef Id="Microsoft.TeamFoundation.TestManagement.Common.dll"/>
+      <ComponentRef Id="Microsoft.TeamFoundation.TestManagement.WebApi.dll"/>
+      <ComponentRef Id="Microsoft.TeamFoundation.VersionControl.Client.dll"/>
+      <ComponentRef Id="Microsoft.TeamFoundation.VersionControl.Common.dll"/>
+      <ComponentRef Id="Microsoft.TeamFoundation.VersionControl.Common.Integration.dll"/>
+      <ComponentRef Id="Microsoft.TeamFoundation.Work.WebApi.dll"/>
+      <ComponentRef Id="Microsoft.TeamFoundation.WorkItemTracking.Client.DataStoreLoader.dll"/>
+      <ComponentRef Id="Microsoft.TeamFoundation.WorkItemTracking.Client.dll"/>
+      <ComponentRef Id="Microsoft.TeamFoundation.WorkItemTracking.Client.QueryLanguage.dll"/>
+      <ComponentRef Id="Microsoft.TeamFoundation.WorkItemTracking.Common.dll"/>
+      <ComponentRef Id="Microsoft.TeamFoundation.WorkItemTracking.Proxy.dll"/>
+      <ComponentRef Id="Microsoft.TeamFoundation.WorkItemTracking.WebApi.dll"/>
+      <ComponentRef Id="Microsoft.VisualStudio.Services.Client.dll"/>
+      <ComponentRef Id="Microsoft.VisualStudio.Services.Common.dll"/>
+      <ComponentRef Id="Microsoft.VisualStudio.Services.WebApi.dll"/>
+      <ComponentRef Id="Microsoft.VisualStudio.Setup.Configuration.Interop.dll"/>
+      <ComponentRef Id="Microsoft.WindowsAzure.Configuration.dll"/>
+      <ComponentRef Id="Microsoft.WITDataStore32.dll"/>
+      <ComponentRef Id="Microsoft.WITDataStore64.dll"/>
+      <ComponentRef Id="System.Collections.Immutable.dll"/>
+      <ComponentRef Id="System.IdentityModel.Tokens.Jwt.dll"/>
+      <ComponentRef Id="System.Net.Http.Formatting.dll"/>
+      <ComponentRef Id="System.Threading.Tasks.Dataflow.dll"/>
+      <ComponentRef Id="System.Web.Http.dll"/>
     </Feature>
 
     <!-- no downgrade -->
